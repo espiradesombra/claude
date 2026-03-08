@@ -17,6 +17,8 @@ This repository contains four original computational and theoretical frameworks 
 | [Sofí Structure](#2-sofí-structure-sophie-germain) | Modular classification of Sophie Germain prime candidates |
 | [Criva](#3-criva-density-estimator) | Iterative rational estimator of prime density |
 | [Discriminant Method](#4-discriminant-method-factorization) | Deterministic discard filter for composite numbers |
+| [MDC — Kinematic Diophantine Method](#5-mdc--kinematic-diophantine-method) | Unified method for factorization and Wieferich prime detection |
+| [Siguiente Primo](#6-siguiente-primo) | Next prime via accumulated products of consecutives (Wilson-inspired) |
 
 ---
 
@@ -278,6 +280,114 @@ for n in [91, 143, 221, 323, 10403, 15251]:
 
 ---
 
+## 5. MDC — Kinematic Diophantine Method
+
+### Concept
+
+The **Método Diofántico Cinemático** (MDC) is a unified procedure for locating integer solutions of Diophantine equations `F(x,t) = 0` by analysing the kinematics of the decimal part of a real parametric function `d(t) = frac(g(x,t))`.
+
+Instead of testing all candidates, the method measures velocity, acceleration and jerk of `d(t)` at 4 consecutive points and **extrapolates directly to the solution** in O(1) evaluations per jump.
+
+### Two applications, one principle
+
+| | Factorization | Wieferich Primes |
+|--|--|--|
+| Parameter `t` | `m` (factor candidate) | `K` (even integer) |
+| Function `g(t)` | `N / (2*(2m+3))` | `p(K)`: solves `2^p = K*p^2 + 2` |
+| Target `δ` | `0.5` | `0.0` |
+| Search space | `L₁ = {6k±1}` | `2ℤ` (even integers) |
+| Solution | factor `f = 2m+3` of `N` | Wieferich prime `p = n` |
+
+### Wieferich sawtooth function
+
+Define `d(K) = frac(p(K))` where `p(K)` is the real solution to `2^p = K*p^2 + 2`. Then:
+
+> **Theorem (Zeros = Wieferich condition):** `d(K) = 0` for even integer `K` if and only if `K = (2^p − 2)/p²` for a Wieferich prime `p`.
+
+> **Theorem (Parity):** Whenever `K = (b^p − b)/p² ∈ ℤ` for any odd prime `p`, `K` is even. Therefore iterating by steps of 2 loses no information.
+
+### 1093–3511 coincidence explained
+
+Both known Wieferich primes are Wieferich in bases `{2, 4, 8, 16, 32}` — all powers of 2. This is **a single condition**, not five independent ones: `p²|(2^p − 2)` implies `p²|((2^k)^p − 2^k)` for all `k` by a direct algebraic argument.
+
+### Python implementation
+
+```python
+from mdc import mdc_factor, mdc_wieferich_scan, analyze_1093_3511
+
+# Factorization
+f1, f2, info = mdc_factor(10403)   # → (101, 103)
+
+# Wieferich scan
+mdc_wieferich_scan(p_min=3, p_max=30)
+
+# Reproduce the 1093-3511 coincidence
+analyze_1093_3511()
+```
+
+### Related paper
+
+A formal write-up of the Wieferich results is available in `wieferich_paper.tex`
+(arXiv preprint, 2026). The MDC framework is described in `metodo_diofantico_cinematico` (Spanish, 2026).
+
+---
+
+## 6. Siguiente Primo
+
+### Concept
+
+Given a known prime `inicio`, finds the **next prime** by maintaining three running accumulators `(t, tt, nt)` built from products of consecutive integers around three sliding counters `(ny, n, m)`.
+
+The detection logic is extracted from a **Karnaugh map over 3 consecutive iterations** — it does not compute `(n−1)!` explicitly, but exploits the same divisibility structure as Wilson's theorem:
+
+> `p` is prime ⟺ `(p−1)! ≡ p−1 (mod p)`
+
+### Accumulators
+
+```
+ny = n−1,  n,  m = n+1       (three sliding counters)
+
+t  *= ny   each step          (accumulates products via ny)
+tt *= n    each step          (accumulates products via n)
+nt *= m    each step          (accumulates products via m)
+
+Residues: t%ny, t%n, t%m, tt%ny, tt%n, tt%m, nt%ny, nt%n, nt%m
+```
+
+### Karnaugh 3-pass detection
+
+```python
+# Pass 1 (2-iteration memory)
+antp1  = (t3 > 0) and (nt2 == 0)
+ant2p1 = (t3 > 0) and (nt2 == 0) or antp1
+paso1  = (t3 > 0) and (nt2 == 0) or ant2p1
+
+# Pass 2 (refinement)
+antp2  = paso1 and (t2 > 0) and (tt2 > 0) and (t3 == 0)
+paso2  = antp2 or ...
+
+# Pass 3 (confirmation)
+paso3  = antp2 and (t1 > 0) and (nt1 + nt2 == 0)
+# → prime detected when paso3 fires
+```
+
+### Python implementation
+
+```python
+from siguiente_primo import siguiente_primo, primeros_n_primos, find_twin_primes
+
+# Next prime after 11
+siguiente_primo(11)          # → 13
+
+# First 20 primes
+primeros_n_primos(20)
+
+# Twin primes up to 200
+find_twin_primes(200)
+```
+
+---
+
 ## Installation
 
 ```bash
@@ -304,14 +414,20 @@ prime-modular-methods/
 │   ├── mrauv_goldbach.py      # MRAUV density model + Goldbach criterion
 │   ├── sofi_structure.py      # Sophie Germain modular classification
 │   ├── criva.py               # Iterative density estimator
-│   └── discriminant.py        # Deterministic factorization filter
+│   ├── discriminant.py        # Deterministic factorization filter
+│   ├── mdc.py                 # Kinematic Diophantine Method (unified)
+│   └── siguiente_primo.py     # Next prime via accumulated products (Wilson-inspired)
 ├── c/
 │   ├── criva_sieve.c          # Optimized sieve with OpenMP
 │   └── modular_sieve.c        # 6k±1 modular sieve
+├── papers/
+│   ├── wieferich_paper.tex    # arXiv paper: Wieferich as sawtooth zeros
+│   └── metodo_diofantico_cinematico.pdf  # MDC unified framework (Spanish)
 ├── notebooks/
 │   ├── mrauv_analysis.ipynb   # Goldbach margin visualization
 │   ├── sofi_classification.ipynb
-│   └── criva_vs_pnt.ipynb     # Criva vs Prime Number Theorem
+│   ├── criva_vs_pnt.ipynb     # Criva vs Prime Number Theorem
+│   └── mdc_sawtooth.ipynb     # Sawtooth structure visualization
 └── docs/
     └── theory_notes.pdf        # Extended theoretical notes (Spanish)
 ```
@@ -326,6 +442,8 @@ prime-modular-methods/
 | Sofí structure | Sophie Germain conjecture (open) | Modular framework for candidates |
 | Criva estimator | Selberg / Brun sieves | Constructive layer model |
 | Discriminant method | Fermat factorization | Deterministic stop condition (new) |
+| MDC factorization | Trial division, Pollard ρ | Kinematic jump, O(1) per jump |
+| MDC Wieferich | Fermat quotient criterion | Sawtooth zeros = Wieferich condition |
 
 ---
 
@@ -337,6 +455,9 @@ prime-modular-methods/
 | Discriminant filter | up to 10⁵ | 0% (deterministic) |
 | MRAUV Goldbach margin | up to 10⁵ | positive in all cases |
 | Sofí / U2 ⊆ LSG | up to 10⁴ | verified |
+| MDC factorization | up to 10⁶ | 0% (exact hits) |
+| MDC Wieferich predictor | primes up to 10⁴ | < 10⁻⁴ |
+| Siguiente Primo | first 100 primes | 0% (exact, validated vs Wilson) |
 
 ---
 
