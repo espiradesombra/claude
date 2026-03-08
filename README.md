@@ -2,7 +2,9 @@
 Autor: Víctor Manzanares Alberola (VMA)
 Estado: Investigación en curso | Verificado empíricamente | Código ejecutable
 Lenguaje: Python 3 / C (OpenMP)
-Temas: Teoría de números · Cribas primos · Goldbach · Sophie Germain · Factorización Enlace: https://drive.google.com/drive/folders/1Mj1eiX4vXmaOhpVM7R31PlVt-7a82hm6?usp=drive_link
+Temas: Teoría de números · Cribas primos · Goldbach · Sophie Germain · Factorización  
+Enlace: https://gemini.google.com/gem/1tfDacP-XX3ZpN02pq8eQvZBSgZHPVQP9?usp=drive_link 
+Enlace: https://drive.google.com/drive/folders/1Mj1eiX4vXmaOhpVM7R31PlVt-7a82hm6?usp=drive_link
 
 Descripción general
 Este repositorio contiene cuatro marcos computacionales y teóricos originales para el estudio de los números primos, desarrollados independientemente a lo largo de varios años. Cada módulo es autónomo, está probado empíricamente y se acompaña de código ejecutable.
