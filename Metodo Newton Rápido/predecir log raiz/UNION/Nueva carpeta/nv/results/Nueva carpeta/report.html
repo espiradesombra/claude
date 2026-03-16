@@ -1,0 +1,85 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Benchmark log/raíz</title>
+<style>body{font-family:sans-serif} table{border-collapse:collapse} td,th{border:1px solid #ccc;padding:6px}</style>
+</head><body>
+<h1>Benchmark log/raíz</h1>
+<p>ns/call y ULP@95% (mismo hardware, software distinto).</p>
+<h2>Resultados</h2>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>name</th>
+      <th>time_ns</th>
+      <th>ulp95</th>
+      <th>ulpmax</th>
+      <th>bad</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>LIBM</td>
+      <td>1.22712</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>ROOT_LIBM</td>
+      <td>1.48665</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>CRLIBM</td>
+      <td>20.12910</td>
+      <td>0.000000e+00</td>
+      <td>2.000000e+00</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>SLEEF</td>
+      <td>20.38360</td>
+      <td>0.000000e+00</td>
+      <td>2.000000e+00</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>ROOT_CRLIBM</td>
+      <td>21.00280</td>
+      <td>1.010000e+02</td>
+      <td>5.040000e+02</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>ROOT_SLEEF</td>
+      <td>22.86350</td>
+      <td>1.010000e+02</td>
+      <td>5.040000e+02</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>TU_ALGO1</td>
+      <td>37.00480</td>
+      <td>4.641880e+18</td>
+      <td>4.814800e+18</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>ROOT_TU</td>
+      <td>52.58190</td>
+      <td>6.870240e+18</td>
+      <td>9.113030e+18</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>TU_ALGO2</td>
+      <td>67.55830</td>
+      <td>4.641240e+18</td>
+      <td>4.816050e+18</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+<h2>Tiempo (ns/call)</h2><img src="results/time.png">
+<h2>Exactitud (ULP@95%)</h2><img src="results/ulp95.png">
+</body></html>
