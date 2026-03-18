@@ -1,0 +1,188 @@
+# Guion de edición y retoque para “Cribas, cotas y estructuras modulares de los primos”
+
+Este guion propone un plan paso a paso para depurar, reorganizar y pulir el documento, mejorando su claridad, coherencia y legibilidad.
+
+---
+
+## 1. Reorganizar el índice y la estructura principal
+
+- Revisar el **Índice preliminar** para:
+  - Agrupar temas muy similares (p. ej. “Criba modular” y “Criba híbrida” pueden ir bajo un único capítulo “Cribas avanzadas” con subsecciones).
+  - Asegurar un fluir lógico:  
+    1. Preliminares (6k±1)  
+    2. Cotas y criterios (salto máximo, Andrica)  
+    3. Conjeturas (intervalos, dos primos, Sophie Germain, Goldbach)  
+    4. Modelos iterativos y heurísticos  
+    5. Cribas prácticas (desmemoriada, modular, híbrida)  
+    6. Métodos gráficos y visualizaciones  
+    7. Conclusiones y líneas abiertas  
+  - Eliminar duplicaciones de numeración y combinar “Gold” con “Conjetura de Goldbach” en una sola sección.
+
+---
+
+## 2. Unificar notación y nomenclatura
+
+- Definir y usar de forma consistente:
+  - \(I(n),\,L(n),\,m(n)\) en toda la sección de cotas.
+  - Nombres de modelos: “Criva racional iterativa”, “Modelo e–2(n)”, “R̃(n)”, “R̂(n)”.
+  - Funciones auxiliares: usar siempre `Li(x)` para integral logarítmica y \(\mu(k)\) para Möbius.
+- Revisar todas las fórmulas LaTeX:
+  - Asegurar que usan `\(\)` para in-line y `\[ \]` para display.
+  - Numerar ecuaciones clave con etiquetas claras: `(1)`, `(2)`, … y referirlas.
+- Normalizar sinónimos:  
+  “densidad modular”, “modelo por capas” y “serie modular de densidad” deberían confluir en un solo término definido al inicio.
+
+---
+
+## 3. Sintetizar y eliminar redundancias
+
+- Muchas secciones explican de nuevo la misma idea de criba modular o punto fijo.  
+  - Consolidar en un único apartado “Iteración de punto fijo para \(\pi(x)/x\)” y referirlo.
+- Los ejemplos numéricos (tablas grande) pueden resumirse en un bloque compacto con enlace al Anexo.
+- Mover todo el pseudocódigo extenso a Apéndices y reemplazar en el cuerpo por descripciones breves más legibles.
+
+---
+
+## 4. Pulir las secciones de código y anexos
+
+- En el cuerpo principal, incluir **solo fragmentos clave** de pseudocódigo, con referencias a “véase Apéndice A”.
+- En cada apéndice:
+  - Añadir un encabezado claro (`## Apéndice A · Criba modular 6k±1`).
+  - Formatear el pseudocódigo con sangrías homogéneas.
+  - Comentar brevemente cada bloque (¿qué hace, complejidad, uso de `anteriorM` y `anteriorNY`?).
+- Para los scripts de Python y C:
+  - Mostrar solo la función principal y explicar cómo invocarlo.
+  - Remover líneas de prueba “a ojo” y errores que comentas; en su lugar, indicar “versión de ejemplo”.
+
+---
+
+## 5. Refinar las comparativas y visualizaciones
+
+- **Sección comparativa**:  
+  - Convertir la tabla en una figura `Figura X` con barras para “Error relativo” y “Iteraciones”.
+  - Acompañarla de un breve párrafo explicativo, evitando listados muy largos.
+- **Gráficos**:  
+  - Mover el código de Tkinter/Matplotlib al Apéndice de Visualización.
+  - Incluir una sola captura de pantalla del GUI con leyenda.
+
+---
+
+## 6. Mejorar estilo y legibilidad de texto
+
+- **Paragraphes**: máximo 5 líneas cada uno.
+- Incluir frases de transición al inicio de cada sección: “En esta sección veremos…”.
+- Evitar jerga excesiva; definir términos complejos la primera vez que aparecen.
+- Convertir listados en viñetas o tablas cuando aplique.
+
+---
+
+## 7. Actualizar bibliografía y referencias
+
+- Asegurar que cada referencia en texto use `\cite{}` (en LaTeX) o [1], [2] en Word.
+- Completar la bibliografía con datos completos: título, revista, año, páginas.
+- Añadir referencias clave a Selberg, Brun y tablas históricas de Legendre.
+
+---
+
+## 8. Pulir conclusiones y futuro
+
+- Resumir en 3–5 puntos:
+  1. Nueva cota de salto y su criterio “dos primos”.  
+  2. Infinitud en estructura Sofí y Fermat modular.  
+  3. Eficacia y flexibilidad de la Criva de Victor.  
+  4. Visualizaciones y heurísticas combinadas.  
+  5. Líneas abiertas: Next prime, doble ajuste, Goldbach asintótico.
+- Señalar **tareas inmediatas**: pulir heurística, probar en HPC, formalizar demostraciones.
+
+---
+
+Con este guion dispondrás de un plan claro para editar, eliminar duplicaciones, unificar estilos y fortalecer la coherencia científica del documento.
+Se trata de un **listado de acciones inmediatas**, es decir las tareas que conviene abordar tan pronto como cierres la redacción del manuscrito. En concreto:
+
+1. “Pulir heurística”  
+   • Revisar y ajustar los parámetros de tus esquemas iterativos (factor s, dobles ajustes, raíces/logs)  
+   • Validar numéricamente sobre conjuntos de prueba más amplios  
+   • Refactorizar el código para que sea robusto y fácilmente re-calibrable  
+
+2. “Probar en HPC”  
+   • Paralelizar las cribas (modular, híbrida) o los modelos MRAUV en clusters o GPU  
+   • Medir tiempos y escalado en rangos muy grandes (por ejemplo \(10^8\)–\(10^9\))  
+   • Detectar cuellos de botella de memoria y cómputo  
+
+3. “Formalizar demostraciones”  
+   • Pasar de las ideas heurísticas (criterio \(L(n)-m(n)\ge2\), infinitud Sofí, MRAUV) a pruebas rigurosas  
+   • Estructurar las demostraciones con lemas y teoremas en estilo IMRaD/LaTeX  
+   • Verificar hipótesis (p.ej. CRT y progresiones infinitas) y cubrir lapsos con bibliografía clásica  
+
+En resumen, esas tres líneas no son un modelo matemático, sino tu **hoja de ruta** post-redacción: tareas de refinamiento, validación a gran escala y cimentación teórica.
+A continuación tienes un plan de edición concreto para pulir y reforzar el manuscrito “Cuatro teoremas, dos cribas, pero una para vosotros conjetura”. Incluye mejoras generales y un apartado especial para **“Formalizar demostraciones”** de los cuatro teoremas.
+
+---
+
+## 1. Revisión de la estructura y el índice
+
+1. Consolidar las secciones de resultados en un único bloque “Teoremas y demostraciones” con cuatro subsecciones:  
+   1.1. SaltoMáximo (Cota de salto)  
+   1.2. Alineación modular de Fermat  
+   1.3. Método predictivo V  
+   1.4. No totalidad compuesta (gemelos factoriales)  
+2. Mover la “Criba modular optimizada” a una sección aparte de “Algoritmos de criba”.  
+3. Tras las cribas, añadir un bloque “Conjeturas y heurísticas” que incluya el método V y la conjetura del siguiente primo.  
+4. Dejar “Conclusiones” y “Trabajo futuro” al final.
+
+---
+
+## 2. Unificación de estilo y notación
+
+- Definir al principio del documento los símbolos \(I(n),L(n),m(n)\),  \(F_n\), \(\mu(k)\), \(\mathrm{Li}(x)\).  
+- Usar siempre entornos de Teorema/Lema/Definición/Conjetura numerados.  
+- Convertir en display las fórmulas clave con `\[ … \]` y etiquetarlas `(1)`, `(2)`, ….  
+
+---
+
+## 3. Formalizar demostraciones
+
+Para cada uno de los cuatro teoremas:
+
+1. **Enunciar formalmente**  
+   ```latex
+   \begin{theorem}[SaltoMáximo]
+   Si $L(n)-m(n)\ge2$, entonces $I(n)$ contiene al menos dos primos.
+   \end{theorem}
+   ```
+2. **Probar en detalle**  
+   - Desglosar: “todo compuesto en \(I(n)\) tiene divisor \(\le\sqrt{n+3}\)” → demostrar en un lema.  
+   - Demostrar que la suma factorial \(m(n)\) supera (sobremarca) correctamente el número de compuestos.  
+   - Concluir que el espacio libre \(\ge2\) obliga a dos primos.  
+3. **Repetir** para:  
+   - Alineación modular de Fermat  
+   - No totalidad de \(V(v;m,n)\) con \(v=p+1\)  
+   - Propiedad de marcado único en la criba 6k±1  
+4. **Agregar un párrafo de “Comentario”** tras cada prueba, explicando la intuición y referencias clásicas (Dirichlet, CRT, factoriales).
+
+---
+
+## 4. Depurar la sección de cribas
+
+- **Extraer todo el pseudocódigo** al Apéndice A (criba modular) y Apéndice B (criba híbrida).  
+- En el cuerpo, describir la estrategia en 5–6 líneas:  
+  > “Trabajamos solo sobre candidatos 6k±1, con los filtros `anteriorM` y `anteriorNY` para garantizar marcado único y coste \(Θ(l^2)\).”  
+- Suprimir ejemplos de código comentado “a ojo” y dejar sólo la versión final.
+
+---
+
+## 5. Mover heurísticas y visualizaciones a anexos
+
+- Heurística del método V y conjetura del siguiente primo → sección “Conjeturas abiertas”. Breve y referida al Apéndice C.  
+- El script de Tkinter/Matplotlib para restos y pendientes → Apéndice D. Mostrar en el texto sólo la captura de pantalla y un diagrama de flujo de 3 pasos lógicos.
+
+---
+
+## 6. Redacción y estilo
+
+1. **Resumen**: 4–6 líneas, enfocadas en las cuatro contribuciones y la filosofía de criba.  
+2. **Introducción**: explica el “hueco” que llenan tus demostraciones y cribas.  
+3. **Transiciones**: cada sección arranca con “En esta sección mostramos…”.  
+4. **Párrafos breves** (máx. 5
+
+
