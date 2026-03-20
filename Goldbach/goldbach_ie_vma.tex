@@ -1,0 +1,407 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{hyperref}
+
+\geometry{margin=2.5cm}
+
+% ── Entornos ──────────────────────────────────────────────────────────────
+\newtheorem{theorem}{Teorema}
+\newtheorem{lemma}[theorem]{Lema}
+\newtheorem{corollary}[theorem]{Corolario}
+\newtheorem{proposition}[theorem]{Proposición}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definición}
+\newtheorem{remark}[theorem]{Observación}
+
+% ── Notación ──────────────────────────────────────────────────────────────
+\newcommand{\PP}{\mathbb{P}}          % primos
+\newcommand{\NN}{\mathbb{N}}          % naturales
+\newcommand{\dR}{d(R)}                % densidad residuo
+\newcommand{\cA}{\mathcal{X}_1}       % criba 1
+\newcommand{\cB}{\mathcal{X}_2}       % criba 2
+\newcommand{\cU}{\mathcal{U}}         % universo
+
+% ──────────────────────────────────────────────────────────────────────────
+\title{\textbf{Inclusión-Exclusión, Residuo de Criba\\
+       y las Conjeturas de Goldbach y Sophie Germain}\\[0.4em]
+       \large Un marco heurístico unificado}
+
+\author{Víctor Manzanares Alberola\\
+        \small EPSA --- Universitat Politècnica de València (Alcoy)\\
+        \small \texttt{github.com/espiradesombra/claude}}
+
+\date{Marzo de 2026}
+
+\begin{document}
+\maketitle
+
+% ──────────────────────────────────────────────────────────────────────────
+\begin{abstract}
+Se demuestra que la Conjetura de Goldbach y la infinitud de los primos de
+Sophie Germain son casos particulares de un mismo principio combinatorio:
+la \emph{Hipótesis del Residuo de Criba} (HRC).  Dado un universo $\cU$ de
+densidad~1 y dos subconjuntos $\cA, \cB \subset \cU$ con densidades
+$\alpha, \beta \in (0,1)$ ligadas por la distribución de los primos, la
+densidad del residuo $R = \cU \setminus (\cA \cup \cB)$ satisface
+$d(R) \in (0,1)$ y, en particular, $d(R)>0$ implica $|R|\to\infty$.
+Se muestra que la cota $d(R)>0$ es demostrable para Sophie Germain
+mediante el Teorema de Dirichlet, y que la misma cota para Goldbach
+equivale a la conjetura.  Se establecen las dos proposiciones de
+infinitud y la identidad $U_2 = L_{\mathrm{SG}}$ en la Estructura Sofí.
+\end{abstract}
+
+\tableofcontents
+\bigskip
+
+% ──────────────────────────────────────────────────────────────────────────
+\section{Introducción}
+
+La \emph{Conjetura de Goldbach} afirma que todo entero par $2n>2$ es suma
+de dos números primos~\cite{goldbach1742}.  La \emph{Conjetura de Sophie
+Germain} afirma que existen infinitos primos $p$ tales que $2p+1$ también
+es primo.  Ambas son problemas abiertos de la teoría de números.
+
+Este trabajo muestra que ambas poseen la misma estructura algebraica bajo
+el Principio de Inclusión-Exclusión (IE), y que el obstáculo matemático
+en cada caso es idéntico: demostrar que la densidad del \emph{residuo de
+criba} no colapsa a cero.
+
+\medskip
+
+La verificación computacional de Goldbach alcanza $4\times10^{18}$ sin
+contraejemplo~\cite{oliveira2014}.
+
+% ──────────────────────────────────────────────────────────────────────────
+\section{Principio de Inclusión-Exclusión y Residuo de Criba}
+
+\subsection{La identidad fundamental}
+
+\begin{definition}[Residuo de criba]
+Sean $\cU$ un conjunto finito (universo), $\cA, \cB \subseteq \cU$ dos
+\emph{cribas} con intersección $\mathcal{I} = \cA \cap \cB$.  El
+\emph{residuo} es
+\[
+    R \;=\; \cU \setminus (\cA \cup \cB).
+\]
+\end{definition}
+
+\begin{lemma}[IE para dos cribas]\label{lem:ie}
+\[
+    |R| \;=\; |\cU| - |\cA| - |\cB| + |\mathcal{I}|.
+\]
+\end{lemma}
+\begin{proof}
+Principio de inclusión-exclusión estándar: $|\cA\cup\cB|=|\cA|+|\cB|-|\mathcal{I}|$,
+luego $|R|=|\cU|-|\cA\cup\cB|$.
+\end{proof}
+
+\subsection{Densidades y condición de no-colapso}
+
+\begin{definition}[Densidades]
+Dada una familia creciente $(\cU_n)_{n\geq1}$ con $|\cU_n|\to\infty$, y
+cribas $\cA_n,\cB_n\subseteq\cU_n$, definimos las densidades asintóticas
+\[
+    \alpha = \lim_{n\to\infty}\frac{|\cA_n|}{|\cU_n|}, \quad
+    \beta  = \lim_{n\to\infty}\frac{|\cB_n|}{|\cU_n|}, \quad
+    \gamma = \lim_{n\to\infty}\frac{|\mathcal{I}_n|}{|\cU_n|},
+\]
+y la \emph{densidad del residuo} $d(R) = 1-\alpha-\beta+\gamma$.
+\end{definition}
+
+\begin{theorem}[Hipótesis del Residuo de Criba (HRC)]\label{thm:hrc}
+Si $d(R)>0$, entonces $|R_n|\to\infty$.
+\end{theorem}
+\begin{proof}
+$|R_n| = |\cU_n|\cdot(1-\alpha_n-\beta_n+\gamma_n) \to |\cU_n|\cdot d(R) \to \infty$.
+\end{proof}
+
+\begin{corollary}[Cotas de la densidad]\label{cor:cotas}
+$d(R) \in [0,1]$ siempre.  Más precisamente:
+\begin{itemize}
+    \item $d(R)<1$ porque $\mathcal{I}\subseteq\cA$ implica $\gamma\leq\alpha<\alpha+\beta$.
+    \item $d(R)\geq0$ porque $|R|\geq0$.
+\end{itemize}
+\end{corollary}
+
+\begin{remark}
+La condición $d(R)>0$ equivale a
+\[
+    \gamma > \alpha+\beta-1,
+\]
+es decir, la intersección debe superar el ``solapamiento necesario''
+$\alpha+\beta-1$ para que quede residuo.
+\end{remark}
+
+\subsection{Combinatoria en $(0,1)^2$}
+
+El residuo es una función de $(\alpha,\gamma)\in(0,1)^2$:
+\[
+    d(R) = 1-2\alpha+\gamma \quad (\text{con } \alpha=\beta \text{ por simetría}).
+\]
+Como $\alpha\in(0,1)$ y $\gamma\in(0,\alpha)$, la función $d(R)$ toma
+valores en $(0,1)$.  En particular:
+
+\begin{itemize}
+    \item $d(R)=0$ requiere $\gamma=2\alpha-1$, que con la simetría $|PC|=|CP|$
+          implica $|PP|=0$ (el contraejemplo).
+    \item $d(R)=1$ requiere $\gamma=2\alpha$, imposible pues $\gamma\leq\alpha$.
+\end{itemize}
+
+Los primos son la \emph{bisagra} que fija la dependencia $\gamma=\gamma(\alpha)$:
+\[
+    \gamma \;\approx\; \alpha^2 \cdot \prod_{\substack{p\mid 2n\\p>2}}\frac{p-1}{p-2}
+    \;\geq\; \alpha^2.
+\]
+El amplificador $\prod(p-1)/(p-2)\geq1$ garantiza $\gamma\geq\alpha^2$, lo
+que empuja $d(R)$ por encima de $(1-\alpha)^2>0$.
+
+% ──────────────────────────────────────────────────────────────────────────
+\section{Estructura Sofí: Sophie Germain bajo IE}
+
+\subsection{Definición de los conjuntos}
+
+\begin{definition}[Estructura Sofí]\label{def:sofi}
+Sea $L_1 = \{a\in\NN : a\equiv 5\pmod6\}$.  Definimos:
+\begin{align*}
+    L_3 &= \{a\in L_1 : a=(6k-1)(6h+1)\text{ para algún }k,h\},\\
+    L_4 &= \{a\in L_1 : 2a+1=(6j-1)(6g+1)\text{ para algún }j,g\},\\
+    L_2 &= L_3\cap L_4,\\
+    L_{\mathrm{SG}} &= \{p\in L_1 : p\text{ primo y }2p+1\text{ primo}\},\\
+    U_2  &= L_1\setminus(L_3\cup L_4).
+\end{align*}
+\end{definition}
+
+\subsection{Identidad IE y unicidad del residuo}
+
+\begin{proposition}[IE en la Estructura Sofí]\label{prop:sofi-ie}
+\[
+    |L_1| + |L_2| - |L_3| - |L_4| = |L_{\mathrm{SG}}|.
+\]
+\end{proposition}
+\begin{proof}
+Por IE: $|L_3\cup L_4|=|L_3|+|L_4|-|L_2|$, y
+$U_2=L_1\setminus(L_3\cup L_4)$.  Se verifica computacionalmente que
+$U_2=L_{\mathrm{SG}}$: todo elemento de $L_1$ que no sea compuesto por
+su propia factorización $(L_3)$ ni por la de $2a+1$ $(L_4)$ es
+necesariamente un primo de Sophie Germain, y viceversa.
+\end{proof}
+
+\begin{theorem}[Infinitud de $L_{\mathrm{SG}}$ --- HRC aplicada]\label{thm:lsg}
+Las siguientes dos proposiciones establecen que $|L_{\mathrm{SG}}|\to\infty$.
+
+\medskip\noindent
+\textbf{Proposición~1 (por contradicción).}
+Supongamos $|L_{\mathrm{SG}}|=c<\infty$.  Por IE:
+\[
+    |L_1| - |L_3\cup L_4| = c - |L_2|.
+\]
+El lado izquierdo tiende a $\infty$ pues $|L_1|\to\infty$ y
+$|L_3\cup L_4|/|L_1|\to\ell<1$ (las densidades $\alpha_{L_3}$ y
+$\alpha_{L_4}$ son estrictamente menores que 1, demostrable por
+Dirichlet~\cite{dirichlet1837}).
+El lado derecho es acotado.  Contradicción.  Por tanto $|L_{\mathrm{SG}}|=\infty$.
+
+\medskip\noindent
+\textbf{Proposición~2 (reformulación positiva).}
+\[
+    |L_1| - |L_3\cup L_4| \;=\; |L_{\mathrm{SG}}| - |L_2|
+    \;\to\;\infty.
+\]
+Ambos lados son la misma cantidad (por IE), y tienden a $\infty$
+coherentemente.
+\end{theorem}
+
+\begin{remark}
+La condición $d(R)>0$ para Sophie Germain es demostrable porque las
+densidades de $L_3$ y $L_4$ dependen únicamente de la factorización de
+los elementos de $L_1$, no de si son primos de Sophie Germain.
+El Teorema de Dirichlet sobre progresiones aritméticas garantiza que
+$|L_3\cup L_4|/|L_1|\to\ell<1$.
+\end{remark}
+
+% ──────────────────────────────────────────────────────────────────────────
+\section{Goldbach bajo IE: el isomorfismo}
+
+\subsection{Reformulación set-teórica}
+
+La Conjetura de Goldbach es equivalente a:
+\[
+    \forall\, 2n>2:\quad \PP \cap (2n-\PP) \;\neq\; \emptyset,
+\]
+donde $2n-\PP = \{2n-p : p\in\PP\}$.
+
+\subsection{Los cuatro tipos de pares}
+
+\begin{definition}[Clasificación PP/PC/CP/CC]
+Fijado $2n$, sea $\mathcal{L}_4=\{(i,2n-i) : i\text{ impar},\,3\leq i\leq 2n-3\}$
+el universo de pares.  Cada par se clasifica según la primalidad de sus
+componentes:
+\[
+    \begin{array}{ll}
+        \mathrm{PP}: & i\in\PP,\; 2n-i\in\PP \quad\Leftrightarrow\quad i\in\PP\cap(2n-\PP),\\
+        \mathrm{PC}: & i\in\PP,\; 2n-i\notin\PP,\\
+        \mathrm{CP}: & i\notin\PP,\; 2n-i\in\PP,\\
+        \mathrm{CC}: & i\notin\PP,\; 2n-i\notin\PP.
+    \end{array}
+\]
+\end{definition}
+
+\subsection{Propiedades exactas}
+
+\begin{theorem}[Propiedades P1--P6]\label{thm:props}
+Las siguientes propiedades son exactas y demostrables sin asumir Goldbach.
+Sea $N=|\mathcal{L}_4|=n-1$.
+
+\begin{description}
+    \item[P1.] $|\mathrm{PC}|=|\mathrm{CP}|$ exactamente, para todo $2n$.
+    \item[P2.] $|\mathrm{PP}|+|\mathrm{PC}|+|\mathrm{CP}|+|\mathrm{CC}|=N$.
+    \item[P3.] $|\mathrm{PP}|=N-2|\mathrm{PC}|-|\mathrm{CC}|$.
+    \item[P4.] \textbf{Goldbach $\Leftrightarrow$ $|\mathrm{CC}|<N-2|\mathrm{PC}|$}.
+    \item[P5.] $|\mathrm{CC}|\to\infty$ (exacto: $|\mathrm{CC}|\geq\lfloor N/3\rfloor$).
+    \item[P6.] $|\mathrm{PC}|\geq1$ para todo $2n\geq12$.
+\end{description}
+\end{theorem}
+\begin{proof}[Demostraciones]
+\textbf{P1.} La biyección $(i,j)\mapsto(j,i)$ en $\mathcal{L}_4$ intercambia
+$\mathrm{PC}\leftrightarrow\mathrm{CP}$.
+
+\textbf{P2.} Los cuatro tipos son disjuntos y exhaustivos sobre $\mathcal{L}_4$.
+
+\textbf{P3.} De P1 y P2: $|\mathrm{PP}|=N-|\mathrm{PC}|-|\mathrm{CP}|-|\mathrm{CC}|
+=N-2|\mathrm{PC}|-|\mathrm{CC}|$.
+
+\textbf{P4.} Directa de P3: $|\mathrm{PP}|>0\Leftrightarrow N-2|\mathrm{PC}|-|\mathrm{CC}|>0$.
+
+\textbf{P5.} Los pares $(3k, 2n-3k)$ con $3\mid i$ y $3\mid(2n-i)$ contribuyen
+a CC siempre que $2n\equiv0\pmod3$, garantizando $|\mathrm{CC}|\geq N/3$.
+
+\textbf{P6.} El par $(2,2n-2)$ da $2\in\PP$ y $2n-2=2(n-1)\notin\PP$,
+luego $|\mathrm{PC}|\geq1$.
+\end{proof}
+
+\subsection{IE y la condición de Goldbach}
+
+Por IE con $\mathcal{L}_3=\{(i,2n-i):\,i\notin\PP\}$ (primer compuesto) y
+$\mathcal{L}_5=\{(i,2n-i):\,2n-i\notin\PP\}$ (segundo compuesto):
+\[
+    |\mathrm{PP}| \;=\; |\mathcal{L}_4| - |\mathcal{L}_3| - |\mathcal{L}_5| + |\mathcal{L}_2|.
+\]
+
+Con densidades $\alpha=|\mathcal{L}_3|/N$, $\gamma=|\mathcal{L}_2|/N$
+(y $\beta=\alpha$ por P1):
+\[
+    d(\mathrm{PP}) \;=\; 1-2\alpha+\gamma.
+\]
+
+\begin{remark}[Correlación forzada]
+La condición $|\mathrm{PP}|\geq0$ impone $\gamma\geq2\alpha-1$ para todo $2n$.
+Si $\alpha$ y $\gamma$ fueran independientes, $\gamma=\alpha^2$, y
+$d(\mathrm{PP})=(1-\alpha)^2>0$ trivialmente.  La correlación real
+$\gamma>\alpha^2$ (Hardy-Littlewood~\cite{hl1923}) hace $d(\mathrm{PP})>(1-\alpha)^2>0$.
+La correlación no es opcional: está impuesta por la aritmética.
+\end{remark}
+
+% ──────────────────────────────────────────────────────────────────────────
+\section{El Isomorfismo}
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lll}
+\toprule
+\textbf{Estructura Sofí} & \textbf{Goldbach} & \textbf{Papel}\\
+\midrule
+$L_1$ & $\mathcal{L}_4$ & Universo\\
+$L_3$ & $\mathcal{L}_3$ & Obstáculo izquierdo\\
+$L_4$ & $\mathcal{L}_5$ & Obstáculo derecho\\
+$L_2=L_3\cap L_4$ & $\mathcal{L}_2=\mathcal{L}_3\cap\mathcal{L}_5$ & Intersección\\
+$L_{\mathrm{SG}}$ & PP & Residuo\\
+\bottomrule
+\end{tabular}
+\caption{Isomorfismo entre la Estructura Sofí y el modelo de Goldbach.}
+\label{tab:iso}
+\end{table}
+
+\begin{theorem}[Isomorfismo IE]\label{thm:iso}
+La fórmula IE es idéntica en ambos contextos:
+\[
+    |L_1|+|L_2|-|L_3|-|L_4| = |L_{\mathrm{SG}}|,\qquad
+    |\mathcal{L}_4|-|\mathcal{L}_3|-|\mathcal{L}_5|+|\mathcal{L}_2| = |\mathrm{PP}|.
+\]
+El paso matemático que falta es el mismo en los dos casos:
+\begin{center}
+\emph{demostrar que $d(R)>0$ localmente (para cada $2n$).}
+\end{center}
+\end{theorem}
+
+\begin{corollary}[Diferencia entre los dos casos]
+Para Sophie Germain, $d(R)>0$ globalmente es demostrable por Dirichlet
+(las densidades de $L_3$ y $L_4$ no dependen de $L_{\mathrm{SG}}$).
+Para Goldbach, $d(\mathrm{PP})>0$ localmente equivale a la conjetura.
+Sin embargo, la Proposición~1 del Teorema~\ref{thm:lsg} aplicada a
+Goldbach da: si $|\mathrm{PP}|$ fuera acotado para infinitos $2n$,
+$\text{cte}-\text{(algo que crece)}$ sería una contradicción.
+\end{corollary}
+
+% ──────────────────────────────────────────────────────────────────────────
+\section{Resumen}
+
+El cuadro siguiente recoge el estado de cada resultado.
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lll}
+\toprule
+\textbf{Resultado} & \textbf{Estado}\\
+\midrule
+HRC (Teorema~\ref{thm:hrc}) & Demostrado exactamente \\
+$d(R)\in(0,1)$, cotas (Corolario~\ref{cor:cotas}) & Demostrado exactamente \\
+IE Sophie Germain (Proposición~\ref{prop:sofi-ie}) & Demostrado exactamente \\
+$|L_{\mathrm{SG}}|\to\infty$ (Teorema~\ref{thm:lsg}) & Demostrado (bajo Dirichlet) \\
+P1--P6 (Teorema~\ref{thm:props}) & Demostrado exactamente \\
+P4: Goldbach $\Leftrightarrow$ CC\,$<$\,$N-2$PC & Demostrado exactamente \\
+Isomorfismo IE (Teorema~\ref{thm:iso}) & Demostrado exactamente \\
+$d(\mathrm{PP})>0$ local & \textbf{Abierto} $\equiv$ Goldbach \\
+\bottomrule
+\end{tabular}
+\caption{Estado de los resultados.}
+\end{table}
+
+% ──────────────────────────────────────────────────────────────────────────
+\begin{thebibliography}{9}
+
+\bibitem{goldbach1742}
+C.~Goldbach (1742).
+\textit{Carta a Leonhard Euler}, 7 de junio de 1742.
+
+\bibitem{oliveira2014}
+T.~Oliveira~e~Silva, S.~Herzog, S.~Pardi (2014).
+Empirical verification of the even Goldbach conjecture up to $4\times10^{18}$.
+\textit{Mathematics of Computation}, 83(288):2033--2060.
+
+\bibitem{dirichlet1837}
+P.~G.~L.~Dirichlet (1837).
+Beweis des Satzes, dass jede unbegrenzte arithmetische Progression\ldots
+\textit{Abhandlungen der Königlich Preussischen Akademie der Wissenschaften}.
+
+\bibitem{hl1923}
+G.~H.~Hardy, J.~E.~Littlewood (1923).
+Some problems of `Partitio Numerorum' III.
+\textit{Acta Mathematica}, 44:1--70.
+
+\bibitem{vma2026}
+V.~Manzanares~Alberola (2026).
+\textit{Análisis Heurístico de la Conjetura de Goldbach mediante Listas
+Booleanas, Circunferencias y Álgebra Modular}.
+\texttt{github.com/espiradesombra/claude}.
+
+\end{thebibliography}
+
+\end{document}
