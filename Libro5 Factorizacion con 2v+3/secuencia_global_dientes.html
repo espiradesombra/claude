@@ -1,0 +1,143 @@
+
+<style>
+canvas { display: block; width: 100%; }
+.inf { font-size:12px; color:var(--color-text-secondary); margin-top:8px; line-height:1.6; }
+.lbl { display:inline-block; width:12px; height:12px; border-radius:2px; margin-right:4px; vertical-align:middle; }
+</style>
+<div style="position:relative;width:100%;height:280px;"><canvas id="c"></canvas></div>
+<div class="inf">
+  <span class="lbl" style="background:#378ADD"></span>frac(m*(k)) — punto 0.5 de cada diente &nbsp;
+  <span class="lbl" style="background:#1D9E75"></span>factor exacto (frac=0) &nbsp;
+  <span class="lbl" style="background:#D85A30"></span>mínimo local
+</div>
+<div class="inf" id="msg">N = 10403 = 101 × 103</div>
+<div style="display:flex;gap:12px;margin-top:10px;flex-wrap:wrap;">
+  <button onclick="setN(10403,101,103,'10403 = 101×103')">N=10403</button>
+  <button onclick="setN(3127,53,59,'3127 = 53×59')">N=3127</button>
+  <button onclick="setN(47053,211,223,'47053 = 211×223')">N=47053</button>
+  <button onclick="setN(1517,37,41,'1517 = 37×41')">N=1517</button>
+</div>
+<script>
+let curN=10403, curP=101, curQ=103;
+
+function frac_pm(k, N) {
+  const j = 2*k+1;
+  const m = (N/j - 3)/2;
+  if (m < 0) return null;
+  return m - Math.floor(m);
+}
+
+function draw(N, p, q) {
+  const k_star1 = Math.floor((q-1)/2);
+  const k_star2 = Math.floor((p-1)/2);
+  const k_max = Math.max(k_star1, k_star2) + 8;
+
+  const fracs = [];
+  for (let k=1; k<=k_max; k++) {
+    const f = frac_pm(k, N);
+    fracs.push(f);
+  }
+
+  const c = document.getElementById('c');
+  const W = c.parentElement.clientWidth;
+  const H = 260;
+  c.width = W * devicePixelRatio;
+  c.height = H * devicePixelRatio;
+  c.style.width = W + 'px';
+  c.style.height = H + 'px';
+  const ctx = c.getContext('2d');
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+
+  const pad = {l:40, r:20, t:20, b:30};
+  const pw = W - pad.l - pad.r;
+  const ph = H - pad.t - pad.b;
+
+  ctx.clearRect(0,0,W,H);
+
+  const isDark = matchMedia('(prefers-color-scheme:dark)').matches;
+  const textCol = isDark ? '#c2c0b6' : '#3d3d3a';
+  const gridCol = isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.06)';
+
+  // Grid
+  ctx.strokeStyle = gridCol; ctx.lineWidth = 0.5;
+  for (let v of [0.25,0.5,0.75,1.0]) {
+    const y = pad.t + ph*(1-v);
+    ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(pad.l+pw,y); ctx.stroke();
+    ctx.fillStyle = textCol; ctx.font = '11px sans-serif'; ctx.textAlign='right';
+    ctx.fillText(v.toFixed(2), pad.l-4, y+4);
+  }
+
+  // Ejes
+  ctx.strokeStyle = textCol; ctx.lineWidth=0.5;
+  ctx.beginPath(); ctx.moveTo(pad.l,pad.t); ctx.lineTo(pad.l,pad.t+ph); ctx.lineTo(pad.l+pw,pad.t+ph); ctx.stroke();
+
+  const n = fracs.length;
+  const xOf = k => pad.l + (k-1)/(n-1) * pw;
+  const yOf = f => pad.t + ph*(1-f);
+
+  // Conectar puntos
+  ctx.beginPath(); ctx.strokeStyle='#378ADD'; ctx.lineWidth=1; ctx.globalAlpha=0.5;
+  fracs.forEach((f,i) => {
+    if (f===null) return;
+    const x = xOf(i+1), y = yOf(f);
+    i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+  });
+  ctx.stroke(); ctx.globalAlpha=1;
+
+  // Puntos individuales
+  fracs.forEach((f,i) => {
+    if (f===null) return;
+    const k = i+1;
+    const x = xOf(k), y = yOf(f);
+    const isFactor = f < 1e-9;
+    const isMinLocal = i>0 && i<n-1 && fracs[i-1]!==null && fracs[i+1]!==null
+                    && f < fracs[i-1] && f < fracs[i+1];
+
+    ctx.beginPath();
+    if (isFactor) {
+      ctx.fillStyle='#1D9E75';
+      ctx.arc(x,y,5,0,2*Math.PI); ctx.fill();
+      ctx.strokeStyle='#1D9E75'; ctx.lineWidth=1;
+      ctx.beginPath(); ctx.setLineDash([3,3]); ctx.moveTo(x,y); ctx.lineTo(x,pad.t+ph); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle='#1D9E75'; ctx.font='bold 11px sans-serif'; ctx.textAlign='center';
+      ctx.fillText('f='+String(2*k+1), x, pad.t+ph+14);
+    } else if (isMinLocal) {
+      ctx.fillStyle='#D85A30';
+      ctx.arc(x,y,3,0,2*Math.PI); ctx.fill();
+    } else {
+      ctx.fillStyle='#378ADD';
+      ctx.arc(x,y,2,0,2*Math.PI); ctx.fill();
+    }
+  });
+
+  // Etiqueta eje x
+  ctx.fillStyle=textCol; ctx.font='11px sans-serif'; ctx.textAlign='center';
+  ctx.fillText('k (índice de diente)', pad.l+pw/2, H-2);
+
+  // Envolvente de mínimos — ¿es decreciente?
+  const mins = [];
+  for (let i=1;i<n-1;i++) {
+    if (fracs[i]!==null && fracs[i-1]!==null && fracs[i+1]!==null
+        && fracs[i]<fracs[i-1] && fracs[i]<fracs[i+1]) {
+      mins.push({k:i+1, f:fracs[i]});
+    }
+  }
+  // Dibujar envolvente inferior real
+  ctx.beginPath(); ctx.strokeStyle='#D85A30'; ctx.lineWidth=1; ctx.setLineDash([4,3]); ctx.globalAlpha=0.5;
+  mins.forEach((m,i) => {
+    const x=xOf(m.k), y=yOf(m.f);
+    i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+  });
+  ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha=1;
+}
+
+function setN(N,p,q,label) {
+  curN=N; curP=p; curQ=q;
+  document.getElementById('msg').textContent = 'N = ' + label;
+  draw(N,p,q);
+}
+
+draw(curN,curP,curQ);
+window.addEventListener('resize',()=>draw(curN,curP,curQ));
+</script>
