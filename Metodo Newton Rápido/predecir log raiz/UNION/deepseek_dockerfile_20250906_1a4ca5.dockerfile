@@ -1,1 +1,0 @@
-RUN cmake -DCMAKE_BUILD_TYPE=Release -DSLEEF_SHOW_CONFIG=ON -DBUILD_SHARED_LIBS=ON .. && make -j && make install
