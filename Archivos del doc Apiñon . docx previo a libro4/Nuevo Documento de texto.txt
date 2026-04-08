@@ -1,0 +1,98 @@
+---
+
+**SaltoMaximo(n): Una Nueva Perspectiva en la Distribución de Números Primos**
+
+La teoría de números, especialmente la distribución de los números primos, ha sido una fuente inagotable de fascinación y desafío para matemáticos a lo largo de la historia. Una nueva aproximación, denominada **SaltoMaximo(n)**, ofrece una perspectiva fresca y rápida para entender esta distribución.
+
+### Introducción
+
+La fórmula clásica para estimar la cantidad de números primos menores o iguales a \( n \) es \( \frac{n}{\ln n} \). Aunque esta fórmula ha demostrado ser muy útil y precisa, la aproximación **SaltoMaximo(n)** proporciona una visión novedosa basada en la raíz cuadrada de \( n \).
+
+### Concepto de SaltoMaximo(n)
+
+Dado un número primo \( p \), consideramos \( m = \sqrt{p} \). La conjetura establece que en el intervalo \( [p - \sqrt{p}, p] \), siempre habrá al menos un número primo, con excepción de los primos 2 y 11. Este enfoque se basa en los siguientes principios:
+
+1. **Primos de la Forma \( 6k \pm 1 \) hasta \( \sqrt{n} \)**:
+ - Para cada posición prima de la forma \( 6k \pm 1 \) en el intervalo de \( 0 \) a \( \sqrt{n} \), asumimos que hay un número no primo en el intervalo de \( n \) a \( n - \sqrt{n} \) en la posición \( n - \) (número de primos en el intervalo de \( 0 \) a \( \sqrt{n} \)).
+ - **Ejemplo de 120**: Consideremos el número 120. Como \( 11 \times 11 \) es 121, el 11 no actúa como factor. Aquí, el 11 no actúa como factor, pero 5 y 7 sí. Iteramos por cada primo (5 y 7) con salto máximo de \( +4 \) y \( +2 \), respectivamente. Dicho de otra manera, de 120 hacia abajo solo puede haber dos posiciones consecutivas de la forma \( 6k \pm 1 \) que no sean primas, y serán múltiplos de 5 y 7. Por lo tanto, solo quedan dos posiciones consecutivas que no son primos en esa forma.
+
+2. **Aproximación con Todos los Primos \( 6k \pm 1 \)**:
+ - Al considerar todos los números de la forma \( 6k \pm 1 \) como primos, obtenemos que el salto máximo es \(\sqrt{n}\).
+
+3. **Resolución de la Conjetura de Andrica**:
+ - Después de establecer el salto máximo, podemos calcular \(\sqrt{n} - \sqrt{n - \sqrt{n}}\) para resolver la conjetura de Andrica.
+ - El primer fallo a favor es suponer que la distribución observada en el factorial de \(\sqrt{n}\) se dará en \( n \) mucho antes. Este tipo de suposición nos da una ventaja en nuestra aproximación.
+ - El segundo fallo a favor es asumir que todos los números de la forma \( 6k \pm 1 \) menores a \(\sqrt{n}\) son primos. Esta suposición también aumenta el fallo a nuestro favor.
+
+4. **Crecimiento del Fallo a Favor**:
+ - Podemos afirmar que **SaltoMaximo(n)** siempre se cumple porque cualquier fallo a favor crece con el tamaño del problema.
+ - Nuestra afirmación se vuelve más exhaustiva a medida que aumentamos el tamaño del problema.
+4 comentarios
+
+Foto de Victor Manzanares Alberola
+
+Recomendar
+
+Comentar
+
+Compartir
+
+Enviar
+36 impresiones
+Ver análisis
+
+
+Añadir un comentario…
+Abrir el teclado de emoji
+
+El orden actual seleccionado es Más relevantes
+Más relevantes
+Ver el perfil de Victor Manzanares Alberola
+Victor Manzanares Alberola
+Autor
+google da vidilla
+4 días
+
+
+### Ejemplo Práctico
+
+Consideremos un número primo \( p \) y calculemos \( \sqrt{p} \). Supongamos que \( p = 101 \):
+
+- \( \sqrt{101} \approx 10 \)
+- El intervalo considerado es \( [91, 101] \).
+- En este intervalo, encontramos que hay al menos un número primo.
+
+Este método proporciona una forma accesible y veloz de identificar intervalos con números primos sin realizar cálculos complejos.
+
+### Precisión y Aplicaciones de SaltoMaximo(n)
+
+La función **SaltoMaximo(n)** es precisa cuando se cuenta el número de primos, y sin contar proporciona un límite asintótico que mejora la densidad de primos estimada por la conjetura de Andrica. Además, es una aproximación rápida y efectiva.
+
+1. **Contando Primos:**
+ - Cuando se cuentan los números primos en el intervalo, **SaltoMaximo(n)** demuestra una alta precisión en la identificación de intervalos con al menos un número primo.
+
+
+
+---
+
+Recomendar
+
+Responder
+1 respuesta
+1 comentario del comentario de Victor Manzanares Alberola
+Ver el perfil de Victor Manzanares Alberola
+Victor Manzanares Alberola
+Autor
+google da vidilla
+4 días
+
+Victor Manzanares Alberola 2. **Estimación Asintótica:**
+ - Sin necesidad de contar cada número primo, **SaltoMaximo(n)** proporciona un límite asintótico que mejora la estimación de la densidad de primos comparado con la conjetura de Andrica.
+ - La función es particularmente útil para grandes valores de \( n \), donde las suposiciones y los fallos a favor son más favorables.
+
+3. **Solución a la Conjetura de Andrica:**
+ - La función también es relevante como una posible solución a la conjetura de Andrica debido a la forma en que maneja los fallos a favor y apunta a una distribución más precisa de los números primos.
+
+### Conclusión
+
+**SaltoMaximo(n)** es una aproximación que ofrece una nueva forma de pensar sobre la distribución de números primos. Aunque puede no ser tan precisa como las fórmulas clásicas, su simplicidad y eficacia en cálculos rápidos la convierten en una herramienta valiosa. Con un fundamento teórico basado en patrones y simetrías, **SaltoMaximo(n)** invita a seguir explorando y refinando nuestras ideas sobre los misteriosos y fascinantes números primos.
