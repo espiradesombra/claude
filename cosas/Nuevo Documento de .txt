@@ -1,0 +1,513 @@
+import React, { useState, useEffect, useRef } from 'react';
+
+// --- ICONOS SVG ---
+const Icons = {
+  Wind: ({ className = "w-6 h-6" }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/><path d="M9.6 4.6A2 2 0 1 1 11 8H2"/><path d="M12.6 19.4A2 2 0 1 0 14 16H2"/></svg>
+  ),
+  Leaf: ({ className = "w-6 h-6" }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+  ),
+  Globe: ({ className = "w-6 h-6" }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+  ),
+  Send: ({ className = "w-5 h-5" }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+  ),
+  Bot: ({ className = "w-6 h-6" }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/></svg>
+  ),
+  User: ({ className = "w-6 h-6" }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+  ),
+  Activity: ({ className = "w-6 h-6" }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+  ),
+  TrendingDown: ({ className = "w-6 h-6" }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>
+  ),
+  DollarSign: ({ className = "w-6 h-6" }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+  ),
+  Zap: ({ className = "w-6 h-6" }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+  ),
+  Power: ({ className = "w-6 h-6" }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
+  ),
+  Layers: ({ className = "w-6 h-6" }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+  ),
+  Battery: ({ className = "w-6 h-6" }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect x="2" y="7" width="16" height="10" rx="2" ry="2"/><line x1="22" y1="11" x2="22" y2="13"/></svg>
+  ),
+  Settings: ({ className = "w-6 h-6" }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+  ),
+  Network: ({ className = "w-6 h-6" }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M5 16v-3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3"/><path d="M12 8v4"/></svg>
+  )
+};
+
+export default function ZypyZapeWeb() {
+  const [currentPage, setCurrentPage] = useState('home');
+  const [messages, setMessages] = useState([
+    {
+      role: 'bot',
+      text: '¡Hola! Soy el asesor estratégico de ZypyZape. Estoy aquí para hablarte del impacto económico, la entrada en el mercado de regulación, la jubilación nuclear y nuestra tecnología ecológica. ¿En qué te puedo ayudar hoy?'
+    }
+  ]);
+  const [inputText, setInputText] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+  const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    if (currentPage === 'home') {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages, currentPage]);
+
+  const handleSendMessage = async (e) => {
+    e?.preventDefault();
+    if (!inputText.trim() || isTyping) return;
+
+    const userMessage = { role: 'user', text: inputText };
+    setMessages(prev => [...prev, userMessage]);
+    setInputText('');
+    setIsTyping(true);
+
+    try {
+      const apiKey = ""; 
+      const systemPrompt = `Eres el portavoz y asesor oficial de ZypyZape, una revolucionaria tecnología de energía eólica basada en la 'Inercia de Fase'. 
+      
+      TU OBJETIVO Y MENSAJES CLAVE:
+      - Explicar el salto de paradigma: ZypyZape ya no es un "generador pasivo" que depende del capricho del viento, sino un "regulador activo de red" que aporta estabilidad constante gracias a su inercia.
+      - Destacar el lucrativo "Mercado de Regulación": Las energéticas ahora ganan dinero no solo vendiendo energía, sino vendiendo estabilidad y regulación de frecuencia a la red.
+      - La Jubilación Nuclear: Explicar que la energía nuclear se mantiene hoy porque aporta inercia base pesada para regular la red. ZypyZape aporta esta inercia de forma limpia y mecánica, haciendo que la nuclear quede obsoleta e innecesaria.
+      - Hablar del ahorro de gasto mundial (baterías, curtailment, condensadores síncronos, expansión de red).
+      
+      REGLAS ESTRICTAS:
+      - NUNCA des detalles técnicos de ingeniería o mecánicos.
+      - NUNCA uses fórmulas matemáticas.
+      - Usa un tono visionario, corporativo, optimista y centrado en la ecología y el negocio (tonos claros, lenguaje ejecutivo verde).
+      - Sé conciso y claro en tus respuestas.`;
+
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: inputText }] }],
+          systemInstruction: { parts: [{ text: systemPrompt }] }
+        })
+      });
+
+      if (!response.ok) throw new Error('Error en la comunicación');
+      
+      const data = await response.json();
+      const botReply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Lo siento, ha habido un error de conexión con la central de ZypyZape.";
+      
+      setMessages(prev => [...prev, { role: 'bot', text: botReply }]);
+    } catch (error) {
+      console.error(error);
+      setMessages(prev => [...prev, { role: 'bot', text: "En este momento nuestros servidores están experimentando mucha demanda. Por favor, inténtalo de nuevo en unos segundos." }]);
+    } finally {
+      setIsTyping(false);
+    }
+  };
+
+  const NavButton = ({ id, label }) => (
+    <button 
+      onClick={() => setCurrentPage(id)}
+      className={`font-semibold text-xs lg:text-sm transition-all duration-300 pb-2 border-b-2 whitespace-nowrap ${
+        currentPage === id 
+          ? 'text-teal-600 border-teal-500' 
+          : 'text-slate-500 border-transparent hover:text-teal-600 hover:border-teal-200'
+      }`}
+    >
+      {label}
+    </button>
+  );
+
+  // --- RENDERIZADORES DE PÁGINAS ---
+
+  const renderHome = () => (
+    <div className="flex flex-col lg:flex-row gap-12 animate-in fade-in duration-700">
+      <div className="flex-1 space-y-10">
+        <div className="space-y-6">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-100 text-teal-800 font-bold text-xs uppercase tracking-widest">
+            <span className="w-2 h-2 rounded-full bg-teal-500 animate-pulse" />
+            Visión Estratégica
+          </div>
+          <h1 className="text-5xl md:text-7xl font-black text-slate-900 leading-[1.1] tracking-tight">
+            El Futuro Respira <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-emerald-400">Energía Pura.</span>
+          </h1>
+          <p className="text-lg md:text-xl text-slate-600 leading-relaxed max-w-2xl">
+            ZypyZape transforma la forma en que entendemos el viento. Mediante la optimización de la inercia de fase, pasamos de ser meros espectadores climáticos a ser el corazón que bombea y regula la red eléctrica global.
+          </p>
+        </div>
+
+        <div className="grid sm:grid-cols-2 gap-6">
+          <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl transition-shadow duration-300">
+            <div className="w-14 h-14 bg-sky-100 text-sky-600 rounded-2xl flex items-center justify-center mb-6">
+              <Icons.Globe />
+            </div>
+            <h3 className="text-xl font-bold text-slate-800 mb-3">Impacto Económico</h3>
+            <p className="text-slate-500 text-sm leading-relaxed">
+              Reducimos drásticamente los costes de estabilización y abrimos la puerta al mercado de regulación, multiplicando las vías de ingresos de los parques eólicos.
+            </p>
+          </div>
+          
+          <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl transition-shadow duration-300">
+            <div className="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center mb-6">
+              <Icons.Leaf />
+            </div>
+            <h3 className="text-xl font-bold text-slate-800 mb-3">Jubilación Nuclear</h3>
+            <p className="text-slate-500 text-sm leading-relaxed">
+              ZypyZape proporciona la "Inercia Base" que históricamente justificaba a la energía nuclear. Hacemos posible un ecosistema 100% renovable y seguro.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* CHATBOT */}
+      <div className="w-full lg:w-[450px] flex-shrink-0 flex flex-col bg-white rounded-[2rem] shadow-2xl border border-teal-50 overflow-hidden h-[650px]">
+        <div className="bg-gradient-to-r from-teal-500 to-emerald-500 p-6 text-white shrink-0">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center shadow-inner">
+              <Icons.Bot className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h2 className="text-lg font-bold">Asesor Corporativo ZypyZape</h2>
+              <p className="text-teal-100 text-xs font-medium flex items-center gap-1">
+                <span className="w-1.5 h-1.5 bg-emerald-300 rounded-full animate-pulse" />
+                Inteligencia Estratégica en línea
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-slate-50/50">
+          {messages.map((msg, index) => (
+            <div key={index} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+              <div className={`flex max-w-[85%] gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-auto ${msg.role === 'user' ? 'bg-slate-200 text-slate-600' : 'bg-teal-100 text-teal-600'}`}>
+                  {msg.role === 'user' ? <Icons.User className="w-4 h-4" /> : <Icons.Bot className="w-4 h-4" />}
+                </div>
+                <div className={`p-4 rounded-2xl text-[14px] leading-relaxed shadow-sm ${msg.role === 'user' ? 'bg-teal-600 text-white rounded-br-sm' : 'bg-white border border-slate-100 text-slate-700 rounded-bl-sm'}`}>
+                  {msg.text}
+                </div>
+              </div>
+            </div>
+          ))}
+          {isTyping && (
+            <div className="flex justify-start">
+              <div className="flex gap-3">
+                <div className="w-8 h-8 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center shrink-0 mt-auto">
+                  <Icons.Bot className="w-4 h-4" />
+                </div>
+                <div className="bg-white border border-slate-100 p-4 rounded-2xl rounded-bl-sm shadow-sm flex items-center gap-1.5">
+                  <span className="w-2 h-2 bg-teal-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                  <span className="w-2 h-2 bg-teal-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                  <span className="w-2 h-2 bg-teal-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                </div>
+              </div>
+            </div>
+          )}
+          <div ref={messagesEndRef} />
+        </div>
+
+        <form onSubmit={handleSendMessage} className="p-4 bg-white border-t border-slate-100 shrink-0">
+          <div className="relative flex items-center">
+            <input
+              type="text"
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              placeholder="Pregunta sobre mercado, impacto o tecnología..."
+              className="w-full bg-slate-50 border border-slate-200 rounded-full py-4 pl-6 pr-14 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all placeholder:text-slate-400"
+              disabled={isTyping}
+            />
+            <button
+              type="submit"
+              disabled={!inputText.trim() || isTyping}
+              className="absolute right-2 w-10 h-10 bg-teal-500 text-white rounded-full flex items-center justify-center hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform active:scale-95 shadow-md"
+            >
+              <Icons.Send />
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+
+  const renderParadigma = () => (
+    <div className="space-y-16 animate-in fade-in duration-700">
+      <div className="text-center max-w-4xl mx-auto space-y-6">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-100 text-indigo-800 font-bold text-xs uppercase tracking-widest mb-2">
+          Cambio de Reglas de Juego
+        </div>
+        <h2 className="text-4xl md:text-6xl font-black text-slate-900 leading-tight">
+          De Generador Pasivo a <br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-teal-500">Regulador de Red Activo</span>
+        </h2>
+        <p className="text-xl text-slate-600 leading-relaxed">
+          La industria eólica ha sido históricamente "pasiva": si sopla el viento, se inyecta energía; si no, se apaga. ZypyZape rompe este límite convirtiendo cada molino en una batería de inercia y un escudo para la red.
+        </p>
+      </div>
+
+      <div className="grid lg:grid-cols-3 gap-8">
+        <div className="bg-white p-10 rounded-[2rem] shadow-lg border-t-4 border-slate-800 relative overflow-hidden group hover:-translate-y-2 transition-transform duration-300">
+          <div className="w-14 h-14 bg-slate-100 text-slate-800 rounded-2xl flex items-center justify-center mb-6 relative z-10">
+            <Icons.Wind />
+          </div>
+          <h3 className="text-2xl font-bold text-slate-900 mb-4 relative z-10">Fin de la Generación Ciega</h3>
+          <p className="text-slate-600 leading-relaxed relative z-10">
+            Los molinos convencionales envían energía sucia y fluctuante, obligando a los operadores a gastar fortunas en filtrarla. Al poseer <strong>Inercia de Fase</strong> nativa, ZypyZape entrega una onda perfecta, sin depender de los vaivenes de las ráfagas.
+          </p>
+        </div>
+
+        <div className="bg-white p-10 rounded-[2rem] shadow-lg border-t-4 border-teal-500 relative overflow-hidden group hover:-translate-y-2 transition-transform duration-300">
+          <div className="w-14 h-14 bg-teal-100 text-teal-600 rounded-2xl flex items-center justify-center mb-6 relative z-10">
+            <Icons.Layers />
+          </div>
+          <h3 className="text-2xl font-bold text-slate-900 mb-4 relative z-10">El Lucrativo Mercado de Regulación</h3>
+          <p className="text-slate-600 leading-relaxed relative z-10">
+            Hoy en día, las eléctricas ganan grandes márgenes no solo por vender MWh, sino por ofrecer "Servicios Auxiliares" (Frequency Response) para evitar apagones. ZypyZape permite a los parques eólicos <strong>entrar y monetizar este mercado hiper-rentable</strong>.
+          </p>
+        </div>
+
+        <div className="bg-white p-10 rounded-[2rem] shadow-lg border-t-4 border-emerald-500 relative overflow-hidden group hover:-translate-y-2 transition-transform duration-300">
+          <div className="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center mb-6 relative z-10">
+            <Icons.Power />
+          </div>
+          <h3 className="text-2xl font-bold text-slate-900 mb-4 relative z-10">El Relevo Definitivo de la Nuclear</h3>
+          <p className="text-slate-600 leading-relaxed relative z-10">
+            El único gran argumento técnico a favor de las centrales nucleares es que sus enormes turbinas pesadas aportan la "inercia base" que sostiene la red. <strong>ZypyZape aporta esa misma inercia mecánicamente con el viento.</strong> Es la pieza final para jubilar la energía nuclear.
+          </p>
+        </div>
+      </div>
+
+      <div className="bg-slate-900 rounded-[3rem] p-12 text-center shadow-2xl">
+        <h3 className="text-3xl font-black text-white mb-6">De Vender Viento a Vender Seguridad</h3>
+        <p className="text-slate-400 max-w-3xl mx-auto text-lg leading-relaxed mb-8">
+          La energía eólica dejará de ser el "problema" que los operadores de red deben gestionar, para convertirse en la <strong>solución principal</strong> que mantiene vivas las ciudades y la industria.
+        </p>
+        <button onClick={() => setCurrentPage('home')} className="bg-gradient-to-r from-teal-400 to-emerald-500 hover:from-teal-300 hover:to-emerald-400 text-slate-900 font-black px-10 py-4 rounded-full uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)]">
+          Debatir Impacto con el Asesor
+        </button>
+      </div>
+    </div>
+  );
+
+  const renderInercia = () => (
+    <div className="space-y-12 animate-in fade-in duration-700">
+      <div className="text-center max-w-4xl mx-auto space-y-6">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-100 text-teal-800 font-bold text-xs uppercase tracking-widest mb-2">Física Aplicada</div>
+        <h2 className="text-4xl md:text-5xl font-black text-slate-900">El Secreto: <span className="text-teal-600">La Inercia de Fase</span></h2>
+        <p className="text-lg text-slate-600 leading-relaxed">
+          Durante décadas, la industria eólica ha perseguido molinos más grandes para atrapar más viento. En ZypyZape nos dimos cuenta de que el secreto no está en la fuerza bruta del aire, sino en la **conservación del movimiento**.
+        </p>
+      </div>
+
+      <div className="grid md:grid-cols-3 gap-8">
+        <div className="bg-white p-8 rounded-3xl shadow-sm border border-teal-50">
+          <div className="w-12 h-12 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center mb-6"><Icons.Activity /></div>
+          <h3 className="text-xl font-bold mb-4">Resonancia Constante</h3>
+          <p className="text-slate-600 text-sm">Nuestros sistemas se sincronizan con las frecuencias naturales del entorno. El molino no lucha contra las rachas, "baila" con ellas, conservando la energía rotacional incluso cuando el viento disminuye.</p>
+        </div>
+        <div className="bg-white p-8 rounded-3xl shadow-sm border border-teal-50">
+          <div className="w-12 h-12 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center mb-6"><Icons.Zap /></div>
+          <h3 className="text-xl font-bold mb-4">Eficiencia sin Fricción</h3>
+          <p className="text-slate-600 text-sm">Al mantener una Inercia de Fase perfecta, los componentes mecánicos sufren menos estrés. El molino gira más libre, produciendo más kilovatios hora (kWh) por cada ráfaga capturada.</p>
+        </div>
+        <div className="bg-white p-8 rounded-3xl shadow-sm border border-teal-50">
+          <div className="w-12 h-12 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center mb-6"><Icons.Leaf /></div>
+          <h3 className="text-xl font-bold mb-4">Menor Tamaño, Mayor Impacto</h3>
+          <p className="text-slate-600 text-sm">No necesitamos aspas monstruosas que dañen el paisaje y la avifauna. Aprovechando la inercia, molinos más compactos de ZypyZape igualan o superan la rentabilidad de las infraestructuras tradicionales.</p>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderRegulacion = () => (
+    <div className="space-y-12 animate-in fade-in duration-700">
+      <div className="flex flex-col lg:flex-row gap-12 items-center">
+        <div className="flex-1 space-y-6">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sky-100 text-sky-800 font-bold text-xs uppercase tracking-widest">Estabilidad Total</div>
+          <h2 className="text-4xl md:text-5xl font-black text-slate-900">La Cura para la <span className="text-sky-600">Intermitencia</span></h2>
+          <p className="text-lg text-slate-600 leading-relaxed">
+            El mayor enemigo de la energía eólica tradicional no es la falta de viento, es su inestabilidad. El viento irregular produce subidas y bajadas de tensión que amenazan con apagar la red eléctrica (blackouts).
+          </p>
+          <p className="text-lg text-slate-600 leading-relaxed">
+            ZypyZape actúa como un <strong>amortiguador cinemático gigante</strong>. Nuestra inercia de fase absorbe las ráfagas violentas y suple las caídas súbitas, entregando a la red una onda eléctrica lisa y perfecta a 50Hz/60Hz.
+          </p>
+        </div>
+        
+        <div className="flex-1 w-full bg-white p-8 rounded-[2rem] shadow-xl border border-slate-100">
+          <h3 className="text-center font-bold text-slate-800 mb-6">Entrega de Energía a la Red</h3>
+          
+          <div className="space-y-8">
+            <div>
+              <div className="flex justify-between text-xs font-bold text-rose-500 mb-2 uppercase tracking-widest">
+                <span>Eólica Tradicional</span>
+                <span>Inestable</span>
+              </div>
+              <div className="h-16 flex items-center justify-between border-b border-slate-200 relative overflow-hidden">
+                {[...Array(20)].map((_, i) => (
+                  <div key={i} className="w-2 bg-rose-200 rounded-t-sm" style={{ height: `${20 + Math.random() * 80}%` }}></div>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <div className="flex justify-between text-xs font-bold text-emerald-500 mb-2 uppercase tracking-widest">
+                <span>Tecnología ZypyZape</span>
+                <span>Frecuencia Perfecta</span>
+              </div>
+              <div className="h-16 flex items-center justify-between border-b border-slate-200 relative overflow-hidden">
+                {[...Array(20)].map((_, i) => (
+                  <div key={i} className="w-2 bg-emerald-400 rounded-t-sm" style={{ height: `${75 + Math.sin(i) * 5}%` }}></div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderGasto = () => (
+    <div className="space-y-12 animate-in fade-in duration-700 pb-12">
+      <div className="text-center max-w-4xl mx-auto space-y-6">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-rose-100 text-rose-800 font-bold text-xs uppercase tracking-widest mb-2">La Gran Hemorragia Financiera</div>
+        <h2 className="text-4xl md:text-5xl font-black text-slate-900">Costes Ocultos Globales: <span className="text-rose-600">2020 - 2026</span></h2>
+        <p className="text-lg text-slate-600 leading-relaxed">
+          La industria eólica actual no es autosuficiente; sobrevive gracias a un ecosistema de costosos "parches" técnicos diseñados para corregir su falta de inercia y estabilidad. Este es el dinero real que se quema cada año por no adoptar ZypyZape.
+        </p>
+      </div>
+
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        {/* Métrica 1: Baterías */}
+        <div className="bg-white p-8 rounded-3xl shadow-lg border-t-4 border-rose-500 flex flex-col items-center text-center group hover:scale-[1.02] transition-transform">
+          <div className="w-16 h-16 bg-rose-50 text-rose-600 rounded-full flex items-center justify-center mb-4"><Icons.Battery className="w-8 h-8" /></div>
+          <h4 className="text-4xl font-black text-slate-900 mb-2">+ €350 Mil Millones</h4>
+          <p className="text-sm font-bold text-rose-600 uppercase tracking-widest mb-4">Baterías Gigantes (BESS)</p>
+          <p className="text-slate-500 text-sm">Gasto global en baterías de litio instaladas obligatoriamente para inyectar energía cuando el viento cae repentinamente.</p>
+        </div>
+
+        {/* Métrica 2: Inercia Artificial */}
+        <div className="bg-white p-8 rounded-3xl shadow-lg border-t-4 border-purple-500 flex flex-col items-center text-center group hover:scale-[1.02] transition-transform">
+          <div className="w-16 h-16 bg-purple-50 text-purple-600 rounded-full flex items-center justify-center mb-4"><Icons.Layers className="w-8 h-8" /></div>
+          <h4 className="text-4xl font-black text-slate-900 mb-2">€45.000 Millones</h4>
+          <p className="text-sm font-bold text-purple-600 uppercase tracking-widest mb-4">Condensadores Síncronos</p>
+          <p className="text-slate-500 text-sm">Máquinas masivas instaladas en la red con el único propósito de crear "inercia artificial" para compensar la que le falta a los molinos tradicionales.</p>
+        </div>
+
+        {/* Métrica 3: Curtailment */}
+        <div className="bg-white p-8 rounded-3xl shadow-lg border-t-4 border-orange-500 flex flex-col items-center text-center group hover:scale-[1.02] transition-transform">
+          <div className="w-16 h-16 bg-orange-50 text-orange-600 rounded-full flex items-center justify-center mb-4"><Icons.TrendingDown className="w-8 h-8" /></div>
+          <h4 className="text-4xl font-black text-slate-900 mb-2">15% a 25%</h4>
+          <p className="text-sm font-bold text-orange-600 uppercase tracking-widest mb-4">Energía Tirada (Curtailment)</p>
+          <p className="text-slate-500 text-sm">Porciones masivas de energía limpia tiradas a la basura porque los operadores apagan los molinos cuando el viento sopla demasiado fuerte para la red.</p>
+        </div>
+
+        {/* Métrica 4: Desgaste Mecánico */}
+        <div className="bg-white p-8 rounded-3xl shadow-lg border-t-4 border-amber-500 flex flex-col items-center text-center group hover:scale-[1.02] transition-transform">
+          <div className="w-16 h-16 bg-amber-50 text-amber-600 rounded-full flex items-center justify-center mb-4"><Icons.Settings className="w-8 h-8" /></div>
+          <h4 className="text-4xl font-black text-slate-900 mb-2">+40% Sobrecoste</h4>
+          <p className="text-sm font-bold text-amber-600 uppercase tracking-widest mb-4">Desgaste Mecánico (O&M)</p>
+          <p className="text-slate-500 text-sm">Luchar contra el viento en lugar de resonar con él destroza las multiplicadoras y palas, disparando los costes de mantenimiento anualmente.</p>
+        </div>
+
+        {/* Métrica 5: Red Eléctrica */}
+        <div className="bg-white p-8 rounded-3xl shadow-lg border-t-4 border-sky-500 flex flex-col items-center text-center group hover:scale-[1.02] transition-transform">
+          <div className="w-16 h-16 bg-sky-50 text-sky-600 rounded-full flex items-center justify-center mb-4"><Icons.Network className="w-8 h-8" /></div>
+          <h4 className="text-4xl font-black text-slate-900 mb-2">€1.2 Billones</h4>
+          <p className="text-sm font-bold text-sky-600 uppercase tracking-widest mb-4">Ampliación Forzada de Red</p>
+          <p className="text-slate-500 text-sm">Estimación para 2030 del coste de reforzar líneas de transmisión solo para poder canalizar los picos inestables de la eólica actual.</p>
+        </div>
+
+        {/* Métrica 6: La Solución */}
+        <div className="bg-gradient-to-br from-teal-500 to-emerald-600 p-8 rounded-3xl shadow-lg border-t-4 border-emerald-400 flex flex-col items-center text-center group hover:scale-[1.02] transition-transform">
+          <div className="w-16 h-16 bg-white/20 text-white rounded-full flex items-center justify-center mb-4 backdrop-blur-sm"><Icons.Globe className="w-8 h-8" /></div>
+          <h4 className="text-4xl font-black text-white mb-2">€0 en Parches</h4>
+          <p className="text-sm font-bold text-emerald-100 uppercase tracking-widest mb-4">Inercia Nativa ZypyZape</p>
+          <p className="text-emerald-50 text-sm">La Inercia de Fase previene el problema desde el diseño. No se necesitan baterías de compensación, condensadores síncronos ni frenar la producción.</p>
+        </div>
+
+      </div>
+
+      <div className="bg-slate-900 rounded-3xl p-10 text-center mt-12 shadow-2xl relative overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-5 w-full">
+           <Icons.DollarSign className="w-full h-96" />
+        </div>
+        <h3 className="text-3xl font-black text-white mb-6 relative z-10">La Sostenibilidad también debe ser Financiera</h3>
+        <p className="text-slate-300 max-w-3xl mx-auto mb-8 leading-relaxed relative z-10 text-lg">
+          La industria se niega a ver que el modelo de "molinos gigantes sin inercia" es un pozo sin fondo económico. Al implementar tecnología ZypyZape, los gobiernos e inversores no solo salvan el medioambiente, sino que <strong>tapan la mayor hemorragia financiera de la década</strong>.
+        </p>
+        <button onClick={() => setCurrentPage('home')} className="bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-black px-10 py-4 rounded-full uppercase tracking-widest transition-all shadow-[0_0_30px_rgba(16,185,129,0.3)] relative z-10 hover:scale-105 active:scale-95">
+          Calcula el Impacto con el Asesor
+        </button>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans selection:bg-teal-200 flex flex-col overflow-x-hidden">
+      
+      {/* NAVEGACIÓN */}
+      <nav className="bg-white/90 backdrop-blur-xl sticky top-0 z-50 border-b border-slate-200 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+          <div 
+            className="flex items-center gap-3 cursor-pointer shrink-0" 
+            onClick={() => setCurrentPage('home')}
+          >
+            <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-teal-400 to-emerald-600 rounded-full flex items-center justify-center text-white shadow-lg shadow-teal-200">
+              <Icons.Wind className="w-6 h-6 md:w-7 md:h-7" />
+            </div>
+            <span className="text-xl md:text-2xl font-black tracking-tighter text-slate-900">Zypy<span className="text-teal-600">Zape</span></span>
+          </div>
+          
+          <div className="hidden lg:flex overflow-x-auto whitespace-nowrap space-x-6 pt-2 px-4 no-scrollbar">
+            <NavButton id="home" label="Visión & Asesor" />
+            <NavButton id="paradigma" label="El Nuevo Paradigma" />
+            <NavButton id="inercia" label="La Inercia de Fase" />
+            <NavButton id="regulacion" label="Regulación de Frecuencia" />
+            <NavButton id="gasto" label="Gasto Mundial" />
+          </div>
+          
+          <div className="lg:hidden text-teal-600 font-bold text-[10px] uppercase tracking-widest text-right">
+            Navegación Desktop
+          </div>
+        </div>
+      </nav>
+
+      {/* ENRUTADOR PRINCIPAL */}
+      <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12">
+        {currentPage === 'home' && renderHome()}
+        {currentPage === 'paradigma' && renderParadigma()}
+        {currentPage === 'inercia' && renderInercia()}
+        {currentPage === 'regulacion' && renderRegulacion()}
+        {currentPage === 'gasto' && renderGasto()}
+      </main>
+
+      {/* FOOTER */}
+      <footer className="border-t border-slate-200 bg-white mt-auto shrink-0">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-slate-500 text-sm font-medium text-center md:text-left">
+            © 2026 ZypyZape Technologies. Transformando la red energética global.
+          </p>
+          <div className="flex gap-4 md:gap-6 text-xs md:text-sm font-bold text-teal-800">
+            <span>Víctor Manzanares Alberola</span>
+            <span className="text-teal-300">•</span>
+            <span>Innovación Tecnológica</span>
+          </div>
+        </div>
+      </footer>
+
+      <style dangerouslySetInnerHTML={{ __html: `
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      `}} />
+    </div>
+  );
+}
