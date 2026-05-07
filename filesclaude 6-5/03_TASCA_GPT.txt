@@ -1,0 +1,134 @@
+================================================================
+TASCA PER A GPT — VALIDACIÓ I CÀLCULS 7 PALES QUIJOTE
+================================================================
+
+Hola GPT. Treballe amb Víctor Manzanares Alberola en un projecte
+d'energia eòlica anomenat ZypyZape (gemell digital Python).
+El fitxer 01 conté el context del sistema complet.
+El fitxer 02 conté la matemàtica del quijote (massa desplaçable a la pala).
+
+NECESSITEM QUE VALIDIS I CALCULIS:
+
+================================================================
+PREGUNTA 1 — Validació de la propietat J_constant
+================================================================
+
+Tenim N pales amb quijotes en posició:
+  r_k(t) = r0 + A · sin(omega_rot · t + 2·pi·k/N)
+
+VERIFICA que J_total = N·m·(r0² + A²/2) = CONSTANT per a N=7.
+
+Mostra el desenvolupament algebraic complet per a N=7,
+incloent la simplificació de sum_{k=0}^{6} sin²(theta + 2·pi·k/7).
+
+================================================================
+PREGUNTA 2 — Comparació ball vs estàtic: ENERGIA I POTÈNCIA
+================================================================
+
+Per als paràmetres reals del sistema:
+  N_3 = 3 pales (cas actual)
+  N_7 = 7 pales (cas nou)
+  m   = 4 kg per pala
+  r_min = 5 m,  r_max = 60 m
+  omega = 1.1395 rad/s
+  v_slide_max = 0.5 m/s (velocitat màxima de lliscament)
+
+CALCULA per a cada cas (3p i 7p):
+
+  a) ΔE_max emmagatzemable [J] per 1 turbina
+  b) ΔE_max per 10 turbines (1 mòdul)
+  c) P_pic_ball [W] = N·m·2·r_mig·v_slide_max·omega²  per 1 turbina
+  d) P_pic_ball per 10 turbines
+  e) Temps per carregar completament (r_min → r_max) a v_slide_max
+  f) ΔH_ZZ contribuïda a una xarxa de 2 GW = 0.5·ΔJ·omega²/S_total
+
+  Presenta els resultats en taula comparativa 3p vs 7p.
+
+================================================================
+PREGUNTA 3 — Aerodinàmica de 7 pales: λ_opt i Cp_max
+================================================================
+
+La turbina actual (3 pales, R=60m) té λ_opt=7.55, Cp_max=0.486.
+
+Per a 7 pales (solidesa alta), la literatura indica λ_opt ≈ 3-5.
+BUSCA o ESTIMA:
+  - λ_opt per a turbina de 7 pales a R=60m (zona eòlica lenta)
+  - Cp_max esperat (normalment 0.40-0.46 per alta solidesa)
+  - Recomanació per recalibrar la funció Cp_2D(lambda, beta) del codi
+
+La funció actual és una campana gaussiana asimètrica:
+  lam_peak(beta) = lambda_opt · exp(-0.06·beta)
+  Cp_peak(beta)  = Cp_max     · exp(-0.17·beta)
+  sigma_L = 3.4·exp(-0.04·beta),  sigma_R = 3.5·exp(-0.05·beta)
+
+¿Quins valors de lambda_opt i Cp_max suggereixes per a 7 pales?
+
+================================================================
+PREGUNTA 4 — Recomanació control: ball o estàtic?
+================================================================
+
+Donats els números de la Pregunta 2, RAONA:
+
+  a) Per a FFR (Fast Frequency Response, t<2s):
+     ¿Val més el ball sinusoïdal o l'estàtic al màxim?
+     Justifica en termes de potència instantània disponible.
+
+  b) Per a PFR (Primary Frequency Response, t=10-30s):
+     ¿Quina estratègia maximitza l'energia injectada?
+
+  c) ¿Existeix una estratègia híbrida òptima?
+     (ex: ball ràpid els primers 2s + estàtic els 30s restants)
+
+  d) Efecte del timing: si el vent cau mentre la massa és a r_max,
+     ¿quan és millor retraure? ¿Immediatament o esperar que el vent
+     es recupere? Quantifica en termes d'energia recuperada.
+
+================================================================
+PREGUNTA 5 — Geometria de control per a 7 pales (número primer)
+================================================================
+
+7 és un número primer. Això complica la simetria de grups.
+
+La regla de J-constant és: 1 pala estén A, les 6 retrauen A/6 cadascuna.
+
+  a) ¿Com s'implementa el "timing" de tornar amb gravetat?
+     Amb 3 pales: sempre hi ha una pala dins ±60° de les 6 en punt.
+     Amb 7 pales: ¿quin és el pitjor angle de desfasament respecte
+     a la posició òptima (les 6 en punt = 180°)?
+
+  b) El desfasament entre pales és 360°/7 = 51.43°.
+     ¿Quina és la finestra de temps disponible per a cada extensió
+     (temps entre dues pales consecutives passant per 180°)?
+     Calcula en funció d'omega = 1.14 rad/s.
+
+  c) ¿Pots proposar un algorisme de control simple per a 7 pales
+     que aprofite el pas per les 6 en punt de cada pala per decidir
+     si és el moment d'extensió o retracció?
+
+================================================================
+FORMAT DE RESPOSTA DESITJAT
+================================================================
+
+Per a cada pregunta:
+  1. Resultat numèric clar (en SI units)
+  2. Fórmula usada
+  3. Comentari breu sobre implicació pràctica
+  4. Si cal: comparació 3p vs 7p en taula
+
+Preferim respostes directes i numèriques, sense introduccions llargues.
+La terminologia és: quijote = massa desplaçable, ZypyZape = cicle d'energia.
+
+================================================================
+CONTEXT ADDICIONAL
+================================================================
+
+El codi Python complet (v4.8) usa:
+  - Integració Euler explícita, dt=0.02s, T=90s
+  - Control PI de pitch per limitar omega en zona nominal
+  - ZypyZape trapezoïdal per reduir soroll en lambda
+  - Quijote amb control P(Δω) simultani en N_Q=5 turbines de 10
+
+Les preguntes 1-5 han de servir per dissenyar el v4.9 del codi
+amb N_BLADES=7 i comparació quantitativa ball vs estàtic.
+
+================================================================
