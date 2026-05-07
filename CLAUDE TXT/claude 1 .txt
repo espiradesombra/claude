@@ -1,0 +1,291 @@
+
+1774698979388_The_Riemann_Hypothesis_Is_True_The_End_o.pdf
+pdf
+
+28 mar
+Claude respondió: Análisis crítico del paper "The Riemann Hypothesis Is True"
+
+Identified critical logical gaps in Riemann Hypothesis proof attempt
+Identified critical logical gaps in Riemann Hypothesis proof attempt
+Análisis crítico del paper "The Riemann Hypothesis Is True"
+Víctor, este es otro intento de demostración de la HR que circula en la literatura amateur. Te doy un análisis riguroso, señalando exactamente dónde falla la lógica.
+
+Estructura del argumento
+El autor usa la equivalencia estándar: la HR ⟺ todos los ceros de η(s) en la franja crítica están sobre σ = 1/2. Luego intenta excluir ceros con σ < 1/2 y σ > 1/2 por separado.
+
+La idea central gira en torno a la ecuación (8):
+
+0
+<
+ρ
+N
+2
+=
+∑
+k
+=
+1
+N
+1
+k
+2
+σ
++
+2
+∑
+k
+,
+k
+′
+=
+1
+k
+<
+k
+′
+N
+(
+−
+1
+)
+k
++
+k
+′
+cos
+⁡
+(
+t
+log
+⁡
+(
+k
+/
+k
+′
+)
+)
+k
+σ
+k
+′
+σ
+<
+2
+ε
+2
+0<ρ 
+N
+2
+​
+ = 
+k=1
+∑
+N
+​
+  
+k 
+2σ
+ 
+1
+​
+ +2 
+k,k 
+′
+ =1
+k<k 
+′
+ 
+​
+ 
+∑
+N
+​
+  
+k 
+σ
+ k 
+′σ
+ 
+(−1) 
+k+k 
+′
+ 
+ cos(tlog(k/k 
+′
+ ))
+​
+ <2ε 
+2
+ 
+Esta expansión de |η_N(s)|² es algebraicamente correcta. El problema está en todo lo que viene después.
+
+Fallo crítico nº 1 — Sección 3 (caso 0 < σ < 1/2)
+El autor observa que si 2σ < 1, entonces Σ 1/k^{2σ} → +∞, y de ahí infiere que la suma doble debe → −∞ (ecuación 10). Pero esto no es una contradicción: es exactamente lo que tiene que ocurrir para que ρ²_N → 0.
+
+La sección termina con la ecuación (10) sin derivar ningún absurdo. El argumento simplemente no está completo: muestra una consecuencia necesaria de asumir que existe un cero con σ < 1/2, pero no demuestra que esa consecuencia sea imposible.
+
+Error de lógica: Una condición necesaria derivada de la hipótesis no constituye una contradicción con ella.
+
+Fallo crítico nº 2 — Sección 5, caso t ≠ 0 (el fallo central)
+Aquí el autor usa la simetría s' = 1 − σ + it ∈ (1/2, 1) y deriva correctamente la ecuación (13):
+
+∑
+k
+<
+k
+′
+(
+−
+1
+)
+k
++
+k
+′
+cos
+⁡
+(
+t
+′
+log
+⁡
+(
+k
+/
+k
+′
+)
+)
+k
+σ
+′
+k
+′
+σ
+′
+=
+−
+ζ
+(
+2
+σ
+′
+)
+2
+>
+−
+∞
+k<k 
+′
+ 
+​
+ 
+∑
+​
+  
+k 
+σ 
+′
+ 
+ k 
+′σ 
+′
+ 
+ 
+(−1) 
+k+k 
+′
+ 
+ cos(t 
+′
+ log(k/k 
+′
+ ))
+​
+ =− 
+2
+ζ(2σ 
+′
+ )
+​
+ >−∞
+Esta ecuación no tiene nada de paradójico por sí sola. Es una condición necesaria para que s' sea un cero. Para derivar una contradicción, el autor invoca el Teorema 5.1 (fórmula de valor medio de Hardy):
+
+lim
+⁡
+T
+→
+∞
+1
+T
+∫
+1
+T
+∣
+ζ
+(
+σ
+′
+′
++
+i
+τ
+)
+∣
+2
+d
+τ
+=
+ζ
+(
+2
+σ
+′
+′
+)
+T→∞
+lim
+​
+  
+T
+1
+​
+ ∫ 
+1
+T
+​
+ ∣ζ(σ 
+′′
+ +iτ)∣ 
+2
+ dτ=ζ(2σ 
+′′
+ )
+Y concluye: "ζ(2σ') no depende de t', lo que contradice la ecuación (13)."
+
+Este argumento es un non sequitur completo:
+
+Que ζ(2σ') no dependa de t' es trivialmente cierto: ζ(2σ') es la función zeta evaluada en el número real 2σ', claro que no depende de t'.
+La ecuación (13) tampoco afirma que ζ(2σ') dependa de t'. Afirma que la suma doble (que sí depende de t') iguala un valor fijo para ese t' específico. Que el lado derecho sea independiente de t' no es ninguna contradicción: basta con que la igualdad se cumpla puntualmente para los t' que son partes imaginarias de ceros.
+El Teorema 5.1 habla de promedios sobre τ, no de valores puntuales. Su invocación aquí es irrelevante.
+En resumen: el autor confunde "el resultado del límite no depende del parámetro t'" (lo cual es trivial y conocido) con "la igualdad (13) no puede sostenerse para valores específicos de t'". Estas son afirmaciones completamente distintas.
+
+Fallo adicional — La desigualdad 0 < ρ²_N
+El autor escribe sistemáticamente "0 < ρ²_N" pero |η_N(s)|² ≥ 0, y la desigualdad estricta no está garantizada para todo N finito, ni se demuestra. Es un detalle menor comparado con los anteriores, pero refleja cierta imprecisión general.
+
+Diagnóstico global
+Sección	Lo que afirma	Lo que realmente demuestra
+§3	Contradicción para σ < 1/2	Solo una consecuencia necesaria (ecuación 10), sin absurdo
+§5 t=0	Contradicción para s' real	Correcto (los ceros reales en (1/2,1) se excluyen trivialmente)
+§5 t≠0	Contradicción vía Teorema 5.1	Non sequitur: ninguna contradicción real
+El paper no demuestra la Hipótesis de Riemann. El caso t ≠ 0 en la banda (1/2, 1) —que es el único caso matemáticamente no trivial y el corazón del problema— no está resuelto. La invocación del teorema de valor medio es decorativa, no funcional.
+
+Este tipo de intentos suele aparecer en arXiv o ResearchGate con cierta frecuencia; el autor (Ben Hadj Salem de Túnez) tiene varios papers similares previos. La comunidad matemática no los ha validado precisamente por este tipo de saltos lógicos.
+
+
+
+
+
+
+Claude es IA y puede cometer errores. Por favor, verifica nuevamente las respuesta

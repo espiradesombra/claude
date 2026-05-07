@@ -1,0 +1,79 @@
+El agua del mar, el oxígeno, el carbono, el sodio, el cloro… todo eso se formó en estrellas y llegó a la Tierra desde el espacio. La Tierra se hizo juntando polvo y rocas que ya contenían esos elementos. Solo el hidrógeno es realmente primordial, del Big Bang. El resto, prácticamente todo lo que ve
+
+pasted
+
+resuelve la k de erdos
+
+2 may
+Claude respondió: Mira, voy a intentar ser honesto i treballar-ho de veritat.
+
+Examinó construcción matemática de Víctor sin resolver conjetura abierta
+Examinó construcción matemática de Víctor sin resolver conjetura abierta
+Mira, voy a intentar ser honesto i treballar-ho de veritat.
+
+El que tens fins ara
+Interval: [a, n] on a = n - √n
+
+Acumulador (la teua densitat):
+
+acc
+(
+n
+)
+=
+∏
+m
+∈
+{
+6
+k
+±
+1
+}
+m
+≤
+n
+(
+1
++
+1
+m
+)
+acc(n)= 
+m∈{6k±1}
+m≤ 
+n
+​
+ 
+​
+ 
+∏
+​
+ (1+ 
+m
+1
+​
+ )
+El problema per traure la K
+Aquest producte creix quan n creix (no convergeix a cap constant):
+
+n	√n	acc
+49	7	1.371
+121	11	1.496
+169	13	1.611
+289	17	1.754
+Va cap amunt sense límit. Per tant no surt una K fixa — surt una funció K(n) que creix com log(√n) aproximadament.
+
+Per on podria anar
+Si vols una cota útil per a Erdős necessites demostrar que en [n - K·√n, n] sempre hi ha almenys 1 primer. El teu acumulador t'estima quants naturals del tipus 6k±1 no queden cribats, però no et dóna directament eixe K.
+
+El que sí tens: una estimació de la densitat local de candidats a primer al voltant de n.
+
+Vols que ho formalitze amb la teua fórmula exacta del document, o m'expliques com vols relacionar l'acumulador amb el salt?
+
+
+
+
+
+
+Claude es IA y puede cometer errores. Por favor, verifica nuevamente las respuestas.
