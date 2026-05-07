@@ -1,0 +1,231 @@
+
+<style>
+:root { --gap: 14px; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); }
+.section { margin-bottom: 2rem; }
+.section-title {
+  font-size: 13px; font-weight: 500; letter-spacing: 0.06em;
+  color: var(--color-text-secondary); text-transform: uppercase;
+  padding: 0.5rem 0; border-bottom: 0.5px solid var(--color-border-tertiary);
+  margin-bottom: 0.75rem;
+}
+.eq-row {
+  display: grid; grid-template-columns: 220px 1fr 160px;
+  gap: 0; border-bottom: 0.5px solid var(--color-border-tertiary);
+  padding: 10px 0; align-items: start;
+}
+.eq-row:last-child { border-bottom: none; }
+.eq-name { font-size: 13px; font-weight: 500; color: var(--color-text-primary); padding-right: 12px; }
+.eq-formula {
+  font-family: var(--font-mono); font-size: 12.5px; color: var(--color-text-primary);
+  background: var(--color-background-secondary); border-radius: 6px;
+  padding: 4px 8px; line-height: 1.7; white-space: pre-wrap; word-break: break-word;
+}
+.eq-use { font-size: 12px; color: var(--color-text-secondary); padding-left: 12px; line-height: 1.6; }
+.header {
+  display: grid; grid-template-columns: 220px 1fr 160px;
+  font-size: 11px; font-weight: 500; color: var(--color-text-tertiary);
+  letter-spacing: 0.05em; text-transform: uppercase;
+  padding-bottom: 6px; gap: 0;
+}
+.hdr-use { padding-left: 12px; }
+.badge {
+  display: inline-block; font-size: 10px; font-weight: 500;
+  padding: 2px 7px; border-radius: 10px; margin-bottom: 5px;
+  background: var(--color-background-info); color: var(--color-text-info);
+}
+.badge.g { background: var(--color-background-success); color: var(--color-text-success); }
+.badge.a { background: var(--color-background-warning); color: var(--color-text-warning); }
+.badge.d { background: var(--color-background-danger); color: var(--color-text-danger); }
+</style>
+
+<div style="padding: 1.5rem 0.25rem 2rem;">
+
+<div style="margin-bottom: 1.75rem;">
+  <p style="font-size: 22px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 4px;">Taula d'equacions · VMA</p>
+  <p style="font-size: 14px; color: var(--color-text-secondary);">Corpus matemàtic extret de <em>Números i numeritos</em> i <em>Libro 5 (MDC)</em></p>
+</div>
+
+<div class="section">
+  <div class="section-title">1 · Candidats primers — marc 6k±1</div>
+  <div class="header"><span>Nom</span><span>Equació / definició</span><span class="hdr-use">Utilitat</span></div>
+  <div class="eq-row">
+    <div class="eq-name"><span class="badge">Candidats</span><br>Rejilla 6k±1</div>
+    <div class="eq-formula">{2·3·n ± 1} ∖ {30m±5, 6·7·ℓ±7, 6·11·k±11, 6·p·j±p, …}
+
+(6k±1) = 2n+3  →  n mod 3 ≠ 0</div>
+    <div class="eq-use">Redueix l'espai de cerca a ~1/3 dels enters; base de totes les cribes i del MDC</div>
+  </div>
+  <div class="eq-row">
+    <div class="eq-name">Salts d'un primer p</div>
+    <div class="eq-formula">Múltiples de p ≡ 6k±1:
+  inici: p²
+  passos: +2p, +4p  (alternats)</div>
+    <div class="eq-use">Criba modular: marca compostos sense repetir posicions</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">2 · Salto Màxim i conjectura d'Andrica</div>
+  <div class="header"><span>Nom</span><span>Equació / definició</span><span class="hdr-use">Utilitat</span></div>
+  <div class="eq-row">
+    <div class="eq-name"><span class="badge a">Conjectura</span><br>SaltoMáximo(n)</div>
+    <div class="eq-formula">SaltoMáximo(n) ≈ √n
+
+Derivació:  k = √n / 3
+retorna (2+4) · (k/2) = √n</div>
+    <div class="eq-use">Cota superior del buit entre primers consecutius; base per Andrica</div>
+  </div>
+  <div class="eq-row">
+    <div class="eq-name">Interval mínim (dos primers)</div>
+    <div class="eq-formula">I(n) = [n − ⌊√(n+3)⌋ − 3,  n + 3]
+L(n) = ⌊√(n+3)⌋ + 7
+K = ⌊⌊√n⌋ · 9/24⌋
+m(n) = Σ_{i=2}^{K} (√(n+3) / i!)  ≈ (e−2)·√n
+
+Criteri: L(n) − m(n) ≥ 2  →  ≥2 primers en I(n)</div>
+    <div class="eq-use">Garanteix l'existència de dos primers en un interval de longitud ~√n</div>
+  </div>
+  <div class="eq-row">
+    <div class="eq-name"><span class="badge a">Andrica</span><br>Límit asimptòtic</div>
+    <div class="eq-formula">√n − √(n − √n) < 1
+
+lím_{n→∞} (√n − √(n − √n)) → 0 < 1</div>
+    <div class="eq-use">Coherència de la conjectura d'Andrica per a tot n ≥ 1</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">3 · Estructura Sofí (tipus Sophie Germain)</div>
+  <div class="header"><span>Nom</span><span>Equació / definició</span><span class="hdr-use">Utilitat</span></div>
+  <div class="eq-row">
+    <div class="eq-name"><span class="badge g">Isomorfisme</span><br>Conjunts Sofí</div>
+    <div class="eq-formula">L₁ = {n∈ℕ : n ≡ 5 mod 6}
+L₃ = {a∈L₁ : a = (6k−1)(6h+1)}
+L₄ = {a∈L₁ : 2a+1 = (6j−1)(6g+1)}
+L₂ = L₃ ∩ L₄
+LSG = {p∈L₁ : p i 2p+1 primers}
+U₂ = L₁ ∖ (L₃ ∪ L₄)
+
+|L₁| + |L₂| − |L₃| − |L₄| = |LSG|</div>
+    <div class="eq-use">Caracteritza primes de Sophie Germain; U₂ ⊆ LSG i |U₂|=∞ (provat per TXR+Dirichlet)</div>
+  </div>
+  <div class="eq-row">
+    <div class="eq-name">Infinitud de U₂</div>
+    <div class="eq-formula">Per tot primer q≥5, per TXR existeix r mod 6q
+tal que p ≡ r mod 6q  →  p∈L₄∖L₂
+Per Dirichlet: infinits tals p  →  |L₄∖L₂|=∞
+Anàlogament |L₃∖L₂|=∞, |L₂|=∞
+∴ |U₂| = ∞</div>
+    <div class="eq-use">Argument d'infinitud de primes de Sophie Germain via partició modular</div>
+  </div>
+  <div class="eq-row">
+    <div class="eq-name">Fermat (Férmines)</div>
+    <div class="eq-formula">Fₙ = 2^(2ⁿ) + 1
+F₀·F₁·…·Fₙ = Fₙ₊₁ − 2
+Bₙ = 2·(F₀·F₁·…·Fₙ)
+rₙ únic: rₙ≡1 mod 2,  rₙ≡2 mod Fₖ (k≤n)
+→ per tot m≥n+1: Fₘ ≡ rₙ mod Bₙ</div>
+    <div class="eq-use">Alineació modular dels Fermat; criba compacta de files en base 2·∏Fₖ</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">4 · Conjectura de Goldbach — asimetria i error</div>
+  <div class="header"><span>Nom</span><span>Equació / definició</span><span class="hdr-use">Utilitat</span></div>
+  <div class="eq-row">
+    <div class="eq-name"><span class="badge">Goldbach</span><br>Condició de densitat</div>
+    <div class="eq-formula">f(x)·2 ≤ f(2x)       (f = π, funció recompte)
+
+G(2n) = #{(p,q): p≤q, p+q=2n, ambdós primers}</div>
+    <div class="eq-use">Si la condició falla → la conjectura seria falsa; el fallo tendeix a 0</div>
+  </div>
+  <div class="eq-row">
+    <div class="eq-name">Error relatiu (forma 6k)</div>
+    <div class="eq-formula">E(2n) = ((n/6 − 2n/ln(2n)) · 100) / (2n/ln(2n))
+
+G_teo(2n) ≈ 2n / (ln n)²
+
+E% = (G(2n)−G_teo(2n)) / G_teo(2n) · 100</div>
+    <div class="eq-use">Quantifica la desviació; decreix lentament → reforça la conjectura per a tot rang</div>
+  </div>
+  <div class="eq-row">
+    <div class="eq-name">Asimetria central</div>
+    <div class="eq-formula">A(2n) = (#{q−p>0} − #{q−p<0}) / G(2n)
+
+Δ = |q−p|   (diferència de cada parell)
+
+acumularFALLO += f(i) − (f(2x)−f(2x−i))</div>
+    <div class="eq-use">Detecta concentració de solucions prop de la meitat; l'alarm mai salta si la distribució decreix</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">5 · MDC — Mètode Diofàntic Cinemàtic</div>
+  <div class="header"><span>Nom</span><span>Equació / definició</span><span class="hdr-use">Utilitat</span></div>
+  <div class="eq-row">
+    <div class="eq-name"><span class="badge d">MDC core</span><br>Funció d'ona</div>
+    <div class="eq-formula">D(m) = 2·(2m+3)          (candidat divisor)
+d(m) = frac(N / D(m))   (part decimal)
+
+Aritmètica entera exacta:
+  R = N mod D            (numerador)
+  D                      (denominador)
+
+Condició de tall:  R == D // 2   →  D | N</div>
+    <div class="eq-use">Detecta divisors de N sense aritmètica flotant; base del motor cinemàtic</div>
+  </div>
+  <div class="eq-row">
+    <div class="eq-name">Velocitat i acceleració</div>
+    <div class="eq-formula">V = ΔR / Δm        (diferència primera de R)
+A = ΔV / Δm        (diferència segona)
+J = ΔA / Δm        (jerk, variació d'A)
+
+Pinça doble: 4 mesures per direcció
+Invariant parabòlic: A ≈ const  →  dent estable</div>
+    <div class="eq-use">Prediu la posició del mínim sense iterar punt a punt; salt cinemàtic dirigit</div>
+  </div>
+  <div class="eq-row">
+    <div class="eq-name">Salt Mestre (predicció)</div>
+    <div class="eq-formula">m_next = m − V/A
+
+Límit d'iteració:  max_iter = 2·⌊log₂(N)⌋
+
+Complexitat reclamada:  O(log N)</div>
+    <div class="eq-use">Salta directament al candidat de tall; redueix iteracions a ordre logarítmic</div>
+  </div>
+  <div class="eq-row">
+    <div class="eq-name">Acumulador harmònic (radar)</div>
+    <div class="eq-formula">acumulo += acumulo · (1/i)   (i = índex de segment)
+
+Cerca des de: talla/2 = ⌊√N⌋ // 2
+Condició de ressonància: acumulo ≤ llindar_R
+
+Si segment no ressona → salt massiu al segment següent</div>
+    <div class="eq-use">Filtre macroscòpic: criba segments sencers sense entrar en profunditat cinemàtica</div>
+  </div>
+  <div class="eq-row">
+    <div class="eq-name">Rueda primorial (MDC-U)</div>
+    <div class="eq-formula">p# = 2·3·5·7·…·pₖ     (primorial fins pₖ)
+Densitat activa: φ(p#)/p#
+
+Ex. fins p=5: 8/30 ≈ 26.6% de posicions actives
+
+Salts de rueda: array de 48 entrades per p#=210</div>
+    <div class="eq-use">Elimina ≥73% de l'espai abans del radar cinemàtic; combina rueda + pinça doble</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">6 · Model MRAUV — estimació de π(n)</div>
+  <div class="header"><span>Nom</span><span>Equació / definició</span><span class="hdr-use">Utilitat</span></div>
+  <div class="eq-row">
+    <div class="eq-name"><span class="badge g">MRAUV</span><br>Estimació per trams</div>
+    <div class="eq-formula">π(x) ≈ x · D(x)
+
+D_{n+1} = (Dₙ + π(x)/x) / 2    (punt fix, factor ½)
+
+Estimació en Δn:  π(n+Δn) ≈ π(n) + D_pred · Δn
+
+D_pred(x,Δ) = densitat en [x, x+Δ] via MRAUV
