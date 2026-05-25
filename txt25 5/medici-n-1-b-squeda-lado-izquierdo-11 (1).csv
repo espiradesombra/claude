@@ -1,0 +1,12 @@
+﻿Medición,1ª búsqueda Lado Izquierdo,2ª búsqueda Lado Derecho,Invariante Δ² (segunda diferencia),Consecuencia
+Punto inicial,m=24; y0 = 147/206,m=26; y0 = 153/206,—,Marcar inicio de ventana
+Punto medio,m=25; y1 = 31/206,m=27; y1 = 29/206,—,Zona de descenso detectada
+Punto final,m=26; y2 = 12/206,m=28; y2 = 45/206,—,Fin de muestreo local
+Velocidad v01 = y1−y0,"'-116/206","'-124/206",—,Descenso fuerte en ambos lados
+Velocidad v12 = y2−y1,"'-19/206",16/206,—,Izq sigue bajando; dcha rebote
+Aceleración a = v12−v01,97/206,140/206,Δ² ≈ a,Curvatura positiva (concavidad)
+Jerk j (Δa entre ventanas),pequeño,grande,Δ² estable vs variable,Izq: parábola estable; Dcha: ruido
+Ajuste parabólico (3 pts),a≈-0.004; b≈0; c≈0.058,a≈-0.002; b≈0.05; c≈0.141,Δ² izq < umbral,Izq simétrico → candidato; dcha asimétrico → descartar
+Vértice predicho x_v,x_v ≈ 25.00,x_v ≈ 27.43,—,Izq entero → verificar; dcha no entero → salto
+y_v (mínimo predicho),y_v ≈ 1/10000,y_v ≈ 0.12,Δ² muy pequeño en izq,Izq → verificación modular; dcha → reset
+Decisión final,Pinza activa; verificar factor,Reset / saltar al siguiente diente,Δ² izq < umbral,Acción: verificación exacta o salto diferencial
