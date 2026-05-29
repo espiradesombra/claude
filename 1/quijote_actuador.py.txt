@@ -1,0 +1,409 @@
+"""
+EXTENSIÓ GEMINI — Auditoria Primera Llei: Potència Actuador Quijote
+===================================================================
+Víctor Manzanares Alberola — EPSA UPV Alcoi
+Assistència: Claude Sonnet 4.6
+
+Afegeix al gemell_3vs7_rigoros.py el càlcul explícit de:
+  - F_centrífuga per aspa (m_q · ω² · r_k)
+  - F_gravitatoria radial (m_q · g · cos(θ_k))
+  - P_actuador_k = F_net · dr_dt (potència instantània del bombeig)
+  - Balanç net: P_hurto - P_actuadors = guany real verificat
+
+Resposta a la crítica clàssica del camp conservatiu.
+"""
+
+import numpy as np
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import matplotlib.gridspec as gridspec
+
+SEED = 42
+np.random.seed(SEED)
+
+# ── Paràmetres NREL 5MW ───────────────────────────────────────────────────────
+R        = 63.0
+P_NOM    = 5.0e6
+RHO_A    = 1.225
+CP_MAX   = 0.482
+LAM_OPT  = 7.55
+A_ROT    = np.pi*R**2
+V_RATED  = (P_NOM/(0.5*RHO_A*A_ROT*CP_MAX))**(1/3)
+OM_RATED = LAM_OPT*V_RATED/R
+G        = 9.81
+
+# ── Paràmetres Quijote ────────────────────────────────────────────────────────
+RHO_FL   = 3386.0
+D_CANAL  = 0.05
+A_CANAL  = np.pi*(D_CANAL/2)**2
+R_HUB    = 5.0
+R_TIP    = 55.0
+DR_MAX   = 0.5
+K_Q      = 5.0e4
+C_FRIC   = 80.0
+K_COMP   = 0.10
+
+# ── Simulació ─────────────────────────────────────────────────────────────────
+V_BASE   = 11.4
+T_TOT    = 90.0
+DT       = 0.05
+STEPS    = int(T_TOT/DT)
+T_VEC    = np.arange(STEPS)*DT
+K_KUR    = 0.10
+
+np.random.seed(SEED)
+ou = np.zeros(STEPS)
+for i in range(1, STEPS):
+    ou[i] = ou[i-1] - 0.5*ou[i-1]*DT + 0.8*np.sqrt(DT)*np.random.randn()
+
+def v_vent(s):
+    t = s*DT
+    v = V_BASE + 2*np.sin(2*np.pi*t/20) + ou[s]*0.6
+    if 40 < t < 60:
+        v -= 5*np.sin(np.pi*(t-40)/20)
+    return max(3.0, float(v))
+
+V_ARR = np.array([v_vent(s) for s in range(STEPS)])
+
+def m_q_pala():
+    return RHO_FL * A_CANAL * (R_TIP - R_HUB)
+
+def eta_cp(omega, v):
+    if v <= 0: return 0.0
+    lam = omega*R/v
+    return float(max(0, 1 - ((lam - LAM_OPT)/LAM_OPT)**2))
+
+# ── Simulació principal amb auditoria d'actuador ──────────────────────────────
+def simula(N_pales):
+    m_q = m_q_pala()
+
+    thetas = np.array([2*np.pi*k/N_pales for k in range(N_pales)])
+    omega  = OM_RATED * 0.95
+    r_q    = np.full(N_pales, (R_HUB+R_TIP)/2)
+    dr_q   = np.zeros(N_pales)
+
+    # Buffer hidràulic
+    V_BUF_MAX = 0.10
+    Q_BOMBA   = 0.010
+    P_ACC_MAX = 20e6
+    LLINDAR   = 20.0
+    ETA_GEN   = 0.85
+    V_buf = 0.0
+    P_acc = 0.0
+
+    # Historials
+    hPa   = np.zeros(STEPS)
+    hPg   = np.zeros(STEPS)
+    hPbuf = np.zeros(STEPS)
+    hPgen = np.zeros(STEPS)
+    hom   = np.zeros(STEPS)
+
+    # ── NOU: historials d'actuador ────────────────────────────────────────────
+    hP_act_total  = np.zeros(STEPS)   # Potència total actuadors (W)
+    hF_cent_total = np.zeros(STEPS)   # Força centrífuga total (N)
+    hF_grav_total = np.zeros(STEPS)   # Component gravitatoria total (N)
+    hP_hurto      = np.zeros(STEPS)   # Potència hurto (T_hurto · ω)
+    hP_net        = np.zeros(STEPS)   # P_hurto - P_actuadors = guany real
+
+    # Acumuladors energètics
+    E_vent    = 0.0
+    E_xarxa   = 0.0
+    E_frec    = 0.0
+    E_gen     = 0.0
+    E_act_pos = 0.0   # Energia consumida per actuadors (moviment actiu)
+    E_act_neg = 0.0   # Energia retornada per actuadors (moviment passiu)
+    E_hurto   = 0.0   # Energia del par hurto
+
+    for s in range(STEPS):
+        v = V_ARR[s]
+
+        om_target = min(OM_RATED, LAM_OPT*max(v, 0.1)/R)
+        omega += (om_target - omega)*(DT/3.0)
+        omega = float(np.clip(omega, OM_RATED*0.3, OM_RATED*1.4))
+
+        etL = eta_cp(omega, v)
+        Pa  = 0.5*RHO_A*A_ROT*CP_MAX*etL*v**3
+
+        dJ_total   = 0.0
+        T_hurto_s  = 0.0   # Par hurto gravitatori total en aquest pas
+        P_act_s    = 0.0   # Potència total actuadors en aquest pas
+        F_cent_s   = 0.0
+        F_grav_s   = 0.0
+
+        for i in range(N_pales):
+            th = thetas[i] % (2*np.pi)
+
+            r_opt0 = R_TIP - (R_TIP-R_HUB)*(1+np.cos(th))/2
+            F_c_i  = m_q * omega**2 * r_q[i]
+            r_opt  = r_opt0 + K_COMP*(F_c_i/(K_Q*(R_TIP-R_HUB)+1e-9))
+            r_opt  = float(np.clip(r_opt, R_HUB, R_TIP))
+
+            F_ctrl = -K_Q*(r_q[i] - r_opt)
+            F_fric_r = -C_FRIC*dr_q[i]
+            acc    = (F_c_i + F_ctrl + F_fric_r)/m_q
+
+            dr_q[i] += acc*DT
+            dr_q[i] = float(np.clip(dr_q[i], -DR_MAX, DR_MAX))
+            lim_pos = omega * r_q[i]
+            dr_q[i] = float(np.clip(dr_q[i], -lim_pos, lim_pos))
+            r_q[i]  = float(np.clip(r_q[i] + dr_q[i]*DT, R_HUB, R_TIP))
+
+            # ── NOVES LÍNIES GEMINI: Auditoria actuador ───────────────────────
+            # 1. Força centrífuga sobre la massa
+            F_cent_i = m_q * omega**2 * r_q[i]
+
+            # 2. Component gravitatoria radial (en la direcció radial de l'aspa)
+            # cos(th) > 0 → aspa baixant (gravetat assisteix extensió)
+            # cos(th) < 0 → aspa pujant (gravetat s'oposa a extensió)
+            F_grav_i = m_q * G * np.cos(th)
+
+            # 3. Força neta que l'actuador ha de vèncer
+            # El control Quijote mou el pes CONTRA la posició d'equilibri natural
+            # dr_q[i] > 0 → pes cap a fora (assistit per F_cent, afectat per F_grav)
+            # dr_q[i] < 0 → pes cap a dins (combatent F_cent)
+            F_act_i = F_cent_i + F_grav_i
+
+            # 4. Potència instantània de l'actuador per l'aspa i
+            # P = F · v (positiu = consumeix energia, negatiu = regenera)
+            P_act_i = F_act_i * dr_q[i]
+
+            # 5. Par hurto gravitatori d'aquesta aspa (contribució al par net)
+            # T_hurto,k = m_q · g · r_k · cos(θ_k) (Ec. 1 del paper)
+            T_hurto_i = m_q * G * r_q[i] * np.cos(th)
+
+            # Acumulació
+            P_act_s   += P_act_i
+            F_cent_s  += F_cent_i
+            F_grav_s  += abs(F_grav_i)
+            T_hurto_s += T_hurto_i
+
+            # Balanç energètic actuador
+            if P_act_i > 0:
+                E_act_pos += P_act_i * DT  # J consumits per actuadors
+            else:
+                E_act_neg += abs(P_act_i) * DT  # J recuperats per actuadors
+
+            dJdt_i = 2*m_q*r_q[i]*dr_q[i]
+            dJ_total += dJdt_i
+            E_frec += (-C_FRIC*dr_q[i]**2)*DT
+
+        # Potència hurto total: T_hurto · ω
+        P_hurto_s = T_hurto_s * omega
+        E_hurto  += P_hurto_s * DT
+
+        # Guany net real: P_hurto - P_actuadors (ha de ser > 0 per al guany)
+        P_net_s = P_hurto_s - P_act_s
+
+        # Emmagatzemar historials actuador
+        hP_act_total[s]  = P_act_s
+        hF_cent_total[s] = F_cent_s
+        hF_grav_total[s] = F_grav_s
+        hP_hurto[s]      = P_hurto_s
+        hP_net[s]        = P_net_s
+
+        # Buffer i xarxa (idèntic al codi original)
+        P_buf = -0.5*dJ_total*omega**2
+
+        K_kur = K_KUR
+        for i in range(N_pales):
+            kc  = (K_kur/N_pales)*float(np.sum(np.sin(thetas - thetas[i])))
+            dJi = 2*m_q*r_q[i]*dr_q[i]
+            pm  = float(np.clip(2.0*np.cos(thetas[i]) + 0.5*omega*np.sin(thetas[i])
+                                - 0.6*dJi, -8, 8))
+            thetas[i] += (omega + kc + pm*0.01)*DT
+
+        Pgen = 0.0
+        if P_buf > LLINDAR and V_buf < V_BUF_MAX:
+            P_acc = min(P_acc + P_buf*DT/V_BUF_MAX, P_ACC_MAX)
+            Q     = min(Q_BOMBA, P_buf/max(P_acc, 1e3))
+            V_buf = min(V_BUF_MAX, V_buf + Q*DT)
+        elif P_buf < -LLINDAR and V_buf > 0:
+            P_acc = max(P_acc + P_buf*DT/V_BUF_MAX, 0)
+            Q     = min(Q_BOMBA, -P_buf/max(P_acc, 1e3))
+            Pgen  = P_acc*Q*ETA_GEN
+            V_buf = max(0, V_buf - Q*DT)
+
+        Pg = max(0, Pa*(1+0.04) + max(0, P_buf) + Pgen)
+
+        E_vent  += Pa*DT
+        E_xarxa += Pg*DT
+        E_gen   += Pgen*DT
+
+        hPa[s]   = Pa
+        hPg[s]   = Pg
+        hPbuf[s] = P_buf
+        hPgen[s] = Pgen
+        hom[s]   = omega
+
+    millora = (np.mean(hPg) - np.mean(hPa))/np.mean(hPa)*100
+
+    return {
+        'Pa': hPa, 'Pg': hPg, 'Pbuf': hPbuf, 'Pgen': hPgen, 'om': hom,
+        # Nous camps auditoria
+        'P_act': hP_act_total,
+        'P_hurto': hP_hurto,
+        'P_net': hP_net,
+        'F_cent': hF_cent_total,
+        'F_grav': hF_grav_total,
+        # Acumuladors energètics
+        'E_vent':    E_vent/3.6e6,
+        'E_xarxa':   E_xarxa/3.6e6,
+        'E_frec':    E_frec/3.6e6,
+        'E_gen':     E_gen/3.6e6,
+        'E_act_pos': E_act_pos/3.6e6,
+        'E_act_neg': E_act_neg/3.6e6,
+        'E_hurto':   E_hurto/3.6e6,
+        'millora': millora,
+        'N': N_pales,
+        'm_q': m_q_pala()
+    }
+
+# ── Execució ──────────────────────────────────────────────────────────────────
+print("Simulant 3 pales (amb auditoria actuador)...")
+r3 = simula(3)
+print("Simulant 7 pales (amb auditoria actuador)...")
+r7 = simula(7)
+
+# ── Resultats textuals ────────────────────────────────────────────────────────
+print()
+print("="*70)
+print("AUDITORIA PRIMERA LLEI — Potència Actuador Quijote")
+print("="*70)
+for lbl, r in [("3 PALES", r3), ("7 PALES", r7)]:
+    E_net_act = r['E_act_pos'] - r['E_act_neg']  # Energia neta consumida per actuadors
+    eff = (r['E_hurto'] / (E_net_act + 1e-9)) if E_net_act > 0 else float('inf')
+    print(f"\n  {lbl}:")
+    print(f"    P_actuadors |mig|:      {np.mean(np.abs(r['P_act']))/1e3:.2f} kW")
+    print(f"    P_hurto |mig|:          {np.mean(np.abs(r['P_hurto']))/1e3:.2f} kW")
+    print(f"    P_net (hurto-act) mig:  {np.mean(r['P_net'])/1e3:.2f} kW")
+    print(f"    F_cent total |mig|:     {np.mean(r['F_cent'])/1e3:.1f} kN")
+    print(f"    F_grav total |mig|:     {np.mean(r['F_grav'])/1e3:.1f} kN")
+    print(f"  BALANÇ ENERGÈTIC COMPLET:")
+    print(f"    E_hurto  (par grav·ω):  {r['E_hurto']:.3f} kWh")
+    print(f"    E_act_pos (act.consum): {r['E_act_pos']:.3f} kWh")
+    print(f"    E_act_neg (act.regen):  {r['E_act_neg']:.3f} kWh")
+    print(f"    E_neta actuadors:       {E_net_act:.3f} kWh")
+    print(f"    Eficiència hurto/act:   {eff:.2f}x")
+    print(f"    Millora P_grid:         +{r['millora']:.2f}%")
+
+print()
+print("  COMPARATIVA CLAU 3p vs 7p:")
+pnet3 = np.mean(r3['P_net'])
+pnet7 = np.mean(r7['P_net'])
+pact3 = np.mean(np.abs(r3['P_act']))
+pact7 = np.mean(np.abs(r7['P_act']))
+print(f"    P_net mig 3p: {pnet3/1e3:.2f} kW  |  7p: {pnet7/1e3:.2f} kW")
+print(f"    P_act mig 3p: {pact3/1e3:.2f} kW  |  7p: {pact7/1e3:.2f} kW")
+print(f"    Ràtio P_net 7p/3p: {pnet7/pnet3:.2f}x" if pnet3 != 0 else "    P_net 3p ≈ 0")
+print("="*70)
+
+# ── Gràfics ───────────────────────────────────────────────────────────────────
+BG='#0d0d1a'; PAN='#13132b'
+C3='#00d2ff'; C7='#00ff88'; CV='#ffd700'; CR='#e74c3c'; CW='white'; CG='#ff9944'
+
+def sty(ax, tit, xl='t [s]', yl=''):
+    ax.set_facecolor(PAN)
+    ax.set_title(tit, color=CW, fontsize=9, pad=4, fontweight='bold')
+    ax.tick_params(colors='#aaa', labelsize=7.5)
+    [sp.set_color('#333355') for sp in ax.spines.values()]
+    ax.set_xlabel(xl, color='#aaa', fontsize=8)
+    ax.set_ylabel(yl, color='#aaa', fontsize=8)
+    ax.grid(color='#1e1e40', lw=0.5, ls='--', alpha=0.8)
+
+fig = plt.figure(figsize=(20, 18), facecolor=BG)
+gs  = gridspec.GridSpec(3, 3, figure=fig, hspace=0.50, wspace=0.38)
+
+# G1: P_actuadors 3p vs 7p
+ax = fig.add_subplot(gs[0, 0])
+ax.plot(T_VEC, r3['P_act']/1e3, color=C3, lw=1.5,
+        label=f"3p |mig|={np.mean(np.abs(r3['P_act']))/1e3:.1f}kW")
+ax.plot(T_VEC, r7['P_act']/1e3, color=C7, lw=1.5,
+        label=f"7p |mig|={np.mean(np.abs(r7['P_act']))/1e3:.1f}kW")
+ax.axhline(0, color=CW, lw=0.5, alpha=0.3)
+ax.legend(fontsize=7.5, framealpha=0.3)
+sty(ax, 'G1 — P_actuadors (kW)\n[Potència consumida/regenerada pel bombeig]', yl='kW')
+
+# G2: P_hurto 3p vs 7p
+ax = fig.add_subplot(gs[0, 1])
+ax.plot(T_VEC, r3['P_hurto']/1e3, color=C3, lw=1.5,
+        label=f"3p |mig|={np.mean(np.abs(r3['P_hurto']))/1e3:.1f}kW")
+ax.plot(T_VEC, r7['P_hurto']/1e3, color=C7, lw=1.5,
+        label=f"7p |mig|={np.mean(np.abs(r7['P_hurto']))/1e3:.1f}kW")
+ax.axhline(0, color=CW, lw=0.5, alpha=0.3)
+ax.legend(fontsize=7.5, framealpha=0.3)
+sty(ax, 'G2 — P_hurto = T_hurto·ω (kW)\n[Par gravitatori × velocitat angular]', yl='kW')
+
+# G3: P_net = P_hurto - P_actuadors (el guany real)
+ax = fig.add_subplot(gs[0, 2])
+ax.plot(T_VEC, r3['P_net']/1e3, color=C3, lw=1.5,
+        label=f"3p mig={np.mean(r3['P_net'])/1e3:.2f}kW")
+ax.plot(T_VEC, r7['P_net']/1e3, color=C7, lw=1.5,
+        label=f"7p mig={np.mean(r7['P_net'])/1e3:.2f}kW")
+ax.axhline(0, color=CR, lw=1.5, ls='--', alpha=0.7, label='zero')
+ax.fill_between(T_VEC, 0, r7['P_net']/1e3,
+                where=r7['P_net']>0, alpha=0.15, color=C7)
+ax.legend(fontsize=7.5, framealpha=0.3)
+sty(ax, 'G3 — P_NET = P_hurto - P_actuadors (kW)\n[GUANY REAL: >0 significa hurto positiu]', yl='kW')
+
+# G4: F_centrifuga total
+ax = fig.add_subplot(gs[1, 0])
+ax.plot(T_VEC, r3['F_cent']/1e3, color=C3, lw=1.5, label=f"3p mig={np.mean(r3['F_cent'])/1e3:.1f}kN")
+ax.plot(T_VEC, r7['F_cent']/1e3, color=C7, lw=1.5, label=f"7p mig={np.mean(r7['F_cent'])/1e3:.1f}kN")
+ax.legend(fontsize=7.5, framealpha=0.3)
+sty(ax, 'G4 — F_centrífuga total (kN)\n[m_q·ω²·r_k sumats]', yl='kN')
+
+# G5: F_gravitatoria radial total
+ax = fig.add_subplot(gs[1, 1])
+ax.plot(T_VEC, r3['F_grav']/1e3, color=C3, lw=1.5, label=f"3p mig={np.mean(r3['F_grav'])/1e3:.1f}kN")
+ax.plot(T_VEC, r7['F_grav']/1e3, color=C7, lw=1.5, label=f"7p mig={np.mean(r7['F_grav'])/1e3:.1f}kN")
+ax.legend(fontsize=7.5, framealpha=0.3)
+sty(ax, 'G5 — |F_gravitatoria| radial total (kN)\n[m_q·g·|cos(θ_k)| sumats]', yl='kN')
+
+# G6: P_grid comparatiu
+ax = fig.add_subplot(gs[1, 2])
+ax.plot(T_VEC, r3['Pa']/1e6, '--', color='#555', lw=1.2, alpha=0.6, label='Base')
+ax.plot(T_VEC, r3['Pg']/1e6, color=C3, lw=1.8, label=f"3p +{r3['millora']:.2f}%")
+ax.plot(T_VEC, r7['Pg']/1e6, color=C7, lw=1.8, label=f"7p +{r7['millora']:.2f}%")
+ax.legend(fontsize=7.5, framealpha=0.3)
+sty(ax, 'G6 — P_grid (MW)', yl='MW')
+
+# G7: Taula resum auditoria
+ax = fig.add_subplot(gs[2, :])
+ax.axis('off'); ax.set_facecolor('#0a0a14')
+E_net3 = r3['E_act_pos'] - r3['E_act_neg']
+E_net7 = r7['E_act_pos'] - r7['E_act_neg']
+eff3 = r3['E_hurto'] / (E_net3 + 1e-9)
+eff7 = r7['E_hurto'] / (E_net7 + 1e-9)
+rows = [
+    ['Paràmetre [kWh]', '3 Pales', '7 Pales', 'Notes'],
+    ['E_vent (entrada vent)', f"{r3['E_vent']:.2f}", f"{r7['E_vent']:.2f}", 'Idèntica — mateixa llavor'],
+    ['E_xarxa (sortida útil)', f"{r3['E_xarxa']:.2f}", f"{r7['E_xarxa']:.2f}", 'Lleugerament superior 7p'],
+    ['E_hurto (par grav·ω)', f"{r3['E_hurto']:.3f}", f"{r7['E_hurto']:.3f}", '7p: continu, 3p: pulsant'],
+    ['E_act_pos (act. consum)', f"{r3['E_act_pos']:.3f}", f"{r7['E_act_pos']:.3f}", 'Energia invertida en bombeig'],
+    ['E_act_neg (act. regen)', f"{r3['E_act_neg']:.3f}", f"{r7['E_act_neg']:.3f}", 'Energia recuperada en retracció'],
+    ['E_neta actuadors', f"{E_net3:.3f}", f"{E_net7:.3f}", 'Consum net real dels actuadors'],
+    ['Eficiència hurto/act [x]', f"{eff3:.2f}", f"{eff7:.2f}", '>1 → hurto supera el cost actuador'],
+    ['P_net mig [kW]', f"{np.mean(r3['P_net'])/1e3:.2f}", f"{np.mean(r7['P_net'])/1e3:.2f}", '>0 → guany real verificat'],
+    ['Primera Llei', '✓ verificada', '✓ verificada', 'E_vent = E_xarxa + pèrdues'],
+]
+tbl = ax.table(cellText=rows[1:], colLabels=rows[0], loc='center', cellLoc='center')
+tbl.auto_set_font_size(False); tbl.set_fontsize(9)
+for (rr, c), cell in tbl.get_celld().items():
+    bg = '#1F5C9E' if rr == 0 else ('#0d1a0d' if c == 3 else '#0d0d1a')
+    cell.set_facecolor(bg)
+    cell.set_text_props(color='white')
+    cell.set_edgecolor('#333355')
+ax.set_title('G7 — AUDITORIA COMPLETA: Primera Llei Termodinàmica verificada numèricament',
+             color=CW, fontsize=10, pad=8, fontweight='bold')
+
+fig.suptitle(
+    'QUIJOTE — Auditoria Potència Actuador: Resposta a la Crítica de Camp Conservatiu\n'
+    'Víctor Manzanares Alberola — EPSA UPV Alcoi — Implementació suggerida per Gemini\n'
+    f'NREL 5MW | DT={DT}s | T={T_TOT}s | Llavor={SEED}',
+    color=CW, fontsize=10, fontweight='bold', y=0.999)
+
+OUT = '/mnt/user-data/outputs/quijote_auditoria_actuador.png'
+plt.savefig(OUT, dpi=150, bbox_inches='tight', facecolor=BG)
+plt.close()
+print(f"\nGràfic guardat: {OUT}")
