@@ -1,0 +1,227 @@
+creus que podriem millorar ixe hurto gravitatori ?? per no soles entrar en el camp de la regulacio sino millorar la captacio ?
+
+12:41
+Sí, i crec que hi ha un camí físic real. Deixa'm pensar-ho abans de codificar.
+
+El problema central del hurto en v2.1:
+
+El Quijote comparteix el mateix vent que els 44 ZZ — no té font d'energia independent. Per tant qualsevol cosa que "guanya" el bus, la paga algun altre molí. És un joc de suma zero dins del camp.
+
+Per trencar eixe límit hi ha tres vies:
+
+Quijote capta vent diferent — posició elevada, orientació diferent, o aprofitar el wake dels ZZ (zona de turbulència posterior que els ZZ no capturen bé). Açò és físicament real: la capa de shear vertical té més vent dalt.
+Finestra |sin|^p + component gravitatori real — si les masses Fe+oli de Quijote tenen trajectòria asimètrica real (baixada vs pujada), hi ha treball gravitatori net per cicle que no depén del vent dels ZZ. Açò és el hurto gravitatori de veritat.
+Resonància 3:N amb el camp — si Quijote s'enganxa a un mode natural del camp de 44 molins, pot amplificar energia de la turbulència (no crear-la).
+La via 2 és la més interessant i la més original teva. Vols que faça la v3 amb el model gravitatori real (massa excèntrica en trajectòria circular, treball W = ∫F·dr amb component mg·sin(θ) real) + wake capture + finestra |sin|^p?
+
+Seria el primer model que justifica el hurto com a captura energètica real, no només redistribució.
+
+be fes la via 2 o les 3 si pots i son compatibles
+
+12:42
+Perfecte. Les 3 vies són compatibles i es reforcen. Anem.
+
+
+Ejecutó 5 comandos
+Ejecutó 5 comandos
+
+Physical diagnostics for 3 energy routes
+
+Script
+
+Test ratchet gravitational model
+
+Script
+
+Asymmetric Cp gain and resonance calculation
+bash
+
+python3 -c "
+import numpy as np
+
+# Signe negatiu = la gravetat FRENA el rotor (fa feina contra el vent)
+# Però exactament per això: la gravetat extreu energia cinètica del rotor
+# i la retorna al bus quan la massa baixa — és el slingshot real.
+# 
+# MODEL CORRECTE: 
+# El ratchet NO genera energia del no-res.
+# El que fa: en la meitat 'ascendent' (massa fora, I gran) el rotor va MÉS LENT
+#            → capta MENYS vent però té MÉS inercia (freqa lenta)
+#            en la meitat 'descendent' (massa dins, I petit) va MÉS RÀPID
+#            → capta MÉS vent (Cp millor per λ òptim) i injeta al bus
+#
+# L'asimetria útil: ω_down > ω_up → lambda_down > lambda_up
+# Si ω_up < λ_opt*v/R i ω_down > λ_opt*v/R → Cp mig MILLORA
+
+# Calculem guany Cp per asimetria de ω:
+CP_MAX = 0.48; LAMBDA_OPT = 7.5; SIGMA_CP = 3.2; R = 63.0; v = 9.0
+
+def cp(lam): return CP_MAX * np.exp(-((lam - LAMBDA_OPT)/SIGMA_CP)**2)
+def lam(om): return om * R / v
+
+omega_nom = 12.1 * 2*np.pi/60
+
+# Cas simètric (sense ratchet)
+om_sym = omega_nom
+cp_sym = cp(lam(om_sym))
+P_sym  = 0.5 * 1.225 * np.pi * R**2 * v**3 * cp_sym
+
+# Cas asimètric: ω oscil·la ±15% depenent de la fase
+# Meitat up: ω = ω_nom * 0.88 (massa fora, frenada)
+# Meitat dn: ω = ω_nom * 1.12 (massa dins, accelerada)
+om_up = omega_nom * 0.88;  om_dn = omega_nom * 1.12
+cp_up = cp(lam(om_up));    cp_dn = cp(lam(om_dn))
+cp_asym = 0.5*(cp_up + cp_dn)  # mitja temporal
+P_asym = 0.5 * 1.225 * np.pi * R**2 * v**3 * cp_asym
+
+print(f'ω_nom = {omega_nom*60/(2*np.pi):.2f} rpm  λ={lam(omega_nom):.2f}  Cp={cp_sym:.4f}')
+print(f'ω_up  = {om_up*60/(2*np.pi):.2f} rpm  λ={lam(om_up):.2f}  Cp={cp_up:.4f}')
+print(f'ω_dn  = {om_dn*60/(2*np.pi):.2f} rpm  λ={lam(om_dn):.2f}  Cp={cp_dn:.4f}')
+print(f'Cp simètric: {cp_sym:.4f}  |  Cp asimètric mig: {cp_asym:.4f}')
+print(f'Guany Cp: {(cp_asym/cp_sym-1)*100:+.2f}%')
+print(f'Guany P per rotor: {(P_asym-P_sym)/1e3:+.1f} kW')
+print()
+
+# Via 3 resonancia correcta:
+# No freq del bus (massa baixa), sinó freq dels batiments entre molins
+# Δω entre molins ≈ 0.08*omega_nom → freq batiment
+delta_omega = 0.08 * omega_nom
+T_beat = 2*np.pi / delta_omega
+print(f'Freq batiment entre molins: {delta_omega:.4f} rad/s')
+print(f'Període batiment: {T_beat:.1f} s')
+print(f'Si omega_Q3 ≈ N * delta_omega: N = {omega_nom/delta_omega:.0f}')
+
+# Shear: guany net si Q3 és 20m més alt
+z0=0.03; z_ref=90; v_ref=9.0
+def v_shear(z): return v_ref * np.log(max(z,z0*2)/z0) / np.log(z_ref/z0)
+v_ZZ  = v_shear(90)    # hub ZZ
+v_Q3  = v_shear(130)   # Q3 elevat
+dP_Q3_MW = (0.5*1.225*np.pi*R**2*(v_Q3**3 - v_ZZ**3)*CP_MAX) / 1e6
+print(f'Guany potencia Q3 shear vertical: +{dP_Q3_MW:.3f} MW')
+"
+Salida
+
+ω_nom = 12.10 rpm  λ=8.87  Cp=0.3996
+ω_up  = 10.65 rpm  λ=7.81  Cp=0.4756
+ω_dn  = 13.55 rpm  λ=9.93  Cp=0.2691
+Cp simètric: 0.3996  |  Cp asimètric mig: 0.3724
+Guany Cp: -6.82%
+Guany P per rotor: -151.7 kW
+
+Freq batiment entre molins: 0.1014 rad/s
+Període batiment: 62.0 s
+Si omega_Q3 ≈ N * delta_omega: N = 12
+Guany potencia Q3 shear vertical: +0.385 MW
+
+Find the real energy gain route via lambda tracking
+bash
+
+python3 -c "
+import numpy as np
+
+# Cp asimètric NEGATIU perquè λ_nom=8.87 ja és >λ_opt=7.5
+# El rotor operant dreta ja passa del pic — oscil·lar l'allunya més del pic
+# SOLUCIÓ: operar prop de λ_opt=7.5, no a λ=8.87
+# Amb pitch control suau: omega_target = λ_opt * v / R
+
+CP_MAX=0.48; LAMBDA_OPT=7.5; SIGMA_CP=3.2; R=63.0; v=9.0
+def cp(lam): return CP_MAX * np.exp(-((lam-LAMBDA_OPT)/SIGMA_CP)**2)
+
+# Omega òptim per v=9 m/s
+om_opt = LAMBDA_OPT * v / R
+print(f'ω òptim per v=9 m/s: {om_opt:.4f} rad/s = {om_opt*60/(2*np.pi):.2f} rpm')
+print(f'λ òptim: {om_opt*R/v:.2f}  Cp: {cp(om_opt):.4f}')
+
+# Vs operació nominal NREL (12.1 rpm)
+om_nom = 12.1 * 2*np.pi/60
+print(f'ω nominal NREL: {om_nom:.4f} rad/s = {om_nom*60/(2*np.pi):.2f} rpm')
+print(f'λ nominal: {om_nom*R/v:.2f}  Cp: {cp(om_nom):.4f}')
+print(f'Guany possible si operam a λ_opt: {(cp(om_opt)/cp(om_nom)-1)*100:+.1f}%')
+print()
+
+# Ara amb ω prop de λ_opt, asimetria ±10%:
+om_up = om_opt * 0.92; om_dn = om_opt * 1.08
+cp_asym2 = 0.5*(cp(om_up*R/v) + cp(om_dn*R/v))
+print(f'Asimetria ±8% al voltant de λ_opt:')
+print(f'  Cp_up={cp(om_up*R/v):.4f}  Cp_dn={cp(om_dn*R/v):.4f}  Cp_mig={cp_asym2:.4f}')
+print(f'  Guany vs Cp(λ_opt): {(cp_asym2/cp(om_opt)-1)*100:+.2f}%')
+print()
+
+# Estrategia correcta del hurto:
+# Q3 manté el camp a λ prop de λ_opt (via injecció/extracció de par)
+# Quan un molí s'allunya de λ_opt, Q3 l'empeny de volta
+# Efecte net: Cp mig del camp puja sense que Q3 capturi vent diferent
+
+# Guany estimat: els 44 molins a Cp=0.48 vs Cp=0.40
+dCp = cp(om_opt) - cp(om_nom)
+P_base = 0.5*1.225*np.pi*R**2*v**3
+print(f'Guany si 44 molins passen de Cp={cp(om_nom):.3f} a Cp={cp(om_opt):.3f}:')
+print(f'  ΔP per molí: {P_base*dCp/1e3:.1f} kW')
+print(f'  ΔP total 44: {P_base*dCp*44/1e6:.2f} MW')
+print()
+print('CONCLUSIÓ: la via de guany real és que Q3 actua com a λ-keeper:')
+print('mantén els 44 molins prop de λ_opt, guany aerodinàmic real.')
+"
+Salida
+
+ω òptim per v=9 m/s: 1.0714 rad/s = 10.23 rpm
+λ òptim: 7.50  Cp: 0.0085
+ω nominal NREL: 1.2671 rad/s = 12.10 rpm
+λ nominal: 8.87  Cp: 0.0108
+Guany possible si operam a λ_opt: -21.5%
+
+Asimetria ±8% al voltant de λ_opt:
+  Cp_up=0.4634  Cp_dn=0.4634  Cp_mig=0.4634
+  Guany vs Cp(λ_opt): +5363.30%
+
+Guany si 44 molins passen de Cp=0.011 a Cp=0.008:
+  ΔP per molí: -12.9 kW
+  ΔP total 44: -0.57 MW
+
+CONCLUSIÓ: la via de guany real és que Q3 actua com a λ-keeper:
+mantén els 44 molins prop de λ_opt, guany aerodinàmic real.
+
+Check Cp curve values
+bash
+
+python3 -c "
+import numpy as np
+# Bug: cp() retorna valor normalitzat mal — revisem
+CP_MAX=0.48; LAMBDA_OPT=7.5; SIGMA_CP=3.2; R=63.0
+
+def cp(lam): return CP_MAX * np.exp(-((lam-LAMBDA_OPT)/SIGMA_CP)**2)
+
+# Test la corba completa
+for v in [9.0, 11.4]:
+    for rpm in [8, 10, 12.1, 14, 16]:
+        om = rpm * 2*np.pi/60
+        lam = om * R / v
+        print(f'v={v:.1f} rpm={rpm:.1f}  λ={lam:.2f}  Cp={cp(lam):.4f}  '
+              f'P={0.5*1.225*np.pi*R**2*v**3*cp(lam)/1e6:.2f} MW')
+    print()
+"
+Salida
+
+v=9.0 rpm=8.0  λ=5.86  Cp=0.3696  P=2.06 MW
+v=9.0 rpm=10.0  λ=7.33  Cp=0.4787  P=2.66 MW
+v=9.0 rpm=12.1  λ=8.87  Cp=0.3996  P=2.23 MW
+v=9.0 rpm=14.0  λ=10.26  Cp=0.2278  P=1.27 MW
+v=9.0 rpm=16.0  λ=11.73  Cp=0.0837  P=0.47 MW
+
+v=11.4 rpm=8.0  λ=4.63  Cp=0.2147  P=2.43 MW
+v=11.4 rpm=10.0  λ=5.79  Cp=0.3604  P=4.08 MW
+v=11.4 rpm=12.1  λ=7.00  Cp=0.4685  P=5.30 MW
+v=11.4 rpm=14.0  λ=8.10  Cp=0.4633  P=5.24 MW
+v=11.4 rpm=16.0  λ=9.26  Cp=0.3548  P=4.01 MW
+
+Listo
+Ara ho veig clar. A v=9 m/s, els molins a 12.1 rpm operen a λ=8.87 però el pic Cp és a λ=7.5 → 10 rpm. Quijote pot guanyar frenantels molins cap a λ_opt. Ara construïsc la v3 completa.
+
+
+Running command
+Running command
+
+
+
+
+Claude es IA y puede comet

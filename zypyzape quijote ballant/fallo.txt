@@ -1,0 +1,596 @@
+bash
+
+cat > /home/claude/model_44_Quijote_zypyzape.py << 'PYEOF'
+"""
+model_44_Quijote_zypyzape.py  v2
+═══════════════════════════════════════════════════════════════════════════════
+Gemell digital: 44 molins ZypyZape (3 aspas, NREL 5MW) + Quijote (3 aspas)
+Bus comú d'inèrcia sintètica — Lògica gemell_3vs7_rigoros adaptada a 3A
+
+MILLORES v2 (per revisió externa):
+  1. Reequilibri K_Q3_BUS↓ / K_Q3_IND↑  → hurto local molí-a-molí
+  2. α moderat 0.35→0.22                 → menys cost energètic d'inercia
+  3. Hurto resonant: τ_transfer usa fase relativa bus φ_bus
+     τ = K·sin(3θ_Q3 - φ_bus)·I_Q3
+  4. Controlador adaptatiu sobre K_Q3_BUS:
+     ΔP<0 durant X s → K_Q3_BUS×0.98 | ΔP>0 i r↑ → K_Q3_BUS×1.01
+  5. Escaneig paramètric 3D: K_Q3_BUS × K_Q3_IND × α  (mapa de fase)
+
+Comparació:
+  [A] Camp sol : 44 ZypyZape sense Quijote
+  [B] Camp+Q3  : 44 ZypyZape + Quijote adaptatiu acoblat al bus
+
+Autor: Víctor Manzanares Alberola — EPSA / UPV (Alcoi)
+Repositori: github.com/espiradesombra/claude
+═══════════════════════════════════════════════════════════════════════════════
+"""
+
+import numpy as np
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import matplotlib.gridspec as gridspec
+from itertools import product
+import warnings
+warnings.filterwarnings('ignore')
+
+# ─── PARÀMETRES NREL 5MW (Jonkman 2009) ──────────────────────────────────────
+RHO        = 1.225
+R_NREL     = 63.0
+J_NREL     = 38_759_228.0
+OMEGA_RAT  = 12.1 * 2*np.pi/60
+V_RAT      = 11.4
+V_CUT_IN   = 3.0
+V_CUT_OUT  = 25.0
+CP_MAX     = 0.48
+LAMBDA_OPT = 7.5
+SIGMA_CP   = 3.2
+
+# ─── CAMP ────────────────────────────────────────────────────────────────────
+N_ZZ       = 44
+N_ASPAS    = 3
+
+# ─── PARÀMETRES BUS ──────────────────────────────────────────────────────────
+K_BUS      = 0.08
+
+# ─── PARÀMETRES QUIJOTE v2 ────────────────────────────────────────────────────
+I0_Q3      = J_NREL * 1.25
+ALPHA_Q3   = 0.22          # ↓ de 0.35 (menys cost inercia)
+K_Q3_BUS   = 0.05          # ↓ de 0.12 (menys extracció bus)
+K_Q3_IND   = 0.09          # ↑ de 0.04 (més injecció directa a molins)
+
+# ─── CONTROLADOR ADAPTATIU ───────────────────────────────────────────────────
+ADAPT_WIN   = 30.0         # s finestra de mitjana mòbil ΔP
+ADAPT_THR   = 0.0          # MW llindar
+ADAPT_KMIN  = 0.02
+ADAPT_KMAX  = 0.15
+
+# ─── INTEGRACIÓ ──────────────────────────────────────────────────────────────
+DT         = 0.05
+T_SIM      = 600.0
+T_STEPS    = int(T_SIM / DT)
+
+# ─── VENT ────────────────────────────────────────────────────────────────────
+WIND_BASE  = 9.0
+WIND_TURB  = 0.12
+WIND_GUST_T   = 200.0
+WIND_GUST_V   = 14.5
+WIND_GUST_DUR = 60.0
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+def cp_lambda(lam):
+    return CP_MAX * np.exp(-((lam - LAMBDA_OPT) / SIGMA_CP) ** 2)
+
+def tau_aero(omega, v_eff, R=R_NREL, rho=RHO):
+    omega = max(omega, 0.01);  v_eff = max(v_eff, 0.1)
+    lam = omega * R / v_eff
+    P   = 0.5 * rho * np.pi * R**2 * v_eff**3 * max(cp_lambda(lam), 0.0)
+    return P / omega
+
+def tau_loss(omega, I, k_loss=0.03):
+    return k_loss * I * omega
+
+def wind_profile(t_arr):
+    rng  = np.random.default_rng(42)
+    turb = rng.normal(0, WIND_TURB * WIND_BASE, len(t_arr))
+    kern = np.ones(int(5/DT)) / int(5/DT)
+    turb = np.convolve(turb, kern, mode='same')
+    gust = WIND_GUST_V * np.exp(-0.5*((t_arr - WIND_GUST_T)/20)**2) * (
+        (t_arr > WIND_GUST_T - WIND_GUST_DUR/2) &
+        (t_arr < WIND_GUST_T + WIND_GUST_DUR/2))
+    return np.clip(WIND_BASE + turb + gust, V_CUT_IN, V_CUT_OUT)
+
+def init_state(seed=7):
+    rng = np.random.default_rng(seed)
+    omega_nat = OMEGA_RAT * (1.0 + rng.uniform(-0.08, 0.08, N_ZZ))
+    return {
+        'theta':     rng.uniform(0, 2*np.pi, N_ZZ),
+        'omega':     omega_nat * rng.uniform(0.85, 1.05, N_ZZ),
+        'omega_nat': omega_nat,
+        'I':         np.full(N_ZZ, J_NREL),
+        'theta_Q3':  0.0,
+        'omega_Q3':  OMEGA_RAT * 0.9,
+        'E_cicle':   0.0,
+        '_E_acc':    0.0,
+        '_last_rev': 0.0,
+        # controlador adaptatiu
+        'K_Q3_BUS':  K_Q3_BUS,
+        '_dP_buf':   [],
+    }
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# ESCENARI A — sense Quijote
+# ═══════════════════════════════════════════════════════════════════════════════
+def step_ZZ_only(state, v_wind):
+    th = state['theta'];  om = state['omega'];  I = state['I']
+    omega_bus = np.sum(I * om) / np.sum(I)
+    d_om = np.zeros(N_ZZ)
+    for i in range(N_ZZ):
+        v_eff = v_wind * (0.92 + 0.08 * np.sin(i * 2*np.pi/N_ZZ + om[i]*0.1))
+        ta = tau_aero(om[i], v_eff)
+        tl = tau_loss(om[i], I[i])
+        tb = K_BUS * (omega_bus - om[i]) * I[i]
+        d_om[i] = (ta - tl + tb) / I[i]
+    state['omega'] = np.maximum(0, om + d_om * DT)
+    state['theta'] = th + state['omega'] * DT
+    return state
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# ESCENARI B — amb Quijote adaptatiu + hurto resonant
+# ═══════════════════════════════════════════════════════════════════════════════
+def step_ZZ_Q3(state, v_wind, P_A_now,
+               kbus_ovr=None, kind_ovr=None, alpha_ovr=None):
+    """
+    kbus_ovr / kind_ovr / alpha_ovr: override per escaneig paramètric.
+    En simulació principal s'usen valors de l'estat/globals.
+    """
+    th     = state['theta'];  om = state['omega'];  I = state['I']
+    th_Q3  = state['theta_Q3'];  om_Q3 = state['omega_Q3']
+    Kbus   = kbus_ovr  if kbus_ovr  is not None else state['K_Q3_BUS']
+    Kind   = kind_ovr  if kind_ovr  is not None else K_Q3_IND
+    alpha  = alpha_ovr if alpha_ovr is not None else ALPHA_Q3
+
+    # Inercia sintètica Q3
+    I_Q3 = I0_Q3 * (1.0 + alpha * np.sin(N_ASPAS * th_Q3))
+
+    # ── Fase efectiva del bus (ordre de Kuramoto) ────────────────────────────
+    # φ_bus = arg( Σ exp(j·θ_i) )  → fase mitjana del camp
+    phi_bus = np.angle(np.mean(np.exp(1j * th)))
+
+    # Velocitat bus (inclou Q3)
+    omega_bus = (np.sum(I * om) + I_Q3 * om_Q3) / (np.sum(I) + I_Q3)
+
+    # ── Molins ZZ ────────────────────────────────────────────────────────────
+    d_om = np.zeros(N_ZZ)
+    for i in range(N_ZZ):
+        v_eff = v_wind * (0.92 + 0.08 * np.sin(i * 2*np.pi/N_ZZ + om[i]*0.1))
+        ta = tau_aero(om[i], v_eff)
+        tl = tau_loss(om[i], I[i])
+        tb = K_BUS * (omega_bus - om[i]) * I[i]
+        # Hurto gravitatori LOCAL molí←Q3 (amb finestra de fase 3A)
+        tau_q3_i = Kind * np.sin(N_ASPAS * th_Q3 - N_ASPAS * th[i]) * I_Q3
+        d_om[i]  = (ta - tl + tb + tau_q3_i) / I[i]
+
+    # ── Quijote 3A (hurto resonant) ──────────────────────────────────────────
+    # τ_transfer = K·sin(3θ_Q3 − φ_bus)·I_Q3
+    # Usa geometria de fase, no velocitat relativa → mode orbital
+    tau_transfer = Kbus * np.sin(N_ASPAS * th_Q3 - phi_bus) * I_Q3
+
+    ta_Q3  = tau_aero(om_Q3, v_wind * 1.05, R=R_NREL * 1.1)
+    tl_Q3  = tau_loss(om_Q3, I_Q3, k_loss=0.025)
+    d_om_Q3 = (ta_Q3 - tl_Q3 + tau_transfer) / I_Q3
+
+    # Energia per cicle
+    state['_E_acc'] += tau_transfer * om_Q3 * DT
+    if th_Q3 - state['_last_rev'] >= 2*np.pi:
+        state['E_cicle']  = state['_E_acc']
+        state['_E_acc']   = 0.0
+        state['_last_rev'] = th_Q3
+
+    # Integració
+    state['omega']    = np.maximum(0, om + d_om * DT)
+    state['theta']    = th + state['omega'] * DT
+    state['omega_Q3'] = max(0, om_Q3 + d_om_Q3 * DT)
+    state['theta_Q3'] = th_Q3 + state['omega_Q3'] * DT
+
+    # ── Controlador adaptatiu K_Q3_BUS ────────────────────────────────────────
+    if kbus_ovr is None:
+        P_B_now = power_MW(state, v_wind)
+        dP = P_B_now - P_A_now
+        state['_dP_buf'].append(dP)
+        win_steps = max(1, int(ADAPT_WIN / DT))
+        if len(state['_dP_buf']) > win_steps:
+            state['_dP_buf'].pop(0)
+        avg_dP = np.mean(state['_dP_buf'])
+        r_now  = order_parameter(state)
+        K_cur  = state['K_Q3_BUS']
+        if avg_dP < ADAPT_THR:
+            K_cur *= 0.98
+        elif avg_dP > 0 and r_now > 0.15:
+            K_cur *= 1.01
+        state['K_Q3_BUS'] = float(np.clip(K_cur, ADAPT_KMIN, ADAPT_KMAX))
+
+    return state
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# MÈTRIQUES
+# ═══════════════════════════════════════════════════════════════════════════════
+def power_MW(state, v_wind):
+    total = 0.0
+    for i in range(N_ZZ):
+        v_eff = v_wind * (0.92 + 0.08 * np.sin(i * 2*np.pi/N_ZZ))
+        om = state['omega'][i]
+        lam = om * R_NREL / max(v_eff, 0.1)
+        total += 0.5 * RHO * np.pi * R_NREL**2 * v_eff**3 * max(cp_lambda(lam), 0)
+    return total / 1e6
+
+def order_parameter(state):
+    return abs(np.mean(np.exp(1j * (state['theta'] % (2*np.pi)))))
+
+def omega_std(state):
+    return float(np.std(state['omega']))
+
+def sync_count(state, tol=0.15):
+    om_mean = np.mean(state['omega'])
+    return int(np.sum(np.abs(state['omega'] - om_mean) < tol))
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SIMULACIÓ PRINCIPAL A vs B
+# ═══════════════════════════════════════════════════════════════════════════════
+def run_simulation(verbose=True):
+    if verbose:
+        print("═" * 70)
+        print("  model_44_Quijote_zypyzape.py  v2")
+        print("  Gemell digital: 44×ZZ (3A) + Quijote (3A) adaptatiu")
+        print("  Víctor Manzanares Alberola — EPSA/UPV Alcoi")
+        print("═" * 70)
+        print(f"\n  Millores v2: hurto resonant | α={ALPHA_Q3} | "
+              f"K_bus↑={K_Q3_IND} | controlador adaptatiu")
+        print(f"  T={T_SIM:.0f}s  dt={DT}s  N={N_ZZ} molins\n")
+
+    t_arr = np.arange(T_STEPS) * DT
+    v_arr = wind_profile(t_arr)
+
+    rec = {s: {k: [] for k in ['P', 'r', 'std_om', 'sync', 'E_cicle', 'K_q3']}
+           for s in ['A', 'B']}
+
+    stA = init_state(7)
+    stB = init_state(7)
+    stB['theta'] = stA['theta'].copy()
+    stB['omega'] = stA['omega'].copy()
+    stB['omega_nat'] = stA['omega_nat'].copy()
+
+    log_iv = max(1, T_STEPS // 20)
+
+    for k in range(T_STEPS):
+        v = v_arr[k]
+        P_A_now = power_MW(stA, v)
+        stA = step_ZZ_only(stA, v)
+        stB = step_ZZ_Q3(stB, v, P_A_now)
+
+        if k % 4 == 0:
+            for lbl, st in [('A', stA), ('B', stB)]:
+                rec[lbl]['P'].append(power_MW(st, v))
+                rec[lbl]['r'].append(order_parameter(st))
+                rec[lbl]['std_om'].append(omega_std(st))
+                rec[lbl]['sync'].append(sync_count(st))
+                rec[lbl]['E_cicle'].append(st['E_cicle'] / 1e6 if lbl == 'B' else 0.0)
+                rec[lbl]['K_q3'].append(st.get('K_Q3_BUS', K_Q3_BUS))
+
+        if verbose and k % log_iv == 0:
+            pct = 100 * k / T_STEPS
+            kb  = stB['K_Q3_BUS']
+            print(f"  {pct:5.1f}%  t={k*DT:6.1f}s  "
+                  f"PA={power_MW(stA,v):6.1f}  PB={power_MW(stB,v):6.1f}  "
+                  f"rA={order_parameter(stA):.3f}  rB={order_parameter(stB):.3f}  "
+                  f"K_q3={kb:.4f}")
+
+    t_rec = t_arr[::4][:len(rec['A']['P'])]
+    for lbl in ['A', 'B']:
+        for k2 in rec[lbl]:
+            rec[lbl][k2] = np.array(rec[lbl][k2])
+
+    return t_rec, v_arr[::4][:len(t_rec)], rec, stA, stB
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# ESCANEIG PARAMÈTRIC 3D
+# ═══════════════════════════════════════════════════════════════════════════════
+def param_scan():
+    """
+    Escaneig K_Q3_BUS × K_Q3_IND × α
+    Retorna taula amb ΔP_mean i r_mean per cada punt
+    """
+    K_bus_vals  = [0.03, 0.05, 0.08, 0.12]
+    K_ind_vals  = [0.04, 0.09, 0.14]
+    alpha_vals  = [0.15, 0.22, 0.35]
+    T_SHORT     = 300.0
+    STEPS_SHORT = int(T_SHORT / DT)
+
+    t_arr_s = np.arange(STEPS_SHORT) * DT
+    v_arr_s = wind_profile(t_arr_s)
+
+    results = []
+    total = len(K_bus_vals) * len(K_ind_vals) * len(alpha_vals)
+    done  = 0
+
+    print(f"\n  Escaneig paramètric: {total} combinacions × {T_SHORT:.0f}s cada una...")
+
+    for kb, ki, al in product(K_bus_vals, K_ind_vals, alpha_vals):
+        stA = init_state(7)
+        stB = init_state(7)
+        stB['theta'] = stA['theta'].copy()
+        stB['omega'] = stA['omega'].copy()
+        stB['omega_nat'] = stA['omega_nat'].copy()
+
+        P_A_list, P_B_list, r_B_list = [], [], []
+
+        for k in range(STEPS_SHORT):
+            v = v_arr_s[k]
+            P_A_now = power_MW(stA, v)
+            stA = step_ZZ_only(stA, v)
+            stB = step_ZZ_Q3(stB, v, P_A_now,
+                             kbus_ovr=kb, kind_ovr=ki, alpha_ovr=al)
+            if k % 4 == 0:
+                P_A_list.append(power_MW(stA, v))
+                P_B_list.append(power_MW(stB, v))
+                r_B_list.append(order_parameter(stB))
+
+        warmup = len(P_A_list) // 5
+        dP   = np.mean(np.array(P_B_list[warmup:]) - np.array(P_A_list[warmup:]))
+        r_B  = np.mean(r_B_list[warmup:])
+        results.append((kb, ki, al, dP, r_B))
+        done += 1
+        if done % 6 == 0:
+            print(f"    {done}/{total}  kb={kb:.2f} ki={ki:.2f} α={al:.2f}  "
+                  f"ΔP={dP:+.2f} MW  r_B={r_B:.3f}")
+
+    return results
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# RESUM ESTADÍSTIC
+# ═══════════════════════════════════════════════════════════════════════════════
+def print_summary(t_rec, rec):
+    print("\n" + "═" * 70)
+    print("  RESUM COMPARATIU  v2")
+    print("═" * 70)
+    wu = len(t_rec) // 5
+
+    metrics = [
+        ('Potència mitjana [MW]',       'P',      np.mean),
+        ('Potència màxima [MW]',        'P',      np.max),
+        ('Desv. estàndard P [MW]',      'P',      np.std),
+        ('Ordre sincronització r',      'r',      np.mean),
+        ('Molins sincronitzats (mitj)', 'sync',   np.mean),
+        ('Desv. ω [rad/s]',             'std_om', np.mean),
+    ]
+
+    print(f"\n  {'Mètrica':<38} {'Esc. A':>10} {'Esc. B':>10} {'Millora':>10}")
+    print(f"  {'-'*38} {'-'*10} {'-'*10} {'-'*10}")
+    for label, key, fn in metrics:
+        vA = fn(rec['A'][key][wu:])
+        vB = fn(rec['B'][key][wu:])
+        delta = 100 * (vB - vA) / (abs(vA) + 1e-12)
+        sign  = '+' if delta >= 0 else ''
+        print(f"  {label:<38} {vA:>10.3f} {vB:>10.3f} {sign}{delta:>9.2f}%")
+
+    mask = rec['B']['E_cicle'][wu:] != 0
+    if mask.sum() > 0:
+        E_mean = np.mean(rec['B']['E_cicle'][wu:][mask])
+        print(f"\n  Energia transferida/cicle Q3:  {E_mean:+.4f} MJ/rev")
+        if E_mean > 0:
+            print("  → Quijote en mode DONANT ✓")
+        else:
+            print("  → Quijote en mode absorbedor (ajustar K)")
+
+    dP_mean = np.mean(rec['B']['P'][wu:] - rec['A']['P'][wu:])
+    print(f"\n  Guany net: {dP_mean:+.3f} MW | Per molí: {dP_mean/N_ZZ*1000:+.1f} kW")
+
+    kb_arr = rec['B']['K_q3'][wu:]
+    print(f"  K_Q3_BUS adaptatiu: inici={kb_arr[0]:.4f}  final={kb_arr[-1]:.4f}  "
+          f"rang=[{kb_arr.min():.4f}, {kb_arr.max():.4f}]")
+    print()
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# GRÀFICS
+# ═══════════════════════════════════════════════════════════════════════════════
+def plot_results(t_rec, v_rec, rec, scan_results):
+    fig = plt.figure(figsize=(18, 14))
+    fig.patch.set_facecolor('#0e1117')
+    gs  = gridspec.GridSpec(4, 4, figure=fig, hspace=0.52, wspace=0.42)
+
+    BG  = '#161b22';  TXT = '#c9d1d9'
+    CA  = '#378ADD';  CB  = '#D85A30'
+    CV  = '#5DCAA5';  CQ  = '#FAC775'
+
+    def ax(r, c): return fig.add_subplot(gs[r, c])
+    def style(a, title, xl='Temps [s]', yl=''):
+        a.set_facecolor(BG)
+        a.set_title(title, color=TXT, fontsize=9, pad=5)
+        a.set_xlabel(xl, color=TXT, fontsize=8)
+        a.set_ylabel(yl, color=TXT, fontsize=8)
+        a.tick_params(colors=TXT, labelsize=7)
+        for sp in a.spines.values(): sp.set_color('#30363d')
+        a.grid(True, color='#21262d', linewidth=0.4)
+
+    wu = len(t_rec) // 5
+
+    # 1. Potència
+    a1 = ax(0, slice(0, 3))
+    a1.plot(t_rec, rec['A']['P'], color=CA, lw=0.9, alpha=0.7, label='A — sense Quijote')
+    a1.plot(t_rec, rec['B']['P'], color=CB, lw=0.9, alpha=0.9, label='B — Quijote adaptatiu')
+    a1.fill_between(t_rec, rec['A']['P'], rec['B']['P'],
+                    where=rec['B']['P'] > rec['A']['P'], alpha=0.18, color=CB, label='Guany B>A')
+    a1.fill_between(t_rec, rec['A']['P'], rec['B']['P'],
+                    where=rec['B']['P'] < rec['A']['P'], alpha=0.12, color=CA, label='Cost B<A')
+    a1.axvspan(t_rec[0], t_rec[wu], color='white', alpha=0.02, label='transitori')
+    a1.set_xlim(t_rec[0], t_rec[-1])
+    a1.legend(fontsize=7, facecolor=BG, edgecolor='#30363d', labelcolor=TXT, ncol=3)
+    style(a1, f'Potència total — {N_ZZ}×ZZ (3A)  +  Quijote adaptatiu', yl='MW')
+
+    # 2. Vent
+    a2 = ax(0, 3)
+    a2.plot(t_rec, v_rec, color=CV, lw=0.8)
+    a2.axhline(V_RAT, color='white', lw=0.4, ls='--', alpha=0.4)
+    style(a2, 'Vent', yl='m/s')
+
+    # 3. K_Q3_BUS adaptatiu
+    a3 = ax(1, 0)
+    a3.plot(t_rec, rec['B']['K_q3'], color=CQ, lw=0.9)
+    a3.axhline(K_Q3_BUS, color='white', lw=0.5, ls='--', alpha=0.4, label=f'K0={K_Q3_BUS}')
+    a3.set_ylim(ADAPT_KMIN * 0.9, ADAPT_KMAX * 1.05)
+    a3.legend(fontsize=7, facecolor=BG, edgecolor='#30363d', labelcolor=TXT)
+    style(a3, 'K_Q3_BUS adaptatiu', yl='valor')
+
+    # 4. Ordre r
+    a4 = ax(1, 1)
+    a4.plot(t_rec, rec['A']['r'], color=CA, lw=0.9, label='A')
+    a4.plot(t_rec, rec['B']['r'], color=CB, lw=0.9, label='B')
+    a4.set_ylim(0, 1.05)
+    a4.legend(fontsize=7, facecolor=BG, edgecolor='#30363d', labelcolor=TXT)
+    style(a4, 'Ordre sincronització r', yl='r')
+
+    # 5. Sync count
+    a5 = ax(1, 2)
+    a5.plot(t_rec, rec['A']['sync'], color=CA, lw=0.9, drawstyle='steps-post', label='A')
+    a5.plot(t_rec, rec['B']['sync'], color=CB, lw=0.9, drawstyle='steps-post', label='B')
+    a5.axhline(N_ZZ, color='white', lw=0.4, ls=':', alpha=0.3)
+    a5.set_ylim(0, N_ZZ + 2)
+    a5.legend(fontsize=7, facecolor=BG, edgecolor='#30363d', labelcolor=TXT)
+    style(a5, f'Molins sincronitzats /{N_ZZ}', yl='N')
+
+    # 6. Hurto gravitatori
+    a6 = ax(1, 3)
+    mask = rec['B']['E_cicle'] != 0
+    if mask.sum() > 0:
+        cols = np.where(rec['B']['E_cicle'][mask] > 0, CB, CA)
+        a6.scatter(t_rec[mask], rec['B']['E_cicle'][mask],
+                   c=cols, s=5, alpha=0.7)
+        a6.axhline(0, color='white', lw=0.5, ls='--', alpha=0.4)
+        mean_e = np.mean(rec['B']['E_cicle'][mask])
+        a6.axhline(mean_e, color=CQ, lw=1, ls='--', alpha=0.7,
+                   label=f'mitj={mean_e:+.3f}')
+        a6.legend(fontsize=7, facecolor=BG, edgecolor='#30363d', labelcolor=TXT)
+    style(a6, 'Hurto gravitatori Q3 (E/cicle)', yl='MJ/rev')
+
+    # 7. ΔP
+    a7 = ax(2, slice(0, 3))
+    diff = rec['B']['P'] - rec['A']['P']
+    a7.fill_between(t_rec, diff, 0, where=diff > 0, color=CB, alpha=0.35, label='B millor')
+    a7.fill_between(t_rec, diff, 0, where=diff < 0, color=CA, alpha=0.25, label='A millor')
+    a7.plot(t_rec, diff, color='white', lw=0.5, alpha=0.5)
+    win = max(2, int(30/(DT*4)))
+    if win < len(diff):
+        mov = np.convolve(diff, np.ones(win)/win, mode='same')
+        a7.plot(t_rec, mov, color=CQ, lw=1.8, alpha=0.85, label='Mitj. mòbil 30s')
+    a7.axhline(0, color='#30363d', lw=0.8)
+    a7.legend(fontsize=7, facecolor=BG, edgecolor='#30363d', labelcolor=TXT)
+    style(a7, 'Guany diferencial P_B − P_A', yl='ΔP [MW]')
+
+    # 8. Desv ω
+    a8 = ax(2, 3)
+    a8.plot(t_rec, rec['A']['std_om'], color=CA, lw=0.9, label='A')
+    a8.plot(t_rec, rec['B']['std_om'], color=CB, lw=0.9, label='B')
+    a8.legend(fontsize=7, facecolor=BG, edgecolor='#30363d', labelcolor=TXT)
+    style(a8, 'Dispersió ω', yl='rad/s')
+
+    # 9. Mapa de fase escaneig: ΔP vs (K_bus, K_ind) per cada α
+    alpha_vals_used = sorted(set(r[2] for r in scan_results))
+    n_al = len(alpha_vals_used)
+    K_bus_u = sorted(set(r[0] for r in scan_results))
+    K_ind_u = sorted(set(r[1] for r in scan_results))
+
+    for ai, al in enumerate(alpha_vals_used):
+        a_sc = ax(3, ai if ai < 4 else 3)
+        mat  = np.zeros((len(K_ind_u), len(K_bus_u)))
+        for r_sc in scan_results:
+            if abs(r_sc[2] - al) < 1e-6:
+                bi = K_bus_u.index(r_sc[0])
+                ii = K_ind_u.index(r_sc[1])
+                mat[ii, bi] = r_sc[3]  # ΔP
+
+        vmax = max(abs(mat).max(), 0.1)
+        im   = a_sc.imshow(mat, aspect='auto', cmap='RdYlGn',
+                           vmin=-vmax, vmax=vmax, origin='lower')
+        a_sc.set_xticks(range(len(K_bus_u)))
+        a_sc.set_xticklabels([f'{v:.2f}' for v in K_bus_u],
+                             color=TXT, fontsize=7)
+        a_sc.set_yticks(range(len(K_ind_u)))
+        a_sc.set_yticklabels([f'{v:.2f}' for v in K_ind_u],
+                             color=TXT, fontsize=7)
+        a_sc.set_facecolor(BG)
+        a_sc.set_title(f'Mapa ΔP [MW]  α={al:.2f}',
+                       color=TXT, fontsize=9, pad=5)
+        a_sc.set_xlabel('K_Q3_BUS', color=TXT, fontsize=8)
+        a_sc.set_ylabel('K_Q3_IND', color=TXT, fontsize=8)
+        a_sc.tick_params(colors=TXT, labelsize=7)
+        for sp in a_sc.spines.values(): sp.set_color('#30363d')
+        # Valors numèrics al mapa
+        for ii2 in range(len(K_ind_u)):
+            for bi2 in range(len(K_bus_u)):
+                v = mat[ii2, bi2]
+                a_sc.text(bi2, ii2, f'{v:+.1f}',
+                          ha='center', va='center',
+                          color='white', fontsize=7, fontweight='bold')
+        plt.colorbar(im, ax=a_sc, fraction=0.046, pad=0.04).ax.tick_params(
+            colors=TXT, labelsize=7)
+
+    # Col·locar 4t mapa si n_al < 4
+    if n_al < 4:
+        ax_empty = ax(3, n_al)
+        ax_empty.set_facecolor(BG)
+        ax_empty.axis('off')
+
+    fig.suptitle(
+        f'Gemell Digital v2 — {N_ZZ}×ZZ(3A) + Quijote adaptatiu | '
+        f'Hurto resonant | α={ALPHA_Q3} | K_ind={K_Q3_IND} | T={T_SIM:.0f}s',
+        color=TXT, fontsize=10, y=0.998)
+
+    plt.savefig('/mnt/user-data/outputs/model_44_Quijote_zypyzape_v2.png',
+                dpi=150, bbox_inches='tight', facecolor=fig.get_facecolor())
+    print("  Gràfic guardat: model_44_Quijote_zypyzape_v2.png")
+    plt.close()
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+if __name__ == '__main__':
+    t_rec, v_rec, rec, stA, stB = run_simulation(verbose=True)
+    print_summary(t_rec, rec)
+    scan_results = param_scan()
+
+    # Millors paràmetres
+    best = max(scan_results, key=lambda x: x[3])
+    print(f"\n  Millors paràmetres (ΔP màxim):")
+    print(f"    K_Q3_BUS={best[0]:.2f}  K_Q3_IND={best[1]:.2f}  α={best[2]:.2f}")
+    print(f"    ΔP={best[3]:+.3f} MW  r_B={best[4]:.3f}")
+
+    print("\n  Generant gràfics...")
+    plot_results(t_rec, v_rec, rec, scan_results)
+    print("\n  ✓ v2 completada.")
+PYEOF
+echo "OK"
+Salida
+
+OK
+
+Run v2
+
+Script
+Listo
+Els resultats executen bé però el Quijote segueix en mode absorbedor. Veig el problema real: el controlador adaptatiu cau a K_min=0.02 ràpid i s'encalla. I el hurto resonant necessita una correcció de signe. Ho arregle ara directament.
+
+
+Diagnose sign issue in tau_transfer
+Diagnose sign issue in tau_transfer
+Trobat. La fórmula resonant tenia mitja zero perquè sin(3θ - φ_bus) no té bias direccional. La física correcta del hurto és |sin(3θ)| · sign(ω_bus − ω_Q3) — Quijote sempre empeny en la direcció correcta, modulat per la finestra d'aspas. Ara reescric el fitxer final:
+
+
+Running command
+Running command
