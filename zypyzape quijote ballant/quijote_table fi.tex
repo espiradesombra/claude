@@ -1,0 +1,22 @@
+% Auto-generat per gemell_quijote_paper_rules.py
+\begin{table}[htbp]
+\centering
+\caption{Hurto gravitatori: comparativa 3 vs 7 aspes en tres modes de control (NREL 5MW, $T=90$\,s). Mode PAPER aplica Ec.~2a/2b; SINUSOIDAL verifica $J$ constant (Ec.~7); CONTROL és el mode pràctic amb compensació centrífuga.}
+\label{tab:hurto_3vs7}
+\begin{tabular}{llrrrrrr}
+\toprule
+$N$ & Mode & $\bar{P}_{\text{hurto}}$ & $\bar{P}_{\text{act}}$ & $\bar{P}_{\text{net}}$ & $\eta_{\text{hurto}}$ & $\Delta P_{\text{grid}}$ & $J_{\text{var}}$ \\
+ & & [kW] & [kW] & [kW] & [$\times$] & [\%] & [\%] \\
+\midrule
+3 & PAPER* & 97.5 & 12.1 & \textbf{+9.01} & 3.01 & -0.14 & 22.0 \\
+3 & PAPER & 97.5 & 12.1 & \textbf{+9.01} & 3.01 & -0.14 & 22.0 \\
+3 & SINUS & 92.2 & 11.7 & \textbf{+9.94} & 3.48 & -0.14 & 16.1 \\
+3 & CONTROL & 115.7 & 12.6 & -15.42 & 8.85 & -0.16 & 16.0 \\
+\midrule
+7 & PAPER* & 245.3 & 24.3 & \textbf{+31.11} & 3.75 & -0.26 & 21.0 \\
+7 & PAPER & 245.3 & 24.3 & \textbf{+31.11} & 3.75 & -0.26 & 21.0 \\
+7 & SINUS & 215.4 & 21.3 & \textbf{+28.94} & 3.94 & -0.24 & 14.8 \\
+7 & CONTROL & 193.3 & 17.2 & -35.89 & 8.88 & -0.22 & 15.4 \\
+\bottomrule
+\end{tabular}
+\end{table}
