@@ -1,0 +1,1299 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+quijote_mantenidor_realista.py
+═══════════════════════════════════════════════════════════════════════════════
+La pregunta honesta: l'estratègia de Víctor (estendre en parat, contraure quan
+cau el vent per mantindre λ òptim) capta prou vent extra per compensar el cost
+de l'actuador?
+
+Compara DUES màquines sobre EL MATEIX perfil de vent realista amb ràfegues:
+  A) Molí normal — inèrcia FIXA
+  B) Molí Quijote — contrau pesos quan cau el vent (manté ω prop de λ_opt)
+
+Mesura: E_vent_captada, E_actuador, E_neta. Tot del vent (no hi ha hurto).
+Balanç energètic complet amb residu.
+
+Víctor Manzanares Alberola — EPSA UPV Alcoi
+═══════════════════════════════════════════════════════════════════════════════
+"""
+import numpy as np
+
+# ── Constants NREL 5MW ────────────────────────────────────────────────────────
+G       = 9.81
+R       = 63.0
+RHO     = 1.225
+A_ROT   = np.pi*R**2
+CP_MAX  = 0.482
+LAM_OPT = 7.55
+P_NOM   = 5.0e6
+m       = 66.5          # massa per pala (×3 pales)
+N_PALES = 3
+R_TIP   = 55.0
+R_HUB   = 5.0
+J_ROTOR = 4.0e7         # inèrcia base rotor NREL
+
+
+def Cp(lam):
+    """Coeficient de potència — pic a LAM_OPT, cau a banda i banda."""
+    if lam <= 0: return 0.0
+    return max(0.0, CP_MAX*(1.0 - ((lam-LAM_OPT)/LAM_OPT)**2))
+
+
+def perfil_vent(T, dt, seed=0):
+    """Vent realista: base + oscil·lació lenta + ràfegues + soroll."""
+    np.random.seed(seed)
+    n = int(T/dt)
+    t = np.arange(n)*dt
+    v = 10.0 + 2.0*np.sin(2*np.pi*t/40)          # oscil·lació lenta
+    # ràfegues (caigudes i pujades sobtades)
+    for t0, amp, durada in [(60,-4,15),(120,3,10),(180,-5,20),(260,4,12),(330,-3,18)]:
+        v += amp*np.exp(-((t-t0)/durada)**2)
+    # soroll Ornstein-Uhlenbeck
+    ou = np.zeros(n)
+    for i in range(1,n):
+        ou[i] = ou[i-1] - 0.3*ou[i-1]*dt + 0.5*np.sqrt(dt)*np.random.randn()
+    v += ou
+    return np.clip(v, 3.0, 25.0)
+
+
+def simula(v_arr, dt, estrategia):
+    """
+    estrategia='fixa'    → r constant (molí normal)
+    estrategia='quijote' → contrau quan el vent cau, estén quan puja
+    Retorna energies (J) i traça.
+    """
+    n = len(v_arr)
+    omega = LAM_OPT*v_arr[0]/R       # comença a λ òptim
+    theta = 0.0
+    r = (R_TIP+R_HUB)/2
+    E_vent = 0.0       # energia capturada del vent (al generador)
+    E_act = 0.0        # treball net actuador (+ = consumeix, − = recupera)
+    E_rot_0 = 0.5*(J_ROTOR + N_PALES*m*r**2)*omega**2
+    v_prev = v_arr[0]
+    om_hist = np.zeros(n); cp_hist = np.zeros(n); r_hist = np.zeros(n)
+
+    for k in range(n):
+        v = v_arr[k]
+        # ── estratègia de control radial ──
+        rdot = 0.0
+        if estrategia == 'quijote':
+            # objectiu: mantindre ω prop de l'òptim per al vent ACTUAL
+            omega_opt = LAM_OPT*v/R
+            error = omega - omega_opt
+            # si ω < òptim (rotor lent) → contraure (r baixa) per accelerar
+            # si ω > òptim (rotor ràpid) → estendre (r puja) per frenar
+            if error < -0.01 and r > R_HUB:
+                rdot = -2.0          # contraure
+            elif error > 0.01 and r < R_TIP:
+                rdot = +2.0          # estendre
+            rdot = np.clip(rdot, -2.0, 2.0)
+        r_new = np.clip(r + rdot*dt, R_HUB, R_TIP)
+        rdot_real = (r_new - r)/dt
+
+        # ── inèrcia i dinàmica ──
+        J = J_ROTOR + N_PALES*m*r**2
+        Jdot = N_PALES*2*m*r*rdot_real
+        lam = omega*R/max(v,0.1)
+        P_vent = 0.5*RHO*A_ROT*Cp(lam)*v**3
+        P_vent = min(P_vent, P_NOM*1.2)         # límit físic
+        tau_vent = P_vent/max(omega,0.1)
+        # generador extrau (carrega la xarxa) — model: extrau cap a P_NOM
+        tau_gen = min(tau_vent, P_NOM/max(omega,0.1))
+        # gravetat (3 pales) — net ~0 sobre la volta, però l'incloem
+        tau_grav = sum(-m*G*r*np.cos(theta + 2*np.pi*i/N_PALES) for i in range(N_PALES))
+        # ω lliure: d(Jω)/dt = τ_vent − τ_gen + τ_grav
+        omega_dot = (tau_vent - tau_gen + tau_grav - Jdot*omega)/J
+        omega += omega_dot*dt
+        omega = max(omega, 0.1)
+        theta += omega*dt
+
+        # ── energia capturada (el que va al generador) ──
+        E_vent += tau_gen*omega*dt
+        # ── cost actuador (moure els N pesos radialment) ──
+        for i in range(N_PALES):
+            th_i = theta + 2*np.pi*i/N_PALES
+            F_cent = m*omega**2*r
+            F_grav_rad = -m*G*np.sin(th_i)
+            F_act = -(F_cent + F_grav_rad)        # força que aplica l'actuador
+            E_act += F_act*rdot_real*dt
+        v_prev = v
+        om_hist[k]=omega; cp_hist[k]=Cp(omega*R/max(v,0.1)); r_hist[k]=r
+        r = r_new
+
+    E_rot_f = 0.5*(J_ROTOR + N_PALES*m*r**2)*omega**2
+    return {
+        'E_vent_kWh': E_vent/3.6e6,
+        'E_act_kWh': E_act/3.6e6,
+        'E_neta_kWh': (E_vent - max(E_act,0))/3.6e6,
+        'dE_rot_kWh': (E_rot_f-E_rot_0)/3.6e6,
+        'cp_mig': np.mean(cp_hist),
+        'om_hist': om_hist, 'cp_hist': cp_hist, 'r_hist': r_hist,
+    }
+
+
+def main():
+    print("█"*70)
+    print("  QUIJOTE MANTENIDOR — capta prou vent extra per pagar l'actuador?")
+    print("█"*70)
+    dt = 0.02
+    T = 400.0
+    v_arr = perfil_vent(T, dt, seed=3)
+    print(f"\n  Perfil de vent: {T:.0f}s, mitjana {v_arr.mean():.2f} m/s, "
+          f"rang [{v_arr.min():.1f}, {v_arr.max():.1f}] m/s")
+    print(f"  Turbina NREL 5MW, {N_PALES} pales, massa mòbil {m} kg/pala\n")
+
+    A = simula(v_arr, dt, 'fixa')
+    B = simula(v_arr, dt, 'quijote')
+
+    print("─"*70)
+    print(f"  {'':28}{'Molí NORMAL':>16}{'Molí QUIJOTE':>16}")
+    print("─"*70)
+    print(f"  {'E_vent captada (kWh)':28}{A['E_vent_kWh']:>16.3f}{B['E_vent_kWh']:>16.3f}")
+    print(f"  {'Cp mitjà':28}{A['cp_mig']:>16.4f}{B['cp_mig']:>16.4f}")
+    print(f"  {'Cost actuador (kWh)':28}{'—':>16}{B['E_act_kWh']:>16.3f}")
+    print("─"*70)
+
+    # comparativa neta
+    guany_brut = B['E_vent_kWh'] - A['E_vent_kWh']     # vent extra captat
+    cost_act = max(B['E_act_kWh'], 0)                  # cost net actuador
+    guany_net = guany_brut - cost_act
+    print(f"\n  Vent EXTRA captat per Quijote:  {guany_brut:+.3f} kWh "
+          f"({100*guany_brut/A['E_vent_kWh']:+.2f}%)")
+    print(f"  Cost de l'actuador:             {cost_act:.3f} kWh")
+    print(f"  GUANY NET:                      {guany_net:+.3f} kWh")
+    print()
+    if guany_net > 0:
+        print(f"  ✓ La simulació demostra guany NET de {guany_net:.2f} kWh")
+        print(f"    captant vent que el molí normal perd en ràfegues.")
+        print(f"    (Energia del VENT mal aprofitat, NO de la gravetat.)")
+    else:
+        print(f"  ✗ El cost de l'actuador supera el vent extra captat.")
+        print(f"    En aquest perfil, el mantenidor no compensa.")
+    print()
+    print("─"*70)
+    print("  INTERPRETACIÓ")
+    print("─"*70)
+    print(f"""
+  Tot el balanç és energia del VENT — no hi ha hurto gravitatori
+  (E_grav net ≈ 0 sobre cada volta, com ja vam demostrar).
+
+  El mantenidor guanya (si guanya) perquè manté el rotor prop de
+  λ òptim durant les ràfegues, on un molí d'inèrcia fixa perd Cp.
+  El resultat depèn FORTAMENT del perfil de vent: com més ràfegues
+  brusques, més valor té el mantenidor.
+
+  Aquest és el mecanisme REAL i defensable de Quijote: optimització
+  de captació + regulació, no creació d'energia.
+""")
+    # sensibilitat a la turbulència
+    print("─"*70)
+    print("  SENSIBILITAT: guany net segons intensitat de ràfegues (5 perfils)")
+    print("─"*70)
+    for seed in range(5):
+        v = perfil_vent(T, dt, seed=seed)
+        a = simula(v, dt, 'fixa'); b = simula(v, dt, 'quijote')
+        gb = b['E_vent_kWh']-a['E_vent_kWh']; gn = gb - max(b['E_act_kWh'],0)
+        print(f"    perfil {seed}: vent extra {gb:+.2f} kWh, "
+              f"cost act {max(b['E_act_kWh'],0):.2f}, net {gn:+.2f} kWh "
+              f"{'✓' if gn>0 else '✗'}")
+
+
+if __name__ == '__main__':
+    main()
+
+A primera vista, el planteamiento es bastante más honesto que las versiones de "hurto gravitatorio". Aquí el efecto buscado es claro: variar la inercia para intentar mantener el tip-speed ratio cerca del óptimo y capturar algo más de energía del viento.
+
+Pero veo varios puntos físicos que conviene revisar:
+
+1. El efecto probablemente será diminuto
+
+Tu rotor base tiene:
+
+J
+rotor
+	​
+
+=4×10
+7
+ kg\cdotpm
+2
+
+La inercia variable añadida es aproximadamente:
+
+J
+movil
+	​
+
+=3mr
+2
+
+Con m=66.5 kg y r=55 m:
+
+J
+movil,max
+	​
+
+≈3⋅66.5⋅55
+2
+≈6×10
+5
+
+Comparando:
+
+J
+rotor
+	​
+
+J
+movil,max
+	​
+
+	​
+
+≈1.5%
+
+J
+rotor
+	​
+
+3mr
+2
+	​
+
+≈
+4×10
+7
+6×10
+5
+	​
+
+≈0.015
+
+Es decir, aunque muevas los pesos desde el buje hasta la punta, sólo modificas la inercia total alrededor de un 1–2%.
+
+Eso ya sugiere que el control tendrá poca autoridad sobre ω.
+
+2. El controlador es muy agresivo
+
+Tienes:
+
+rdot = ±2.0 m/s
+
+Mover una masa 50 m radialmente en unos 25 s es enorme para una pala real.
+
+Además, el actuador está cambiando continuamente de sentido cuando el error cruza ±0.01 rad/s.
+
+En una máquina real aparecerían:
+
+histéresis,
+límites de aceleración,
+vibraciones,
+fatiga estructural,
+pérdidas mecánicas.
+
+El modelo actual no las incluye.
+
+3. El coste del actuador está probablemente subestimado
+
+Calculas:
+
+E_act += F_act*rdot_real*dt
+
+pero eso supone un actuador ideal reversible al 100%.
+
+En la práctica habría:
+
+η<1
+
+y además pérdidas en:
+
+motores,
+reductores,
+rodamientos,
+electrónica de potencia.
+
+Si el modelo da un beneficio neto muy pequeño, esas pérdidas reales podrían hacerlo desaparecer.
+
+4. El generador está fijando casi toda la dinámica
+
+Aquí:
+
+tau_gen = min(tau_vent, P_NOM/max(omega,0.1))
+
+Cuando el viento está por debajo de nominal:
+
+tau_gen ≈ tau_vent
+
+Entonces:
+
+τ
+vent
+	​
+
+−τ
+gen
+	​
+
+≈0
+
+y la evolución de ω queda dominada por:
+
+−
+J
+˙
+ω
+
+más pequeñas perturbaciones.
+
+Eso puede exagerar la capacidad del sistema para mantenerse cerca de λ
+opt
+	​
+
+.
+
+5. La comparación es justa
+
+Eso sí es un punto fuerte.
+
+Usas:
+
+exactamente el mismo viento,
+exactamente la misma turbina,
+mismo generador,
+misma aerodinámica.
+
+Por tanto, cualquier diferencia viene realmente del mecanismo radial.
+
+Metodológicamente está bien planteado.
+
+6. La prueba decisiva
+
+Yo haría una batería automática variando:
+
+m=66,200,500,1000,5000 kg.
+J
+rotor
+	​
+
+.
+intensidad de turbulencia.
+eficiencia del actuador.
+
+Si el beneficio escala aproximadamente como:
+
+ΔE∝
+J
+ΔJ
+	​
+
+
+entonces sabrás si el efecto es realmente útil o si simplemente es demasiado pequeño frente a la enorme inercia del rotor NREL.
+
+Mi predicción física, antes de ejecutar el código, es:
+
+El signo del efecto puede ser positivo.
+El mecanismo no viola conservación de energía.
+Pero con 66.5 kg por pala y un rotor de 4×10
+7
+ kg·m², el beneficio debería ser muy pequeño, probablemente del orden de décimas o centésimas porcentuales de energía capturada.
+
+La revisió dura és aquesta:
+
+Bloc A — Estabilitat de freqüència
+1. La conclusió per escales temporals és molt més sòlida que la simulació
+
+Ací estic d'acord.
+
+Si tens:
+
+τ_grid ≈ 0,05–0,5 s (RoCoF)
+τ_synth ≈ ms
+τ_BESS ≈ ms
+τ_Quijote ≈ 0,3–3 s
+
+llavors, abans de qualsevol simulació detallada, ja tens:
+
+τ
+Quijote
+	​
+
+≫τ
+grid
+	​
+
+
+i per tant la contribució de Quijote al control inicial de freqüència ha de ser petita.
+
+No és una conclusió numèrica.
+És una conclusió d'ordre de magnitud.
+
+Això és bastant defensable fins i tot sense PSS/E.
+
+2. Però la taula "qui guanya" necessita un matís
+
+La frase:
+
+Electrònica guanya el nadir amb marge
+
+no és tan estructural com la del RoCoF.
+
+Per què?
+
+Perquè el nadir depèn de:
+
+reserves disponibles,
+limitacions de potència,
+temps de resposta,
+estratègia de control.
+
+És possible construir un mecanisme lent que quasi no toque el RoCoF però sí ajude el nadir.
+
+Per tant:
+
+RoCoF → conclusió molt robusta.
+Nadir → conclusió probable però dependent de paràmetres.
+
+Jo ho escriuria així.
+
+3. ZypyZape és el punt més dèbil del document
+
+Ací és on jo atacaria.
+
+Has assumit:
+
+menys dispersi
+o
+ˊ
+ ω⇒millor parc
+
+però això no està demostrat.
+
+La pregunta és:
+
+Quina magnitud física o econòmica millora?
+
+Per exemple:
+
+menys càrregues transitòries?
+menys fatiga?
+menys oscil·lacions de potència?
+menys desviacions de freqüència?
+
+Si no trobes una magnitud observable que millore, ZypyZape corre el risc de convertir-se en:
+
+"sincronitza perquè he posat un terme que sincronitza"
+
+que matemàticament és cert però enginyerilment insuficient.
+
+Jo consideraria aquest el punt més vulnerable de tot el treball.
+
+4. El model de freqüència té doble comptabilització potencial
+
+Ací veig un possible problema conceptual.
+
+En diversos codis anteriors:
+
+les turbines tenen dinàmica pròpia,
+i al mateix temps hi ha una swing equation agregada.
+
+Cal vigilar no comptar la mateixa inèrcia dues vegades:
+
+una vegada dins dels rotors i una altra dins de H
+sys
+	​
+
+.
+
+Això és un error molt comú.
+
+La pregunta és:
+
+H_sys ja inclou la inèrcia dels 44 rotors?
+
+Si la resposta és sí, qualsevol energia addicional injectada pels rotors podria estar parcialment comptada dues vegades.
+
+Val la pena revisar-ho.
+
+Bloc B — Bombeig paramètric
+5. Ací la conclusió és molt més forta
+
+De fet és quasi independent dels detalls numèrics.
+
+Si:
+
+el sistema és conservatiu,
+l'actuador torna al mateix estat,
+la massa torna al mateix estat,
+la velocitat angular torna al mateix estat,
+
+llavors:
+
+ΔE
+total
+	​
+
+=0
+
+necessàriament.
+
+La simulació només verifica una cosa que la física ja prediu.
+
+6. La comparació amb el gronxador és bona, però jo la faria més precisa
+
+Ara mateix dius:
+
+el xiquet injecta energia perquè l'oscil·lació creix.
+
+Jo ho formularia diferent.
+
+El punt essencial no és que creix.
+
+El punt essencial és que el xiquet és una font activa d'energia.
+
+En un gronxador:
+
+W
+musculs
+	​
+
+>0
+
+cada cicle.
+
+Per això l'amplitud augmenta.
+
+La gravetat no és la font.
+
+És simplement part de la dinàmica.
+
+Això reforça molt la teua conclusió.
+
+7. Sobre fases, freqüències i formes no sinusoïdals
+
+La meua resposta és:
+
+no espere cap excepció mentre el sistema siga conservatiu i el cicle tanque.
+
+No importa si fas:
+
+r(t)=R−Δrsin(2θ+ϕ)
+
+o:
+
+r(t)=R−Δrsin(7θ+ϕ)
+
+o una ona quadrada.
+
+Si:
+
+comences i acabes en el mateix estat,
+no hi ha font externa,
+
+la conservació obliga:
+
+W
+actuador
+	​
+
+=ΔE
+rotor
+	​
+
+
+i l'hurto net continua sent zero.
+
+La forma exacta només redistribueix quan passa l'energia.
+
+No crea energia.
+
+Conclusió global
+
+Les conclusions que em semblen realment estructurals són:
+
+Hurto gravitatori nul en cicles tancats.
+Aquesta és probablement la part més forta de tot el treball.
+El bombeig paramètric no evita la conservació.
+També molt robust.
+Per a RoCoF, els actuadors mecànics estan en desavantatge davant electrònica ràpida.
+Conclusió basada en escales temporals, bastant sòlida.
+
+Les conclusions que encara veig dependents del model són:
+
+Magnitud exacta de l'efecte sobre el nadir.
+Valor pràctic real de ZypyZape.
+Qualsevol afirmació quantitativa sobre mercats o rendibilitat.
+Qualsevol percentatge concret de millora de freqüència.
+
+Si haguera d'assenyalar el punt que necessita més demostració analítica, no seria Quijote sinó ZypyZape: demostrar que reduir la dispersió de fase/velocitat produeix una millora física mesurable (fatiga, estabilitat, qualitat de potència o producció). Ara mateix és l'única peça que encara no té una connexió causal tan clara com la que has aconseguit establir per al cas energètic de Quijote.
+
+..
+ZypyZape_Documento_Tecnico.docx
+Add files via upload
+2 weeks ago
+ZypyZape_Documento_Tecnico_1.docx
+Add files via upload
+2 weeks ago
+ZypyZape_Documento_Tecnico_2.docx
+Add files via upload
+2 weeks ago
+ZypyZape_Documento_Tecnico_3.docx
+Add files via upload
+2 weeks ago
+ZypyZape_Documento_Tecnico_4.docx
+Add files via upload
+2 weeks ago
+ZypyZape_Documento_Tecnico_GemeloVirtual_2026.docx
+Add files via upload
+2 weeks ago
+ZypyZape_Pitch_Comercial (2).pptx
+Add files via upload
+2 weeks ago
+ZypyZape_Pitch_Comercial.pptx
+Add files via upload
+2 weeks ago
+ZypyZape_Propuesta_Elewit_REE_2026.docx
+Add files via upload
+2 weeks ago
+ZypyZape_presentacion.pptx
+Add files via upload
+2 weeks ago
+ZypyZape_v2_Extendido.docx
+Add files via upload
+2 weeks ago
+claude v2 v3 v4 gemelo.txt
+Add files via upload
+2 weeks ago
+comercial zypyzape d_d.pptx
+Add files via upload
+2 weeks ago
+zypy_zape_digital_twin_python (0).py
+Add files via upload
+2 weeks ago
+zypy_zape_digital_twin_python.py
+Add files via upload
+2 weeks ago
+zypyzape doc.txt
+Add files via upload
+2 weeks ago
+zypyzape gpt.txt
+Add files via upload
+2 weeks ago
+zypyzape presentacion comercial.pdf
+Add files via upload
+2 weeks ago
+zypyzape.docx
+Add files via upload
+2 weeks ago
+zypyzape.pptx
+Add files via upload
+2 weeks ago
+zypyzape_twin_v2.py
+Add files via upload
+2 weeks ago
+zypyzape_twin_v2_1.py
+Add files via upload
+2 weeks ago
+zypyzape_twin_v2_2.py
+Add files via upload
+2 weeks ago
+zypyzape_twin_v2_3.py
+Add files via upload
+2 weeks ago
+zypyzape_twin_v3.py
+Add files via upload
+2 weeks ago
+zypyzape_twin_v3_1.py
+Add files via upload
+2 weeks ago
+zypyzape_twin_v3_3.py
+Add files via upload
+2 weeks ago
+zypyzape_twin_v3_4.py
+Add files via upload
+2 weeks ago
+zypyzape_twin_v4.py
+Add files via upload
+2 weeks ago
+zypyzape_twin_v4_1.py
+Add files via upload
+2 weeks ago
+zypyzape_twin_v4_2.py
+Add files via upload
+2 weeks ago
+zypyzape_twin_v4_3.py
+Add files via upload
+2 weeks ago
+zypyzape_twin_v4_4.py
+Add files via upload
+2 weeks ago
+zypyzape_twin_v4_5.py
+Add files via upload
+2 weeks ago
+zypyzape_twin_v4_6 - copiapy.txt
+Add files via upload
+2 weeks ago
+zypyzape_twin_v4_6.py
+Add files via upload
+2 weeks ago
+zypyzape_v3_animacion.gif
+Add files via upload
+2 weeks ago
+zypyzape_v3_datos.csv
+Add files via upload
+2 weeks ago
+zypyzape_v3_estatica.png
+Add files via upload
+2 weeks ago
+zypyzape_v4_dinamica.png
+Add files via upload
+2 weeks ago
+zypyzape_v4_dinamica_1.png
+Add files via upload
+2 weeks ago
+zypyzape_v4_dinamica_2.png
+Add files via upload
+2 weeks ago
+zypyzape_v4_validacion.png
+Add files via upload
+2 weeks ago
+zypyzape_v4_validacion_1.png
+Add files via upload
+2 weeks ago
+zypyzape_v4_validacion_2.png
+Add files via upload
+2 weeks ago
+zypyzape_v4_validacion_3.png
+Add files via upload
+2 weeks ago
+~$pyZape_Documento_Tecnico_4.docx
+Add files via upload
+2 weeks ago
+
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+comparativa_rocof.py
+═══════════════════════════════════════════════════════════════════════════════
+COMPARATIVA DE RoCoF — una sola cosa, ben feta.
+Atén les correccions del revisor (GPT):
+  · RoCoF és la conclusió MÉS sòlida (separació d'escales temporals).
+  · EVITA doble comptabilització: H_sys NO inclou els rotors del parc;
+    els rotors són fonts que injecten potència de suport per separat.
+  · No barreja nadir (dependent de paràmetres) — només RoCoF inicial.
+
+Compara el RoCoF (taxa de canvi de freqüència en els primers 500 ms) després
+d'una pèrdua sobtada de generació, segons quin mecanisme de suport actua:
+
+  BASE   : sense suport ràpid
+  SYNTH  : inèrcia sintètica electrònica (τ ≈ 20 ms)
+  BESS   : bateria grid-forming (τ ≈ 10 ms)
+  QUIJOTE: massa mòbil (τ ≈ 300 ms, retard mecànic de desplegament)
+
+El RoCoF inicial es mesura en la finestra 0-500 ms, on es juga l'estabilitat.
+
+Víctor Manzanares Alberola — EPSA UPV Alcoi
+═══════════════════════════════════════════════════════════════════════════════
+"""
+import numpy as np
+
+# ── Paràmetres de xarxa (SENSE comptar rotors dins de H_sys) ──────────────────
+F_NOM = 50.0
+S_SYS = 1000e6           # potència base del sistema (1 GVA)
+# H_sys = inèrcia de la xarxa EXCLOENT els 44 rotors (síncrons clàssics + càrrega)
+# Açò evita la doble comptabilització que advertia el revisor.
+H_SYS = 3.0             # s (sistema modern amb poca inèrcia síncrona)
+D_LOAD = 1.0            # amortiment de càrrega (pu)
+DELTA_P = 0.10          # pèrdua sobtada: 10% de la generació
+
+# ── Mecanismes de suport: cada un té una constant de temps τ ──────────────────
+# Modelats com a resposta de primer ordre: P_suport segueix la demanda amb τ
+MECANISMES = {
+    'BASE'   : {'tau': None,  'gain': 0.0,  'nom':'Sense suport ràpid'},
+    'SYNTH'  : {'tau': 0.020, 'gain': 0.8,  'nom':'Inèrcia sintètica (electrònica)'},
+    'BESS'   : {'tau': 0.010, 'gain': 1.0,  'nom':'Bateria grid-forming'},
+    'QUIJOTE': {'tau': 0.300, 'gain': 0.8,  'nom':'Quijote (massa mòbil)'},
+}
+
+def simula_rocof(mec, dt=0.001, T=2.0):
+    """
+    Swing equation: 2·H_sys·S/F_nom · df/dt = ΔP_event + P_suport − D·Δf·S
+    P_suport = mecanisme de suport amb la seua constant de temps τ.
+    Mesura el RoCoF (df/dt) en la finestra 0-500 ms.
+    """
+    n=int(T/dt)
+    f=F_NOM; df=0.0
+    P_sup=0.0
+    cfg=MECANISMES[mec]
+    rocof_hist=np.zeros(n); f_hist=np.zeros(n); t_hist=np.zeros(n)
+    for k in range(n):
+        t=k*dt
+        # event a t=0.1s
+        P_event = -DELTA_P*S_SYS if t>=0.1 else 0.0
+        # demanda de suport: proporcional a la desviació i al RoCoF
+        df_grid = f - F_NOM
+        if cfg['tau'] is not None:
+            P_objectiu = cfg['gain']*(-df_grid)*S_SYS*2.0   # suport proporcional
+            P_objectiu = np.clip(P_objectiu, 0, 0.15*S_SYS)
+            # resposta de primer ordre amb constant τ (ací entra l'escala temporal!)
+            P_sup += (P_objectiu - P_sup)*dt/cfg['tau']
+        else:
+            P_sup = 0.0
+        # swing equation (H_sys NO inclou rotors → sense doble comptabilitat)
+        dfdt = (P_event + P_sup - D_LOAD*df_grid*S_SYS)*F_NOM/(2*H_SYS*S_SYS)
+        f += dfdt*dt
+        rocof_hist[k]=dfdt; f_hist[k]=f; t_hist[k]=t
+    # RoCoF: pitjor valor en finestra 0-500ms després de l'event
+    idx0=int(0.1/dt); idx1=int(0.6/dt)
+    rocof_pitjor = np.min(rocof_hist[idx0:idx1])
+    # RoCoF mitjà en els primers 500ms (mètrica estàndard de xarxa)
+    rocof_500 = (f_hist[idx1]-f_hist[idx0])/0.5
+    nadir = np.min(f_hist[idx0:])
+    return rocof_pitjor, rocof_500, nadir
+
+print("█"*72)
+print("  COMPARATIVA DE RoCoF — quin mecanisme frena millor la caiguda inicial")
+print("█"*72)
+print(f"\n  Xarxa: H_sys={H_SYS}s (SENSE rotors, evita doble comptabilitat),")
+print(f"  event = pèrdua sobtada del {DELTA_P*100:.0f}% de generació.")
+print(f"  Mètrica: RoCoF en la finestra 0-500 ms (on es juga l'estabilitat).\n")
+
+print(f"  {'mecanisme':>34}{'τ resposta':>12}{'RoCoF pic':>12}{'RoCoF 500ms':>14}")
+print("  "+"-"*70)
+resultats={}
+for mec in ['BASE','SYNTH','BESS','QUIJOTE']:
+    rp,r500,nad=simula_rocof(mec)
+    resultats[mec]=(rp,r500)
+    tau=MECANISMES[mec]['tau']
+    tau_str=f"{tau*1000:.0f} ms" if tau else "—"
+    print(f"  {MECANISMES[mec]['nom']:>34}{tau_str:>12}{rp:>11.3f} {r500:>13.3f}")
+
+print("\n" + "═"*72)
+print("  QUI GUANYA EN RoCoF")
+print("═"*72)
+# ordenar per RoCoF a 500ms (menys negatiu = millor)
+ordre=sorted(['SYNTH','BESS','QUIJOTE'], key=lambda m:abs(resultats[m][1]))
+print("\n  Ranking (millor = frena més la caiguda en 500ms):")
+for i,m in enumerate(ordre,1):
+    print(f"    {i}. {MECANISMES[m]['nom']:>34}: RoCoF = {resultats[m][1]:.3f} Hz/s")
+
+base_r=abs(resultats['BASE'][1])
+print(f"\n  Millora vs BASE (reducció del RoCoF):")
+for m in ['SYNTH','BESS','QUIJOTE']:
+    millora=100*(1-abs(resultats[m][1])/base_r)
+    print(f"    {MECANISMES[m]['nom']:>34}: {millora:+.1f}%")
+
+print("\n" + "═"*72)
+print("  VEREDICTE (conclusió estructural, no numèrica)")
+print("═"*72)
+print(f"""
+  El RoCoF es juga en els primers 500 ms. Cada mecanisme actua amb la
+  seua constant de temps τ:
+    · BESS i synth-inertia: τ ≈ 10-20 ms → actuen DINS la finestra → frenen molt.
+    · Quijote: τ ≈ 300 ms → actua a la VORA de la finestra → frena poc.
+
+  La conclusió és ESTRUCTURAL (separació d'escales temporals), com va
+  confirmar el revisor: τ_Quijote ≫ τ_electrònica, per tant Quijote
+  arriba tard a la finestra del RoCoF i la seua contribució és petita.
+
+  Açò NO depèn de la calibració fina del model: és ordre de magnitud.
+  Encara que Quijote escale en nombre de turbines, el retard NO escala.
+
+  → En RoCoF, l'electrònica de potència guanya per disseny temporal.
+    Quijote no pot competir en aquesta finestra (física, no opinió).
+""")
+
+Aquesta versió del model és millor enfocada que les anteriors perquè intenta aïllar una sola pregunta: què passa durant els primers 500 ms?
+
+Però encara hi veig alguns punts crítics.
+
+1. El model no està simulant inèrcia sintètica real
+
+En el codi:
+
+P_objectiu = cfg['gain']*(-df_grid)*S_SYS*2.0
+
+La resposta depén només de:
+
+Δf
+
+però la inèrcia sintètica real es basa sobretot en:
+
+dt
+df
+	​
+
+
+(RoCoF).
+
+Per tant "SYNTH" no està modelant una inèrcia sintètica típica, sinó una mena de control primari ràpid.
+
+Això no invalida la conclusió, però sí la interpretació.
+
+2. Quijote està modelat com un primer ordre abstracte
+
+Has escrit:
+
+tau = 0.300
+
+i després:
+
+P_sup += (P_objectiu - P_sup)*dt/tau
+
+Això és correcte com a model reduït.
+
+Però aleshores la conclusió és:
+
+"un mecanisme amb τ=300 ms és pitjor que un amb τ=10 ms"
+
+No:
+
+"Quijote físic concret és pitjor"
+
+Per afirmar el segon necessites demostrar que el Quijote realment té un temps característic d'aquest ordre.
+
+3. El punt més fort del document continua sent l'argument temporal
+
+De fet es pot resumir quasi sense simulació.
+
+Si la finestra és:
+
+T
+RoCoF
+	​
+
+≈500 ms
+
+i tens:
+
+τ
+BESS
+	​
+
+=10 ms
+
+llavors:
+
+1−e
+−500/10
+≈1
+
+La resposta està pràcticament completada.
+
+Per a:
+
+τ
+Quijote
+	​
+
+=300 ms
+1−e
+−500/300
+≈0.81
+
+Només ha desplegat aproximadament el 81% de la resposta.
+
+I si el retard real és 1 s:
+
+1−e
+−500/1000
+≈0.39
+
+només el 39%.
+
+Aquest càlcul analític és probablement més fort que tota la simulació.
+
+4. El punt de "no escala amb el nombre de turbines" necessita matís
+
+Ací jo seria molt precís.
+
+No és cert que:
+
+el retard no escala
+
+i per tant el parc no ajuda.
+
+El retard efectivament no escala.
+
+Però la potència disponible sí.
+
+Si tens N turbines:
+
+P
+total
+	​
+
+(t)=NP
+unitat
+	​
+
+(t)
+
+La forma temporal és la mateixa.
+
+L'amplitud creix.
+
+Per tant la conclusió correcta és:
+
+augmentar el nombre de turbines no elimina el retard, però sí augmenta la potència disponible durant aquest retard.
+
+Això és més exacte físicament.
+
+5. El veredicte final és defensable si el reformules lleugerament
+
+Jo escriuria:
+
+En la finestra crítica del RoCoF (0–500 ms), qualsevol mecanisme amb temps característic substancialment superior a desenes de mil·lisegons opera en desavantatge respecte a l'electrònica de potència. Aquesta conclusió deriva directament de la separació d'escales temporals i és independent dels detalls fins del model.
+
+Això sí que em sembla una afirmació estructural.
+
+En canvi:
+
+Quijote no pot competir en aquesta finestra
+
+és una afirmació més forta.
+
+Probablement siga certa en la pràctica, però ja depén de quant suport de potència puga mobilitzar, de la massa, del nombre de turbines i de la implementació concreta.
+
+Resum
+
+El que em sembla ja bastant sòlid:
+
+Conservació ⇒ hurto gravitatori nul.
+Bombeig paramètric ⇒ no evita la conservació.
+Separació d'escales ⇒ electrònica avantatjada per al RoCoF.
+
+El que encara necessita justificació independent:
+
+El valor físic/econòmic real de ZypyZape.
+El temps característic real d'un Quijote construïble.
+Les afirmacions absolutes del tipus "no pot competir", que són més fortes que el que demostra actualment el model.
+
+La millor evolució del treball, al meu parer, seria passar de simulacions cada vegada més complexes a obtenir límits analítics simples. El resultat
+
+τ
+actuador
+	​
+
+≫τ
+RoCoF
+	​
+
+
+explica més del comportament observat que moltes de les taules numèriques que has generat.
+
+GPT t'ha donat la millor brúixola possible, Víctor: **deixa les simulacions complexes i passa a límits analítics simples.** Té raó del tot. I com tinc els teus fitxers de ZypyZape ací, primer els llig per veure què hi ha de veritat, i després et faig el que ell recomana: la llei analítica neta.Bon material — el teu twin v4 té validació contra NREL 5MW (Jonkman 2009), control de pitch PI realista, Cp(λ,β) bidimensional. És un model seriós. Deixa'm veure el cor de ZypyZape, l'acoblament entre turbines:Ja entenc el cor de ZypyZape. Mira la funció T_zz — açò és la clau, i ara puc dir-te exactament què fa i si té el valor que GPT demanava.
+
+El que fa el teu T_zz: les turbines s'intercanvien parells en parelles (PARES_ZZ), una accelera (+1, rol ACEL) mentre l'altra frena (−1, rol FREN), de forma trapezoïdal i **net-zero** (el comentari del codi ho diu: "net-zero mas limpio"). O siga: ZypyZape **mou energia entre turbines del parc**, sense crear-ne ni perdre'n neta.
+
+Açò és físicament honest (no viola res), però aclareix exactament què és ZypyZape: **un sistema de redistribució d'energia cinètica entre turbines**. I ara puc respondre la pregunta de GPT —quina magnitud física millora— de la manera que ell recomana: **analíticament, sense més simulació complexa.**Ara sí, Víctor — havent llegit el teu codi de veritat, et puc donar una resposta molt més precisa que abans, i és **millor notícia** per a ZypyZape del que jo et donava.
+
+**Què és ZypyZape, segons el teu propi codi (funció T_zz):**
+
+Un sistema que acobla les turbines en parelles: una accelera (rol ACEL) mentre l'altra frena (rol FREN), de forma **net-zero** (tu mateix ho escrius al comentari del codi). O siga: **redistribueix energia cinètica entre turbines del parc.** No crea energia (això ja sabíem que seria impossible), però la **mou** entre màquines i en el temps.
+
+**La resposta a GPT —quina magnitud física millora— ara sí la tinc:**
+
+ZypyZape millora la **variància de la potència agregada del parc**. I açò és mesurable de veritat:
+
+correlació induïda -0,2 → 20% menys variància de potència
+correlació induïda -0,5 → 50% menys variància
+
+
+Menys variància de potència = menys flicker, menys estrès al punt de connexió, millor qualitat de potència. **Açò sí és una magnitud física observable**, no "sincronitza perquè he posat un terme que sincronitza". Era el que GPT demanava.
+
+**Però —i ací està la connexió causal honesta que faltava— hi ha un cost:**
+
+Per acoblar les turbines i compensar-les mútuament, les desvies del seu MPPT individual òptim. Així que:
+
+- **Benefici:** menys variància de potència (qualitat) + resposta de freqüència coordinada (volant distribuït).
+- **Cost:** petita pèrdua de captació + més moviment de pitch (fatiga).
+
+Açò converteix ZypyZape de "hipòtesi sense provar" en un **compromís quantificable**: qualitat de xarxa vs captació/fatiga. I això **sí** és defensable davant un revisor, perquè ja no és màgia — és enginyeria amb un trade-off mesurable.
+
+**El que et recomane, exactament com diu GPT (una corba, no mil simulacions):**
+
+La prova que tanca ZypyZape és **una sola gràfica**:
+- Eix X: intensitat d'acoblament ZypyZape (K)
+- Eix Y: benefici (reducció de variància de P) vs cost (pèrdua captació + fatiga)
+
+Si existeix un K on **benefici > cost** de forma robusta → ZypyZape té valor demostrable i el pots defensar. Si el cost sempre domina → no, i ho sabràs honestament.
+
+Açò és molt millor que el meu intent anterior (on l'acoblament empitjorava les coses) perquè ara sé, del teu codi, que el teu acoblament és **net-zero per parelles** (ben plantejat), no el desastre que jo havia improvisat.
+
+Vols que muntem **eixa corba única** — el trade-off benefici/cost de ZypyZape en funció de K — usant el teu propi model net-zero per parelles? Seria la prova que GPT demana, feta com cal, i et diria d'una vegada si ZypyZape és defensable o no. Una sola gràfica, neta, honesta.
+
+La proposta de la "corba única" és probablement el pas més útil que queda, però jo faria una correcció important abans d'acceptar la conclusió.
+
+El punt fort
+
+Si el teu T_zz és realment un acoblament net-zero entre turbines, aleshores sí que hi ha una magnitud física clara a estudiar:
+
+σ
+P
+2
+	​
+
+=Var(
+i
+∑
+	​
+
+P
+i
+	​
+
+)
+
+No estaries intentant demostrar més energia, sinó menys fluctuació agregada de potència.
+
+Això és molt més defensable.
+
+Però compte amb una trampa
+
+La frase:
+
+"correlació induïda -0,2 → 20% menys variància"
+
+no és una llei general.
+
+Per N turbines:
+
+Var(P
+tot
+	​
+
+)=Nσ
+2
++N(N−1)ρσ
+2
+
+on ρ és la correlació mitjana entre turbines.
+
+Per tant:
+
+Nσ
+2
+Var(P
+tot
+	​
+
+)
+	​
+
+=1+(N−1)ρ
+
+Amb 44 turbines:
+
+1+43ρ
+
+Això significa que una correlació negativa petita ja produeix efectes enormes en el model.
+
+Per exemple:
+
+ρ=−0.02
+
+dóna
+
+1−0.86=0.14
+
+és a dir, una reducció del 86%.
+
+Això ja et diu que cal anar amb molt de compte perquè moltes correlacions negatives artificials no són físicament sostenibles.
+
+La pregunta crítica
+
+No és:
+
+"ZypyZape redueix la variància?"
+
+Segurament sí, perquè està injectant parells oposats.
+
+La pregunta és:
+
+"La reducció de variància continua existint quan el vent és espacialment coherent i les turbines tenen limitacions físiques reals?"
+
+Aquesta és la pregunta que et faria un revisor.
+
+El que jo mesuraria
+
+Per cada valor de K:
+
+Variància de potència agregada.
+Energia captada total.
+Increment de càrrega mecànica.
+Increment d'activitat de pitch.
+Increment d'activitat del generador.
+
+I després construir:
+
+Benefici(K)=
+Δfatiga
+Δσ
+P
+	​
+
+	​
+
+
+o alguna mètrica semblant.
+
+Una altra observació important
+
+El teu argument actual sobre ZypyZape és bastant més sòlid que el de Quijote.
+
+Per què?
+
+Perquè Quijote intentava competir amb una limitació física fonamental d'escales temporals:
+
+τ
+mec
+	​
+
+≫τ
+grid
+	​
+
+
+Això és molt difícil de superar.
+
+En canvi, ZypyZape és software de coordinació.
+
+No està intentant ser més ràpid que una bateria.
+
+Està intentant explotar un grau de llibertat diferent:
+
+coordinaci
+o
+ˊ
+
+=in
+e
+ˋ
+rcia
+
+Per tant, el seu valor potencial no s'hauria de buscar en RoCoF o nadir, sinó en:
+
+suavització de potència,
+reducció de rampes,
+serveis de regulació agregada,
+control coordinat de parc.
+La meua revisió dura
+
+A hores d'ara jo consideraria:
+
+Hurto gravitatori: refutat de manera convincent.
+Quijote com a suport de freqüència: físicament limitat per escales temporals; difícil trobar avantatge competitiu.
+ZypyZape: encara és una hipòtesi oberta.
+
+No perquè haja demostrat funcionar, sinó perquè encara no has atacat la magnitud correcta.
+
+La pregunta que queda no és:
+
+"ZypyZape produeix més energia?"
+
+sinó:
+
+"ZypyZape pot reduir la variabilitat agregada d'un parc més del que costa en energia, fatiga i control?"
+
+Aquesta és la corba que jo intentaria obtenir abans de donar cap veredicte definitiu.
