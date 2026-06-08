@@ -9,7 +9,7 @@
 
 ## Qui soc
 
-Investigador independent afiliado a l'EPSA (UPV, Alcoi). Treballo en teoria de nombres, algorítmia i tecnologia energètica. Tot el que hi ha aquí ho he construït sol, al llarg d'anys, sense finançament institucional.
+Investigador independent. Treballo en teoria de nombres, algorítmia i tecnologia energètica. Tot el que hi ha aquí ho he construït sol, al llarg d'anys, sense finançament institucional.
 
 ---
 
@@ -110,7 +110,7 @@ Per preguntes tècniques, col·laboració o conversa — en català, castellà, 
 # 📊 **TABLA EXHAUSTIVA: CONCEPTOS ORIGINALES DE VÍCTOR MANZANARES ALBEROLA**
 ## **Para 33×1 Whitepaper — Nivel Técnico Completo**
 
-```markdown
+
 ╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
 ║  REPOSITORIO: espiradesombra/claude | AUTOR: Víctor Manzanares Alberola | ESTADO: Investigación en Curso (2024-2026)  ║
 ║  USO: Tecnología no patentable para Pla 33×1 (paz global por innovación + transparencia)                              ║
@@ -526,7 +526,7 @@ Wieferich K3-XOR     │ Baja (teórico)       │ Academia          │ ✅ Pub
 >
 > **Premisa: La tecnología verdadera no se vende. Se cede por paz."**
 
-```
+
 
 ---
 
@@ -541,7 +541,7 @@ Perfecto. Voy con el **BLOQUE 5-7** completo en el mismo estilo técnico exhaust
 
 ---
 
-```markdown
+
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 BLOQUE 5: MÉTODOS AUXILIARES — DETECCIÓN, CRIBAS Y VARIANTES
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -888,7 +888,7 @@ BLOQUE 7: CRONOLOGÍA DOCUMENTADA — EVOLUCIÓN v1→v18 (2020-2026)
   - Presentaciones PowerPoint: Sofí, SaltoMáximo, Siguiente Primo, Goldbach
   - Notebooks Jupyter: mrauv_analysis, sofi_classification, criva_vs_pnt, mdc_sawtooth
 
-```
+
 
 ---
 
