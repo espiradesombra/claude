@@ -1,0 +1,76 @@
+
+Método de Cálculo de la Mínima Cantidad Teórica de Números Primos
+
+Objetivo:
+Determinar el valor mínimo de n tal que el porcentaje de números primos en el intervalo [1, n] sea mayor que 1 - x%, utilizando las constantes c1 y c2.
+
+Definiciones:
+- n: Número entero a evaluar.
+- c1: Cantidad de números primos de la forma 6k ± 1 menores a c2.
+- c2: Un múltiplo o el factorial justo menor a n.
+- x: Porcentaje mínimo de números primos.
+- j: Valor calculado para x.
+
+Ecuación Base:
+n / (n^(1/2) * (c1 / c2)) = x*n
+
+Pasos del Método:
+
+1. Inicialización de Constantes:
+   - Selecciona n como un número entero.
+   - Calcula c2 como un múltiplo o el factorial justo menor a n.
+
+2. Cálculo de c1:
+   - Determina la cantidad de números primos de la forma 6k ± 1 menores a c2.
+
+3. Resolución de la Ecuación:
+   - Utiliza la ecuación base para resolver x:
+     n / (n^(1/2) * (c1 / c2)) =  x*n
+   - Simplifica y resuelve para x:
+     x = (n - (n / (n^(1/2) * (c1 / c2)))) / n
+
+4. Cálculo de j:
+   - Calcula j utilizando el valor de x obtenido:
+     j = x
+
+5. Evaluación de x:
+   - Puedes ajustar x en el rango [j, 0] para obtener diferentes resultados.
+
+Ejemplo:
+
+Seleccionar n:
+- n = 120.
+
+Calcular c2:
+- c2 es el factorial justo menor a n. En este caso, c2 = 120.
+
+Calcular c1:
+- Los primos de la forma 6k ± 1 menores a 120 son: 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113. Entonces, c1 = 28.
+
+Resolver la Ecuación:
+n / (120^(1/2) * (28 / 120)) = n - x*n
+120 / (11 * (28 / 120)) = 120 - 120x
+120 / (11 * (7 / 30)) = 120 - 120x
+120 * (30 / (11 * 7)) = 120 - 120x
+3600 / (77) = 120 - 120x
+46.75 = 120 - 120x
+
+Resolución para x:
+46.75 = 120 - 120x
+120x = 120 - 46.75
+120x = 73.25
+x = (73.25 / 120)
+x ≈ 0.6104
+
+Calcular j:
+ j = x ≈ 1- 0.6104.
+
+Evaluar x:
+- Puedes ajustar x en el rango [0.3895, 0].
+
+Explicación Adicional:
+
+- Salto Máximo Teórico: Para n mayor a 9, el salto máximo teórico se calcula como (cantidad de primos de forma "6k ±1" en [√n ,0]) *3 +4. Este salto máximo no se cumple en la práctica ya que el salto real es menor.
+- Ajuste de c1 y c2: Para valores específicos de n se pueden ajustar c1 y c2 para obtener resultados más precisos. Por ejemplo para n ≤25 se puede usar c1=2 y c2=6.
+
+Este método permite estimar la cantidad mínima de números primos en un intervalo dado y ajustar los valores de entrada para mejorar la precisión de la estimación.
