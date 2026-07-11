@@ -1,0 +1,28 @@
+ID: 14_mrauv_goldbach
+ESTADO: [HEUR] — Modelo predictivo, no teorema
+AUTOR: VMA
+FUENTE: Cribas_cotas §11, §11.16; archivos\densidad x cine.txt
+
+--------------------------------------------------------------------------------
+MODELO MRAUV
+--------------------------------------------------------------------------------
+Densidad en tramo [x, x+Δ]:
+  D_pred ≈ D₀ + V₀·Δ + ½a₀·Δ²  (+ jerk opcional)
+
+π(n+Δn) ≈ π(n) + D_pred·Δn
+
+--------------------------------------------------------------------------------
+CRITERIO GOLDBACH (§11.16)
+--------------------------------------------------------------------------------
+Segmentación simétrica en pares (A_j, B_j) alrededor de n.
+  E_j = D_j⁻ · D_j⁺ · Δ
+Suma de E_j → número esperado de representaciones p+q=2n.
+
+--------------------------------------------------------------------------------
+GAPS
+--------------------------------------------------------------------------------
+- “Prueba asintótica de Goldbach” en TXT es heurística probabilística.
+- Independencia local de primos es hipótesis no demostrada.
+- Modelo cinemático útil para predicción; no equivale a teorema.
+
+================================================================================

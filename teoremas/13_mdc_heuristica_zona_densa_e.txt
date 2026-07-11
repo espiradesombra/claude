@@ -1,0 +1,27 @@
+ID: 13_mdc_zona_densa
+ESTADO: [HEUR] — Regla empírica central del MDC
+AUTOR: VMA
+FUENTE: lee arbusto\(l)(L).txt; 5-7.txt; Nuevo Documento (3).txt
+
+--------------------------------------------------------------------------------
+ENUNCIADO HEURÍSTICO
+--------------------------------------------------------------------------------
+  m_conv ≈ (e − 1)/2 · m_max  ≈ 0.8591 · m_max
+
+Acumulador armónico:  Σ 1/(2·k!)  →  límite (e−1)/2.
+
+La zona densa [m_conv, m_max] concentra factores para k-sweep sobre N.
+
+--------------------------------------------------------------------------------
+LEMAS RELACIONADOS (5-7.txt)
+--------------------------------------------------------------------------------
+  Lema 1: ∏ n/(n+1) = 1/(x+1)  (telescópico)
+  Lema 2: Producto Wallis P_n = W_n·(n+1)/(2n+1)
+
+--------------------------------------------------------------------------------
+NOTA
+--------------------------------------------------------------------------------
+No es teorema de complejidad; es descubrimiento empírico reproducible en código.
+Fundamenta Libro 4 / convergencia cinemática E_VERDE.
+
+================================================================================
