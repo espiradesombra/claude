@@ -1,0 +1,27 @@
+{
+  "params": {
+    "grok_build.Grep": {
+      "max_output_bytes": 5000000,
+      "max_chars_per_line": 100000
+    },
+    "cursor.Read": {
+      "cursor_rules_on_read": false
+    },
+    "grok_build.Bash": {
+      "timeout_secs": null,
+      "max_timeout_secs": null,
+      "output_byte_limit": null,
+      "cmd_prefix": null,
+      "enabled_background": true,
+      "auto_background_on_timeout": false,
+      "strip_competitor_branding": false,
+      "allow_background_operator": true,
+      "surface_bg_completion_reminders": true
+    }
+  },
+  "state": {
+    "grok_build.ReportedTaskCompletions": {
+      "reported": []
+    }
+  }
+}
