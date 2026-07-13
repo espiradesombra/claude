@@ -1,0 +1,1472 @@
+/*
+
+ * ============================================================================
+
+ * SISTEMA DE AUDITORÍA K3 - SOFTWARE INDUSTRIAL DE FIRMA
+
+ * ============================================================================
+
+ * Licencia Comercial B2B - Plan Promocional 3x2 (2€ por 3 años)
+
+ *
+
+ * Esta versión aporta:
+
+ * - Marca raíz activa por caracteres de código
+
+ * - Serie de marcas finales con banderas de control
+
+ * - Lectura industrial configurable en bloques de 8/16/32 bits
+
+ * - Desfase de stride entre lecturas
+
+ * - Motor sin malloc en el bucle de datos
+
+ * ============================================================================
+
+ */
+
+
+
+#include <stdio.h>
+
+#include <stdint.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+#include <errno.h>
+
+
+
+#define MAX_MARCAS_FINALES 4
+
+#define TELEMETRIA_MAX 512
+
+
+
+/*
+
+ * Firma activa de código: valores UTF-8 de la ecuación de compresión.
+
+ * Se procesa como primer bloque para blindar el inicio del flujo.
+
+ */
+
+const char K3_FIRMA_LOGICA[] = "x^=(B*0x9E3779B1);x+=rotar(B,6);estado[0]=x;";
+
+
+
+typedef struct {
+
+    int bits_ancho;
+
+    int bytes_ancho;
+
+    int desfase_stride;
+
+    int num_registros;
+
+    uint32_t semilla_inicial;
+
+    uint32_t marca_inicial;
+
+    uint32_t constante_disp;
+
+    int total_marcas_encoladas;
+
+
+
+    struct {
+
+        uint32_t valor_bits;
+
+        uint8_t banderita;
+
+        int activa;
+
+    } cola_marcas[MAX_MARCAS_FINALES];
+
+} K3BufferConfig;
+
+
+
+static inline uint32_t rotar_izquierda_32bits(uint32_t valor, int posiciones) {
+
+    posiciones &= 31;
+
+    return (valor << posiciones) | (valor >> (32 - posiciones));
+
+}
+
+
+
+K3BufferConfig crear_buffer_parametros(int bits_lectura, int desfase_trozos,
+
+                                       int n_registros, uint32_t semilla,
+
+                                       uint32_t marca_inicial) {
+
+    K3BufferConfig config;
+
+
+
+    if (bits_lectura != 8 && bits_lectura != 16 && bits_lectura != 32) {
+
+        config.bits_ancho = 32;
+
+    } else {
+
+        config.bits_ancho = bits_lectura;
+
+    }
+
+
+
+    config.bytes_ancho = config.bits_ancho / 8;
+
+    config.desfase_stride = (desfase_trozos < 0) ? 0 : desfase_trozos;
+
+    config.num_registros = (n_registros < 2) ? 2 : n_registros;
+
+    config.semilla_inicial = semilla;
+
+    config.marca_inicial = marca_inicial;
+
+    config.constante_disp = 0x9E3779B1u;
+
+    config.total_marcas_encoladas = 0;
+
+
+
+    for (int i = 0; i < MAX_MARCAS_FINALES; i++) {
+
+        config.cola_marcas[i].activa = 0;
+
+    }
+
+
+
+    return config;
+
+}
+
+
+
+void encolar_marca_final(K3BufferConfig* config, uint32_t valor_bits, uint8_t banderita) {
+
+    int idx = config->total_marcas_encoladas;
+
+    if (idx >= MAX_MARCAS_FINALES) {
+
+        return;
+
+    }
+
+    config->cola_marcas[idx].valor_bits = valor_bits;
+
+    config->cola_marcas[idx].banderita = banderita;
+
+    config->cola_marcas[idx].activa = 1;
+
+    config->total_marcas_encoladas++;
+
+}
+
+
+
+void ejecutar_compresion_k3(uint32_t* estado, uint32_t valor_bloque, const K3BufferConfig* config) {
+
+    int N = config->num_registros;
+
+    uint32_t magico = config->constante_disp;
+
+    const int offsets[8] = {5, 7, 9, 11, 13, 17, 19, 23};
+
+    uint32_t B = valor_bloque;
+
+
+
+    uint32_t x = estado[0] ^ (B & estado[1 % N]);
+
+    for (int j = 2; j < N; j++) {
+
+        x ^= rotar_izquierda_32bits(estado[j], offsets[j % 8]);
+
+    }
+
+    x ^= rotar_izquierda_32bits(estado[1 % N], offsets[4]);
+
+    x += rotar_izquierda_32bits(estado[0], offsets[5]);
+
+    x ^= (B * magico);
+
+
+
+    x ^= B;
+
+    x += rotar_izquierda_32bits(B, offsets[6]);
+
+    x ^= rotar_izquierda_32bits(B, offsets[7]);
+
+    x ^= rotar_izquierda_32bits(x, offsets[2]);
+
+    x *= magico;
+
+    x ^= (x >> 15);
+
+
+
+    uint32_t estado_anterior_0 = estado[0];
+
+    estado[0] = x;
+
+
+
+    uint32_t temp_prev = estado_anterior_0;
+
+    for (int i = 1; i < N; i++) {
+
+        uint32_t temp_actual = estado[i];
+
+        estado[i] = rotar_izquierda_32bits(estado[i], offsets[0] + i) ^ temp_prev;
+
+        temp_prev = temp_actual;
+
+        if (i == N - 1) {
+
+            estado[i] ^= B;
+
+        }
+
+    }
+
+}
+
+
+
+void procesar_flujo_completo(const uint8_t* datos_crudos, size_t longitud,
+
+                             const K3BufferConfig* config, uint32_t* estado_salida,
+
+                             uint8_t* telemetria_salida, size_t* total_puntos_telemetria) {
+
+    int N = config->num_registros;
+
+    size_t contador_telemetria = 0;
+
+    int ancho_bytes = config->bytes_ancho;
+
+    int desfase = config->desfase_stride;
+
+
+
+    for (int i = 0; i < N; i++) {
+
+        estado_salida[i] = config->semilla_inicial ^ (i * config->constante_disp);
+
+    }
+
+
+
+    size_t len_firma = strlen(K3_FIRMA_LOGICA);
+
+    size_t idx_firma = 0;
+
+    while (idx_firma < len_firma) {
+
+        uint32_t bloque_firma = 0;
+
+        int bytes_leidos = 0;
+
+        for (int b = 0; b < ancho_bytes; b++) {
+
+            if (idx_firma + b < len_firma) {
+
+                bloque_firma = (bloque_firma << 8) | (uint8_t)K3_FIRMA_LOGICA[idx_firma + b];
+
+                bytes_leidos++;
+
+            }
+
+        }
+
+        if (bytes_leidos == 0) {
+
+            break;
+
+        }
+
+        if (bytes_leidos < ancho_bytes) {
+
+            bloque_firma <<= (8 * (ancho_bytes - bytes_leidos));
+
+        }
+
+        ejecutar_compresion_k3(estado_salida, bloque_firma, config);
+
+        uint32_t paridad = 0;
+
+        for (int r = 0; r < N; r++) {
+
+            paridad ^= estado_salida[r];
+
+        }
+
+        telemetria_salida[contador_telemetria++] = (uint8_t)(paridad & 0xFF);
+
+        idx_firma += bytes_leidos;
+
+    }
+
+
+
+    size_t indice = 0;
+
+    while (indice < longitud) {
+
+        uint32_t valor_bloque = 0;
+
+        int bytes_leidos = 0;
+
+        for (int b = 0; b < ancho_bytes; b++) {
+
+            if (indice + b < longitud) {
+
+                valor_bloque = (valor_bloque << 8) | datos_crudos[indice + b];
+
+                bytes_leidos++;
+
+            }
+
+        }
+
+        if (bytes_leidos == 0) {
+
+            break;
+
+        }
+
+        if (bytes_leidos < ancho_bytes) {
+
+            valor_bloque <<= (8 * (ancho_bytes - bytes_leidos));
+
+        }
+
+        ejecutar_compresion_k3(estado_salida, valor_bloque, config);
+
+        uint32_t paridad = 0;
+
+        for (int r = 0; r < N; r++) {
+
+            paridad ^= estado_salida[r];
+
+        }
+
+        telemetria_salida[contador_telemetria++] = (uint8_t)((paridad ^ valor_bloque) & 0xFF);
+
+        indice += ancho_bytes + desfase;
+
+    }
+
+
+
+    for (int i = 0; i < MAX_MARCAS_FINALES; i++) {
+
+        if (config->cola_marcas[i].activa) {
+
+            uint32_t bloque_compuesto = config->cola_marcas[i].valor_bits ^
+
+                                        ((uint32_t)config->cola_marcas[i].banderita << 24);
+
+            ejecutar_compresion_k3(estado_salida, bloque_compuesto, config);
+
+            uint32_t paridad = 0;
+
+            for (int r = 0; r < N; r++) {
+
+                paridad ^= estado_salida[r];
+
+            }
+
+            telemetria_salida[contador_telemetria++] = (uint8_t)((paridad ^ bloque_compuesto) & 0xFF);
+
+        }
+
+    }
+
+
+
+    *total_puntos_telemetria = contador_telemetria;
+
+}
+
+
+
+uint32_t extraer_hash_final(const uint32_t* estado_final, const K3BufferConfig* config) {
+
+    uint32_t acumulador = estado_final[0];
+
+    for (int i = 1; i < config->num_registros; i++) {
+
+        acumulador ^= rotar_izquierda_32bits(estado_final[i], 5 + i);
+
+    }
+
+    acumulador ^= acumulador >> 16;
+
+    acumulador *= 0x85EBCA6B;
+
+    acumulador ^= acumulador >> 13;
+
+    acumulador *= 0xC2B2AE35;
+
+    acumulador ^= acumulador >> 16;
+
+    return acumulador;
+
+}
+
+
+
+static uint32_t parse_u32_arg(const char* text, const char* name) {
+
+    char* end = NULL;
+
+    unsigned long value;
+
+
+
+    errno = 0;
+
+    value = strtoul(text, &end, 0);
+
+    if (errno != 0 || end == text || *end != '\0') {
+
+        fprintf(stderr, "[ERROR] Valor inválido para %s: %s\n", name, text);
+
+        exit(2);
+
+    }
+
+    if (value > 0xFFFFFFFFUL) {
+
+        fprintf(stderr, "[ERROR] Valor fuera de rango para %s: %s\n", name, text);
+
+        exit(2);
+
+    }
+
+    return (uint32_t)value;
+
+}
+
+
+
+static void print_usage(const char* prog) {
+
+    printf("Uso: %s [opciones]\n", prog);
+
+    printf("Opciones:\n");
+
+    printf("  --input <texto>       Texto de entrada para procesar.\n");
+
+    printf("  --bits <8|16|32>      Ancho de bloque de lectura.\n");
+
+    printf("  --desfase <n>         Bytes de salto entre bloques.\n");
+
+    printf("  --registros <n>       Número de registros del anillo.\n");
+
+    printf("  --seed <valor>        Semilla inicial en hex/decimal.\n");
+
+    printf("  --marca <valor>       Marca inicial en hex/decimal.\n");
+
+    printf("  --mark <valor> <flag> Marca final adicional (puede repetirse).\n");
+
+    printf("  -h, --help            Muestra esta ayuda.\n");
+
+}
+
+
+
+int main(int argc, char** argv) {
+
+    const char* input_text = "LECTURA_DE_SENSORES_DATA";
+
+    int bits_lectura = 32;
+
+    int desfase_trozos = 0;
+
+    int n_registros = 3;
+
+    uint32_t semilla = 0x1F2E3D4C;
+
+    uint32_t marca_inicial = 0x11223344;
+
+    uint32_t marcas_valores[MAX_MARCAS_FINALES] = {0};
+
+    uint8_t marcas_flags[MAX_MARCAS_FINALES] = {0};
+
+    int marcas_count = 0;
+
+
+
+    for (int i = 1; i < argc; ++i) {
+
+        if (strcmp(argv[i], "--help") == 0 || strcmp(argv[i], "-h") == 0) {
+
+            print_usage(argv[0]);
+
+            return 0;
+
+        } else if (strcmp(argv[i], "--input") == 0 || strcmp(argv[i], "-i") == 0) {
+
+            if (i + 1 >= argc) {
+
+                fprintf(stderr, "[ERROR] Falta el valor para %s\n", argv[i]);
+
+                return 2;
+
+            }
+
+            input_text = argv[++i];
+
+        } else if (strcmp(argv[i], "--bits") == 0) {
+
+            if (i + 1 >= argc) {
+
+                fprintf(stderr, "[ERROR] Falta el valor para --bits\n");
+
+                return 2;
+
+            }
+
+            bits_lectura = (int)parse_u32_arg(argv[++i], "--bits");
+
+            if (bits_lectura != 8 && bits_lectura != 16 && bits_lectura != 32) {
+
+                fprintf(stderr, "[ERROR] --bits solo permite 8, 16 o 32\n");
+
+                return 2;
+
+            }
+
+        } else if (strcmp(argv[i], "--desfase") == 0) {
+
+            if (i + 1 >= argc) {
+
+                fprintf(stderr, "[ERROR] Falta el valor para --desfase\n");
+
+                return 2;
+
+            }
+
+            desfase_trozos = (int)parse_u32_arg(argv[++i], "--desfase");
+
+        } else if (strcmp(argv[i], "--registros") == 0) {
+
+            if (i + 1 >= argc) {
+
+                fprintf(stderr, "[ERROR] Falta el valor para --registros\n");
+
+                return 2;
+
+            }
+
+            n_registros = (int)parse_u32_arg(argv[++i], "--registros");
+
+            if (n_registros < 2) {
+
+                fprintf(stderr, "[ERROR] --registros debe ser >= 2\n");
+
+                return 2;
+
+            }
+
+        } else if (strcmp(argv[i], "--seed") == 0) {
+
+            if (i + 1 >= argc) {
+
+                fprintf(stderr, "[ERROR] Falta el valor para --seed\n");
+
+                return 2;
+
+            }
+
+            semilla = parse_u32_arg(argv[++i], "--seed");
+
+        } else if (strcmp(argv[i], "--marca") == 0) {
+
+            if (i + 1 >= argc) {
+
+                fprintf(stderr, "[ERROR] Falta el valor para --marca\n");
+
+                return 2;
+
+            }
+
+            marca_inicial = parse_u32_arg(argv[++i], "--marca");
+
+        } else if (strcmp(argv[i], "--mark") == 0) {
+
+            if (i + 2 >= argc) {
+
+                fprintf(stderr, "[ERROR] --mark requiere <valor> <flag>\n");
+
+                return 2;
+
+            }
+
+            if (marcas_count >= MAX_MARCAS_FINALES) {
+
+                fprintf(stderr, "[ERROR] Se alcanzó el límite de marcas finales\n");
+
+                return 2;
+
+            }
+
+            marcas_valores[marcas_count] = parse_u32_arg(argv[++i], "--mark valor");
+
+            marcas_flags[marcas_count] = (uint8_t)parse_u32_arg(argv[++i], "--mark flag");
+
+            marcas_count++;
+
+        } else {
+
+            fprintf(stderr, "[ERROR] Opción no reconocida: %s\n", argv[i]);
+
+            print_usage(argv[0]);
+
+            return 2;
+
+        }
+
+    }
+
+
+
+    printf("=================================================================\n");
+
+    printf("      SOFTWARE K3 v0 - AUTENTICACIÓN INDUSTRIAL POR MARCA DE CODIGO\n");
+
+    printf("=================================================================\n");
+
+
+
+    size_t longitud_datos = strlen(input_text);
+
+    uint32_t estado_registros[10] = {0};
+
+    uint8_t buffer_telemetria[TELEMETRIA_MAX] = {0};
+
+    size_t puntos_telemetria = 0;
+
+
+
+    K3BufferConfig config = crear_buffer_parametros(bits_lectura, desfase_trozos, n_registros, semilla, marca_inicial);
+
+    if (marcas_count == 0) {
+
+        encolar_marca_final(&config, 0x00010203, 0x10);
+
+        encolar_marca_final(&config, 0x55555555, 0xEE);
+
+    } else {
+
+        for (int i = 0; i < marcas_count; ++i) {
+
+            encolar_marca_final(&config, marcas_valores[i], marcas_flags[i]);
+
+        }
+
+    }
+
+
+
+    printf("[+] Configuración:\n");
+
+    printf("    - input: %s\n", input_text);
+
+    printf("    - ancho: %d bits\n", config.bits_ancho);
+
+    printf("    - desfase: %d bytes\n", config.desfase_stride);
+
+    printf("    - registros: %d\n", config.num_registros);
+
+    printf("    - marca inicial: 0x%08X\n", config.marca_inicial);
+
+    printf("    - marcas finales: %d\n", config.total_marcas_encoladas);
+
+    printf("-----------------------------------------------------------------\n");
+
+
+
+    procesar_flujo_completo((const uint8_t*)input_text, longitud_datos, &config,
+
+                            estado_registros, buffer_telemetria,
+
+                            &puntos_telemetria);
+
+
+
+    uint32_t hash_final = extraer_hash_final(estado_registros, &config);
+
+
+
+    printf("[RESULTADO] Hash final K3: 0x%08X\n", hash_final);
+
+    printf("[RESULTADO] Puntos de telemetría generados: %zu\n", puntos_telemetria);
+
+    printf("[RESULTADO] Estado final de registros:\n");
+
+    for (int i = 0; i < config.num_registros; i++) {
+
+        printf("    R[%d] = 0x%08X\n", i, estado_registros[i]);
+
+    }
+
+    printf("=================================================================\n");
+
+
+
+    return 0;
+
+}/*
+
+ * ============================================================================
+
+ * SISTEMA DE AUDITORÍA K3 - SOFTWARE INDUSTRIAL DE FIRMA
+
+ * ============================================================================
+
+ * Licencia Comercial B2B - Plan Promocional 3x2 (2€ por 3 años)
+
+ *
+
+ * Esta versión aporta:
+
+ * - Marca raíz activa por caracteres de código
+
+ * - Serie de marcas finales con banderas de control
+
+ * - Lectura industrial configurable en bloques de 8/16/32 bits
+
+ * - Desfase de stride entre lecturas
+
+ * - Motor sin malloc en el bucle de datos
+
+ * ============================================================================
+
+ */
+
+
+
+#include <stdio.h>
+
+#include <stdint.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+#include <errno.h>
+
+
+
+#define MAX_MARCAS_FINALES 4
+
+#define TELEMETRIA_MAX 512
+
+
+
+/*
+
+ * Firma activa de código: valores UTF-8 de la ecuación de compresión.
+
+ * Se procesa como primer bloque para blindar el inicio del flujo.
+
+ */
+
+const char K3_FIRMA_LOGICA[] = "x^=(B*0x9E3779B1);x+=rotar(B,6);estado[0]=x;";
+
+
+
+typedef struct {
+
+    int bits_ancho;
+
+    int bytes_ancho;
+
+    int desfase_stride;
+
+    int num_registros;
+
+    uint32_t semilla_inicial;
+
+    uint32_t marca_inicial;
+
+    uint32_t constante_disp;
+
+    int total_marcas_encoladas;
+
+
+
+    struct {
+
+        uint32_t valor_bits;
+
+        uint8_t banderita;
+
+        int activa;
+
+    } cola_marcas[MAX_MARCAS_FINALES];
+
+} K3BufferConfig;
+
+
+
+static inline uint32_t rotar_izquierda_32bits(uint32_t valor, int posiciones) {
+
+    posiciones &= 31;
+
+    return (valor << posiciones) | (valor >> (32 - posiciones));
+
+}
+
+
+
+K3BufferConfig crear_buffer_parametros(int bits_lectura, int desfase_trozos,
+
+                                       int n_registros, uint32_t semilla,
+
+                                       uint32_t marca_inicial) {
+
+    K3BufferConfig config;
+
+
+
+    if (bits_lectura != 8 && bits_lectura != 16 && bits_lectura != 32) {
+
+        config.bits_ancho = 32;
+
+    } else {
+
+        config.bits_ancho = bits_lectura;
+
+    }
+
+
+
+    config.bytes_ancho = config.bits_ancho / 8;
+
+    config.desfase_stride = (desfase_trozos < 0) ? 0 : desfase_trozos;
+
+    config.num_registros = (n_registros < 2) ? 2 : n_registros;
+
+    config.semilla_inicial = semilla;
+
+    config.marca_inicial = marca_inicial;
+
+    config.constante_disp = 0x9E3779B1u;
+
+    config.total_marcas_encoladas = 0;
+
+
+
+    for (int i = 0; i < MAX_MARCAS_FINALES; i++) {
+
+        config.cola_marcas[i].activa = 0;
+
+    }
+
+
+
+    return config;
+
+}
+
+
+
+void encolar_marca_final(K3BufferConfig* config, uint32_t valor_bits, uint8_t banderita) {
+
+    int idx = config->total_marcas_encoladas;
+
+    if (idx >= MAX_MARCAS_FINALES) {
+
+        return;
+
+    }
+
+    config->cola_marcas[idx].valor_bits = valor_bits;
+
+    config->cola_marcas[idx].banderita = banderita;
+
+    config->cola_marcas[idx].activa = 1;
+
+    config->total_marcas_encoladas++;
+
+}
+
+
+
+void ejecutar_compresion_k3(uint32_t* estado, uint32_t valor_bloque, const K3BufferConfig* config) {
+
+    int N = config->num_registros;
+
+    uint32_t magico = config->constante_disp;
+
+    const int offsets[8] = {5, 7, 9, 11, 13, 17, 19, 23};
+
+    uint32_t B = valor_bloque;
+
+
+
+    uint32_t x = estado[0] ^ (B & estado[1 % N]);
+
+    for (int j = 2; j < N; j++) {
+
+        x ^= rotar_izquierda_32bits(estado[j], offsets[j % 8]);
+
+    }
+
+    x ^= rotar_izquierda_32bits(estado[1 % N], offsets[4]);
+
+    x += rotar_izquierda_32bits(estado[0], offsets[5]);
+
+    x ^= (B * magico);
+
+
+
+    x ^= B;
+
+    x += rotar_izquierda_32bits(B, offsets[6]);
+
+    x ^= rotar_izquierda_32bits(B, offsets[7]);
+
+    x ^= rotar_izquierda_32bits(x, offsets[2]);
+
+    x *= magico;
+
+    x ^= (x >> 15);
+
+
+
+    uint32_t estado_anterior_0 = estado[0];
+
+    estado[0] = x;
+
+
+
+    uint32_t temp_prev = estado_anterior_0;
+
+    for (int i = 1; i < N; i++) {
+
+        uint32_t temp_actual = estado[i];
+
+        estado[i] = rotar_izquierda_32bits(estado[i], offsets[0] + i) ^ temp_prev;
+
+        temp_prev = temp_actual;
+
+        if (i == N - 1) {
+
+            estado[i] ^= B;
+
+        }
+
+    }
+
+}
+
+
+
+void procesar_flujo_completo(const uint8_t* datos_crudos, size_t longitud,
+
+                             const K3BufferConfig* config, uint32_t* estado_salida,
+
+                             uint8_t* telemetria_salida, size_t* total_puntos_telemetria) {
+
+    int N = config->num_registros;
+
+    size_t contador_telemetria = 0;
+
+    int ancho_bytes = config->bytes_ancho;
+
+    int desfase = config->desfase_stride;
+
+
+
+    for (int i = 0; i < N; i++) {
+
+        estado_salida[i] = config->semilla_inicial ^ (i * config->constante_disp);
+
+    }
+
+
+
+    size_t len_firma = strlen(K3_FIRMA_LOGICA);
+
+    size_t idx_firma = 0;
+
+    while (idx_firma < len_firma) {
+
+        uint32_t bloque_firma = 0;
+
+        int bytes_leidos = 0;
+
+        for (int b = 0; b < ancho_bytes; b++) {
+
+            if (idx_firma + b < len_firma) {
+
+                bloque_firma = (bloque_firma << 8) | (uint8_t)K3_FIRMA_LOGICA[idx_firma + b];
+
+                bytes_leidos++;
+
+            }
+
+        }
+
+        if (bytes_leidos == 0) {
+
+            break;
+
+        }
+
+        if (bytes_leidos < ancho_bytes) {
+
+            bloque_firma <<= (8 * (ancho_bytes - bytes_leidos));
+
+        }
+
+        ejecutar_compresion_k3(estado_salida, bloque_firma, config);
+
+        uint32_t paridad = 0;
+
+        for (int r = 0; r < N; r++) {
+
+            paridad ^= estado_salida[r];
+
+        }
+
+        telemetria_salida[contador_telemetria++] = (uint8_t)(paridad & 0xFF);
+
+        idx_firma += bytes_leidos;
+
+    }
+
+
+
+    size_t indice = 0;
+
+    while (indice < longitud) {
+
+        uint32_t valor_bloque = 0;
+
+        int bytes_leidos = 0;
+
+        for (int b = 0; b < ancho_bytes; b++) {
+
+            if (indice + b < longitud) {
+
+                valor_bloque = (valor_bloque << 8) | datos_crudos[indice + b];
+
+                bytes_leidos++;
+
+            }
+
+        }
+
+        if (bytes_leidos == 0) {
+
+            break;
+
+        }
+
+        if (bytes_leidos < ancho_bytes) {
+
+            valor_bloque <<= (8 * (ancho_bytes - bytes_leidos));
+
+        }
+
+        ejecutar_compresion_k3(estado_salida, valor_bloque, config);
+
+        uint32_t paridad = 0;
+
+        for (int r = 0; r < N; r++) {
+
+            paridad ^= estado_salida[r];
+
+        }
+
+        telemetria_salida[contador_telemetria++] = (uint8_t)((paridad ^ valor_bloque) & 0xFF);
+
+        indice += ancho_bytes + desfase;
+
+    }
+
+
+
+    for (int i = 0; i < MAX_MARCAS_FINALES; i++) {
+
+        if (config->cola_marcas[i].activa) {
+
+            uint32_t bloque_compuesto = config->cola_marcas[i].valor_bits ^
+
+                                        ((uint32_t)config->cola_marcas[i].banderita << 24);
+
+            ejecutar_compresion_k3(estado_salida, bloque_compuesto, config);
+
+            uint32_t paridad = 0;
+
+            for (int r = 0; r < N; r++) {
+
+                paridad ^= estado_salida[r];
+
+            }
+
+            telemetria_salida[contador_telemetria++] = (uint8_t)((paridad ^ bloque_compuesto) & 0xFF);
+
+        }
+
+    }
+
+
+
+    *total_puntos_telemetria = contador_telemetria;
+
+}
+
+
+
+uint32_t extraer_hash_final(const uint32_t* estado_final, const K3BufferConfig* config) {
+
+    uint32_t acumulador = estado_final[0];
+
+    for (int i = 1; i < config->num_registros; i++) {
+
+        acumulador ^= rotar_izquierda_32bits(estado_final[i], 5 + i);
+
+    }
+
+    acumulador ^= acumulador >> 16;
+
+    acumulador *= 0x85EBCA6B;
+
+    acumulador ^= acumulador >> 13;
+
+    acumulador *= 0xC2B2AE35;
+
+    acumulador ^= acumulador >> 16;
+
+    return acumulador;
+
+}
+
+
+
+static uint32_t parse_u32_arg(const char* text, const char* name) {
+
+    char* end = NULL;
+
+    unsigned long value;
+
+
+
+    errno = 0;
+
+    value = strtoul(text, &end, 0);
+
+    if (errno != 0 || end == text || *end != '\0') {
+
+        fprintf(stderr, "[ERROR] Valor inválido para %s: %s\n", name, text);
+
+        exit(2);
+
+    }
+
+    if (value > 0xFFFFFFFFUL) {
+
+        fprintf(stderr, "[ERROR] Valor fuera de rango para %s: %s\n", name, text);
+
+        exit(2);
+
+    }
+
+    return (uint32_t)value;
+
+}
+
+
+
+static void print_usage(const char* prog) {
+
+    printf("Uso: %s [opciones]\n", prog);
+
+    printf("Opciones:\n");
+
+    printf("  --input <texto>       Texto de entrada para procesar.\n");
+
+    printf("  --bits <8|16|32>      Ancho de bloque de lectura.\n");
+
+    printf("  --desfase <n>         Bytes de salto entre bloques.\n");
+
+    printf("  --registros <n>       Número de registros del anillo.\n");
+
+    printf("  --seed <valor>        Semilla inicial en hex/decimal.\n");
+
+    printf("  --marca <valor>       Marca inicial en hex/decimal.\n");
+
+    printf("  --mark <valor> <flag> Marca final adicional (puede repetirse).\n");
+
+    printf("  -h, --help            Muestra esta ayuda.\n");
+
+}
+
+
+
+int main(int argc, char** argv) {
+
+    const char* input_text = "LECTURA_DE_SENSORES_DATA";
+
+    int bits_lectura = 32;
+
+    int desfase_trozos = 0;
+
+    int n_registros = 3;
+
+    uint32_t semilla = 0x1F2E3D4C;
+
+    uint32_t marca_inicial = 0x11223344;
+
+    uint32_t marcas_valores[MAX_MARCAS_FINALES] = {0};
+
+    uint8_t marcas_flags[MAX_MARCAS_FINALES] = {0};
+
+    int marcas_count = 0;
+
+
+
+    for (int i = 1; i < argc; ++i) {
+
+        if (strcmp(argv[i], "--help") == 0 || strcmp(argv[i], "-h") == 0) {
+
+            print_usage(argv[0]);
+
+            return 0;
+
+        } else if (strcmp(argv[i], "--input") == 0 || strcmp(argv[i], "-i") == 0) {
+
+            if (i + 1 >= argc) {
+
+                fprintf(stderr, "[ERROR] Falta el valor para %s\n", argv[i]);
+
+                return 2;
+
+            }
+
+            input_text = argv[++i];
+
+        } else if (strcmp(argv[i], "--bits") == 0) {
+
+            if (i + 1 >= argc) {
+
+                fprintf(stderr, "[ERROR] Falta el valor para --bits\n");
+
+                return 2;
+
+            }
+
+            bits_lectura = (int)parse_u32_arg(argv[++i], "--bits");
+
+            if (bits_lectura != 8 && bits_lectura != 16 && bits_lectura != 32) {
+
+                fprintf(stderr, "[ERROR] --bits solo permite 8, 16 o 32\n");
+
+                return 2;
+
+            }
+
+        } else if (strcmp(argv[i], "--desfase") == 0) {
+
+            if (i + 1 >= argc) {
+
+                fprintf(stderr, "[ERROR] Falta el valor para --desfase\n");
+
+                return 2;
+
+            }
+
+            desfase_trozos = (int)parse_u32_arg(argv[++i], "--desfase");
+
+        } else if (strcmp(argv[i], "--registros") == 0) {
+
+            if (i + 1 >= argc) {
+
+                fprintf(stderr, "[ERROR] Falta el valor para --registros\n");
+
+                return 2;
+
+            }
+
+            n_registros = (int)parse_u32_arg(argv[++i], "--registros");
+
+            if (n_registros < 2) {
+
+                fprintf(stderr, "[ERROR] --registros debe ser >= 2\n");
+
+                return 2;
+
+            }
+
+        } else if (strcmp(argv[i], "--seed") == 0) {
+
+            if (i + 1 >= argc) {
+
+                fprintf(stderr, "[ERROR] Falta el valor para --seed\n");
+
+                return 2;
+
+            }
+
+            semilla = parse_u32_arg(argv[++i], "--seed");
+
+        } else if (strcmp(argv[i], "--marca") == 0) {
+
+            if (i + 1 >= argc) {
+
+                fprintf(stderr, "[ERROR] Falta el valor para --marca\n");
+
+                return 2;
+
+            }
+
+            marca_inicial = parse_u32_arg(argv[++i], "--marca");
+
+        } else if (strcmp(argv[i], "--mark") == 0) {
+
+            if (i + 2 >= argc) {
+
+                fprintf(stderr, "[ERROR] --mark requiere <valor> <flag>\n");
+
+                return 2;
+
+            }
+
+            if (marcas_count >= MAX_MARCAS_FINALES) {
+
+                fprintf(stderr, "[ERROR] Se alcanzó el límite de marcas finales\n");
+
+                return 2;
+
+            }
+
+            marcas_valores[marcas_count] = parse_u32_arg(argv[++i], "--mark valor");
+
+            marcas_flags[marcas_count] = (uint8_t)parse_u32_arg(argv[++i], "--mark flag");
+
+            marcas_count++;
+
+        } else {
+
+            fprintf(stderr, "[ERROR] Opción no reconocida: %s\n", argv[i]);
+
+            print_usage(argv[0]);
+
+            return 2;
+
+        }
+
+    }
+
+
+
+    printf("=================================================================\n");
+
+    printf("      SOFTWARE K3 v0 - AUTENTICACIÓN INDUSTRIAL POR MARCA DE CODIGO\n");
+
+    printf("=================================================================\n");
+
+
+
+    size_t longitud_datos = strlen(input_text);
+
+    uint32_t estado_registros[10] = {0};
+
+    uint8_t buffer_telemetria[TELEMETRIA_MAX] = {0};
+
+    size_t puntos_telemetria = 0;
+
+
+
+    K3BufferConfig config = crear_buffer_parametros(bits_lectura, desfase_trozos, n_registros, semilla, marca_inicial);
+
+    if (marcas_count == 0) {
+
+        encolar_marca_final(&config, 0x00010203, 0x10);
+
+        encolar_marca_final(&config, 0x55555555, 0xEE);
+
+    } else {
+
+        for (int i = 0; i < marcas_count; ++i) {
+
+            encolar_marca_final(&config, marcas_valores[i], marcas_flags[i]);
+
+        }
+
+    }
+
+
+
+    printf("[+] Configuración:\n");
+
+    printf("    - input: %s\n", input_text);
+
+    printf("    - ancho: %d bits\n", config.bits_ancho);
+
+    printf("    - desfase: %d bytes\n", config.desfase_stride);
+
+    printf("    - registros: %d\n", config.num_registros);
+
+    printf("    - marca inicial: 0x%08X\n", config.marca_inicial);
+
+    printf("    - marcas finales: %d\n", config.total_marcas_encoladas);
+
+    printf("-----------------------------------------------------------------\n");
+
+
+
+    procesar_flujo_completo((const uint8_t*)input_text, longitud_datos, &config,
+
+                            estado_registros, buffer_telemetria,
+
+                            &puntos_telemetria);
+
+
+
+    uint32_t hash_final = extraer_hash_final(estado_registros, &config);
+
+
+
+    printf("[RESULTADO] Hash final K3: 0x%08X\n", hash_final);
+
+    printf("[RESULTADO] Puntos de telemetría generados: %zu\n", puntos_telemetria);
+
+    printf("[RESULTADO] Estado final de registros:\n");
+
+    for (int i = 0; i < config.num_registros; i++) {
+
+        printf("    R[%d] = 0x%08X\n", i, estado_registros[i]);
+
+    }
+
+    printf("=================================================================\n");
+
+
+
+    return 0;
+
+} 
+
+
+
