@@ -1,0 +1,64 @@
+================================================================================
+  FICHA DE PRODUCTO — AntiPC Sale-It v0.1
+  Para negociación, due diligence y presentación a terceros
+================================================================================
+
+NOMBRE COMERCIAL
+  AntiPC — Adaptive Network Through Parallel Computing
+
+PROPUESTA DE VALOR
+  Demostrar con medidas reproducibles que una red local puede actuar como
+  extensión del sistema de ejecución, reduciendo la carga de coordinación
+  de la CPU respecto a una arquitectura monolítica equivalente.
+
+DIFERENCIADOR
+  No es solo sumar CPUs en red. Añade capa algebraica:
+    - Grafcet distribuido
+    - Matriz de existencia
+    - Redundancia matemática
+    - Índice de conocimiento reutilizable K(N)
+
+ACTIVOS INCLUIDOS EN ESTE PAQUETE
+  [x] Motor hash K3 (port fiel de k3hash.c)
+  [x] Buffer circular lock-free SPSC
+  [x] Máquina de estados Grafcet con matriz de existencia
+  [x] Protocolo UDP binario (WORK / RESULT / DONE)
+  [x] Hub worker + maestro coordinador
+  [x] Suite de benchmarks A→E
+  [x] Marco científico formal
+  [x] Scripts de ejecución one-click (Windows)
+
+ENTREGABLES VERIFICABLES (recomendado para 33×1)
+  Nivel 0  Arquitectura documentada
+  Nivel 1  Código ejecutable (este paquete)
+  Nivel 2  Benchmark con números reproducibles
+  Nivel 3  IP + roadmap (C++/DPDK, multi-máquina LAN, integración repo VMA)
+
+MÉTRICAS DEMOSTRADAS
+  - Throughput (pkt/s)
+  - Carga ALU relativa vs arquitectura convencional
+  - Cache hits K(N) en arquitecturas C y D
+  - Escalado por número de hubs (parámetro --hubs)
+
+REPRODUCIBILIDAD
+  Cualquier evaluador puede ejecutar:
+    scripts\03_benchmark_udp.bat
+  y obtener resultados comparables en su propio hardware.
+
+LIMITACIONES DECLARADAS (honestidad técnica)
+  - Prototipo en Python; números absolutos no equivalen a DPDK/eBPF en C++
+  - La ALU no queda "libre"; se reduce coordinación y recálculo
+  - Grafcet (D) optimiza K(N), no throughput bruto en cargas sin duplicados
+  - UDP evita handshake TCP pero no elimina copia del kernel
+
+ROADMAP SUGERIDO (no incluido en v0.1)
+  - Migración C++20 + DPDK
+  - Hubs en máquinas distintas de la LAN
+  - Visualizador Grafcet en tiempo real
+  - Integración con repositorio github.com/espiradesombra/claude
+
+CONTACTO / AUTORÍA
+  Víctor Manzanares Alberola
+  Proyecto 33×1 — Propiedad intelectual en negociación
+
+================================================================================

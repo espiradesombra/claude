@@ -1,0 +1,80 @@
+================================================================================
+  PRODUCT SHEET — AntiPC Sale-It v0.1
+  For negotiation, due diligence, and third-party presentation
+================================================================================
+
+COMMERCIAL NAME
+  AntiPC — Adaptive Network Through Parallel Computing
+
+TAGLINE
+  "Transforming communication into computation."
+  "Where the network becomes part of the computer."
+
+VALUE PROPOSITION
+  Demonstrate with reproducible measurements that a local network can act as
+  an extension of the execution system, reducing CPU coordination load
+  compared to an equivalent monolithic architecture.
+
+DIFFERENTIATOR
+  This is not simply aggregating CPUs over a network. AntiPC adds an
+  algebraic layer:
+    - Distributed Grafcet state machine
+    - Existence matrix
+    - Mathematical redundancy
+    - Reusable knowledge index K(N)
+
+ASSETS INCLUDED IN THIS PACKAGE
+  [x] K3 hash engine (faithful port of k3hash.c)
+  [x] Lock-free SPSC ring buffer
+  [x] Grafcet engine with existence matrix
+  [x] Binary UDP protocol (WORK / RESULT / DONE)
+  [x] Hub worker + master coordinator
+  [x] Benchmark suite A→E
+  [x] Formal scientific framework
+  [x] One-click execution scripts (Windows)
+
+VERIFIABLE DELIVERABLES (recommended for 33×1 negotiations)
+  Level 0  Documented architecture
+  Level 1  Executable prototype (this package)
+  Level 2  Reproducible benchmark with measured results
+  Level 3  IP + roadmap (C++/DPDK, multi-machine LAN, VMA repo integration)
+
+DEMONSTRATED METRICS
+  - Throughput (packets/s)
+  - Relative ALU load vs conventional architecture
+  - K(N) cache hits in architectures C and D
+  - Scaling by hub count (--hubs parameter)
+
+REPRODUCIBILITY
+  Any evaluator can run:
+    scripts\03_benchmark_udp.bat
+  and obtain comparable results on their own hardware.
+
+REFERENCE RESULTS (development machine, 1000 packets, 4 hubs)
+  A  Conventional     100.0% relative ALU load
+  E  Real UDP          37.9% relative ALU load  →  62.1% improvement
+
+  See docs\RESULTADOS_BENCHMARK.txt
+
+DECLARED LIMITATIONS (technical honesty)
+  - Python prototype; absolute numbers do not equal DPDK/eBPF in C++
+  - The ALU is not "freed"; coordination and recomputation are reduced
+  - Grafcet (D) optimizes K(N), not raw throughput on duplicate-free workloads
+  - UDP avoids TCP handshake but does not eliminate kernel copy
+
+SUGGESTED ROADMAP (not included in v0.1)
+  - C++20 + DPDK migration
+  - Hubs on separate LAN machines
+  - Real-time Grafcet visualizer
+  - Integration with github.com/espiradesombra/claude
+
+LICENSING
+  Copyright (c) 2026 Víctor Manzanares Alberola. All rights reserved.
+  See LICENCIA.txt for Spanish license terms.
+  Commercial license, sublicense, or 33×1 transfer requires written agreement.
+
+AUTHOR / OWNERSHIP
+  Víctor Manzanares Alberola
+  Project 33×1 — Intellectual property under negotiation
+
+================================================================================
