@@ -1,0 +1,65 @@
+================================================================================
+ARCHIVOS-VMA — selección curada de Desktop\archivos
+================================================================================
+Autor: Víctor Manzanares Alberola (VMA)
+Origen: C:\Users\cuent\Desktop\archivos  (~97.900 archivos; solo ~22 copiados)
+Copiado: 2026-07-11 — originales intactos
+Analisis profundo: ANALISIS_FASE2.txt (fase 2: +8 archivos energia/graficas)
+
+CONTEXTO
+  La carpeta archivos\ es un volcado masivo (UPV, libros, personal, duplicados).
+  Esta subcarpeta extrae SOLO el núcleo matemático/energético VMA que no estaba
+  aún en just run.
+
+CORPUS (leer en este orden)
+  1. cribas_cotas_vma.txt      — índice 16 capítulos (sep 2025), canon estructurado
+  2. criva_teoria.txt          — Criva racional iterativa (teoría)
+  3. numeros_i_numeritos_jj.txt — libro "Números i numeritos" (jj.txt)
+  4. antiprimos.txt            — AM(p,v)=(2^p+1)/3^v, transformación A*
+  5. criba_desmemoriada_guion.txt — guion audiolibro + 6k±1 distribuida
+  6. informe_helicoidal_zypyzape.txt — ciclo 540°+180°, batería virtual (precursor gemelos)
+
+CÓDIGO (codigo\)
+  anexoE_L_m_script.py         — L(n), m(n), K(n)  [ejecutable]
+  anexoF_mrauv_calibrador.py   — calibrador MRAUV   [ejecutable]
+  anexoF_criba6kpm1_openmp.c    — criba 6k±1 OpenMP (gcc -O3 -fopenmp)
+  criba_hibrida.py             — criba híbrida 6k±1 (importar o extender)
+  criba_modular.py, mrauv.py, estructura_sofi.py, fermat_modular.py
+  heuristica_logs.py, heuristica_raices.py, restos_graficos.py, siguiente_primo.py
+  6.2.c, 10.0 Comparativa.c    — evolución histórica criba en C
+
+CONJETURAS (conjeturas\)
+  conjetura_resumen.txt        — intervalo n! ± n, primos 6k±1
+  metodo_calculo_primos.txt
+
+EJECUTAR RÁPIDO
+  RUN_ARCHIVOS_VMA.bat         — desde raíz just run
+  o:
+    cd archivos-vma\codigo
+    python anexoE_L_m_script.py
+    python anexoF_mrauv_calibrador.py n0=100000 dn=632
+
+RELACIÓN CON JUST RUN
+  vma-run\lib\criva.py, cribas.py     ← implementación runtime
+  teoremas\criva.py                   ← estimador densidad
+  aleatorovix\                        ← criba desmemoriada ejecutable
+  gemelos\, hurto-gravitatorio\       ← evolución del informe helicoidal
+  libro-metodos-simples\              ← LoveEarthHacker LaTeX
+
+NO COPIADO (a propósito)
+  UPV EPSA\ (86k archivos), libros\, azul\, repe\ duplicados, chats .7z,
+  xlsx Goldbach, Dragon Ball, APK, contraseñas, etc.
+
+FASE 2 (energia + graficas + chats)
+  energia/forpkm_kilometro.txt     — kilometro asincrono rotacional (ForPkm)
+  energia/giroscopio_forpkm.txt    — analisis Copilot del modulo
+  energia/pacopi_forpkm.txt        — extension ForPkm + 3 modulos
+  matematica_extra/densidad_x_cine.txt — chat intuicion densidad primos
+  matematica_extra/resumen_goldbach_godel.txt
+  graficas_libro/py/               — gen_fotos, trazado_dinamico (MDC visual)
+
+ORIGEN EXACTO
+  cribas_cotas_vma.txt     ← Cribas_cotas_y_estructuras_de_primos_VMA (1).txt
+  numeros_i_numeritos_jj.txt ← jj.txt
+  informe_helicoidal_zypyzape.txt ← Nuevo Documento de texto (4).txt
+================================================================================

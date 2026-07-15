@@ -1,0 +1,46 @@
+
+Método de Cálculo de la Mínima Cantidad Teórica de Números Primos
+
+Objetivo:
+Determinar el valor mínimo de n tal que el porcentaje de números primos en el intervalo [1, n] sea mayor que 1 - x%, utilizando las constantes c1 y c2.
+
+Definiciones:
+- n: Número entero a evaluar.
+- c1: Cantidad de números primos de la forma 6k ± 1 en el intervalo [1, n].
+- c2: Valor de referencia para n.
+- x: Porcentaje en el intervalo (0, 1].
+
+Ecuación Base:
+n^(1/2) * (c1 / c2) = n - xn
+
+Pasos del Método:
+
+1. Inicialización de Constantes:
+   - Selecciona los valores de c1 y c2. Por ejemplo, c1 = 2 y c2 = 6.
+
+2. Cálculo del Intervalo:
+   - Define el intervalo x en el rango (0, 1].
+
+3. Evaluación de n:
+   - Utiliza la ecuación base para resolver n:
+     n^(1/2) * (c1 / c2) = n - xn
+   - Simplifica y resuelve para n:
+     n^(1/2) * (c1 / c2) = n(1 - x)
+     n^(1/2) = n(1 - x) * (c2 / c1)
+     n = ((c2 / (c1 * (1 - x)))^2)
+
+4. Ajuste de Constantes:
+   - Si el valor de n obtenido no es satisfactorio, ajusta los valores de c1 y c2 para obtener un resultado más preciso.
+
+Ejemplo:
+Para c1 = 30, c2 = 120, y x = 0.5:
+n^(1/2) * (30 / 120) = n - 0.5n
+n^(1/2) * 0.25 = 0.5n
+n^(1/2) = 2n
+n = (1 / 2)^2
+n = 0.25
+
+En este caso, n debe ser mayor o igual a 120 para que el cálculo sea válido.
+
+Conclusión:
+Este método permite ajustar y calcular el valor mínimo de n para que el porcentaje de números primos en el intervalo [1, n] sea mayor que 1 - x%, utilizando las constantes c1 y c2 para obtener resultados más precisos.

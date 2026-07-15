@@ -1,0 +1,194 @@
+Guion de Audiolibro: La Criba Desmemoriada (Versión Final Revisada)
+Introducción (Voz Entrevistador - Español)
+
+Entrevistador: Hoy nos adentramos en un concepto revolucionario del libro "Números i numeritos": la Criba Desmemoriada. Su autor, aquí presente, nos compartirá la esencia de este algoritmo, que promete "superescalabilidad".
+
+Explicador (English)
+
+Explainer: The main inspiration behind the "Disememory Sieve" was the pursuit of superscalability. We wanted an algorithm for prime number generation that could handle incredibly large datasets by leveraging distributed memory, moving beyond traditional methods.
+
+Traductor (Español)
+
+Traductor: La principal inspiración detrás de la "Criba Desmemoriada" fue la búsqueda de la superescalabilidad. Queríamos un algoritmo para la generación de números primos que pudiera manejar conjuntos de datos increíblemente grandes aprovechando la memoria distribuida, yendo más allá de los métodos tradicionales.
+
+Entrevistador (Español)
+
+Entrevistador: Fascinante. Hablas de memoria distribuida. ¿Podrías explicarnos qué es exactamente la memoria distribuida y para qué sirve? Y, si es posible, ¿podrías darnos un ejemplo sencillo, quizás como una actividad para niños, para que lo entendamos mejor?
+
+Explicador (English)
+
+Explainer: Of course. Distributed memory is a way for computers to work together on a big problem, but instead of sharing one big memory space, each computer has its own memory. They communicate by sending messages to each other. It's useful for tasks that are too big for a single computer, like processing huge amounts of data or running very complex simulations. It allows for parallel processing, meaning many parts of the problem are solved at the same time.
+
+Traductor (Español)
+
+Traductor: Por supuesto. La memoria distribuida es una forma en que las computadoras trabajan juntas en un problema grande, pero en lugar de compartir un único espacio de memoria grande, cada computadora tiene su propia memoria. Se comunican enviándose mensajes entre sí. Es útil para tareas que son demasiado grandes para una sola computadora, como procesar enormes cantidades de datos o ejecutar simulaciones muy complejas. Permite el procesamiento paralelo, lo que significa que muchas partes del problema se resuelven al mismo tiempo.
+
+Explicador (English)
+
+Explainer: Let's imagine we want to find all the red toys in a very, very big room full of toys. If one child tries to do it alone, it would take a long, long time. That's like a single computer.
+
+Now, imagine we have ten children, and each child is responsible for finding red toys in their own small section of the room. Each child has their own "memory" of the toys in their section. They don't share a single brain. When one child finds a red toy, they can tell the others, "Hey, I found a red car in my section!" That's like sending a message.
+
+They all work at the same time in their own areas. When they finish, they can combine their lists of red toys. This way, the big task of finding all red toys is done much, much faster. That's distributed memory in action for kids!
+
+Now, imagine children, instead of finding red toys, they have to calculate prime numbers!
+
+Imagine two children, each with a special drawing board. On their board, they draw a pattern of zeros and ones, where '1' means "maybe a prime" and '0' means "definitely not a prime". This is our binary pattern, representing numbers.
+
+Child 1 draws a pattern for numbers from 0 to 30 based on the 6k+-1 rule: 010001010001010001010001010001.
+This pattern has '1's at positions corresponding to numbers like 1, 5, 7, 11, 13, 17, 19, 23, 25, 29.
+Now, Child 1 marks out the number 5 by changing its '1' to '0', and also marks 30 - 5 (which is 25), because they are multiples of 5. So, the '1' at position 5 becomes '0', and the '1' at position 25 becomes '0'.
+
+Child 2 draws a similar pattern, but for numbers from 0 to 42, also based on 6k+-1: 0100010100010100010100010100010100010100010.
+This pattern has '1's at positions like 1, 5, 7, 11, 13, 17, 19, 23, 25, 29, 31, 35, 37, 41.
+Child 2 then marks out the number 7 by changing its '1' to '0', and also marks 42 - 7 (which is 35), because they are multiples of 7. The '1' at position 7 becomes '0', and the '1' at position 35 becomes '0'.
+
+Traductor (Español)
+
+Traductor: Imaginemos que queremos encontrar todos los juguetes rojos en una habitación muy, muy grande llena de juguetes. Si un solo niño intenta hacerlo solo, tardaría muchísimo tiempo. Eso es como una sola computadora.
+
+Ahora, imaginemos que tenemos diez niños, y cada niño es responsable de encontrar juguetes rojos en su propia pequeña sección de la habitación. Cada niño tiene su propia "memoria" de los juguetes en su sección. No comparten un solo cerebro. Cuando un niño encuentra un juguete rojo, puede decir a los demás: "¡Oye, encontré un coche rojo en mi sección!". Eso es como enviar un mensaje.
+
+Todos trabajan al mismo tiempo en sus propias áreas. Cuando terminan, pueden combinar sus listas de juguetes rojos. De esta manera, la gran tarea de encontrar todos los juguetes rojos se hace mucho, mucho más rápido. ¡Eso es la memoria distribuida en acción para niños!
+
+¡Ahora, imaginemos niños que, en lugar de encontrar juguetes rojos, tienen que calcular números primos!
+
+Imaginemos dos niños, cada uno con una pizarra especial. En su pizarra, dibujan un patrón de ceros y unos, donde '1' significa "quizás un primo" y '0' significa "definitivamente no es un primo". Este es nuestro patrón binario, que representa números.
+
+El Niño 1 dibuja un patrón para los números del 0 al 30 basado en la regla 6k+-1: 010001010001010001010001010001.
+Este patrón tiene '1's en posiciones que corresponden a números como 1, 5, 7, 11, 13, 17, 19, 23, 25, 29.
+Ahora, el Niño 1 tacha el número 5 cambiando su '1' a '0', y también tacha 30 - 5 (que es 25), porque son múltiplos de 5. Así, el '1' en la posición 5 se convierte en '0', y el '1' en la posición 25 se convierte en '0'.
+
+El Niño 2 dibuja un patrón similar, pero para los números del 0 al 42, también basado en 6k+-1: 0100010100010100010100010100010100010100010.
+Este patrón tiene '1's en posiciones como 1, 5, 7, 11, 13, 17, 19, 23, 25, 29, 31, 35, 37, 41.
+El Niño 2 tacha el número 7 cambiando su '1' a '0', y también tacha 42 - 7 (que es 35), porque son múltiplos de 7. El '1' en la posición 7 se convierte en '0', y el '1' en la posición 35 se convierte en '0'.
+
+Explicador (English)
+
+Explainer: When Child 1 finishes their initial marking, they say, "Ready!" and waits for the other. When Child 2 finishes, they also say, "Ready!" Then, Child 1 tells Child 2: "My prime for this problem was 5!" And Child 2 tells Child 1: "My prime for this problem was 7!"
+
+Now, each child needs to extend their drawing or binary pattern up to the number 100. This extension involves replicating their patterns, using the prime number received from the other child to guide how these repetitions are generated and combined to ensure they cover the full range needed.
+
+Traductor (Español)
+
+Traductor: Cuando el Niño 1 termina su marcación inicial, dice: "¡Listo!" y espera al otro. Cuando el Niño 2 termina, también dice: "¡Listo!". Entonces, el Niño 1 le dice al Niño 2: "¡Mi primo para este problema fue el 5!". Y el Niño 2 le dice al Niño 1: "¡Mi primo para este problema fue el 7!".
+
+Ahora, cada niño necesita extender su dibujo o patrón binario hasta el número 100. Esta extensión implica replicar sus patrones, usando el número primo recibido del otro niño para guiar cómo se generan y combinan estas repeticiones para asegurar que cubren todo el rango necesario.
+
+Explicador (English)
+
+Explainer: After they've done their replications, they now have two new, much longer patterns, both extending up to 100. At this point, they also mark 5 and 7 as confirmed primes.
+
+Then, they perform a special operation called "AND" (or boolean multiplication) on these two long patterns, position by position, up to 100. It works like this: 1 AND 1 = 1. Any other combination – 1 AND 0, 0 AND 1, or 0 AND 0 – results in 0.
+
+If a position in a replicated list has a 0 (meaning it's a composite number, not a prime), the "AND" operation will ensure that this 0 is preserved in the final combined list. This way, by combining the information from both children's patterns through this boolean "AND", they will have successfully calculated all prime numbers up to 100!
+
+Traductor (Español)
+
+Traductor: Después de haber hecho sus replicaciones, ahora tienen dos patrones nuevos, mucho más largos, ambos extendiéndose hasta el 100. En este punto, también marcan el 5 y el 7 como primos confirmados.
+
+Luego, realizan una operación especial llamada "AND" (o multiplicación booleana) en estos dos patrones largos, posición por posición, hasta el 100. Funciona así: 1 AND 1 = 1. Cualquier otra combinación – 1 AND 0, 0 AND 1, o 0 AND 0 – resulta en 0.
+
+Si una posición en una lista replicada tiene un 0 (lo que significa que es un número compuesto, no un primo), la operación "AND" asegurará que este 0 se conserve en la lista combinada final. De esta manera, al combinar la información de los patrones de ambos niños a través de este "AND" booleano, ¡habrán calculado con éxito todos los números primos hasta el 100!
+
+Explicador (English)
+
+Explainer: The "Disememory Sieve" fundamentally relies on replication and boolean multiplication between boolean lists. In these lists, the position represents a number, and its value indicates its primality.
+
+Traductor (Español)
+
+Traductor: Absolutamente. La "Criba Desmemoriada" se basa fundamentalmente en la replicación y la multiplicación booleana entre listas de booleanos. En estas listas, la posición representa un número y su valor indica su propiedad de primalidad.
+
+Explicador (English)
+
+Explainer: Let's look at the pseudocode:
+
+Inputs (A=(010001), B=(011101), Pb=6, P=5, limit)
+while P < limit {
+  C = P times A
+  C[P] = 0
+  C[Pb*P-P] = 0
+  C = P times C
+  C[P] = 1
+  B = P*P times B
+  B = B AND C, from P to Pb*P*P
+  // B contains a list of primes with errors from P squared onwards.
+  while (B[P+2] == 0 && P < limit) { P+2 }
+}
+return B
+Traductor (Español)
+
+Traductor: Veámos el pseudocódigo:
+
+Entradas (A=(010001), B=(011101), Pb=6, P=5, limite)
+mientras P < limite {
+  C = P veces A
+  C[P] = 0
+  C[Pb*P-P] = 0
+  C = P veces C
+  C[P] = 1
+  B = P*P veces B
+  B = B Y C, desde P hasta Pb*P*P
+  // B contiene una lista de primos con fallos a partir de P al cuadrado.
+  mientras (B[P+2] == 0 && P < limite) { P+2 }
+}
+regresar B
+Entrevistador (Español)
+
+Entrevistador: El pseudocódigo puede parecer un poco abstracto para algunos oyentes. ¿Podrías darnos una explicación más detallada de cómo funciona, quizás con un ejemplo o una analogía, y cómo se relaciona esto con la superescalabilidad?
+
+Explicador (English)
+
+Explainer: Of course. The algorithm starts from a binary pattern, specifically 6k+-1. We extend this pattern, for example, up to 6*5*5, by marking multiples of primes, like 5 and 25, and duplicating them. Once this initial marking is done for a prime, say 5, it's considered a prime. Then, we repeat this process for other primes.
+
+The core idea is to combine lists. Imagine you have two lists. You replicate each list as many times as the "prime from the other list" indicates, and then you "boolean multiply" them. This result is then added to the list containing the other eliminated multiples. This is similar to how B and C are combined in the pseudocode.
+
+Traductor (Español)
+
+Traductor: Claro. El algoritmo parte de un patrón binario, específicamente 6k+-1. Extendemos este patrón, por ejemplo, hasta 6*5*5, tachando los múltiplos de primos, como el 5 y el 25, y duplicándolos. Una vez que se ha hecho esta marcación inicial para un primo, digamos el 5, se considera un número primo. Luego, repetimos este proceso para otros primos.
+
+La idea central es combinar listas. Imagina que tienes dos listas. Replicas cada lista tantas veces como el "primo de la otra lista" indique, y luego las "multiplicas booleanamente". Este resultado se añade entonces a la lista que contiene los demás múltiplos eliminados. Esto es similar a cómo se combinan B y C en el pseudocódigo.
+
+Explicador (English)
+
+Explainer: This process of combining lists can be executed multiple times, even out of order. However, performing it in order, by prioritizing shorter lists, improves efficiency. The sooner a prime's multiples are incorporated into the prime list, the sooner its "symmetric patterns" are included, and the prime itself can be "forgotten" for further calculations. This allows for distributed memory applications because different processes can handle different segments or combine lists independently. This is where the superscalability comes into play.
+
+Traductor (Español)
+
+Traductor: Este proceso de combinar listas se puede ejecutar múltiples veces, incluso sin un orden estricto. Sin embargo, hacerlo en orden, priorizando las listas más cortas, mejora la eficiencia. Cuanto antes se unan los múltiplos de un primo a la lista de primos, antes se incorporan sus "patrones simétricos" y antes se puede "olvidar" ese primo para cálculos futuros. Esto permite aplicaciones en memoria distribuida porque diferentes procesos pueden manejar diferentes segmentos o combinar listas de forma independiente. Aquí es donde entra en juego la superescalabilidad.
+
+Entrevistador (Español)
+
+Entrevistador: Es una explicación muy clara de cómo la "memoria desmemoriada" contribuye a la superescalabilidad. ¿Hay alguna limitación o un aspecto que consideres un desafío en la implementación o la comprensión de la Criba Desmemoriada?
+
+Explicador (English)
+
+Explainer: While the algorithm is ideal for distributed memory applications, its implementation is more complex than established methods. It also requires generating a list of "near-primes". Currently, it's not optimized and not documented on Wikipedia. However, these are challenges we hope to address as we continue to explore its potential.
+
+Traductor (Español)
+
+Traductor: Aunque el algoritmo es idóneo para aplicaciones en memoria distribuida, su implementación es más compleja que los métodos establecidos. También necesita generar una lista de "casi-primos". Actualmente, no está optimizado y no está documentado en Wikipedia. Sin embargo, estos son desafíos que esperamos abordar a medida que continuamos explorando su potencial.
+
+(Manteniendo todo lo anterior... ahora, al final, después de la sección de "Desafíos")
+
+Explicador (English)
+
+Explainer: To wrap up, it's crucial to emphasize the incredible efficiency of this algorithm, especially for calculating prime numbers up to, for example, 100. This efficiency stems from its inherent design for superscalability and parallel processing.
+
+This algorithm is ideal for the exhaustive use of vector or matrix calculations, making it perfectly suited for modern GPUs. Furthermore, it allows for a highly distributed architecture: you could divide the 6k+1 and 6k-1 sequences into two separate supercomputers, and have a third supercomputer dedicated to joining these lists and handling requests. In such a setup, the third computer might be the bottleneck, but the two calculating supercomputers would efficiently reduce their prime counts and consult the third for pertinent list segments, thereby saving significant time.
+
+This suitability for parallel algorithmic techniques and the effective utilization of various computing components is truly the strong point and the very purpose of this algorithm.
+
+Traductor (Español)
+
+Traductor: Para concluir, es crucial enfatizar la increíble eficiencia de este algoritmo, especialmente para calcular números primos hasta, por ejemplo, el 100. Esta eficiencia se deriva de su diseño inherente para la superescalabilidad y el procesamiento paralelo.
+
+Este algoritmo es idóneo para el uso exhaustivo de cálculos vectoriales o matriciales, lo que lo hace perfectamente adecuado para las GPU modernas. Además, permite una arquitectura altamente distribuida: se podrían dividir las secuencias 6k+1 y 6k-1 en dos superordenadores separados, y tener un tercer superordenador dedicado a unir estas listas y atender peticiones. En tal configuración, el tercer ordenador podría ser el cuello de botella, pero los dos superordenadores de cálculo reducirían eficientemente sus conteos de primos y consultarían al tercero para segmentos de lista pertinentes, ahorrando así un tiempo significativo.
+
+Esta idoneidad para las técnicas de algoritmia paralela y la utilización efectiva de diversos componentes informáticos es realmente el punto fuerte y el propósito mismo de este algoritmo.
+
+Entrevistador (Español)
+
+Entrevistador: Y con esto, cerramos nuestra inmersión en la Criba Desmemoriada. Un algoritmo que, como hemos visto, no solo es ingenioso en su concepción, sino que abre puertas a la computación de alto rendimiento y a la resolución de problemas a una escala que antes parecía impensable. Agradecemos al autor por compartir con nosotros esta fascinante visión.
+
+¡ Bendiciones y Buenasnoches.!
