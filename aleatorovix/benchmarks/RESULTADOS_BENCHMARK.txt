@@ -1,0 +1,153 @@
+========================================================================
+ALEATOROVIX v1.0 — RESULTADOS BENCHMARK
+Fecha: 2026-07-11 12:42:37
+Maquina: Python 3.12.0 · Windows
+========================================================================
+
+## CRIBA
+----------------------------------------
+  [limite_1000]
+    tiempo_desmemoriada_ms: 0.1240 ms  
+    tiempo_hibrida_ms: 0.2215 ms  
+    primos_desmemoriada: 225.0000 count  
+    primos_hibrida: 181.0000 count  
+    ratio_desmem_vs_hibrida: 0.5598 x  desmemoriada mas rapida
+  [limite_5000]
+    tiempo_desmemoriada_ms: 0.5541 ms  
+    tiempo_hibrida_ms: 1.0757 ms  
+    primos_desmemoriada: 1014.0000 count  
+    primos_hibrida: 748.0000 count  
+    ratio_desmem_vs_hibrida: 0.5151 x  desmemoriada mas rapida
+  [limite_10000]
+    tiempo_desmemoriada_ms: 1.1042 ms  
+    tiempo_hibrida_ms: 2.1655 ms  
+    primos_desmemoriada: 1948.0000 count  
+    primos_hibrida: 1396.0000 count  
+    ratio_desmem_vs_hibrida: 0.5099 x  desmemoriada mas rapida
+  [limite_50000]
+    tiempo_desmemoriada_ms: 5.8920 ms  
+    tiempo_hibrida_ms: 11.9270 ms  
+    primos_desmemoriada: 8944.0000 count  
+    primos_hibrida: 6028.0000 count  
+    ratio_desmem_vs_hibrida: 0.4940 x  desmemoriada mas rapida
+
+## MDC
+----------------------------------------
+  [N_143]
+    evals_lineal: 12.0000 count  factores 11x13
+    evals_adaptativo: 6.0000 count  
+    tiempo_lineal_ms: 0.0509 ms  
+    tiempo_adaptativo_ms: 0.0369 ms  
+    error_lineal_abs_d-0.5: 0.0000 frac  
+    error_adaptativo_abs_d-0.5: 0.0889 frac  
+    ahorro_evals_pct: 50.0000 %  
+  [N_899]
+    evals_lineal: 30.0000 count  factores 29x31
+    evals_adaptativo: 7.0000 count  
+    tiempo_lineal_ms: 0.0292 ms  
+    tiempo_adaptativo_ms: 0.0178 ms  
+    error_lineal_abs_d-0.5: 0.0000 frac  
+    error_adaptativo_abs_d-0.5: 0.0000 frac  
+    ahorro_evals_pct: 76.6667 %  
+  [N_3599]
+    evals_lineal: 60.0000 count  factores 59x61
+    evals_adaptativo: 14.0000 count  
+    tiempo_lineal_ms: 0.0620 ms  
+    tiempo_adaptativo_ms: 0.0263 ms  
+    error_lineal_abs_d-0.5: 0.0000 frac  
+    error_adaptativo_abs_d-0.5: 0.0000 frac  
+    ahorro_evals_pct: 76.6667 %  
+  [N_10403]
+    evals_lineal: 102.0000 count  factores 101x103
+    evals_adaptativo: 24.0000 count  
+    tiempo_lineal_ms: 0.0909 ms  
+    tiempo_adaptativo_ms: 0.0448 ms  
+    error_lineal_abs_d-0.5: 0.0000 frac  
+    error_adaptativo_abs_d-0.5: 0.0000 frac  
+    ahorro_evals_pct: 76.4706 %  
+  [N_102319]
+    evals_lineal: 320.0000 count  factores 311x329
+    evals_adaptativo: 24.0000 count  
+    tiempo_lineal_ms: 0.2927 ms  
+    tiempo_adaptativo_ms: 0.0429 ms  
+    error_lineal_abs_d-0.5: 0.0000 frac  
+    error_adaptativo_abs_d-0.5: 0.0070 frac  
+    ahorro_evals_pct: 92.5000 %  
+  [N_1022117]
+    evals_lineal: 1011.0000 count  factores 1009x1013
+    evals_adaptativo: 24.0000 count  
+    tiempo_lineal_ms: 1.1428 ms  
+    tiempo_adaptativo_ms: 0.0518 ms  
+    error_lineal_abs_d-0.5: 0.0000 frac  
+    error_adaptativo_abs_d-0.5: 0.0265 frac  
+    ahorro_evals_pct: 97.6261 %  
+
+## ORGANISMO
+----------------------------------------
+  [sin_ping]
+    ciclos: 100.0000 count  
+    tiempo_total_ms: 72.5497 ms  
+    ms_por_ciclo: 0.7255 ms  
+    saltos_6k: 47.0000 count  
+    primos_unicos: 3.0000 count  
+    tasa_primo_en_salto_pct: 6.3830 %  
+  [con_ping]
+    ciclos: 100.0000 count  
+    tiempo_total_ms: 4828.9263 ms  
+    ms_por_ciclo: 48.2893 ms  
+    saltos_6k: 48.0000 count  
+    primos_unicos: 11.0000 count  
+    tasa_primo_en_salto_pct: 22.9167 %  
+
+## AZAR_MASIVO
+----------------------------------------
+  [ciclos_10000_rtl]
+    ciclos: 10000.0000 count  
+    tiempo_ms: 7747.9022 ms  
+    primos_unicos: 43.0000 count  
+    candidatos_unicos: 200.0000 count  
+    k_unicos: 100.0000 count  
+    cobertura_k_pct: 1.0000 %  
+    saltos_6k: 4510.0000 count  
+    entropia_k_bits: 6.6376 bits  
+    entropia_decision_bits: 1.9751 bits  
+  [ciclos_10000_ltr]
+    ciclos: 10000.0000 count  
+    tiempo_ms: 8113.6677 ms  
+    primos_unicos: 70.0000 count  
+    candidatos_unicos: 200.0000 count  
+    k_unicos: 100.0000 count  
+    cobertura_k_pct: 1.0000 %  
+    saltos_6k: 4370.0000 count  
+    entropia_k_bits: 6.6372 bits  
+    entropia_decision_bits: 1.9745 bits  
+  [ciclos_10000_prng]
+    ciclos: 10000.0000 count  random.randint
+    tiempo_ms: 33.3512 ms  
+    primos_unicos: 3835.0000 count  
+    k_unicos: 6324.0000 count  
+    cobertura_k_pct: 63.2400 %  
+    entropia_k_bits: 12.4626 bits  
+
+## SINTONIA
+----------------------------------------
+  [intentos_300]
+    primos_organismo: 22.0000 count  
+    primos_azar: 182.0000 count  
+    tiempo_organismo_ms: 212.5829 ms  
+    tiempo_azar_ms: 2.4023 ms  
+
+========================================================================
+INTERPRETACION
+========================================================================
+
+CRIBA: compara criba_desmemoriada (wheel 6k) vs criba_hibrida (saltos 2p/4p).
+MDC:   evals_adaptativo << evals_lineal indica memoria v6 reduce trabajo.
+ORGANISMO: ms_por_ciclo mide overhead entropia+mascara+desmemoria.
+AZAR_MASIVO: muchas ejecuciones RTL acumulan entropia fisica.
+  No es PRNG: cada ciclo roba nanos+pila+basura; k=9999-(nanos%%10000).
+  La sesion larga ES el metodo — comparar cobertura_k y entropia_k a 10k ciclos.
+SINTONIA (300): solo referencia corta; NO invalida azar masivo acumulado.
+
+Regenerar:
+  python benchmarks/benchmark_aleatorovix.py
