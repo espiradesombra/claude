@@ -1,0 +1,40 @@
+================================================================================
+VMA-RUN — ejecutable unificado (lo mejor de documentos viejos)
+================================================================================
+
+FUENTES MINADAS
+  repo\filesclaude 6-5\  → mdc.py, criva.py, cribas.py, minigemelo
+  vma\                    → K3 cross_verifier
+  repo\1\                 → teorema amplificador fase K=3 XOR
+  hurto-gravitatorio\     → quijote_results.csv
+  aleatorovix\            → criba desmemoriada, organismo Lila
+  gemelos\                → simulaciones Quijote/ZypyZape
+
+POR QUÉ ESTE EJECUTABLE
+  Un solo comando demuestra TODO el ecosistema VMA en <5 segundos:
+    · K3 industrial (vendible B2B)
+    · MDC factorización (núcleo matemático 33x1)
+    · Criva densidad primos (teorema publicable)
+    · Criba 6k±1 original VMA
+    · Amplificador fase K=3 (cripto/control)
+    · Hurto gravitatorio (energía)
+
+USO
+  cd "just run"
+  RUN.bat                    → demo completa
+  RUN.bat mdc 10403          → factorizar
+  RUN.bat k3 --text "hola"   → hash K3
+  RUN.bat criva --compare 100,1000,10000
+  RUN.bat criba --limit 500 --show 20
+  RUN.bat phase
+  RUN.bat hurto
+
+  python vma-run\vma_run.py demo
+
+GEMELO VISUAL (requiere numpy+matplotlib)
+  python gemelos\zypyzape_minigemelo.py
+
+ANTI PC / ALEATOROVIX
+  antipc\INICIO.bat
+  aleatorovix\RUN_ALEATOROVIX.bat (crear en raíz si falta)
+================================================================================
