@@ -1,0 +1,37 @@
+================================================================================
+LIBRO — Métodos Simples VMA (LoveEarthHacker / LoveArt)
+================================================================================
+
+  ★ TXT LoveArt (leer ya, sin compilar):
+    LOVEART_fisica_o_informatica.txt
+    — ¿Física aplicada implementada vs informática?
+    — 4 líneas grid (L1–L4), 4 líneas de código, métodos, mapa de lectura
+
+Archivo principal:
+  metodos_simples_vma.tex
+
+Contenido:
+  · Lista de herramientas (tabla + mapa TikZ)
+  · MDC — salto cinemático en 4 puntos
+  · Criva — densidad de primos por capas
+  · Criba 6k±1
+  · K3 hash + amplificador fase K=3 XOR
+  · Hurto gravitatorio (diagrama + tabla resultados)
+  · AntiPC + Aleatorovix
+  · Capítulo LoveEarthHacker + 33x1
+  · Apéndice comandos vma-run
+
+Compilar (Windows):
+  COMPILAR.bat
+  o: pdflatex metodos_simples_vma.tex  (dos veces)
+
+Requisitos:
+  · pdflatex (MiKTeX o TeX Live)
+  · Paquetes: tikz, amsmath, babel-spanish, listings, booktabs
+
+Salida:
+  metodos_simples_vma.pdf
+
+LoveEarthHacker = serie ética-técnica del corpus VMA (Tierra, rigor, métodos
+ejecutables). No aparece en repos antiguos; se define aquí como marco del libro.
+================================================================================
