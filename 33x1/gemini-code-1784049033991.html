@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizador del Método Pitagórico de Divisores</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --accent-orange: #f59e0b;
+            --border-color: #334155;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+            color: var(--text-color);
+        }
+
+        header p {
+            margin: 0.5rem 0 0 0;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            flex-grow: 1;
+            max-width: 1600px;
+            margin: 0 auto;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            height: fit-content;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .input-number-wrapper {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        input[type="range"] {
+            flex-grow: 1;
+            accent-color: var(--accent-blue);
+        }
+
+        input[type="number"] {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 0.4rem;
+            border-radius: 4px;
+            width: 60px;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .toggle-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+        }
+
+        .toggle-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        .toggle-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--accent-blue);
+            cursor: pointer;
+        }
+
+        .indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 4px;
+        }
+
+        .visualizer-area {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .canvas-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        svg {
+            background-color: #0b0f19;
+            border-radius: 6px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+            max-width: 100%;
+            height: auto;
+        }
+
+        .table-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.2rem;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+
+        .text-green { color: var(--accent-green); font-weight: bold; }
+        .text-red { color: var(--accent-red); }
+        .text-orange { color: var(--accent-orange); }
+
+        .tooltip {
+            position: absolute;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            pointer-events: none;
+            display: none;
+            z-index: 10;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Método Pitagórico de Divisores a Ojo</h1>
+        <p>Análisis geométrico de la colisión entre aproximaciones lineales y la hipérbola de divisores</p>
+    </header>
+
+    <div class="container">
+        <div class="panel">
+            <div class="control-group">
+                <label for="n-val">Número Objetivo (n)</label>
+                <div class="input-number-wrapper">
+                    <input type="range" id="n-slider" min="4" max="100" value="12">
+                    <input type="number" id="n-input" min="4" max="100" value="12">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label>Capas del Gráfico</label>
+                <div class="toggle-container">
+                    <label class="toggle-item">
+                        <input type="checkbox" id="show-hyperbola" checked>
+                        <span><span class="indicator" style="background-color: var(--accent-blue);"></span>Curva Real ($y = n/x$)</span>
+                    </label>
+                    <label class="toggle-item">
+                        <input type="checkbox" id="show-recta1" checked>
+                        <span><span class="indicator" style="background-color: var(--accent-red);"></span>Recta 1: $(n/2, 2) \to (2, \sqrt{n})$</span>
+                    </label>
+                    <label class="toggle-item">
+                        <input type="checkbox" id="show-recta2" checked>
+                        <span><span class="indicator" style="background-color: var(--accent-orange);"></span>Recta 2: $(n/2, 2) \to (\sqrt{n}, \sqrt{n})$</span>
+                    </label>
+                    <label class="toggle-item">
+                        <input type="checkbox" id="show-grid" checked>
+                        <span>Cuadrícula Entera</span>
+                    </label>
+                </div>
+            </div>
+
+            <div style="font-size: 0.85rem; line-height: 1.4; color: var(--text-muted); border-top: 1px solid var(--border-color); padding-top: 1rem;">
+                <strong>Regla del Ojo:</strong> Los círculos verdes grandes representan los divisores enteros reales. Las líneas intentan cruzar estas esquinas. Si el error absoluto en el eje Y es menor a 0.3, a ojo en un papel parecerá que la recta clava la esquina perfectamente.
+            </div>
+        </div>
+
+        <div class="visualizer-area">
+            <div class="canvas-card">
+                <svg id="plot" width="650" height="500"></svg>
+                <div id="tooltip" class="tooltip"></div>
+            </div>
+
+            <div class="table-card">
+                <h3 style="margin-top: 0; margin-bottom: 1rem; font-size: 1.1rem;">Análisis de Desviación en Columnas</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>x (Entero)</th>
+                            <th>y (Divisor Real)</th>
+                            <th>y (Recta 1)</th>
+                            <th>Error R1</th>
+                            <th>y (Recta 2)</th>
+                            <th>Error R2</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Elementos del DOM
+        const slider = document.getElementById('n-slider');
+        const input = document.getElementById('n-input');
+        const showHyperbola = document.getElementById('show-hyperbola');
+        const showRecta1 = document.getElementById('show-recta1');
+        const showRecta2 = document.getElementById('show-recta2');
+        const showGrid = document.getElementById('show-grid');
+        const svg = document.getElementById('plot');
+        const tableBody = document.getElementById('table-body');
+        const tooltip = document.getElementById('tooltip');
+
+        // Configuración de dimensiones del SVG
+        const width = 650;
+        const height = 500;
+        const margin = 50;
+
+        // Escuchadores de eventos
+        slider.addEventListener('input', (e) => {
+            input.value = e.target.value;
+            update();
+        });
+
+        input.addEventListener('input', (e) => {
+            let val = parseInt(e.target.value);
+            if (isNaN(val)) val = 12;
+            if (val < 4) val = 4;
+            if (val > 100) val = 100;
+            slider.value = val;
+            update();
+        });
+
+        [showHyperbola, showRecta1, showRecta2, showGrid].forEach(el => {
+            el.addEventListener('change', update);
+        });
+
+        // Inicializar
+        update();
+
+        function update() {
+            const n = parseInt(slider.value);
+            const sqrtN = Math.sqrt(n);
+
+            // 1. Limites de los ejes dinámicos para que encaje bien
+            const xMax = Math.max(Math.ceil(n / 2) + 1, 6);
+            const yMax = Math.max(Math.ceil(sqrtN) + 2, 6);
+
+            // Funciones de mapeo de coordenadas cartesianas a SVG
+            const toSvgX = (x) => margin + (x / xMax) * (width - 2 * margin);
+            const toSvgY = (y) => height - margin - (y / yMax) * (height - 2 * margin);
+
+            // Limpiar SVG anterior
+            svg.innerHTML = '';
+
+            // Dibujar Cuadrícula de Fondo
+            if (showGrid.checked) {
+                // Líneas Verticales
+                for (let x = 1; x <= xMax; x++) {
+                    const sx = toSvgX(x);
+                    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                    line.setAttribute("x1", sx);
+                    line.setAttribute("y1", margin);
+                    line.setAttribute("x2", sx);
+                    line.setAttribute("y2", height - margin);
+                    line.setAttribute("stroke", "#1e293b");
+                    line.setAttribute("stroke-width", "1");
+                    svg.appendChild(line);
+
+                    // Etiquetas Eje X
+                    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    text.setAttribute("x", sx);
+                    text.setAttribute("y", height - margin + 20);
+                    text.setAttribute("fill", "#64748b");
+                    text.setAttribute("font-size", "10px");
+                    text.setAttribute("text-anchor", "middle");
+                    text.textContent = x;
+                    svg.appendChild(text);
+                }
+
+                // Líneas Horizontales
+                for (let y = 1; y <= yMax; y++) {
+                    const sy = toSvgY(y);
+                    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                    line.setAttribute("x1", margin);
+                    line.setAttribute("y1", sy);
+                    line.setAttribute("x2", width - margin);
+                    line.setAttribute("y2", sy);
+                    line.setAttribute("stroke", "#1e293b");
+                    line.setAttribute("stroke-width", "1");
+                    svg.appendChild(line);
+
+                    // Etiquetas Eje Y
+                    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    text.setAttribute("x", margin - 15);
+                    text.setAttribute("y", sy + 4);
+                    text.setAttribute("fill", "#64748b");
+                    text.setAttribute("font-size", "10px");
+                    text.setAttribute("text-anchor", "end");
+                    text.textContent = y;
+                    svg.appendChild(text);
+                }
+            }
+
+            // Dibujar Ejes principales
+            const axisX = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            axisX.setAttribute("x1", margin);
+            axisX.setAttribute("y1", height - margin);
+            axisX.setAttribute("x2", width - margin);
+            axisX.setAttribute("y2", height - margin);
+            axisX.setAttribute("stroke", "#475569");
+            axisX.setAttribute("stroke-width", "2");
+            svg.appendChild(axisX);
+
+            const axisY = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            axisY.setAttribute("x1", margin);
+            axisY.setAttribute("y1", margin);
+            axisY.setAttribute("x2", margin);
+            axisY.setAttribute("y2", height - margin);
+            axisY.setAttribute("stroke", "#475569");
+            axisY.setAttribute("stroke-width", "2");
+            svg.appendChild(axisY);
+
+            // 2. Dibujar la Hipérbola real (y = n / x)
+            if (showHyperbola.checked) {
+                let pathD = "";
+                const step = 0.1;
+                for (let x = 1; x <= xMax; x += step) {
+                    const y = n / x;
+                    if (y <= yMax) {
+                        const sx = toSvgX(x);
+                        const sy = toSvgY(y);
+                        if (pathD === "") {
+                            pathD = `M ${sx} ${sy}`;
+                        } else {
+                            pathD += ` L ${sx} ${sy}`;
+                        }
+                    }
+                }
+                const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                path.setAttribute("d", pathD);
+                path.setAttribute("fill", "none");
+                path.setAttribute("stroke", "#3b82f6");
+                path.setAttribute("stroke-width", "3");
+                path.setAttribute("stroke-dasharray", "4,4");
+                svg.appendChild(path);
+            }
+
+            // Ecuaciones de las rectas
+            // R1: (n/2, 2) a (2, sqrt(n))
+            const r1_x1 = n / 2;
+            const r1_y1 = 2;
+            const r1_x2 = 2;
+            const r1_y2 = sqrtN;
+            const m1 = (r1_y2 - r1_y1) / (r1_x2 - r1_x1);
+            const b1 = r1_y1 - m1 * r1_x1;
+
+            // R2: (n/2, 2) a (sqrt(n), sqrt(n))
+            const r2_x1 = n / 2;
+            const r2_y1 = 2;
+            const r2_x2 = sqrtN;
+            const r2_y2 = sqrtN;
+            const m2 = (r2_y2 - r2_y1) / (r2_x2 - r2_x1);
+            const b2 = r2_y1 - m2 * r2_x1;
+
+            // Evaluar valor de las rectas en un punto x
+            const getR1 = (x) => m1 * x + b1;
+            const getR2 = (x) => m2 * x + b2;
+
+            // Dibujar Recta 1
+            if (showRecta1.checked) {
+                const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                line.setAttribute("x1", toSvgX(r1_x1));
+                line.setAttribute("y1", toSvgY(r1_y1));
+                line.setAttribute("x2", toSvgX(r1_x2));
+                line.setAttribute("y2", toSvgY(r1_y2));
+                line.setAttribute("stroke", "#ef4444");
+                line.setAttribute("stroke-width", "2");
+                svg.appendChild(line);
+            }
+
+            // Dibujar Recta 2
+            if (showRecta2.checked) {
+                const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                line.setAttribute("x1", toSvgX(r2_x1));
+                line.setAttribute("y1", toSvgY(r2_y1));
+                line.setAttribute("x2", toSvgX(r2_x2));
+                line.setAttribute("y2", toSvgY(r2_y2));
+                line.setAttribute("stroke", "#f59e0b");
+                line.setAttribute("stroke-width", "2");
+                svg.appendChild(line);
+            }
+
+            // Encontrar divisores de n
+            const divisores = [];
+            for (let i = 1; i <= n; i++) {
+                if (n % i === 0) divisores.push(i);
+            }
+
+            // Dibujar los Divisores reales en la cuadrícula (Esquinas perfectas)
+            divisores.forEach(div => {
+                const partner = n / div;
+                if (div <= xMax && partner <= yMax) {
+                    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                    circle.setAttribute("cx", toSvgX(div));
+                    circle.setAttribute("cy", toSvgY(partner));
+                    circle.setAttribute("r", "7");
+                    circle.setAttribute("fill", "#10b981");
+                    circle.setAttribute("stroke", "#065f46");
+                    circle.setAttribute("stroke-width", "2");
+                    circle.style.cursor = "pointer";
+
+                    // Eventos Hover para info
+                    circle.addEventListener('mouseover', (e) => {
+                        tooltip.style.display = 'block';
+                        tooltip.innerHTML = `<strong>Divisor real Encontrado:</strong><br>
+                                             Coordenadas: (${div}, ${partner})<br>
+                                             Producto: ${div} × ${partner} = ${n}`;
+                        const rect = svg.getBoundingClientRect();
+                        tooltip.style.left = (e.clientX - rect.left + 15) + 'px';
+                        tooltip.style.top = (e.clientY - rect.top - 15) + 'px';
+                    });
+
+                    circle.addEventListener('mouseout', () => {
+                        tooltip.style.display = 'none';
+                    });
+
+                    svg.appendChild(circle);
+                }
+            });
+
+            // Actualizar la Tabla de Desviaciones
+            tableBody.innerHTML = '';
+            
+            // Tomamos los divisores donde x es menor o igual al límite visible
+            divisores.forEach(div => {
+                const realY = n / div;
+                
+                // Solo listamos para comparar aquellos que se sitúan en el rango de nuestras rectas
+                if (div <= n/2) {
+                    const tr = document.createElement('tr');
+
+                    // Cálculo de aproximaciones
+                    const y1Val = getR1(div);
+                    const error1 = Math.abs(realY - y1Val);
+                    const displayY1 = (div >= 2 && div <= n/2) ? y1Val.toFixed(3) : "Fuera de rango";
+                    const displayErr1 = (div >= 2 && div <= n/2) ? error1.toFixed(3) : "-";
+
+                    const y2Val = getR2(div);
+                    const error2 = Math.abs(realY - y2Val);
+                    const displayY2 = (div >= sqrtN && div <= n/2) ? y2Val.toFixed(3) : "Fuera de rango";
+                    const displayErr2 = (div >= sqrtN && div <= n/2) ? error2.toFixed(3) : "-";
+
+                    // Estilar celdas de error si son muy bajas ("efecto óptico exitoso")
+                    const classErr1 = error1 < 0.3 && displayErr1 !== "-" ? "text-green" : "";
+                    const classErr2 = error2 < 0.3 && displayErr2 !== "-" ? "text-green" : "";
+
+                    tr.innerHTML = `
+                        <td><strong>${div}</strong></td>
+                        <td class="text-green">${realY}</td>
+                        <td class="text-red">${displayY1}</td>
+                        <td class="${classErr1}">${displayErr1} ${error1 < 0.3 && displayErr1 !== "-" ? '🎯' : ''}</td>
+                        <td class="text-orange">${displayY2}</td>
+                        <td class="${classErr2}">${displayErr2} ${error2 < 0.3 && displayErr2 !== "-" ? '🎯' : ''}</td>
+                    `;
+                    tableBody.appendChild(tr);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
