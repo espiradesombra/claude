@@ -46,11 +46,17 @@ Este repositorio es la puerta de entrada. Si eres un desarrollador, investigador
 | **Teoremas** | `teoremas/` | Fichas 01–30 + formal |
 | **33×1** | `33x1/` | Manifiesto y uso civil |
 | **Integración C** | `docs/integracion-antipc/` | Logs port antipc-port-c v04–v14 |
+| **Firma geométrica** | `encriptacionGeometrica/` | Convergencia binaria Tales + K3 |
+| **Aleatorovix** | `aleatorovix/` | Organismo entropía + máscara Lila |
+| **Hub geo** | `docs/aleatorovix-firma-geometrica/` | Índice y comandos unificados |
 | **Mapa completo** | `INDICE_TECNICO_REPO.md` | Ordenación del repo |
 
 ```bat
 cd antipc\src\antipc
 python cli.py version
+python cli.py geo --bits 0101101011000010
+python cli.py geo-masivo --text "hola vma"
+python cli.py k3 stream-xor --text "libro4-33x1"
 python cli.py libro list
 python cli.py deepseek list
 ```

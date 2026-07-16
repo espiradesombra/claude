@@ -1,0 +1,98 @@
+================================================================================
+  ÍNDICE — Aleatorovix + Firma Geométrica (VMA / 33×1)
+  Víctor Manzanares Alberola · Actualizado: 2026-07-16
+================================================================================
+
+HUB DOCUMENTAL
+  docs/aleatorovix-firma-geometrica/
+    INDICE_ALEATOROVIX_GEO.txt   ← este archivo
+    README.md                    Comandos AntiPC + demos Python
+    CANONICO.txt                 Rutas canónicas vs duplicados
+    fuentes-c/                   Copias auditables de núcleos C
+
+--------------------------------------------------------------------------------
+1. FIRMA GEOMÉTRICA — convergencia binaria → perímetro
+--------------------------------------------------------------------------------
+
+Teoría y motor Python (Decimal, reversible):
+  encriptacionGeometrica/encriptacion.txt
+  encriptacionGeometrica/_demo_convergencia.py
+  encriptacionGeometrica/gemini-code-1784158392232.py   (Aleatorovix híbrido π/e)
+
+Motor industrial K3 (acordeón XOR, base=33 rel=1):
+  encriptacionGeometrica/k3_core.c
+  encriptacionGeometrica/k3_launcher.py
+  docs/aleatorovix-firma-geometrica/fuentes-c/k3_core.c
+
+Port C en AntiPC (enteros, escala 1000):
+  antipc/src/antipc/native/antipc_core/src/geo_convergence.c
+  docs/aleatorovix-firma-geometrica/fuentes-c/geo_convergence.c
+
+CLI:
+  cd antipc/src/antipc
+  python cli.py geo --bits 0101101011000010 --tales 3,5,8 --puntos 6,12
+  python cli.py libro run L4-convergencia
+
+Pares de bits (máquina de estados):
+  10 → +lado[0]     avance +1 bit
+  11 → +lado[1]     avance +1 bit
+  00 → +lado[0]+[1] avance +1 bit
+  01 → paradoja     avance +2 bits
+
+--------------------------------------------------------------------------------
+2. ALEATOROVIX — organismo + cifrado por fase π/e
+--------------------------------------------------------------------------------
+
+Paquete canónico (ejecutar desde aquí):
+  aleatorovix/
+    aleatorovix.py              Organismo v1.0
+    nucleo/                     entropía, máscara Lila, criba, MDC
+    demos/                      demo_organismo, demo_primos, demo_mdc_N
+    organismo_lila_v99.c        Versión C (WSL)
+    benchmarks/                 benchmark_aleatorovix.py
+    LEEME.txt
+
+Espejo histórico (misma base, carpeta "just run"):
+  just run/aleatorovix/         → ver CANONICO.txt
+
+Port C masivo (π ofuscado + e convergente + XOR):
+  antipc/src/antipc/native/antipc_core/src/k3_geo_aleatorovix.c
+  docs/aleatorovix-firma-geometrica/fuentes-c/k3_geo_aleatorovix.c
+
+CLI AntiPC:
+  python cli.py geo-masivo --text "hola vma" --semilla 43210
+  python cli.py geo-masivo --file datos_demo.txt
+  python cli.py libro run L4-aleatorovix
+
+Motor K3 stream (33×1):
+  python cli.py k3 stream-xor --text "libro4-33x1" --base 33 --rel 1
+  python cli.py libro run L4-k3-stream
+
+--------------------------------------------------------------------------------
+3. TEOREMA FORMAL (fase K3)
+--------------------------------------------------------------------------------
+
+  teoremas/19_teorema_phaseamplifier_k3.txt
+  teoremas/19_THEOREM_PhaseAmplifier_K3_XOR.md
+  antipc teorema info 19
+
+--------------------------------------------------------------------------------
+4. INTEGRACIÓN AntiPC v0.14
+--------------------------------------------------------------------------------
+
+  docs/integracion-antipc/14_INTEGRADO_v14.txt
+  docs/integracion-antipc/01_MAPA_PORT_A_C.md   (ítems 7–8: geo + aleatorovix)
+
+Benchmark nativo (requiere antipc_native.dll):
+  scripts/21_build_antipc_native.bat
+  python cli.py bench
+
+--------------------------------------------------------------------------------
+5. USO CIVIL
+--------------------------------------------------------------------------------
+
+  33x1/02_USO_CIVIL.txt
+  Solo integridad, educación y auditoría. No afirmar resistencia nation-state.
+  k3_launcher.py BORRA el archivo original tras cifrar — usar copias de prueba.
+
+================================================================================

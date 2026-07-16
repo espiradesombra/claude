@@ -1,0 +1,29 @@
+================================================================================
+  RUTAS CANÓNICAS — evitar duplicados confusos
+================================================================================
+
+AL EATOROVIX (organismo)
+  CANÓNICO : aleatorovix/
+  ESPEJO   : just run/aleatorovix/   (misma base; conservado para scripts "just run")
+  ACCIÓN   : ejecutar siempre desde aleatorovix/ o vía AntiPC CLI
+
+ENCRIPTACIÓN GEOMÉTRICA
+  CANÓNICO : encriptacionGeometrica/
+  FUENTE   : C:\Users\cuent\Desktop\encriptacionGeometrica\ (sincronizar con robocopy)
+  NÚCLEO   : encriptacion.txt + gemini-code-1784158392232.py + k3_core.c + k3_launcher.py
+
+PORT C (firma + aleatorovix masivo)
+  CANÓNICO : antipc/src/antipc/native/antipc_core/src/
+    geo_convergence.c
+    k3_geo_aleatorovix.c
+  COPIA    : docs/aleatorovix-firma-geometrica/fuentes-c/   (solo lectura / auditoría)
+
+ANTIPC
+  CANÓNICO : antipc/
+  OBSOLETO : antipc2/   (snapshot histórico)
+
+PENDIENTE PORT (mapa antipc-port-c)
+  aleatorovix.c standalone — aún no portado; hoy integrado en k3_geo_aleatorovix.c
+  Ver docs/integracion-antipc/01_MAPA_PORT_A_C.md ítems 7–8
+
+================================================================================
