@@ -1,0 +1,22 @@
+================================================================================
+  SALTO MÁXIMO VMA — paquete filtrado (Libro 1 / teorema 03)
+  Víctor Manzanares Alberola · VMA / 33×1
+================================================================================
+
+QUÉ ES
+  En [n−⌊√(n+3)⌋−3, n+3] hay ≥2 primos (verificado n≥50).
+
+PROCEDENCIA
+  repo/filesclaude 6-5/salto_maximo.py
+  teoremas/03_heuristica_salto_maximo.txt
+
+CANÓNICO
+  antipc/src/antipc/mdc_lib/salto_maximo.py
+  antipc salto ventana N | antipc salto verify
+
+COMANDOS
+  python cli.py salto ventana 1000
+  python cli.py salto verify --n-max 5000
+  python cli.py libro run 1 --metodo L1-salto
+
+================================================================================

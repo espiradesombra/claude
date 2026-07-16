@@ -39,7 +39,7 @@ from runtime.plugin import PluginContext
 from runtime.reference import Reference, ReferenceRecord, ReferenceState
 
 
-VERSION = "0.14.2-cmd"
+VERSION = "0.14.3-cmd"
 
 
 def _kernel_with_plugins(*, wave: bool = False, wave_host: str = "8.8.8.8") -> FlowKernel:
@@ -265,6 +265,98 @@ def cmd_discriminant_trajectory(args: argparse.Namespace) -> int:
     print(format_trajectory(args.n, rows))
     print(f"  Tiempo    : {ms} ms")
     return 0
+
+
+def cmd_salto_ventana(args: argparse.Namespace) -> int:
+    from mdc_lib.salto_maximo import format_ventana, ventana_report
+
+    t0 = time.perf_counter()
+    r = ventana_report(args.n)
+    ms = int((time.perf_counter() - t0) * 1000)
+    print(format_ventana(r))
+    print(f"  Tiempo    : {ms} ms")
+    return 0 if r.count >= 2 else 1
+
+
+def cmd_salto_verify(args: argparse.Namespace) -> int:
+    from mdc_lib.salto_maximo import format_verify, verificar_conjetura
+
+    if args.n_max < args.n_start:
+        print("ERROR: --n-max debe ser >= --n-start", file=sys.stderr)
+        return 1
+    t0 = time.perf_counter()
+    ok_all, fallos = verificar_conjetura(args.n_start, args.n_max)
+    ms = int((time.perf_counter() - t0) * 1000)
+    print(format_verify(args.n_start, args.n_max, ok_all, fallos))
+    print(f"  Tiempo    : {ms} ms")
+    return 0 if ok_all else 1
+
+
+def cmd_sofi_classify(args: argparse.Namespace) -> int:
+    from mdc_lib.sofi import classify_sofi, format_sofi
+
+    if args.limit < 5:
+        print("ERROR: limit debe ser >= 5", file=sys.stderr)
+        return 1
+    t0 = time.perf_counter()
+    r = classify_sofi(args.limit, verify=not args.no_verify)
+    ms = int((time.perf_counter() - t0) * 1000)
+    print(format_sofi(r))
+    print(f"  Tiempo    : {ms} ms")
+    return 0
+
+
+def cmd_fermat_align(args: argparse.Namespace) -> int:
+    from mdc_lib.fermat_modular import alineacion_modular, format_fermat_align
+
+    if args.n < 0:
+        print("ERROR: n debe ser >= 0", file=sys.stderr)
+        return 1
+    t0 = time.perf_counter()
+    r = alineacion_modular(args.n, span=args.span)
+    ms = int((time.perf_counter() - t0) * 1000)
+    print(format_fermat_align(r))
+    print(f"  Tiempo    : {ms} ms")
+    return 0
+
+
+def cmd_goldbach_analyze(args: argparse.Namespace) -> int:
+    from mdc_lib.goldbach_bridge import analyze, format_analyze
+
+    if args.n2 < 4 or args.n2 % 2 != 0:
+        print("ERROR: 2n debe ser par y >= 4", file=sys.stderr)
+        return 1
+    t0 = time.perf_counter()
+    try:
+        a = analyze(args.n2)
+    except FileNotFoundError as e:
+        print(f"ERROR: {e}", file=sys.stderr)
+        return 1
+    except ImportError as e:
+        print(f"ERROR: goldbach_vma requiere sympy ({e})", file=sys.stderr)
+        return 1
+    ms = int((time.perf_counter() - t0) * 1000)
+    print(format_analyze(a))
+    print(f"  Tiempo    : {ms} ms")
+    return 0
+
+
+def cmd_goldbach_verify(args: argparse.Namespace) -> int:
+    from mdc_lib.goldbach_bridge import format_verify, verify_range
+
+    t0 = time.perf_counter()
+    try:
+        ok_all, fallos = verify_range(args.n2_max, step=args.step)
+    except FileNotFoundError as e:
+        print(f"ERROR: {e}", file=sys.stderr)
+        return 1
+    except ImportError as e:
+        print(f"ERROR: goldbach_vma requiere sympy ({e})", file=sys.stderr)
+        return 1
+    ms = int((time.perf_counter() - t0) * 1000)
+    print(format_verify(args.n2_max, ok_all, fallos))
+    print(f"  Tiempo    : {ms} ms")
+    return 0 if ok_all else 1
 
 
 def cmd_mrauv_goldbach(args: argparse.Namespace) -> int:
@@ -1365,6 +1457,40 @@ def main(argv: list[str] | None = None) -> int:
     p_dist.add_argument("n", type=int)
     p_dist.add_argument("--all", action="store_true", help="Mostrar todos los pasos S")
     p_dist.set_defaults(func=cmd_discriminant_trajectory)
+
+    p_sal = sub.add_parser("salto", help="Salto máximo ventana √n (Libro 1)")
+    p_sal_sub = p_sal.add_subparsers(dest="salto_cmd", required=True)
+    p_salv = p_sal_sub.add_parser("ventana", help="Primos en ventana para n")
+    p_salv.add_argument("n", type=int)
+    p_salv.set_defaults(func=cmd_salto_ventana)
+    p_salvf = p_sal_sub.add_parser("verify", help="Barrido n_start..n_max")
+    p_salvf.add_argument("--n-start", type=int, default=100)
+    p_salvf.add_argument("--n-max", type=int, default=10_000)
+    p_salvf.set_defaults(func=cmd_salto_verify)
+
+    p_sof = sub.add_parser("sofi", help="Estructura Sofí L1/L3/L4/U2 (Libro 3)")
+    p_sof_sub = p_sof.add_subparsers(dest="sofi_cmd", required=True)
+    p_sofc = p_sof_sub.add_parser("classify", help="Clasificar 6k−1 hasta limit")
+    p_sofc.add_argument("limit", type=int)
+    p_sofc.add_argument("--no-verify", action="store_true", help="Sin prueba U2⊆LSG")
+    p_sofc.set_defaults(func=cmd_sofi_classify)
+
+    p_fer = sub.add_parser("fermat", help="Fermat modular alineación (Libro 6)")
+    p_fer_sub = p_fer.add_subparsers(dest="fermat_cmd", required=True)
+    p_fera = p_fer_sub.add_parser("align", help="F_m mod B_n vs residuo CRT")
+    p_fera.add_argument("n", type=int)
+    p_fera.add_argument("--span", type=int, default=5)
+    p_fera.set_defaults(func=cmd_fermat_align)
+
+    p_gb = sub.add_parser("goldbach", help="Marco Goldbach VMA sympy (Libro 1/6)")
+    p_gb_sub = p_gb.add_subparsers(dest="goldbach_cmd", required=True)
+    p_gba = p_gb_sub.add_parser("analyze", help="Cardinalidad + IE para 2n")
+    p_gba.add_argument("n2", type=int, help="Par 2n (ej. 100)")
+    p_gba.set_defaults(func=cmd_goldbach_analyze)
+    p_gbv = p_gb_sub.add_parser("verify", help="PP>0 para 2n≤n2_max")
+    p_gbv.add_argument("--n2-max", type=int, default=200)
+    p_gbv.add_argument("--step", type=int, default=2)
+    p_gbv.set_defaults(func=cmd_goldbach_verify)
 
     p_vis = p_mdc_sub.add_parser("visual", help="Animar dos trenes X/Y + colisiones")
     p_vis.add_argument("n", type=int)
