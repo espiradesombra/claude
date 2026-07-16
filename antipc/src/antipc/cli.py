@@ -39,7 +39,7 @@ from runtime.plugin import PluginContext
 from runtime.reference import Reference, ReferenceRecord, ReferenceState
 
 
-VERSION = "0.14.5-cmd"
+VERSION = "0.14.6-cmd"
 
 
 def _kernel_with_plugins(*, wave: bool = False, wave_host: str = "8.8.8.8") -> FlowKernel:
@@ -263,6 +263,48 @@ def cmd_discriminant_trajectory(args: argparse.Namespace) -> int:
     rows = delta_trajectory(args.n, show_all=args.all)
     ms = int((time.perf_counter() - t0) * 1000)
     print(format_trajectory(args.n, rows))
+    print(f"  Tiempo    : {ms} ms")
+    return 0
+
+
+def cmd_siguiente_next(args: argparse.Namespace) -> int:
+    from mdc_lib.siguiente_primo import format_next, siguiente_primo
+
+    if args.inicio < 2:
+        print("ERROR: inicio debe ser >= 2", file=sys.stderr)
+        return 1
+    t0 = time.perf_counter()
+    nxt = siguiente_primo(args.inicio)
+    ms = int((time.perf_counter() - t0) * 1000)
+    print(format_next(args.inicio, nxt))
+    print(f"  Tiempo    : {ms} ms")
+    return 0 if nxt is not None else 1
+
+
+def cmd_siguiente_validate(args: argparse.Namespace) -> int:
+    from mdc_lib.siguiente_primo import format_validate, validate_chain
+
+    t0 = time.perf_counter()
+    ok, rows = validate_chain(args.count)
+    ms = int((time.perf_counter() - t0) * 1000)
+    print(format_validate(ok, rows))
+    print(f"  Tiempo    : {ms} ms")
+    return 0 if ok else 1
+
+
+def cmd_riemann_compare(args: argparse.Namespace) -> int:
+    from mdc_lib.riemann_deformado import compare_at, compare_table, format_compare, format_single
+
+    values = ([args.n] if args.n is not None else []) + list(args.n_list or [])
+    if not values:
+        print("ERROR: indique al menos un n", file=sys.stderr)
+        return 1
+    t0 = time.perf_counter()
+    if len(values) == 1:
+        print(format_single(compare_at(values[0], args.k), args.k))
+    else:
+        print(format_compare(compare_table(values, k_max=args.k), args.k))
+    ms = int((time.perf_counter() - t0) * 1000)
     print(f"  Tiempo    : {ms} ms")
     return 0
 
@@ -1507,6 +1549,23 @@ def main(argv: list[str] | None = None) -> int:
     p_dist.add_argument("n", type=int)
     p_dist.add_argument("--all", action="store_true", help="Mostrar todos los pasos S")
     p_dist.set_defaults(func=cmd_discriminant_trajectory)
+
+    p_sig = sub.add_parser("siguiente", help="Siguiente primo Karnaugh (Libro 1 / teorema 07)")
+    p_sig_sub = p_sig.add_subparsers(dest="siguiente_cmd", required=True)
+    p_sign = p_sig_sub.add_parser("next", help="Próximo primo tras inicio (primo conocido)")
+    p_sign.add_argument("inicio", type=int)
+    p_sign.set_defaults(func=cmd_siguiente_next)
+    p_sigv = p_sig_sub.add_parser("validate", help="Validar cadena vs trial division")
+    p_sigv.add_argument("--count", type=int, default=50)
+    p_sigv.set_defaults(func=cmd_siguiente_validate)
+
+    p_rie = sub.add_parser("riemann", help="R̂/R̃ deformado y capas D₀ (Libro 3)")
+    p_rie_sub = p_rie.add_subparsers(dest="riemann_cmd", required=True)
+    p_riec = p_rie_sub.add_parser("compare", help="Comparar estimadores vs π(n)")
+    p_riec.add_argument("n", type=int, nargs="?", default=None)
+    p_riec.add_argument("n_list", type=int, nargs="*", metavar="N")
+    p_riec.add_argument("-k", type=int, default=50, help="Iteraciones K")
+    p_riec.set_defaults(func=cmd_riemann_compare)
 
     p_dp = sub.add_parser("dos-primos", help="Criterio L(n)−m(n)≥2 e I(n) (Libro 2)")
     p_dp_sub = p_dp.add_subparsers(dest="dos_primos_cmd", required=True)
