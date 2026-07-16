@@ -1,0 +1,393 @@
+% metodos_simples_vma.tex
+% Métodos simples VMA — LoveEarthHacker edition
+% Víctor Manzanares Alberola · 2026
+% Compilar: pdflatex metodos_simples_vma.tex (×2)
+
+\documentclass[11pt,a4paper,twoside]{book}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{listings}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,calc,fit,backgrounds}
+
+\geometry{margin=2.4cm}
+\hypersetup{colorlinks=true, linkcolor=teal!60!black, urlcolor=teal!50!black}
+
+\definecolor{vmaTeal}{RGB}{0,120,110}
+\definecolor{vmaGold}{RGB}{200,150,40}
+\definecolor{vmaBg}{RGB}{245,248,250}
+
+\newcommand{\LoveEarthHacker}{\textsc{LoveEarthHacker}}
+\newcommand{\VMA}{VMA}
+\newcommand{\MDC}{\textsc{Mdc}}
+\newcommand{\Kthree}{K\textsubscript{3}}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  frame=single,
+  backgroundcolor=\color{vmaBg},
+  breaklines=true,
+  columns=fullflexible
+}
+
+% ─── Portada ───────────────────────────────────────────────────────────────
+\title{%
+  {\Huge\bfseries Métodos Simples}\\[0.6em]
+  {\Large Herramientas mínimas del ecosistema \VMA}\\[1.2em]
+  {\normalsize Implicaciones · Diagramas · Ejecución inmediata}
+}
+\author{%
+  Víctor Manzanares Alberola\\
+  \small EPSA · UPV Alcoi · 1477 / 33$\times$1\\[0.4em]
+  \small Serie \LoveEarthHacker
+}
+\date{Julio 2026}
+
+\begin{document}
+\frontmatter
+\maketitle
+
+\begin{abstract}
+Este libro recoge los \textbf{métodos más simples y ejecutables} del corpus
+\VMA: aquellos que se pueden explicar en una página, dibujar en un diagrama
+y probar en menos de un minuto con \texttt{vma-run} o \texttt{just run}.
+No sustituye los papers completos; es la puerta de entrada.
+La serie \LoveEarthHacker{} nombra el espíritu: tecnología útil, abierta,
+orientada a la Tierra y al rigor, no al postureo.
+\end{abstract}
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+\mainmatter
+
+% ═══════════════════════════════════════════════════════════════════════════
+\chapter{Lista de herramientas (mapa rápido)}
+% ═══════════════════════════════════════════════════════════════════════════
+
+\begin{table}[htbp]
+\centering
+\caption{Herramientas simples y comando \texttt{vma-run}}
+\label{tab:herramientas}
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{Método} & \textbf{Qué hace} & \textbf{Complejidad} & \textbf{Comando} \\
+\midrule
+K3 auditoría    & Hash industrial RAM/Flash & $O(n)$ bloques & \texttt{k3 --text "..."} \\
+\MDC{} factor   & Factorizar $N$ por salto cinemático & 4 puntos & \texttt{mdc 10403} \\
+Criva           & Estimar $\pi(x)/x$ iterativo & $<10$ iter. & \texttt{criva 1000} \\
+Criba 6$k{\pm}1$ & Primos en clase modular & $O(n\log\log n)$ & \texttt{criba --limit 500} \\
+Fase K=3 XOR    & Amplificador fase oculta & 16 estados & \texttt{phase} \\
+Hurto grav.     & Asimetría temporal Quijote & simulación & \texttt{hurto} \\
+AntiPC UDP      & Red local como cómputo & 4 hubs & \texttt{antipc} \\
+Aleatorovix     & Entropía + criba 6$k{\pm}1$ & C/Python & \texttt{aleatorovix/} \\
+Gemelo ZypyZape & Inercia sintética red & Python+plot & \texttt{gemelos/} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  node distance=1.1cm and 1.4cm,
+  box/.style={draw=vmaTeal, rounded corners, fill=vmaBg, minimum width=2.6cm,
+              minimum height=0.9cm, align=center, font=\small},
+  arr/.style={-{Stealth[length=2.5mm]}, thick, vmaTeal}
+]
+  \node[box] (run) {\textbf{RUN.bat}\\\texttt{vma-run.exe}};
+  \node[box, below left=of run] (mat) {Matemáticas\\MDC·Criva·Criba};
+  \node[box, below=of run] (k3) {Industrial\\K3·Fase K=3};
+  \node[box, below right=of run] (eng) {Energía\\Hurto·ZypyZape};
+  \node[box, below=1.8cm of run] (net) {Red\\AntiPC·Aleatorovix};
+  \draw[arr] (run) -- (mat);
+  \draw[arr] (run) -- (k3);
+  \draw[arr] (run) -- (eng);
+  \draw[arr] (run) -- (net);
+  \node[below=0.3cm of net, font=\footnotesize\itshape] {LoveEarthHacker · just run};
+\end{tikzpicture}
+\caption{Arquitectura mínima: un ejecutable, cuatro familias de métodos.}
+\label{fig:mapa}
+\end{figure}
+
+% ═══════════════════════════════════════════════════════════════════════════
+\chapter{MDC — Método Diofántico Cinemático}
+% ═══════════════════════════════════════════════════════════════════════════
+
+\section{La idea en una frase}
+En lugar de probar todos los candidatos, mides la \textbf{parte decimal}
+$d(t)=\{g(t)\}$ en cuatro puntos consecutivos, calculas velocidad media
+$\bar v$ y \textbf{saltas} al $t^\ast$ donde $d(t^\ast)=\delta$.
+
+\section{Fórmula mínima (factorización)}
+Para factorizar $N$, define
+\[
+  d(m) = \operatorname{frac}\!\left(\frac{N}{2(2m+3)}\right), \qquad \delta = \tfrac12.
+\]
+Si $d(m^\ast)=\tfrac12$, entonces $2m^\ast+3 \mid N$.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=0.95]
+  \draw[->] (0,0) -- (8,0) node[right] {$t$};
+  \draw[->] (0,0) -- (0,3) node[above] {$d(t)$};
+  \foreach \x/\lab in {1/$t_0$, 2.5/$t_0{+}s$, 4/$t_0{+}2s$, 5.5/$t_0{+}3s$, 7/$t^\ast$}
+    \fill[vmaTeal] (\x, {1.2+0.35*sin(\x*60)}) circle (2.5pt);
+  \draw[dashed, vmaGold, thick] (0,1.5) -- (8,1.5) node[right] {$\delta$};
+  \draw[thick, vmaTeal] plot[smooth] coordinates {(0.5,0.8)(2,1.4)(3.5,0.6)(5,1.8)(6.5,0.4)(7.5,1.5)};
+  \node[font=\small] at (4,-0.6) {Diente de sierra $\rightarrow$ salto cinemático};
+\end{tikzpicture}
+\caption{MDC: cuatro muestras, una predicción. Sin barrido lineal.}
+\end{figure}
+
+\section{Implicaciones}
+\begin{itemize}[noitemsep]
+  \item \textbf{Matemáticas:} unifica factorización y primos de Wieferich (mismo motor, distinto $\delta$).
+  \item \textbf{33$\times$1:} núcleo del factorizador territorial; software puro.
+  \item \textbf{Límite:} candidato primo $\neq$ demostración; validar con prueba clásica.
+\end{itemize}
+
+\section{Probar}
+\begin{lstlisting}
+vma-run mdc 10403    # 101 x 103
+vma-run mdc 15251    # 101 x 151
+\end{lstlisting}
+
+% ═══════════════════════════════════════════════════════════════════════════
+\chapter{Criva — densidad racional de primos}
+% ═══════════════════════════════════════════════════════════════════════════
+
+\section{La idea en una frase}
+Estimas $\pi(x)/x$ mezclando el producto de Euler (cribas por capas) con
+contracción iterativa hacia $1/\log x$:
+\[
+  D_{n+1} = \frac{D_n + T_n}{2}, \qquad T_n = D_n\Bigl(1-\frac{1}{\log(x+1)}\Bigr).
+\]
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  layer/.style={draw, fill=vmaBg, minimum height=0.55cm, minimum width=3.2cm},
+  font=\small
+]
+  \node[layer] (l0) at (0,0) {Capa 0: todos los enteros};
+  \node[layer, below=0.15cm of l0] (l1) {Capa 1: sin múltiplos de 2};
+  \node[layer, below=0.15cm of l1] (l2) {Capa 2: sin 2, 3};
+  \node[layer, below=0.15cm of l2] (l3) {Capa 3: sin 2, 3, 5};
+  \node[below=0.2cm of l3, font=\footnotesize] {$\cdots$ convergencia $\rightarrow\ \pi(x)/x$};
+  \draw[->, thick, vmaTeal] (-2.2,0.3) -- (-2.2,-2.2) node[midway, left, align=right] {Criva\\itera};
+\end{tikzpicture}
+\caption{Criva como capas de exclusión + refinamiento.}
+\end{figure}
+
+\section{Implicaciones}
+\begin{itemize}[noitemsep]
+  \item Publicable como estimador ligero (sin \texttt{sympy} obligatorio).
+  \item Complementa MDC: uno localiza factores, otro describe densidad global.
+  \item Error $<0.1\%$ para $x>100$ en pocas iteraciones (modo conservador).
+\end{itemize}
+
+% ═══════════════════════════════════════════════════════════════════════════
+\chapter{Criba modular 6\texorpdfstring{$k\pm1$}{k±1}}
+% ═══════════════════════════════════════════════════════════════════════════
+
+\section{La idea en una frase}
+Solo candidatos $6k\pm1$; para cada primo $p$ saltas $+2p$ y $+4p$
+(tocas ambas clases sin barrer todos los enteros).
+
+\section{Implicaciones}
+\begin{itemize}[noitemsep]
+  \item Base de Aleatorovix y Libro~5; memoria $\sim 4/9$ del tamiz clásico.
+  \item Conecta con MDC: espacio de búsqueda $L_1=\{6k\pm1\}$.
+\end{itemize}
+
+% ═══════════════════════════════════════════════════════════════════════════
+\chapter{\Kthree{} — auditoría y amplificador de fase}
+% ═══════════════════════════════════════════════════════════════════════════
+
+\section{K3 hash (industrial)}
+Motor de auditoría \textbf{no criptográfico}: integridad de memoria, telemetría,
+fingerprinting. Tres modos: usual, propio-A (stride), propio-B (marcas).
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  block/.style={draw, rounded corners, fill=white, minimum width=1.8cm, minimum height=0.7cm, font=\footnotesize}
+]
+  \node[block] (in) {Entrada};
+  \node[block, right=0.5cm of in] (k3) {Compresión\\\Kthree{}};
+  \node[block, right=0.5cm of k3] (out) {Hash 32b};
+  \draw[->, thick] (in) -- (k3) -- (out);
+  \node[below=0.5cm of k3, font=\footnotesize\itshape] {firma anti-tamper en bloque 0};
+\end{tikzpicture}
+\caption{Flujo K3: un paso, salida determinista.}
+\end{figure}
+
+\section{Amplificador de fase K=3 XOR}
+Dos estados difieren en fase oculta $f_1$; tras un ciclo Toffoli+XOR+shift,
+la diferencia aparece en $v_2$ \textbf{para siempre}.
+
+\section{Implicaciones}
+\begin{itemize}[noitemsep]
+  \item K3: producto B2B inmediato (\texttt{vma-k3}, TRL 3--4).
+  \item Fase K=3: detección de paridad de fase; puente a ciberseguridad geométrica.
+\end{itemize}
+
+% ═══════════════════════════════════════════════════════════════════════════
+\chapter{Hurto gravitatorio y Quijote (versión simple)}
+% ═══════════════════════════════════════════════════════════════════════════
+
+\section{La idea en una frase}
+Rompes simetría \textbf{temporal}: extraes energía en bajada rápida,
+reinvertís menos en subida lenta. El ciclo cerrado conserva energía total,
+pero el \textbf{timing} del robo de fase produce ganancia neta en simulación.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=0.9]
+  \draw[thick, vmaTeal] (0,0) sin (45:2.2) cos (45:2.2);
+  \draw[thick, vmaTeal] (0,0) sin (135:1.2) cos (135:1.2);
+  \node[font=\small] at (1.5,1.5) {bajada rápida};
+  \node[font=\small] at (-0.9,0.5) {subida lenta};
+  \draw[->, vmaGold, thick] (2.5,0) arc (0:300:2.5);
+  \node[right, font=\footnotesize] at (2.6,-0.2) {$W_{\mathrm{neto}}>0$ en modos PAPER/SINUS};
+\end{tikzpicture}
+\caption{Asimetría temporal: no es perpetuum mobile, es sincronización de fase.}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\caption{Resultados simulación NREL 5\,MW (90\,s) — \texttt{quijote\_results.csv}}
+\begin{tabular}{@{}ccrrr@{}}
+\toprule
+$N$ pales & Modo & $\bar P_{\mathrm{net}}$ [kW] & $\eta_{\mathrm{hurto}}$ & $\Delta P_{\mathrm{grid}}$ [\%] \\
+\midrule
+3 & PAPER & $+9.0$  & $3.0\times$ & $4.16$ \\
+7 & PAPER & $+31.1$ & $3.7\times$ & $4.31$ \\
+3 & CONTROL & $-15.4$ & --- & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Implicaciones}
+\begin{itemize}[noitemsep]
+  \item \textbf{Seguro hoy:} inercia sintética ZypyZape (firmware, sin hardware nuevo).
+  \item \textbf{Pendiente:} modo CONTROL y prototipo físico (IEC).
+  \item \textbf{33$\times$1:} argumento energético territorial.
+\end{itemize}
+
+% ═══════════════════════════════════════════════════════════════════════════
+\chapter{AntiPC y Aleatorovix (red simple)}
+% ═══════════════════════════════════════════════════════════════════════════
+
+\section{AntiPC — red como cómputo}
+Los hubs UDP procesan fragmentos; el maestro solo fusiona bits en búfer
+lock-free. Sin \texttt{if/else} en el camino crítico (Grafcet algebraico).
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  hub/.style={draw, circle, fill=vmaBg, minimum size=1cm, font=\footnotesize},
+  m/.style={draw, rounded corners, fill=white, minimum width=2cm, minimum height=0.8cm, font=\small}
+]
+  \node[hub] (h1) at (0,1.5) {H1};
+  \node[hub] (h2) at (-1.5,-0.5) {H2};
+  \node[hub] (h3) at (1.5,-0.5) {H3};
+  \node[hub] (h4) at (0,-2) {H4};
+  \node[m] (master) at (4,0) {Maestro\\búfer RAM};
+  \foreach \h in {h1,h2,h3,h4}
+    \draw[->, thick, vmaTeal] (\h) -- (master);
+  \node[below=0.4cm of h4, font=\footnotesize] {$\sim$2000 pkt/s en localhost (4 hubs)};
+\end{tikzpicture}
+\caption{AntiPC: delegar, fusionar, no serializar en el OS.}
+\end{figure}
+
+\section{Aleatorovix — entropía + criba}
+Organismo que roba bits de pila/heap/nanosegundos, decide salto $6k\pm1$
+y borra su rastro (\emph{criba desmemoriada}). Concepto Libro~5; C en
+\texttt{organismo\_lila\_v99.c}.
+
+\section{Implicaciones}
+\begin{itemize}[noitemsep]
+  \item Hardware barato (hubs $\sim$60--80\,€/nodo): documento \texttt{cpu-antipc}.
+  \item Speedup real requiere benchmark frente a RDMA/DPDK --- honestidad técnica.
+  \item \LoveEarthHacker: computación distribuida consciente, no minería extractiva.
+\end{itemize}
+
+% ═══════════════════════════════════════════════════════════════════════════
+\chapter{LoveEarthHacker — marco y 33\texorpdfstring{$\times$}{x}1}
+% ═══════════════════════════════════════════════════════════════════════════
+
+\section{Qué significa \LoveEarthHacker{} aquí}
+No es un producto cerrado: es el \textbf{contrato ético-técnico} del corpus:
+\begin{enumerate}[noitemsep]
+  \item Métodos \textbf{simples} primero (ejecutables, reproducibles).
+  \item Implicaciones declaradas (qué está probado y qué es simulación).
+  \item Tierra y soberanía: energía, red, mates --- no dependencia de monopolio.
+  \item 33$\times$1: 33 años cooperación $\leftrightarrow$ 1 paquete tecnológico territorial.
+\end{enumerate}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+  \node[draw, rounded corners, fill=vmaBg, inner sep=12pt, align=center, text width=10cm] {
+    \textbf{LoveEarthHacker}\\[0.3em]
+    Método simple $\rightarrow$ Diagrama $\rightarrow$ \texttt{vma-run demo}\\
+    $\rightarrow$ Implicación (industrial / energía / red / 33$\times$1)
+  };
+\end{tikzpicture}
+\caption{Ciclo de validación mínima de cada herramienta.}
+\end{figure}
+
+\section{Orden de lectura recomendado}
+\begin{enumerate}
+  \item Este libro (mapa).
+  \item \texttt{just run/LEEME.txt} (ejecución).
+  \item \texttt{00\_PROMPT\_DEFINITIVO\_33x1.md} (marco global).
+  \item Papers: Wieferich, hurto, teorema K=3 XOR.
+\end{enumerate}
+
+% ═══════════════════════════════════════════════════════════════════════════
+\appendix
+\chapter{Comandos \texttt{vma-run} (referencia)}
+% ═══════════════════════════════════════════════════════════════════════════
+
+\begin{lstlisting}
+RUN.bat                              # demo completa
+bin\vma-run.exe demo
+vma-run mdc 10403
+vma-run k3 --text "LoveEarthHacker"
+vma-run criva --compare 100,1000,10000
+vma-run criba --limit 1000 --show 25
+vma-run phase
+vma-run hurto
+vma-run antipc --hubs 4 --packets 500
+\end{lstlisting}
+
+\chapter{Rutas en \texttt{just run}}
+\begin{itemize}
+  \item \texttt{vma-run/} --- ejecutable unificado
+  \item \texttt{vma-k3/} --- motor K3
+  \item \texttt{aleatorovix/} --- Lila + MDC v6 demo
+  \item \texttt{cpu-antipc/} --- especificación hubs + \texttt{.cpp}
+  \item \texttt{gemelos/} --- Quijote / ZypyZape
+  \item \texttt{hurto-gravitatorio/} --- CSV + reglas paper
+\end{itemize}
+
+\backmatter
+\chapter*{Colofón}
+\addcontentsline{toc}{chapter}{Colofón}
+\LoveEarthHacker{} · Métodos simples VMA · Víctor Manzanares Alberola · 2026\\
+Compilar: \texttt{pdflatex metodos\_simples\_vma.tex} (dos pasadas).\\
+Repositorio canónico: \texttt{just run} en Desktop.
+
+\end{document}

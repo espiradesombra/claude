@@ -1,0 +1,103 @@
+================================================================================
+  AntiPC — Adaptive Network Through Parallel Computing
+  Paquete Sale-It v0.1.0
+  Autor: Víctor Manzanares Alberola
+  Lema: "Transforming communication into computation."
+================================================================================
+
+CONTENIDO DEL PAQUETE
+--------------------------------------------------------------------------------
+
+  src/antipc/          Código fuente Python (motor completo)
+  docs/                Documentación científica y resultados
+  referencia/k3hash/   K3 oficial del ZIP HASHTOOLCODE (src + CMake + build)
+  scripts/             Instalación y ejecución rápida (Windows)
+  LEEME.txt            Este archivo (español)
+  README_EN.txt        Instrucciones en inglés
+  FICHA_PRODUCTO.txt   Resumen para negociación (español)
+  PRODUCT_SHEET_EN.txt Ficha de producto (inglés, Mistral / internacional)
+  LICENCIA.txt         Condiciones de uso del paquete
+
+
+REQUISITOS
+--------------------------------------------------------------------------------
+
+  - Windows 10/11 (o Linux/macOS con Python 3.10+)
+  - Python 3.10 o superior
+  - Sin dependencias externas (solo biblioteca estándar)
+
+
+INSTALACIÓN RÁPIDA (WINDOWS)
+--------------------------------------------------------------------------------
+
+  1. Doble clic en:  scripts\01_instalar.bat
+  2. Verifica que Python responde correctamente.
+
+
+EJECUCIÓN
+--------------------------------------------------------------------------------
+
+  Benchmark local (arquitecturas A, B, C, D):
+      scripts\02_benchmark.bat
+
+  Benchmark completo incluyendo UDP real (A→E):
+      scripts\03_benchmark_udp.bat
+
+  Solo red UDP (4 hubs en localhost):
+      scripts\04_udp_solo.bat
+
+  Verificar motor K3 (HASHTOOLCODE):
+      scripts\05_verificar_k3.bat
+
+  Compilar k3hash.dll nativa (requiere CMake + Visual Studio):
+      scripts\08_build_k3hash.bat
+
+
+LÍNEA DE COMANDOS MANUAL
+--------------------------------------------------------------------------------
+
+  cd src\antipc
+  python benchmark.py
+  python benchmark.py --udp --packets 2000 --hubs 4
+  python udp_benchmark.py --packets 2000 --hubs 4
+  python verify_k3.py
+
+
+ARQUITECTURAS INCLUIDAS
+--------------------------------------------------------------------------------
+
+  A  Convencional     memcpy + cola bloqueante
+  B  Lock-free        buffer circular SPSC sin copia extra
+  C  Distribuido      partición en hubs (hilos) + caché K(N)
+  D  Grafcet          lotes + matriz existencia + redundancia
+  E  UDP real         hubs como procesos de red (localhost o LAN)
+
+
+FÓRMULA AntiPC
+--------------------------------------------------------------------------------
+
+  P_util(N) = N · E(N) + K(N)
+
+  N      = nodos / hubs de cómputo
+  E(N)   = eficiencia de coordinación (0..1)
+  K(N)   = conocimiento reutilizable (cache hits)
+
+
+RESULTADO DE REFERENCIA (máquina de desarrollo, 1000 pkt, 4 hubs)
+--------------------------------------------------------------------------------
+
+  A  100% carga ALU relativa
+  E   38% carga ALU relativa  →  62% mejora vs convencional
+
+  Ver docs\RESULTADOS_BENCHMARK.txt
+
+
+SOPORTE Y EVOLUCIÓN
+--------------------------------------------------------------------------------
+
+  Nivel 0  Documento de arquitectura        → docs\explicacion_cientifica.txt
+  Nivel 1  Prototipo funcional              → src\antipc\
+  Nivel 2  Benchmarks reproducibles         → scripts\02_benchmark_udp.bat
+  Nivel 3  Propiedad intelectual / evolución → negociación 33×1
+
+================================================================================

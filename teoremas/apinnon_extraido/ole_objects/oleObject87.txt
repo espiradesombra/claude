@@ -1,0 +1,15 @@
+                'error': error,
+---
+                'iteraciones': iteraciones,
+---
+                'valido': error < 1e-10
+---
+            error = abs(resultado - real)
+---
+            metricas.append({'error': 100, 'iteraciones': 50, 'valido': False})
+---
+            real = math.log(a, b)
+---
+            resultado, iteraciones, _ = log_doble_ajuste_simultaneo(a, b, f1, f2, F3_FIJO, f4, F5_FIJO, F6_FIJO)
+---
+    errores = [m['error'] for m in metricas if m['valido']]

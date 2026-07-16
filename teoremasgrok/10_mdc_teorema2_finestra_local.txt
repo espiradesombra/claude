@@ -1,0 +1,25 @@
+ID: 10_mdc_teorema2
+ESTADO: [PARCIAL] — Bien acotado como criterio LOCAL
+AUTOR: VMA
+FUENTE: Nuevo Documento de texto (3).txt — MDC v3
+
+--------------------------------------------------------------------------------
+ENUNCIADO
+--------------------------------------------------------------------------------
+  TEOREMA 2 (LOCAL):
+    Si 4S + 16 > 2k + 1  →  no hay solución en la finestra local actual.
+    Acción: salt parabòlic (E4), NO parada global.
+
+--------------------------------------------------------------------------------
+NOTA DE IMPLEMENTACIÓN
+--------------------------------------------------------------------------------
+Corrección v3: Teorema 2 es local (max_local passos). Cuando dispara,
+búsqueda bidireccional salta a nueva parábola.
+
+--------------------------------------------------------------------------------
+GAPS
+--------------------------------------------------------------------------------
+- “Finestra local” depende de parámetros de implementación.
+- No es teorema de factorización universal; es regla de control de búsqueda.
+
+================================================================================

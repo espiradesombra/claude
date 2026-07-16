@@ -1,0 +1,40 @@
+================================================================================
+CPU + CIGARRILLOS + MAGNETISMO — qué es este documento
+================================================================================
+Archivo: cpu cigarrillos i magnetismo .txt
+Origen: lee arbusto\ (no estaba en Desktop raíz)
+Autor: Víctor Manzanares Alberola
+
+NOTA SOBRE EL TÍTULO
+  El texto NO menciona literalmente cigarrillos ni imanes.
+  El nombre parece metáfora de tres capas:
+    · CPU        — procesador i7 / HP Envy + ALU liberada
+    · Cigarrillos — líneas finas paralelas (hubs USB, cables RJ45, canales Wi-Fi)
+    · Magnetismo — flujo/campo de datos (MDC, matrices de existencia, acoplamiento)
+
+QUÉ CONTIENE (3462 líneas)
+  1. Juicio / abogada (contexto personal, líneas 1-180)
+  2. diff v + SIMD + buffers RAM (apuntar sin copiar)
+  3. 3 hubs × (2 RJ45 + 2 Wi-Fi) a 20 cm — red local como cómputo
+  4. HP Envy + CPUs conjugadas — speedup estimado 4-5x (240-300 EUR hardware)
+  5. Grafcet + máscara de existencia — lógica branchless O(1)
+  6. AntiPC runtime C++ (antipc_runtime.cpp extraído)
+  7. Ley P(N)=N·E(N) — escalado red + conocimiento reutilizable
+  8. Speedup master 5-10x (menos branch misprediction)
+  9. Análisis honesto: no revoluciona mercado sin benchmarks vs RDMA/DPDK
+
+RELACIÓN CON JUST RUN
+  antipc\          — Python UDP benchmark (sale-it, TRL 4-5)
+  vma-run antipc   — lanza benchmark rápido 4 hubs
+  aleatorovix\     — entropía + criba (otra capa)
+  MDC / K3         — núcleo matemático que los hubs procesan
+
+EJECUTAR
+  RUN_ANTIPC.bat
+  python vma-run\vma_run.py antipc
+  (C++) compilar antipc_runtime.cpp con MinGW + ws2_32
+
+INVERSIÓN MÍNIMA REAL (del documento)
+  ~180-300 EUR: 3 hubs USB3 + adaptadores RJ45/Wi-Fi
+  Software: AntiPC protocol (ya en antipc\)
+================================================================================

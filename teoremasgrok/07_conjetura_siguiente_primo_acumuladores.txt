@@ -1,0 +1,31 @@
+ID: 07_siguiente_primo
+ESTADO: [MAL] — Algoritmo esbozado; “teorema” no definido
+AUTOR: VMA
+FUENTE: Cribas_cotas §13; techamv.com\web\404_*.txt
+
+--------------------------------------------------------------------------------
+PLANTEAMIENTO (§13.1)
+--------------------------------------------------------------------------------
+Dado primo p₀, encontrar el siguiente primo mediante:
+  Contadores: n=p₀, m=n+1, ny=n−1
+  Acumuladores: t=ny², tt=n², nt=m²
+  9 restos por iteración (t, tt, nt mod ny, n, m)
+  3 pasos lógicos tipo Karnaugh → decidir si ny es primo.
+
+--------------------------------------------------------------------------------
+LO QUE FALTA PARA SER TEOREMA
+--------------------------------------------------------------------------------
+- No hay enunciado “∀p primo, ∃!q siguiente tal que…”
+- Pseudocódigo con “bucle Infinito” y comentarios informales.
+- Mención a Wilson ((n−1)! mod n) sin integración formal.
+- Estado explícito en TXT: “heurística/conjetura; sin prueba general”.
+
+--------------------------------------------------------------------------------
+VALOR
+--------------------------------------------------------------------------------
+Idea computacional interesante para criba incremental; requiere:
+  1. Función next_prime(p) con complejidad acotada.
+  2. Prueba de corrección o contraejemplo.
+  3. Separar de “Conjetura de Acumuladores” en UI techamv.
+
+================================================================================

@@ -1,0 +1,62 @@
+================================================================================
+FORMALIZACIÓN VMA — F29 MÉTODO PITAGÓRICO — VARIANTE C
+================================================================================
+Autor: Víctor Manzanares Alberola
+Ficha origen: 29_metodo_pitagorico_visual_divisores.txt
+Tipo formal: TEOREMA (caracterización diofántica) + LEMA geométrico
+Estado formal: [OK] variante C algebraica; [HEUR] variantes A,B
+Fecha: 2026-07-10
+
+--------------------------------------------------------------------------------
+1. DEFINICIONES
+--------------------------------------------------------------------------------
+  n ∈ ℕ, n > 9.
+  F(n) := { (x,y) ∈ ℤ² : x≥0, y≥0, (2x+3)(2y+3) = n }.
+  Recta VMA: ℓₙ por puntos A=(n/2, 2) y B=(2, √n)  [√n real].
+
+--------------------------------------------------------------------------------
+2. TEOREMA (caracterización diofántica) [OK]
+--------------------------------------------------------------------------------
+  Para x ∈ ℤ, x ≥ 0:
+    ∃ y ∈ ℤ, y ≥ 0 con (2x+3)(2y+3) = n
+    ⟺  4x+6 divide n−6x−9 y y := (n−6x−9)/(4x+6) ∈ ℤ, y ≥ 0.
+
+  Prueba:
+    (⇒) Si (2x+3)(2y+3)=n, entonces 2y+3 = n/(2x+3), luego
+         2y = n/(2x+3) − 3 = (n−6x−9)/(2x+3).
+         Como 2x+3 impar, 4x+6 = 2(2x+3) | 2n−12x−18 = 2(n−6x−9).
+         y = (n−6x−9)/(4x+6) entero.
+    (⇐) Si y entero dado por fórmula, multiplicar (2x+3)(2y+3) expande a n. ∎
+
+--------------------------------------------------------------------------------
+3. COROLARIO (factores forma 6k±1)
+--------------------------------------------------------------------------------
+  Toda factorización n = p·q con p,q ≥ 3 impares induce
+    x = (p−3)/2, y = (q−3)/2  (enteros si p,q ≡ 3 (mod 2), siempre si p,q impares).
+
+--------------------------------------------------------------------------------
+4. LEMA GEOMÉTRICO (recta VMA)
+--------------------------------------------------------------------------------
+  La curva C: y = (n−6x−9)/(4x+6) en ℚ es la reparametrización racional
+  de las soluciones de (2x+3)(2y+3)=n.
+
+  La recta ℓₙ por A=(n/2,2) y B=(2,√n) NO coincide con C en general.
+  Intersecciones enteras de ℓₙ con cuadrícula ℤ² no equivalen a F(n) salvo
+  coincidencia numérica (contraejemplo n=36 documentado).
+
+  Uso pedagógico: ℓₙ aproxima visualmente la búsqueda; algoritmo exacto
+  itera x y aplica Teorema §2.
+
+--------------------------------------------------------------------------------
+5. VARIANTES A, B
+--------------------------------------------------------------------------------
+  A (divisores por vector): [HEUR] — sin equivalencia probada.
+  B (hipotenusa √(n(n+4)/4)): [HEUR] — indicador visual, no teorema.
+
+--------------------------------------------------------------------------------
+6. NOTAS
+--------------------------------------------------------------------------------
+  Conecta F09 MDC: Δ(S)=k² ↔ (2v+3)(2b+3)=n.
+  Fuente: (l)(L).txt, factor goldback.txt.
+
+================================================================================

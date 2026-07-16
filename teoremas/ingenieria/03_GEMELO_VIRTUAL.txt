@@ -1,0 +1,35 @@
+================================================================================
+E03 — GEMELO VIRTUAL (cadena de simulación ZypyZape + Quijote)
+================================================================================
+
+QUÉ PROBLEMA RESUELVE
+  - Validar física antes de prototipo de parque (coste y riesgo).
+  - Comparar BASE vs inercia sintética vs Quijote vs Z+Q vs BESS.
+  - Generar gráficos y tablas para paper Elewit / revisión externa.
+
+EVOLUCIÓN DE VERSIONES (Desktop)
+  v3   — física corregida, Quijote net≈0
+  v4   — ventilación real
+  v5   — Quijote control activo (−ω·J_dot)
+  v6   — física real LeeChat (r_q, F_c, F_ctrl)
+  v7   — integración LeeChat ampliada
+  v8–v10 — CP dinámico, válvulas, equilibrio
+  v9.4 / v9.4.1 / v9.4.2 — modelo consolidado para paper
+
+ESTADO TEÓRICO
+  [OK]     Reproducible en Python; conservación verificada en v3+.
+  [HEUR]   Swing agregado mal calibrado → no fiar cifras absolutas RoCoF.
+  [OK]     Separación conclusiones estructurales vs calibración (revisión 2026).
+
+TRL estimado: 4 (herramienta de I+D, no producto empaquetado)
+
+RUTAS EN EL PC
+  C:\Users\cuent\Desktop\gemelo_*.py (15+ scripts)
+  C:\Users\cuent\Desktop\gemelo_*.png (salidas gráficas)
+  C:\Users\cuent\Desktop\repo\ZYPYZAPE Bateria Cinetica\zypy_zape_digital_twin_python.py
+
+REFERENCIAS
+  ingenieria\01_ZYPYZAPE.txt, 02_QUIJOTE.txt
+  subir\VMA-Dossier-Elewit\COMO-EJECUTAR.txt
+
+================================================================================

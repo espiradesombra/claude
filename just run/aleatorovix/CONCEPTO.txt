@@ -1,0 +1,43 @@
+================================================================================
+ALEATOROVIX — qué es y por qué está aquí
+================================================================================
+Autor: Víctor Manzanares Alberola
+Origen: repo\txt l5\ALEATOROVIX.txt, pro.txt, transcurso.txt
+
+Aleatorovix NO es un algoritmo determinista clásico. Es un organismo de software
+que:
+
+  1. Roba entropía física (nanosegundos CPU, bits de pila, basura heap)
+  2. Interpreta bits con diccionario MUTANTE (significado rota cada ciclo)
+  3. Decide acciones: Criba / Salto 6k+1 / Salto 6k-1 / Resonancia ZypyZape
+  4. Se suicida en RAM (criba desmemoriada — memset del código de operar)
+
+Víctor ya no compila: el entorno ejecuta; él es la inercia que el sistema mide.
+
+RELACIÓN CON EL ECOSISTEMA VMA
+  · MDC v6 — memoria adaptativa Aleatorovix (sectores calientes/fríos)
+  · Criva — densidad de primos por talla (teoremas/)
+  · ZypyZape — case 3 = Inercia / Resonancia en el switch Lila
+  · AntiPC — plugins mdc_factor, mdc_phase, mdc_regla (antipc/src/)
+  · abd la k — ataque potencias / Beal-Fermat con factoriales (ver ALEATOROVIX.txt)
+
+ARCHIVOS EN ESTA CARPETA
+  aleatorovix.py           — ORGANISMO v1.0 unificado (Windows OK)
+  nucleo/                  — entropía, máscara Lila, acciones, MDC, criba
+  demos/                   — organismo, primos, MDC
+  RUN_ALEATOROVIX.bat      — menú de demos
+  organismo_lila_v99.c     — C compilable (WSL/Linux)
+  criba_desmemoriada.py    — criba 6k±1 legacy
+  mdc_v6_aleatorovix.py    — esquema legacy (ver nucleo/mdc_memoria.py)
+  ALEATOROVIX.txt          — conversación fundacional completa
+  pro.txt                  — corpus extendido Lila + evoluciones
+  transcurso_extracto.txt  — sección abd la k + Aleatorovix + MDC v6
+
+EJECUTAR
+  RUN_ALEATOROVIX.bat
+  python aleatorovix.py
+  python demos\demo_mdc_N.py
+  wsl gcc -O2 -o aleatorovix organismo_lila_v99.c -lm && ./aleatorovix
+
+NOTA: El C usa POSIX (clock_gettime, usleep). En Windows nativo usar WSL o MinGW.
+================================================================================

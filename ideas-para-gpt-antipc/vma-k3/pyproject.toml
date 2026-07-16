@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vma-k3"
+version = "0.1.0"
+description = "VMA — Theorem K3 industrial memory audit (Víctor Manzanares Alberola)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Proprietary" }
+authors = [{ name = "Víctor Manzanares Alberola" }]
+keywords = ["k3", "hash", "audit", "industrial", "theorem-k3"]
+
+[project.scripts]
+vma-k3 = "vma.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["vma*"]
+
+[project.optional-dependencies]
+dev = []

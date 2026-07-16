@@ -1,0 +1,31 @@
+================================================================================
+E16 — MDC / PY L5 (factorización — software de laboratorio)
+================================================================================
+
+QUÉ PROBLEMA RESUELVE
+  - Factorizar enteros compuestos con heurística (2v+3)(2l+3) y barridos k.
+  - Baterías de prueba, benchmarks, híbridos v4–v444, record_mundial.py.
+  - Puente entre teoría MDC (teoremas F09–F13, F20) y experimento.
+
+NOTA DE CAPA
+  La matemática formal vive en teoremas\formal\.
+  Esta ficha = implementaciones ejecutables (ingeniería de algoritmos).
+
+ESTADO TEÓRICO
+  [HEUR]   Útil en semiprimos y laboratorio; no rompe RSA general (LIMITES_HONESTOS).
+  [OK]     Baterías reproducibles mdc_v15–v23 con tests declarados en scripts.
+  Método-V primalidad: REFUTADO (F34) — no confundir con MDC factorización.
+
+TRL estimado: 4 (software maduro en repo, no producto comercial)
+
+RUTAS EN EL PC
+  C:\Users\cuent\Desktop\repo\PY L5\ (mdc_v15.py … mdc_v23.py, híbridos)
+  C:\Users\cuent\Desktop\repo\Libro5 Factorizacion con 2v+3\PY L5\
+  C:\Users\cuent\Desktop\claude-main-extract\claude-main\PY L5\
+  teoremas\cribas\regla_mecanica\mdc_lib\ (copia para regla mecánica)
+
+REFERENCIAS
+  teoremas\metodos\ (cadenas MDC)
+  ingenieria\18_REGLA_MECANICA.txt
+
+================================================================================

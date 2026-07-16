@@ -1,0 +1,47 @@
+================================================================================
+ÍNDICE — CARPETA metodos/
+================================================================================
+Autor: Víctor Manzanares Alberola
+Carpeta: C:\Users\cuent\Desktop\teoremas\metodos\
+Fecha: 2026-07-10
+
+Propósito: documentar cómo los métodos VMA se atacan, se complementan y se
+limitan mutuamente. No es un índice de fichas (eso está en INDICE_MAESTRO);
+es una matriz operativa de interacción.
+
+--------------------------------------------------------------------------------
+ARCHIVOS
+--------------------------------------------------------------------------------
+  MATRIZ_INTERACCION.txt     — tabla maestra método × método
+  ATAQUES_Y_COMPLEMENTOS.txt — pares detallados (quién refuta a quién, quién refuerza)
+  CADENAS_TIPICAS.txt        — flujos de trabajo recomendados
+  me_connection_null.py      — MEcuation: bootstrap ±ε + SVD (Pseudocódigo implicaciones)
+  me_local_test.py           — ME local p²/p³, test no-unificación global
+
+--------------------------------------------------------------------------------
+MÉTODOS CUBIERTOS
+--------------------------------------------------------------------------------
+  Sofí (L₁–L₄, U₂, Lsg)     F04, F05, F22, F28
+  Criva / PIE               F28, teoremas\cribas\ (índice completo)
+  Método-V (v, V, v')       F25, F33, F34
+  MDC (ΔS, finestra)        F09, F10, F12, F20
+  MRAUV (densidad cinemática) F14, F23
+  Pitagórico visual         F29
+  Goldbach PP/PC/CP/CC      F06, F27
+  PhaseAmplifier K3         F19
+  Teorema L (no colapso)    F33
+  Límite V vs PC/CP         F34
+  Dos primos operativo      F01
+  Primos decrecen K         F30
+  SunRaman Jet (Gvma)       cribas\CRIBA_SUNRAMAN_ERATOSTENES.txt, cribas\gvma\
+  Regla mecánica (MDC)    cribas\regla_mecanica\ — pendiente, choque, DLL
+
+--------------------------------------------------------------------------------
+REGLA DE LECTURA
+--------------------------------------------------------------------------------
+  ATACA    = el método B expone límite, contraejemplo o ambigüedad en A
+  COMPLETA = A y B son independientes pero se encadenan en un pipeline
+  SUSTITUYE = B hace redundante un paso de A en un rango dado
+  ANALOGO  = misma plantilla modular, distinto universo (Sofí↔Goldbach)
+
+================================================================================

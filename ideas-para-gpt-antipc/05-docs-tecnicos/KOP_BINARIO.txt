@@ -1,0 +1,40 @@
+================================================================================
+  KOP BINARIO — ahorro de tiempo segun gptcomputing
+================================================================================
+Version: AntiPC v0.1.1 (parcial — KOP layer)
+Origen:  gptcomputing.txt lineas 9728-9844 (Knowledge Operations)
+
+QUE ES
+  K3 MicroKernel = Header + blobs KOP + Directory + Footer (K3ND)
+  Cada KOP tiene header fijo 16 bytes: id, version, size, flags
+  El directorio mapea KOP id -> offset. El runtime salta directo:
+    "Necesito Trust" -> offset en directory, sin recorrer todo.
+
+KOP DEFINIDOS (v1)
+  001 Identity    DATA      inmutable
+  002 DNA         DATA      producer, parents
+  003 Signature   DATA      clave KnowledgeBuffer
+  004 Trust       DATA      consenso (Axioma 17)
+  005 History     DATA      ledger pointer
+  006 Compression BEHAVIOR  transforma payload
+  007 Encryption  BEHAVIOR
+  008 Network     BEHAVIOR  fabric UDP
+
+CODIGO
+  runtime/kop.py           pack/unpack, build_knowledge_blob, benchmark
+  runtime/kop_registry.py  ids oficiales
+  runtime/knowledge.py     publish_with_kop_blob()
+  demo_kop_binary.py
+
+EJECUTAR
+  scripts\12_demo_kop.bat
+  cd src\antipc && python demo_kop_binary.py
+
+BENCHMARK TIPICO (100k lookups, mismo PC)
+  JSON parse vs directorio KOP: ~5-15x mas rapido (~80-93% tiempo ahorrado)
+
+PARA CHATGPT (Sprint 2)
+  Ledger (KOP 005) y Metrics deben usar blobs K3MK, no JSON en hot path.
+  Ver gptcomputing\CONTINUACION_PARA_GPT.txt
+
+================================================================================

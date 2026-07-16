@@ -1,0 +1,110 @@
+ZypyZape / AntiPC — Explicación científica de la viabilidad UDP
+Víctor Manzanares Alberola · VMA 2026
+================================================================
+
+1. HIPÓTESIS MEDIBLE (no marketing)
+-----------------------------------
+H₀: Una arquitectura con adquisición de red desacoplada, búfer circular de
+    slots fijos y procesamiento en hilo separado reduce la carga de copias
+    en espacio usuario y mejora el throughput respecto a recv+memcpy+cola bloqueante.
+
+Esto SÍ es falsable con experimentos A/B en tu HP Envy (Windows).
+
+2. QUÉ ES CIERTO EN EL CÓDIGO
+-----------------------------
+✓ recvfrom(buf) / recvinto(buf) escribe en la dirección de usuario que indicas.
+  En C++: reinterpret_cast<char*>(ring[slot].payload)
+  En Python: sock.recvfrom_into(memoryview(slot))
+
+✓ UDP no bloqueante (FIONBIO / setblocking(False)) evita que el hilo quede
+  dormido en el kernel esperando paquetes — tú controlas el backoff.
+
+✓ Búfer circular SPSC desacopla ingestión (red) de consumo (Grafcet/K3/MDC).
+
+✓ Varios hubs pueden enviar al mismo puerto; el maestro fusiona en un único ring.
+
+✓ Pérdida de paquetes (UDP): si el ring está lleno, se descarta sin bloquear
+  el sistema — coherente con "existencia + redundancia" posterior.
+
+3. QUÉ NO ES CIERTO (corrección rigurosa)
+-----------------------------------------
+✗ "La NIC escupe bytes directamente en DDR5 sin CPU" — FALSO en Winsock estándar.
+  Siempre intervienen: NIC → driver → stack Windows → copia a buffer usuario.
+
+✗ "ALU 0 heat / ALU libre" — FALSO. La ALU sigue activa en:
+  - syscall recvfrom
+  - avance de punteros head/tail
+  - procesamiento Grafcet/K3
+  - scheduling de hilos
+
+✗ "Independencia total del SO" — FALSO. El kernel sigue gestionando sockets,
+  firewall, ARP, Wi-Fi/Ethernet.
+
+Lo que SÍ ahorras: la SEGUNDA copia en usuario (temp → queue → worker).
+
+4. MODELO FORMAL SIMPLIFICADO
+-----------------------------
+Sea P la tasa de paquetes, S el tamaño (64 B), C_kernel la copia kernel→user
+(inevitable en esta API), C_user la copia extra en arquitectura A.
+
+  Coste A ≈ P · (C_kernel + C_user + H_queue)
+  Coste B ≈ P · (C_kernel + H_ring)
+
+Con lock-free ring y sin memcpy intermedio: C_user → 0 en el camino caliente.
+
+Invariante del ring (SPSC):
+  empty: head == tail
+  full:  (head+1) mod N == tail
+  escritura solo en hilo RX; lectura solo en hilo worker.
+
+5. LOS CUATRO EXPERIMENTOS (arquitectures.py + viability_udp.py)
+-----------------------------------------------------------------
+  A — Convencional: recvinto(temp) + bytes() a Queue + worker
+  B — AntiPC slot:  recvinto(slot_ring) + worker lee memoryview
+  C — Distribuido:  N hubs computan hash en origen
+  D — Grafcet:      matriz existencia + batch branchless
+
+viability_udp.py mide A y B con UDP real en localhost (simula 4 hubs).
+
+6. Wi-Fi CSI / onda física (WaveProvider)
+-----------------------------------------
+Capa experimental R003: latencia RTT/jitter como escalar de inferencia.
+NO sustituye recvfrom; complementa decisiones del runtime (WaveMode AntiPC).
+La física del canal aporta entropía/latencia medible, no factorización mágica.
+
+7. ANTIPC EN UNA FRASE TÉCNICA
+------------------------------
+Adaptive Network Through Parallel Computing:
+  "Transformar comunicación en computación" = mover trabajo hash/MDC a hubs,
+  reutilizar conocimiento (K3 digest) en el maestro, y minimizar copias
+  en el camino crítico red→memoria→proceso.
+
+8. CÓMO REPRODUCIR EN TU PC
+---------------------------
+  cd ideas-para-gpt-antipc\antipc
+  scripts\19_zypyzape_viabilidad.bat
+
+  Manual:
+    python zypyzape\viability_udp.py --hubs 4 --packets 20000
+    python zypyzape\hub_emitter.py --hub-id 1 --count 5000
+
+  C++ (Visual Studio):
+    cl /EHsc /O2 zypyzape\zypyzape_master.cpp ws2_32.lib
+
+9. LÍMITES CONOCIDOS
+---------------------
+- Localhost no reproduce Wi-Fi real (usa loopback).
+- Python GIL: ring usa lock; C++ usa atomics reales.
+- Para zero-copy verdadero: RDMA, DPDK, registered buffers — fuera de Winsock.
+- Grafcet/existencia aún toy; el beneficio medido hoy es A vs B en ingestión.
+
+10. CONCLUSIÓN
+--------------
+La viabilidad está DEMOSTRADA para:
+  desacoplar red y ALU, reducir copias usuario, escalar hubs, tolerar pérdidas UDP.
+
+La viabilidad NO está demostrada para:
+  "reemplazar la CPU" o "computación solo en el aire".
+
+El siguiente paso industrial: piloto ZypyZape con 4 nodos reales + telemetría CSV
+(ver demo_stack_udp.py y antipc_stack.py ya en tu repo).

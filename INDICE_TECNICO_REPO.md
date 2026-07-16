@@ -15,6 +15,9 @@ Este índice ordena los paquetes ejecutables y el corpus matemático. El resto d
 | **teoremas/** | Fichas 01–30 + formal | `antipc teorema list` (vía antipc) |
 | **33x1/** | Manifiesto, uso civil, comandos | `01_INDICE_TECNICO.txt` |
 | **docs/integracion-antipc/** | Logs v04–v14 port C | `14_INTEGRADO_v14.txt` |
+| **encriptacionGeometrica/** | Convergencia binaria, K3, Aleatorovix | `k3_core.c`, `k3_launcher.py` |
+| **vma/** | Paquete K3 cross-verifier | `vma/k3/` |
+| **graficas y explicaciones/** | Gráficas MDC, MRAUV, AntiPC | `00_INDICE.txt` |
 
 ---
 
@@ -23,9 +26,13 @@ Este índice ordena los paquetes ejecutables y el corpus matemático. El resto d
 | Carpeta | Contenido |
 |---------|-----------|
 | `Libro1 Números i numeritos/` … `Libro6 NewtonRapido…/` | PDFs y fuentes por libro |
+| `Libro5 Factorizacion con 2v+3/` | Corpus Libro 5 completo |
 | `filestot l5/` · `PY L5/` | MDC v15–v23, K-sweep, DeepSeek Python |
 | `deepseekjun26/` | Chats y tablas DeepSeek jun 2026 |
-| `lee arbusto/` | Libro 4 convergencias |
+| `lee arbusto/` | Libro 4 convergencias (completo) |
+| `teoremas/formal/` · `spacial/` · `ingenieria/` | Extensiones teoremas vma-github-2026 |
+| `ideas-para-gpt-antipc/` | Roadmaps AntiPC históricos |
+| `just run/` | Scripts gemelos ejecutables |
 
 ---
 

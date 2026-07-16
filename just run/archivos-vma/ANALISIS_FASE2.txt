@@ -1,0 +1,170 @@
+================================================================================
+ANALISIS FASE 2 — Desktop\archivos (profundizacion)
+================================================================================
+Fecha: 2026-07-11
+Total carpeta: ~97.900 archivos | Ya curados en archivos-vma: fase 1 (23) + fase 2 (+8)
+
+================================================================================
+1. MAPA COMPLETO POR ZONAS
+================================================================================
+
+RAIZ (~300 archivos)
+  VMA matematica: cribas, criva, jj, antiprimos, anexos F/E, .c evolutivos
+  VMA energia: informes helicoidal/ZypyZape (txt 4-5), ForPkm (jaja siempre pasa)
+  Chats largos: densidad x cine (155 KB), Nuevo Documuuento (453 KB, UTF-16/bin)
+  Meta-IA: Tu actividad Gemini (213 KB — historial exportado, no tecnico)
+  Ruido: Dragon Ball, CBD, APK, calendarios, contraseñas Chrome.csv
+  Duplicados: muchos "Nuevo Documento de texto (N)" = copias del informe ZypyZape
+
+repe/ (70 archivos)
+  CASI TODO duplicado de raiz. Excepcion: MEGA-CLAVEDERECUPERACION.txt (sensible)
+
+claude-main-extract/ (1.578 archivos)  *** HALLAZGO IMPORTANTE ***
+  Copia anidada COMPLETA del corpus Claude/Gemini del escritorio.
+  Subcarpetas clave (archivos):
+    Quijotee (58)          — gemelos ya en just run\gemelos\
+    zypyzape quijote (64)  — hurto ya en just run\
+    2026 (25)              — ya en just run\zypyzape-contexto\
+    filesclaude 6-5 (76)   — contexto ZypyZape, TASCA GPT
+    Goldbach (55)          — NO empaquetado aun en just run
+    kilometre;(soles_bateria) (38) — ForPkm / bateria cinetica
+    Libro4 Semillas y Energia Verde (22)
+    Libro6 NewtonRapido (10)
+    33x1 (4)               — ya en just run\33x1\
+    Metodo densidad MRAUV (8)
+    codigos gen graficas (22)
+  VEREDICTO: redundante con repo\ + claude-main-extract del escritorio.
+  No copiar entero; usar como indice si falta algo en just run.
+
+graficas libro/ (2.546 archivos)
+  2.455 PNG  grafica_n_*_iter_*.png  — figuras del libro (restos/hipotenusa)
+  88 scripts Python (muchas copias gen_fotos - copia (N).py)
+  2 PDF: Numeros i numeritos, Numeros oTra VeZ
+  Scripts canonicos: gen_fotos.py, trazado_dinamico.py (MDC visual — restos mod n)
+  COPIADO a archivos-vma\graficas_libro\ (2 py + 1 png ejemplo)
+
+UPV EPSA/ (86.302 archivos)
+  informatica (65.183)     — apuntes, practicas, programas (mayoria)
+  OneDrive - UPV (12.826)  — sync universidad
+  electrica (3.597), mat ed (1.091), personal (2.599)
+  Copilot chats (742)      — exportaciones PDF/DOCX matematicas
+  UPV EPSA OFICIAL (210)   — nube didactica (ver Nueva nube.txt)
+  gemini share (0)         — carpeta vacia
+  VEREDICTO: util para EPSA, no para empaquetar VMA ejecutable.
+
+libros/ (6.128)
+  Libros matematica y fisica, informatica (Coursera), energia renovable (PDFs)
+  Sin codigo VMA propio; material de referencia.
+
+portables/ (1.953)
+  Cracks, PassFab, VMware, DocFetcher — herramientas, no proyecto VMA.
+
+azul/ (393)
+  Personal: fotos viajes, Sanitas, MEM GC El Palomar, libros ocio.
+
+Nueva carpeta (3)/ (28)
+  ForPkm_Informe_*.pdf (4) — informes tecnicos kilometro
+  giroscopio.txt, pacopi.txt, jaja siempre pasa — mecanica ForPkm
+  COPIADO a archivos-vma\energia\
+
+Archivos .7z (raiz)
+  Microsoft Copilot.7z  610 MB  — chats completos sin extraer
+  Teams.7z            1.9 MB
+  Cartoon Animator    555 MB  — irrelevante
+
+================================================================================
+2. LINEAS VMA NO EMPAQUETADAS AUN (prioridad)
+================================================================================
+
+ALTA — copiar o enlazar pronto
+  [x] ForPkm / kilometro asincrono (jaja, giroscopio, pacopi)  -> energia/
+  [x] densidad x cine.txt (chat densidad primos / intuicion)     -> matematica_extra/
+  [ ] Goldbach/ (55 archivos en claude-main-extract)            -> futuro just run\goldbach\
+  [ ] Libro4 Semillas y Energia Verde (22)                       -> futuro
+  [ ] kilometre;(soles_bateria) (38) — paper bateria + grok      -> energia/
+  [ ] graficas libro PNG masiva (2455) — solo si compilas libro LaTeX
+  [ ] Apiñon.docx / besons.docx / libros Word grandes            -> docx skill
+
+MEDIA — ya cubierto parcialmente
+  claude-main-extract anidado     -> duplicado de just run
+  informe helicoidal txt 4/5      -> ya en archivos-vma fase 1
+  xlsx Goldbach (repe + raiz)     -> datos, no codigo
+
+BAJA / NO TOCAR
+  UPV EPSA informatica masiva
+  portables cracks
+  Contraseñas Chrome.csv, MEGA keys
+  Nueva nube.txt (modelo negocio nube — sensible)
+  Tu actividad Gemini (meta memoria IA)
+  Nuevo Documuuento 453 KB (encoding raro — revisar con iconv)
+
+================================================================================
+3. HILOS ENERGETICOS (evolucion conceptual)
+================================================================================
+
+  ForPkm (kilometro)     jaja/pacopi/giroscopio — modulo mecanico 1kg-1m, 2-3 hubs
+         |
+         v
+  Informe helicoidal    ciclo 540+180, bateria virtual, modo ZypyZape
+         |
+         v
+  Gemelos Quijote v3-v10   just run\gemelos\ (NREL 5MW, Kuramoto)
+         |
+         v
+  Hurto gravitatorio       just run\hurto-gravitatorio\ (+9/+31 kW sim)
+
+Copilot/Gemini en archivos confirman: ForPkm NO crea energia neta; sirve como
+acoplamiento, suavizado de par, analogia con motor trifasico — misma conclusion
+que en gemelos (auditoria energetica).
+
+================================================================================
+4. HILOS MATEMATICOS (evolucion conceptual)
+================================================================================
+
+  densidad x cine        intuicion "de n a 2n hay menos primos que de n a 2"
+  metodo_calculo_primos  ecuacion n^(1/2)*(c1/c2) = n(1-x)
+  antiprimos             AM(p,v) fraccionario -> A* con ceil_3
+  cribas_cotas_vma       canon 16 capitulos (L, m, MRAUV, Sofi, Gold)
+  jj / numeritos         libro narrativo + algoritmos
+  graficas libro         visualizacion restos n mod i + hipotenusa (MDC geometrico)
+  claude-main Goldbach   55 archivos sin empaquetar
+
+================================================================================
+5. DUPLICACION ESTIMADA
+================================================================================
+
+  repe/ vs raiz                    ~90% duplicado
+  claude-main-extract en archivos  ~95% duplicado vs Desktop\claude-main-extract
+  informe ZypyZape txt (4)(5)(copia)  6+ copias identicas
+  graficas libro py                  80+ copias del mismo script
+  anexoF / anexoE                    3 copias cada uno en raiz
+
+  Espacio recuperable si limpias: decenas de GB (7z Copilot 610MB, PNG 2455,
+  UPV 86k) — pero NO borrar sin revision manual.
+
+================================================================================
+6. FASE 2 — ARCHIVOS ANADIDOS A archivos-vma
+================================================================================
+
+  energia/forpkm_kilometro.txt      <- jaja siempre pasa.txt
+  energia/giroscopio_forpkm.txt
+  energia/pacopi_forpkm.txt
+  matematica_extra/densidad_x_cine.txt
+  matematica_extra/resumen_goldbach_godel.txt
+  graficas_libro/py/gen_fotos.py
+  graficas_libro/py/trazado_dinamico.py
+  graficas_libro/ejemplo_grafica_n50.png
+
+================================================================================
+7. PROXIMOS PASOS SUGERIDOS
+================================================================================
+
+  1. Extraer Copilot.7z y buscar "sunraman", "tamanyo", "minimo2" (chats libro)
+  2. Empaquetar claude-main-extract\Goldbach (55) si quieres conjetura completa
+  3. Empaquetar kilometre;(soles_bateria) (38) como energia\bateria_cinetica\
+  4. Decodificar Nuevo Documuuento.txt (UTF-16 LE?) — posible mega-chat VMA
+  5. NO empaquetar UPV/portables; mantener archivos\ como archivo frio
+
+================================================================================
+FIN ANALISIS FASE 2
+================================================================================

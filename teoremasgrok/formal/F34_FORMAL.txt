@@ -1,0 +1,124 @@
+================================================================================
+FORMALIZACIÓN VMA — F34 LÍMITE V FAMILY vs PAREJAS PC/CP
+================================================================================
+Autor: Víctor Manzanares Alberola
+Tipo formal: LEMA DE ALCANCE + COROLARIO NEGATIVO
+Estado formal: [OK] — delimitación explícita del Método-V
+Fecha: 2026-07-10
+Relación: F25 (Método-V), F27 (PP/PC/CP), F33 (Teorema L)
+
+--------------------------------------------------------------------------------
+1. DEFINICIONES
+--------------------------------------------------------------------------------
+  Universo 6k±1:
+    R₋ := { n : n ≡ 5 (mod 6) }  ≡  { 6k − 1 }
+    R₊ := { n : n ≡ 1 (mod 6) }  ≡  { 6k + 1 }
+    L₁ := R₋ ∪ R₊  (candidatos impares > 3)
+
+  Sofí (sobre un elemento p ∈ R₋ típicamente):
+    L₃(p) : p compuesto, p = (6k−1)(6h+1) o (6k+1)(6h−1)
+    L₄(p) : 2p+1 compuesto, misma forma de producto
+    Lsg(p): p ∉ L₃ ∪ L₄  (doble NO en cribas Sofí)
+
+  Goldbach sobre N = 2n, parejas ordenadas a ≤ b, a+b = N:
+    PP : a,b primos
+    PC : a primo, b compuesto
+    CP : a compuesto, b primo
+    CC : a,b compuestos
+
+  Familia V (Método-V, Libro 6):
+    F_{M,r} := { n ∈ ℕ : n ≡ r (mod M) },  gcd(r,M)=1
+    v(n)  : n pasa cribas modulares P
+    V(n)  : n pasa Test-V (9-restos, acumuladores, V = v·n!/m!)
+    v'(n) : V(n) ∧ (2n+1) coprimo con prohibidos Q
+
+  Certificación V en n:  v'(n) = verdadero  (supervivencia, no primalidad).
+
+--------------------------------------------------------------------------------
+2. LEMA DE ALCANCE (qué certifica V)
+--------------------------------------------------------------------------------
+  Lema 1:
+    v'(n) certifica únicamente que el entero n satisface condiciones modulares
+    y factoriales del Test-V sobre **n** y **2n+1**.
+    NO certifica propiedades de un segundo summand p o q en una descomposición
+    p + q = 2n con p ≠ n en general.
+
+  Prueba:
+    Por definición F25: predicados v, V, v' se evalúan en un solo parámetro n.
+    No aparece en v'(n) la primalidad ni la no-compuestidad de N − n. ∎
+
+--------------------------------------------------------------------------------
+3. LEMA (pareja con una rama compuesta)
+--------------------------------------------------------------------------------
+  Lema 2:
+    Sea p + q = 2n con p ∈ R₋, q ∈ R₊ (o permutación), p ≤ q.
+    Si p ∈ L₃ (compuesto en rama −1) y q primo, la pareja es clase CP o PC.
+    Si q es compuesto en rama +1, análogo.
+    En ningún caso la pareja es PP.
+
+  Prueba: definición directa de PP, PC, CP. ∎
+
+--------------------------------------------------------------------------------
+4. TEOREMA LÍMITE (lo que NO sirve V family)
+--------------------------------------------------------------------------------
+  Teorema (límite V vs PC/CP):
+    La certificación v'(n) en n ∈ F_{M,r} NO implica:
+      (a) que N − n sea primo;
+      (b) que exista representación PP para N = 2n;
+      (c) que una pareja (6k−1, 6k+1) con una rama compuesta sea válida
+          como certificado Goldbach.
+
+  Prueba:
+    (a)(b) Lema 1: v' no examina N−n.
+    (c) Lema 2: si una rama es compuesta, la clase es PC o CP, no PP;
+        V no redefine la clasificación cuaternaria. ∎
+
+--------------------------------------------------------------------------------
+5. TEOREMA POSITIVO (lo que SÍ sirve — complemento)
+--------------------------------------------------------------------------------
+  Teorema (V en zona Lsg):
+    Si n ∈ F_{M,r} y además n ∉ L₃ y n ∉ L₄ (evita residuos Sofí por TCR),
+    entonces n ∈ Lsg ∩ F_{M,r} — candidato en zona doble NO.
+
+    Esto NO implica n primo, pero sí:
+      |{ n ∈ F_{M,r} : n ∉ L₃ ∪ L₄ }| = ∞  (progresión + Teorema L, F33).
+
+  Prueba:
+    Construcción F05/F25: r (mod M) evita residuos que fuerzan L₃, L₄.
+    F_{M,r} infinita por Dirichlet; Teorema L: unión L₃∪L₄ no colapsa L₁. ∎
+
+--------------------------------------------------------------------------------
+6. TABLA DE HERRAMIENTAS POR OBJETIVO
+--------------------------------------------------------------------------------
+  Objetivo                          Herramienta          ¿V family?
+  ─────────────────────────────────────────────────────────────────
+  Universo no colapsa               Teorema L, PIE       indirecto
+  Candidato n sobrevive cribas      F_{M,r}, v→V→v'      SÍ
+  Infinitud de candidatos Lsg       TCR + Dirichlet      SÍ (miembros)
+  Pareja PP, p+q=2n                 F27, Goldbach        NO solo V
+  Uno compuesto (−1 o +1)           Clase PC/CP          excluido de PP
+  Contradicción PP=0                Simetría F27         NO es V
+
+--------------------------------------------------------------------------------
+7. COROLARIO (respuesta a la pregunta VMA)
+--------------------------------------------------------------------------------
+  «¿No sirve para dos 6k±1 si el −1 o el +1 es compuesto, para V family?»
+
+  Respuesta formal:
+    SÍ es correcto para certificar PP o una pareja concreta.
+    NO es correcto para el universo: los compuestos en una rama (L₃, L₄)
+    no colapsan L₁ (F33); el hueco Lsg sigue siendo infinito.
+
+  En síntesis:
+    V family  =  certificación de **un** candidato en F_{M,r}
+    PC/CP     =  **dos** summands, uno falla → fuera de PP
+    Teorema L =  el fallo no vacía el universo
+
+--------------------------------------------------------------------------------
+8. NOTAS
+--------------------------------------------------------------------------------
+  - F25: «supervivencia cribas ≠ primalidad».
+  - Para PP usar cadena F27 (simetría) + densidad; V aporta candidatos en Lsg.
+  - Analogía: L₃↔PC, L₄↔CP, L₂↔CC, Lsg↔PP (F27, F28).
+
+================================================================================

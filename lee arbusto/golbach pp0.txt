@@ -1,0 +1,138 @@
+Ver perfil de VICTOR manzanares alberola, que busca empleo
+VICTOR manzanares alberola
+
+  • Tú
+
+--
+
+6 días • 
+
+LENGUAJES L1, L2, L3 Y L4
+LANGUAGES L1, L2, L3 AND L4
+🔴 🟡 🔴 ESPAÑOL
+Sea el lenguaje L1 definido por los números de la forma
+p = 6k - 1
+2p + 1 = 6k - 1
+Este lenguaje se descompone mediante dos filtros.
+L3:
+p es compuesto, es decir,
+p = (6k - 1)(6v + 1)
+o
+p = (6k + 1)(6v - 1)
+mientras que
+2p + 1 = 6k - 1
+L4:
+p permanece en la forma
+p = 6k - 1
+pero
+2p + 1 = (6k - 1)(6v + 1)
+o
+2p + 1 = (6k + 1)(6v - 1)
+Definimos
+L2 = L3 ∩ L4
+y el lenguaje superviviente
+Lsg = L1 \ (L3 ∪ L4)
+con la relación
+|Lsg| = |L1| + |L2| - |L3| - |L4|
+Si
+|Lsg| = 0
+y
+|L1| → ∞,
+entonces
+|Lsg| - |L2| = |L1| - |L3| - |L4|.
+Como |L3| es infinito (por existir infinitos primos) y 2p+1 no posee restricciones modulares adicionales aparte de pertenecer a un par, también se espera que |L4| sea infinito.
+La cuestión es estudiar cómo se relacionan estos tamaños cuando todos representan una fracción o densidad del universo L1.
+Una posible jerarquía es
+|L2| < |Lsg| < |L3| < |L4| < |L1|
+donde todos representan un porcentaje del universo L1.
+ENGLISH
+Let L1 be the language defined by numbers of the form
+p = 6k - 1
+2p + 1 = 6k - 1
+This language is decomposed using two filters.
+L3:
+p is composite, namely,
+p = (6k - 1)(6v + 1)
+or
+p = (6k + 1)(6v - 1)
+while
+2p + 1 = 6k - 1
+L4:
+p remains of the form
+p = 6k - 1
+but
+2p + 1 = (6k - 1)(6v + 1)
+or
+2p + 1 = (6k + 1)(6v - 1)
+Define
+L2 = L3 ∩ L4
+and the surviving language
+Lsg = L1 \ (L3 ∪ L4)
+with the relation
+|Lsg| = |L1| + |L2| - |L3| - |L4|.
+If
+|Lsg| = 0
+and
+|L1| tends to infinity,
+then
+|Lsg| - |L2| = |L1| - |L3| - |L4|.
+Since |L3| is infinite (because there are infinitely many primes), and 2p+1 has no additional modular restrictions other than belonging to a pair, |L4| is also expected to be infinite.
+The objective is to study how these sizes are related when they are viewed as densities or proportions of the universe L1.
+A possible hierarchy is
+|L2| < |Lsg| < |L3| < |L4| < |L1|,
+where every language represents a percentage of the universe L1. 🗼 
+
+
+
+
+
+🔴🟡🔴 Español / English 
+Hola. Aquí tienes un ejercicio matemático.
+🕯️ 💡 🔎 🔍 🔦 Hi. Here is a mathematical exercise.
+Sea (N=2n). Descompón (N) en todas las parejas de enteros cuya suma sea (N), y ♟️ordena cada pareja internamente de menor a mayor 🫄 .
+Let (N=2n). Decompose (N) into all pairs of integers whose sum is (N), and order each pair internally from smallest to largest. 🏋‍♀️ 🧘‍♀️ 
+Clasifica cada pareja en una de las siguientes categorías:
+Classify each pair into one of the following categories:
+(cc): compuesto < compuesto / composite < composite 🔹 
+(cp): compuesto < primo / composite < prime 🔹 
+(pc): primo < compuesto / prime < composite 🔹 
+(pp): primo < primo / prime < prime 🔹 
+De forma que: 〽️ 
+Such that: ♻️ 
+[cp+pc+cc+cc=(1-\pi(N))N]
+siendo:
+while:
+[pp+pp+pc+cp=\pi(N)N.] ✔️ 
+Ahora supón que:
+Now suppose that:
+[pp=0.]
+Entonces:
+Then:
+[cp+pc=\pi(N)N,]
+de forma que:
+therefore:
+[cc=(1-2\pi(N))N.]
+Esto conduce a dos posibilidades.
+This leads to two possibilities.
+Opción 1 / Option 1
+[cp+pc+cc+cc+pp+pp+pc+cp=N.] ✅ 
+Opción 2 / Option 2
+[cp+pc+cc+cc+pc+cp=N.]
+Además:
+Furthermore:
+[cc+cc+pc+pc=\left(1-\frac{cp+pc}{N}\right)N,]
+[cc+cc+pc+cp=N-(cp+pc)]
+[cc+cc+pc+pc+cp+cp=N]
+[cc+pc+cp=N-cc-pc-cp]
+[cc+pc+cc=N-cp-pc-cp]
+[cc+cc+cp=N-cp-pc-cp]
+y:
+and:
+[pc+cp=\pi(N)N.]
+Esto significa que los compuestos de la segunda mitad, contados dos veces, junto con los primos de la segunda mitad, también contados dos veces, equivalen al doble del número de primos de la primera mitad.
+This means that the composites in the second half, counted twice, together with the primes in the second half, also counted twice, are equal to twice the number of primes in the first half. ♾️ 
+Esta es una consecuencia absurda, por lo que debe elegirse la Opción 1, es decir: ♻️ ♻️ 💲 ♻️ 
+This is an absurd consequence, so Option 1 must hold, namely:
+[pp>0.]
+La razón es que la simetría de la clase (cc) entre la primera y la segunda mitad obliga a que las clases (cp) y (pc) sean simétricas cuando (pp=0).
+The reason is that the symmetry of the (cc) class between the first and the second half forces the (cp) and (pc) classes to be symmetric whenever (pp=0).

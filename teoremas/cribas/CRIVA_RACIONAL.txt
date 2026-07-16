@@ -1,0 +1,68 @@
+================================================================================
+CRIVA — ESTRUCTURA RACIONAL ITERATIVA (DENSIDAD MODULAR)
+================================================================================
+Autor: Víctor Manzanares Alberola
+Estado: [HEUR] — estimador de densidad; no genera primos
+Fuentes: archivos\criva.txt, repo\py\criva.py, Cribas §8 comparativa
+
+--------------------------------------------------------------------------------
+1. NATURALEZA
+--------------------------------------------------------------------------------
+  La Criva reinterpreta el primorial desde arriba (top-down): cada primo p
+  entra como corrección modular explícita. No es criba de Eratóstenes; estima
+  la proporción de primos π(x)/x.
+
+--------------------------------------------------------------------------------
+2. FÓRMULAS
+--------------------------------------------------------------------------------
+  Paso modular:
+    Dₙ = (a·p + b) / (b·p)   o bien   Dₙ = a/b + 1/p
+
+  Iteración de punto fijo hacia T = π(x)/x:
+    Dₙ₊₁ = Dₙ + s·(T − Dₙ)   ⇔   Dₙ₊₁ = (1−s)·Dₙ + s·T
+
+  Caso clásico VMA: s = ½
+    Dₙ₊₁ = (Dₙ + T) / 2
+    Error: eₙ = e₀·(½)ⁿ
+
+  Iteraciones necesarias:  n ≥ log₂(|e₀|/ε)
+
+  Modelo por capas (fractal):
+    D(x) = Σₙ (D₀/2ⁿ) · wₙ(x)
+    wₙ = Π_{p ≤ pₙ} (1 − 1/p)   [producto de Euler]
+
+  Implementación criva.py añade:
+    Tₙ = Dₙ · (1 − 1/log(x+1))
+
+--------------------------------------------------------------------------------
+3. EJEMPLO (x = 10 000, T = 0.1229, D₀ = 0.1302, s = ½)
+--------------------------------------------------------------------------------
+  Iter   Dₙ        π_est = x·Dₙ    Error relativo
+  0      0.130200   1 302.0         +5.96 %
+  4      0.123356   1 233.6         +0.37 %
+  8      0.122928   1 229.3         +0.01 %
+
+  π(10000) real = 1229
+
+--------------------------------------------------------------------------------
+4. COMPARATIVA (del tratado)
+--------------------------------------------------------------------------------
+  vs Legendre/Gauss: más control local, iterativo, programable
+  vs primorial puro: acumulativo y ajustable con s
+  Precisión declarada: < 0.1 % en 7–8 pasos (x = 10⁴)
+
+--------------------------------------------------------------------------------
+5. LÍMITES
+--------------------------------------------------------------------------------
+  - Estima densidad, no certifica primalidad de un n dado.
+  - No reemplaza Sofí L₃/L₄ (estructura exacta vs proporción).
+  - Capas D₀/2ⁿ: tendencia geométrica observada, no teorema asintótico.
+
+--------------------------------------------------------------------------------
+6. VINCULO PIE / SOFÍ
+--------------------------------------------------------------------------------
+  En Cribas (§5): reparto simétrico (1−criva)/2 entre ramas al contar.
+  Criva numérica ≈ proporción supervivientes; Sofí PIE ≈ cardinalidad exacta
+  en conjuntos finitos. Ver SOFI_ESTRUCTURA_PIE.txt y F28.
+
+================================================================================

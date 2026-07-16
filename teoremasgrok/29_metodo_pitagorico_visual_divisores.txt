@@ -1,0 +1,68 @@
+================================================================================
+MÉTODO PITAGÓRICO VISUAL — DIVISORES / FACTORES A OJO
+================================================================================
+ID: 29_pitagorico_visual
+ESTADO: [HEUR] — método gráfico educativo; no teorema demostrado
+AUTOR: Víctor Manzanares Alberola
+FUENTES:
+  lee arbusto\factor goldback.txt
+  lee arbusto\(L).txt
+  lee arbusto\(l)(L).txt L768–860
+  repo\nuevo libro3\...\Nuevo Documento de texto.txt L1840–2250 (restos n%i)
+
+--------------------------------------------------------------------------------
+VARIANTE A — TEST DIVISORES (factor goldback.txt)
+--------------------------------------------------------------------------------
+Catetos: a = 2,  b = n/2,  c = √n
+
+En cuadrícula, vector con componentes (b,a) y (a,c).
+Si la coincidencia en la cuadrícula da coordenadas enteras en el vector
+(b,a)(a,c) → son **divisores** de n.
+
+--------------------------------------------------------------------------------
+VARIANTE B — HIPOTENUSA Y FACTORES ((L).txt)
+--------------------------------------------------------------------------------
+Triángulo rectángulo: catetos n/2 y √n.
+Hipotenusa h = √(n²/4 + n) = √(n(n+4)/4).
+
+Si la hipotenusa coincide con intersección especial de la cuadrícula
+(columnas = enteros consecutivos, filas = escala √n) → indica factor o
+propiedad de n. Caso n=36: √n=6, punto (6,6) donde 6×6=36.
+
+--------------------------------------------------------------------------------
+VARIANTE C — RECTA MDC ((l)(L).txt) [más operativa]
+--------------------------------------------------------------------------------
+  Marcar (0,0), (n/2, 2) y (2, √n).
+  Unir con recta.
+  Si la recta toca una cruz de la cuadrícula en (x,y) entero:
+      (2x+3)(2y+3) = n   → factores en forma 6k±1.
+
+Ejemplo n=36: puntos (18,2) y (2,6); pendiente −0.25; intersecciones → factores.
+
+--------------------------------------------------------------------------------
+VARIANTE D — RESTOS MODULARES (libro3)
+--------------------------------------------------------------------------------
+  Para primo n, graficar y_i = n mod i, i = 2..n−1.
+  Secuencias de decrementos lineales en restos → hipótesis de primalidad.
+  Rectas extendidas hasta hipotenusa catetos n.
+  Conclusión del autor: “solo sirve como método gráfico para dibujos”.
+
+--------------------------------------------------------------------------------
+HERRAMIENTAS CLÁSICAS CITADAS
+--------------------------------------------------------------------------------
+  Pitágoras, cuadrícula cartesiana, ecuación de la recta, MCM, diofánticas x·y=n.
+
+--------------------------------------------------------------------------------
+RELACIÓN CON OTRAS FICHAS
+--------------------------------------------------------------------------------
+  08 triángulo_factores [MAL] — otro “triángulo”; distinto enunciado
+  09–10 MDC — (2x+3)(2y+3)=n conecta con variante C
+
+--------------------------------------------------------------------------------
+GAPS
+--------------------------------------------------------------------------------
+  - No hay prueba de que intersección de recta implique factor para todo n.
+  - Variantes A/B/C usan parametrizaciones ligeramente distintas.
+  - Validación empírica pendiente sistemática.
+
+================================================================================

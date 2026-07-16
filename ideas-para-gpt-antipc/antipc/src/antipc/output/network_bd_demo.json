@@ -1,0 +1,19 @@
+{
+  "timestamp": "2026-07-12T09:35:24",
+  "port": 3333,
+  "hubs": 4,
+  "batch_size": 32,
+  "pipeline": "B_slot_ring \u2192 D_grafcet",
+  "metrics": {
+    "architecture": "B_slot_ring_to_D_grafcet",
+    "packets_in": 2251,
+    "packets_grafcet": 2251,
+    "drops": 21,
+    "memcpy_user_copies": 2251,
+    "cache_hits": 0,
+    "grafcet_step": "IDLE",
+    "elapsed_s": 2.001551199995447,
+    "hubs": 4,
+    "batch_size": 32
+  }
+}

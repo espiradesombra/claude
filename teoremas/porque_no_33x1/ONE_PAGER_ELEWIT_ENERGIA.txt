@@ -1,0 +1,108 @@
+================================================================================
+ONE-PAGER — ENERGÍA EÓLICA / GRID (ELEWIT, TSO, OEM)
+================================================================================
+Módulo: N₄ ZypyZape (+ gemelo; Quijote solo como demo con límites)
+Fecha: 2026-07-10                    |  TRL: 4–5 (simulación)
+
+--------------------------------------------------------------------------------
+PROPUESTA EN UNA FRASE
+--------------------------------------------------------------------------------
+  Software de coordinación Kuramoto entre turbinas: mejor sincronismo del parque
+  e inercia sintética software — sin prometer energía neta ni RoCoF vs BESS.
+
+--------------------------------------------------------------------------------
+COMPRADOR TIPO
+--------------------------------------------------------------------------------
+  - Elewit / operador parque eólico (España/UE)
+  - Consultora grid (ENTSO-E narrativa en repo)
+  - OEM (Siemens Gamesa, Vestas) — capa software sobre turbinas existentes
+
+--------------------------------------------------------------------------------
+VALOR (MEJOR CASO)
+--------------------------------------------------------------------------------
+  Métrica honesta              | Qué sí vendemos
+  -----------------------------|------------------------------------------
+  Dispersión ω entre turbinas  | Coordinación ZypyZape (única diferencial clara)
+  Gemelo NREL 5MW              | Reproducible (gemelo_v94, model_44)
+  H_eff en swing               | H_sys + H_ZZ (modelo agregado)
+  Demo puerta                  | Quijote en molino → credibilidad mecánica
+
+  NO vender sin estudio red:
+    +1,4–1,5% potencia absoluta P_grid
+    RoCoF 0–500 ms mejor que BESS (refutado en segunda_vuelta)
+
+--------------------------------------------------------------------------------
+RANGOS ECONÓMICOS (MEJOR CASO)
+--------------------------------------------------------------------------------
+  Fase 0 Estudio (8–12 sem)     | 30–80 k€ (gemelo + informe dispersión ω)
+  Piloto 90 días (1 parque sim) | 80–200 k€ (escenario N turbinas acordado)
+  Piloto campo 12–24 meses      | 500 k€–2 M€ (1 parque real + telemetría)
+  Licencia + soporte anual      | 200 k€–1 M€/año (según MW y SLA)
+
+  Contrato multi-año utility (mejor caso B): 5–20 M€ si escala Iberdrola-class.
+
+--------------------------------------------------------------------------------
+QUÉ NO PROMETER
+--------------------------------------------------------------------------------
+  ✗ Hurto gravitatorio con balance neto > 0 en ciclo cerrado
+  ✗ Quijote sustituye batería grid en RoCoF contractual
+  ✗ Kilómetro submarino / mover Luna en el mismo SOW de piloto eólico
+  ✗ 33 años de paz como contraprestación
+
+--------------------------------------------------------------------------------
+CHECKLIST 90 DÍAS (PILOTO SIMULACIÓN → CAMPO)
+--------------------------------------------------------------------------------
+  Semana 1–3
+    [ ] Datos parque: N turbinas, curvas potencia, escenario viento acordado
+    [ ] Baseline: gemelo sin ZypyZape → CSV dispersión ω, P_grid
+    [ ] Entregar subir\VMA-Dossier-Elewit\ + ZypyZape_Documento_Tecnico
+
+  Semana 4–7
+    [ ] Activar Kuramoto / pitch asíncrono en gemelo_v94
+    [ ] Comparar dispersión ω vs baseline (métrica principal)
+    [ ] Informe: qué mejora y qué NO (RoCoF explícitamente fuera de scope)
+
+  Semana 8–10
+    [ ] Workshop con ingeniería parque: integración SCADA posible
+    [ ] Opcional: demo Quijote molino (vídeo + datos; etiqueta REFUTADO* neto)
+    [ ] Roadmap piloto campo: sensores, KPIs, permisos red
+
+  Semana 11–13
+    [ ] Acta: extensión 12 meses campo o cierre
+    [ ] Propuesta licencia N₄ separada de N₁ (telemetría AntiPC opcional)
+    [ ] N₅ (tratado paz) solo anexo diplomático, no en precio piloto
+
+--------------------------------------------------------------------------------
+CADENA DE CREDIBILIDAD VMA
+--------------------------------------------------------------------------------
+  Quijote (molino pequeño) → Kilómetro (escala industrial narrativa)
+  → ZypyZape (parc) → espacial (opción década 2)
+
+  En SOW de Elewit: quedarse en ZypyZape + gemelo.
+
+--------------------------------------------------------------------------------
+ARTEFACTOS
+--------------------------------------------------------------------------------
+  repo\ZYPYZAPE Bateria Cinetica\, gemelo_v94.py
+  ingenieria\01_ZYPYZAPE.txt, 02_QUIJOTE.txt, 03_GEMELO_VIRTUAL.txt
+  segunda_vuelta\LIMITES_HONESTOS.txt, REVISION_QUIJOTE_ZYPYZAPE.txt
+
+--------------------------------------------------------------------------------
+MODALIDAD — SIN COCHE
+--------------------------------------------------------------------------------
+  Fase 0–1: remoto (gemelo + CSV). Elewit suele estar Madrid: 1 viaje útil si
+  agrupáis 2 reuniones y pagáis AVE+hotel+2 días consultoría por anticipo.
+  No desplazamientos repetidos «a revisar el molino» sin viaje pagado.
+
+--------------------------------------------------------------------------------
+FRASE DE CIERRE
+--------------------------------------------------------------------------------
+  «Piloto de sincronismo medible en 90 días. Sin % milagro ni monolito 33×1.»
+
+--------------------------------------------------------------------------------
+AUTORÍA
+--------------------------------------------------------------------------------
+  Borrador asistido por IA. Resumen del ordenador de Víctor Manzanares Alberola.
+  No firma 33×1 ni personificación en su nombre. NOTA_AUTORIA_IA.txt
+
+================================================================================

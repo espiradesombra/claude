@@ -1,0 +1,15 @@
+            condicion = false;
+---
+            double factor_exp1 = factor3 + factor4 * (d3 - d2) / (d3 - d1);
+---
+            double factor_exp2 = factor5 + factor6 * (d3 - d2) / (d3 - d1);
+---
+            x = std::pow((x), (factor_exp1));
+---
+            x = std::pow((x), (factor_exp2));
+---
+        // Ajuste exponencial 1
+---
+        // Ajuste exponencial 2
+---
+        // Ajuste multiplicativo

@@ -1,0 +1,56 @@
+================================================================================
+IMPLEMENTACIONES — RUTAS DE CÓDIGO CRIBAS VMA
+================================================================================
+Autor: Víctor Manzanares Alberola
+Fecha: 2026-07-10
+
+--------------------------------------------------------------------------------
+PYTHON
+--------------------------------------------------------------------------------
+  repo\py\criva.py              — Criva racional, Euler, capas, iteración
+  repo\pyy\criva.py             — copia / variante
+  repo\py\cribas.py             — Desmemoriada + Modular + Híbrida (docstring)
+  repo\pyy\cribas.py
+  archivos\criba_modular.py     — Criba modular 6k±1 (marcado único)
+  archivos\criba_hibrida.py     — Híbrida ascendente/descendente
+  repo\diamante\criba_modular.py
+  repo\diamante\criba_hibrida.py
+
+  Repo GitHub (citado en chats): mrauv_goldbach.py, sofi_structure.py, criva.py
+
+--------------------------------------------------------------------------------
+GVMA — SUNRAMAN JET (NUEVO)
+--------------------------------------------------------------------------------
+  teoremas\cribas\gvma\Gvma.h
+  teoremas\cribas\gvma\sunraman_demo.c
+  gcc sunraman_demo.c -o sunraman_demo -lm
+
+--------------------------------------------------------------------------------
+C / OPENMP
+--------------------------------------------------------------------------------
+  archivos\anexoF_criba6kpm1_openmp.c
+  repo\diamante\anexoF_criba6kpm1_openmp.c
+  VICTOR\...\mi criva.c
+
+--------------------------------------------------------------------------------
+DOCUMENTACIÓN
+--------------------------------------------------------------------------------
+  archivos\Cribas_cotas_y_estructuras_de_primos_VMA (1).txt  — CANÓNICO
+  repo\diamante\Cribas_cotas_y_estructuras_de_primos_VMA (1).txt
+  archivos\criva.txt            — Criva racional (presentación)
+  archivos\criba desmemoriada .txt — guion audiolibro + pseudocódigo
+  repo\Archivos del doc Apiñon...\criva.txt
+
+--------------------------------------------------------------------------------
+EJECUCIÓN RÁPIDA (referencia)
+--------------------------------------------------------------------------------
+  Criva densidad:
+    python repo\py\criva.py   (o import criva.criva(x))
+
+  Criba modular:
+    python archivos\criba_modular.py
+
+  OpenMP:
+    gcc -O3 -fopenmp archivos\anexoF_criba6kpm1_openmp.c -o criba
+
+================================================================================

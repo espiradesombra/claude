@@ -1,0 +1,721 @@
+Cribas, cotas y estructuras modulares de los primos
+Autor: Víctor Manzanares Alberola (VMA)
+Fecha: 09/09/2025
+Índice preliminar
+Preliminares y candidatos (6k\pm1)
+Cotas de salto máximo y criterio “dos primos”
+Conjetura de intervalo mínimo con dos primos
+Conjetura de Andrica: lectura a partir del salto
+Estructura Sofí (tipo Sophie Germain) y resultado de infinitud
+Férmines (números de Fermat) y alineación modular
+Gold
+Cribas: desmemoriada, híbrida y modular (6k\pm1)
+8_1.	Ecuaciones que generan (casi)primos
+Sistema de restos (x,a,b) y método gráfico con hipotenusa
+Visualización: script de restos y pendientes
+Modelo MRAUV de densidad de primos por tramos
+Heurística numérica con doble ajuste (logs/raíces)
+Conjetura: siguiente primo a partir de uno dado
+Complejidad y notas de implementación
+Conclusiones y cuestiones abiertas
+Anexos
+1) Preliminares y candidatos (6k\pm1)
+Marco de candidatos (6k\pm1) para primos (>3), con exclusiones explícitas de compuestos frecuentes: [ {\,2\cdot3\cdot n \pm 1\,}\;-\;{\,30m\pm5,\; 6\cdot7\cdot \ell \pm 7,\; 6\cdot 11\cdot k \pm 11,\; 6\cdot pi\cdot j \pm pi,\ldots} ] Esta notación resume “la rejilla” de candidatos y una lista creciente de familias que se excluyen por ser compuestos.
+2) Cotas de salto máximo y criterio “dos primos”
+Definimos (para (n>3)):
+Intervalo de análisis
+[ I(n)=[\,n-\lfloor\sqrt{n+3}\rfloor-3,\; n+3\,]. ]
+Longitud auxiliar
+[ L(n)=\lfloor\sqrt{n+3}\rfloor+7. ]
+Tope de sumandos
+[ K=\left\lfloor \lfloor \sqrt{n}\rfloor\cdot \frac{9}{24}\right\rfloor. ]
+Marcado sobreestimado
+[ m(n)=\sum_{i=2}^{K}\frac{\sqrt{n+3}}{i!}, \qquad \boxed{\,m(n)\;\approx\;(e-2)\,\sqrt{n}\,} ] (fórmula operativa central en el TXT).
+Criterio cuantitativo (teorema operativo)
+Si [ L(n)-m(n)\;\ge\;2, ] entonces el intervalo (I(n)) contiene al menos dos primos.
+Lectura: (m(n)) “marca” (sobreestima) cuántas posiciones del tramo cubrirían los compuestos inducidos por los pequeños primos; si el “espacio libre” (L(n)-m(n)) queda (\ge 2), caben dos primos.
+Figura 2 — véase texto para interpretación.
+3) Conjetura de intervalo mínimo con dos primos
+Se formula la conjetura (versión declarativa):
+Para (n>3), en el intervalo [ \Big[n-\lfloor \sqrt{n+3}\rfloor-3,\; n+3\Big] ] hay al menos dos primos.
+Se apoya con:
+el criterio de §2 como cota robusta;
+un enfoque “por conteo y fallo a favor”: sustituir primorial por factorial e iterar hasta (K) para obtener una sobrecobertura de compuestos, de modo que el déficit estimado de compuestos sea conservador y favorezca la existencia de primos.
+4) Conjetura de Andrica: lectura a partir del salto
+Se justifica (\text{SaltoMáximo}(n)\approx \sqrt{n}) al suponer todos los (6k\pm1\le\sqrt{n}) primos (límite superior); la realidad es menor, luego el salto real es < (\sqrt{n}).
+Se usa la desigualdad [ \sqrt{n}-\sqrt{\,n-\sqrt{n}\,}<1 ] como guía cualitativa para la evolución del salto, reforzando la coherencia de Andrica en rangos grandes.
+5) Estructura Sofí (tipo Sophie Germain) y resultado de infinitud
+Conjuntos (clases modulares y productos):
+( \mathrm{L1}={a\in\mathbb{N}: a\equiv 5\pmod{6}})
+( \mathrm{L3}={a\in \mathrm{L1}: a=(6k-1)(6h+1)})
+( \mathrm{L4}={a\in \mathrm{L1}: 2a+1=(6j-1)(6g+1)})
+( \mathrm{L2}=\mathrm{L3}\cap \mathrm{L4})
+( \mathrm{LSG}={p\in \mathrm{L1}: p \text{ y } 2p+1 \text{ son primos}})
+( \mathrm{U2}=\mathrm{L1}\setminus(\mathrm{L3}\cup \mathrm{L4})).
+Observación: ( \mathrm{U2}\subseteq \mathrm{LSG}).
+Teorema (del TXT): ( \mathbf{L4\setminus L2}) es infinito.
+Idea de prueba: para todo primo (q\ge5), impón [ p\equiv 5\pmod 6, \quad 2p+1\equiv 0\pmod q \ \ \Longleftrightarrow\ \ p\equiv\frac{q-1}{2}\pmod q. ] Por CRT existe una clase (r\pmod{6q}) coprima con (6q) que satisface ambas; por Dirichlet hay infinitos primos (p\equiv r\pmod{6q}). Tales (p) están en (L4) y no en (L3), luego en (L4\setminus L2).
+Ejemplo: con (q=5), (p\equiv 17\pmod{30}), y para todo tal primo (p), (2p+1) es múltiplo de 5 y compuesto.
+6) Férmines (números de Fermat) y alineación modular
+Definición: (F_n=2^{2^n}+1).
+Producto menos dos: (F0F1\cdots Fn = F{n+1}-2).
+Base de alineación: (Bn=2\cdot \prod{k=0}^{n}F_k).
+Residuo privilegiado: existe único (rn) con [ rn\equiv 1\pmod 2,\qquad rn\equiv 2\pmod{Fk}\ (0\le k\le n), ] tal que (\forall m\ge n+1), (Fm\equiv rn\pmod{B_n}).
+7) Goldbach (asimetrías y métrica de error)
+Condición de densidad (enunciada en el doc): f(x)⋅2≤f(2x)f(x)\cdot 2 \le f(2x)f(x)⋅2≤f(2x).
+1
+Error relativo propuesto para 2n2n2n de forma 6k6k6k:
+\frac{\bigl(\,n/6 - 2n/\ln(2n)\,\bigr)\cdot 100}{2n/\ln(2n)}. \] citeturn4search1
+Figura 1 — véase texto para interpretación.
+8) Cribas: desmemoriada, híbrida y modular (6k\pm1)
+8.1 Criba Desmemoriada
+Representa primalidad en listas booleanas; trabaja por replicación y AND lógico de patrones de múltiplos.
+Ventajas: libera pronto el primo (sustituido por su patrón), reduce bucles internos, favorece memoria distribuida.
+Desventajas: compleja de implementar, requiere lista de casiprimos.
+8.2 Criba modular (6k\pm1) con marcado único
+Candidatos: sólo índices de la forma (2i+3) (clases (6k\pm1)).
+Saltos por primo (p): (+2p) y (+4p) para tocar sólo (6k\pm1).
+Mecanismos “antiremarca”:
+anteriorM: salta múltiplos de 3 en el índice auxiliar.
+anteriorNY: adelanta para marcar una sola vez (x=(2n+3)(2m+3)), cuando (2n+3) es el menor factor en la rejilla.
+Inicialización: marca manual de 2,3,5,7; rueda de 6 para sembrar candidatos.
+Complejidad: (\Theta(l^2)) con marcado único; si el invariante fallase, a lo sumo (O(l^2\log\log l)), pero en la práctica los saltos evitan remarcas.
+8.3 Criba híbrida (ascendente + descendente)
+Ejecuta primero ascendente (hasta ~mitad del límite) y luego descendente con la mitad de la entrada como semilla.
+Beneficio: reduce el “fallo” (conteo de remarcas), que se concentra al final en cribas clásicas.
+Implementación: versión en C con OpenMP (paralelismo), métricas de fallo e iteraciones, tiempos intermedios.
+Figura 3 — véase texto para interpretación.
+8_1) Ecuaciones que generan (casi)primos
+Esquema constructivo por residuos:
+Si (p) es primo y analizas (p\bmod 6\in{1,5}), refinas con módulos compuestos (6\cdot5) o (6\cdot7), etc., filtrando bandas inválidas y reteniendo residuos “válidos” que predicen candidatos.
+Ejemplos del TXT (ideas):
+Caso (p\bmod 6=5): sobre (6\cdot5=30), residuos válidos ([1,1+2\cdot5]) ⇒ genera (11,41,\ldots).
+Caso (p\bmod 6=1): sobre (6\cdot7=42), residuos válidos ([1,1+4\cdot7]) (excluye (7,3\cdot7)).
+Nota: estas reglas producen casiprimos (muchos serán compuestos) pero encapsulan patrones que tienden a concentrar primos.
+9) Sistema de restos (x,a,b) y método gráfico con hipotenusa    mejorar
+9.1 Definiciones
+Dado (x) entero y un parámetro (a<x), define (b) como el resto de (x) entre (x-a).
+Se identifican secuencias donde, al incrementar (a) en 1, (b) incrementa con pendiente 1, hasta un límite (~((x+1)/2)), tras lo cual aparecen nuevas secuencias con pendientes 2, 3, …
+Para primos, la estructura de secuencias presenta regularidades (p.e., primera secuencia “impar” completa).
+9.2 Método gráfico
+Representar puntos ((i,\,x\bmod i)), dibujar la hipotenusa de un cuadrado de lado (x) y trazar rectas con pendientes (1,2,3,\ldots) desde puntos clave; los cortes anticipan inicios de nuevas secuencias de restos.
+Hipótesis operativa del TXT: detectar el decremento constante correcto en la secuencia final permitiría inferir primalidad con pocos módulos.
+Figura 4 — véase texto para interpretación.
+10) Visualización: script de restos y pendientes  añadir
+Script (Tkinter + Matplotlib) para: trazar (y_i = n \bmod i), superponer ejes, hipotenusa, líneas rojas de referencia y rectas de decremento extendidas hasta la hipotenusa; zoom interactivo.
+Objetivo: ver patrones de restos y transiciones entre secuencias.
+11) Modelo MRAUV de densidad de primos por tramos
+Idea: transformar tu estimador en un modelo cinemático por tramos con 3 mediciones locales (o equivalentes) para parametrizar una “velocidad” (V0), “aceleración” (a0) y, opcionalmente, un “jerk” (j).
+Funciones auxiliares del TXT:
+(m(\cdot)) y (L(\cdot)) como en §2; medias (\text{med}i=L(ni)-m(n_i)).
+Densidad predicha en ([n,n+\Delta n]):
+[ D{\rm pred}\;\approx\; D0 + V0\,\Delta n + \tfrac12 a0\,(\Delta n)^2\quad (\text{con }j\text{ opcional}). ]
+Estimación de (\pi(n+\Delta n)): ( \pi(n)+D_{\rm pred}\cdot \Delta n).
+Buenas prácticas: recalibrar por segmentos de longitud (\sim 2\sqrt{n}) (o fija) para controlar el error; coste (O(M)) segmentos.
+Complejidad: el enfoque “cinemático” tiene coste efectivo (\widetilde O(\sqrt N)) si se recalibra cada (O(\sqrt n)); la lectura de (\ln N) en hardware es (O(1)), pero tu método ofrece más control local de error sin cribar.
+12) Heurística numérica con doble ajuste (logs/raíces)  MODIFICAR
+12.1 Esquema general (logaritmos (\log_b a))
+Variables por iteración: (j) (estimador), diferencias (d1,d2,d_3).
+Ecuación base (forma del TXT): [ j \leftarrow \frac{a + \big(a/b^{\,j}\big) - 1}{a}. ]
+Doble ajuste simultáneo:
+Multiplicativo: [ j \ \mathrel{*{=}}\ \big(1+\text{factor2}\cdot|d_1|\big). ]
+Exponencial: [ j \ \leftarrow\ j^{\,|\text{factor}|}, \qquad \text{factor}=\text{factor3}+\text{factor4}\cdot\frac{d3-d2}{d3-d1}, ] (análogo con (\text{factor5},\text{factor6}) en la segunda corrección del TXT).
+Parámetros optimizados (versión logs, según TXT): [ \text{factor1}=1.2,\ \text{factor2}=3.4,\ \text{factor3}=-0.8,\ \text{factor4}=1.9,\ \text{factor5}=-0.8,\ \text{factor6}=1.9, ] con precisión objetivo (\approx 10^{-15}).
+Nota de robustez: el ajuste exponencial puede desbordar si se usa sin control; el TXT advierte que puede ocurrir incluso para pocas iteraciones. Recomendable acotar el exponente y proteger divisiones (p.ej., (|d3-d1|>\varepsilon)).
+12.2 Versión para raíces
+Misma filosofía de doble ajuste simultáneo, pero los parámetros óptimos no tienen por qué coincidir con los de logaritmos. El TXT propone reoptimización específica (búsqueda de factores que minimicen error e iteraciones en un conjunto de pruebas de raíces).
+13) Conjetura: siguiente primo a partir de uno dado añadir
+13.1 Planteamiento
+Contadores: (n=p_0), (m=n+1), (ny=n-1).
+Acumuladores: (t=ny^2), (tt=n^2), (nt=m^2).
+Nueve restos por iteración: [ t\bmod ny,\, t\bmod n,\, t\bmod m;\quad tt\bmod ny,\, tt\bmod n,\, tt\bmod m;\quad nt\bmod ny,\, nt\bmod n,\, nt\bmod m. ]
+De estos, se extraen booleans (cero/nocero) y se aplican tres pasos lógicos (derivados de mapas de Karnaugh) con memorias interpaso, para decidir si (ny) es el siguiente primo.
+13.2 Estado
+Heurística/conjetura: patrón observado; no hay prueba general en el TXT. Requiere validación computacional y análisis teórico adicional.
+14) Complejidad y notas de implementación
+Criba modular (6k\pm1): (\Theta(l^2)) con marcado único (gracias a anteriorNY).
+Criba híbrida: reduce remarcas al partir el trabajo y cambiar de dirección.
+Desmemoriada: favorece memoria distribuida; coordinación de “C listas (C)” mediante AND.
+MRAUV: coste por tramo; precisión controlable con el número de segmentos.
+Heurística logs/raíces: coste en iteraciones bajo (decenas) con protección antidesbordes.
+Código en C (OpenMP): el TXT incluye una implementación didáctica con métricas de fallo e iteraciones y tablas de tiempo.
+15) Conclusiones y cuestiones abiertas
+La cota cuantitativa (L(n)-m(n)\ge2) es una pista fuerte para garantizar cantidad de primos en un entorno de (n).
+La estructura Sofí da un resultado de infinitud ( (L4\setminus L2) ) compatible con clases (6k\pm1) y sugiere rutas hacia familias tipo L3/L2 y |L1|+|L2|-|L3|-|L4| y L1/(l4/l2)/l2 o Sophie Germain .
+La criba modular y la híbrida muestran que un diseño de rueda + saltos puede acercar el coste práctico a marcado único.
+Las ecuaciones generadoras por residuos seleccionan bandas fértiles (aunque no exclusivos primos).
+El modelo MRAUV permite estimación local de densidad y número de primos sin cribar todo el rango.
+La heurística de doble ajuste es prometedora, pero requiere acotaciones y reoptimización por problema (logs vs. raíces).
+La conjetura del siguiente primo es atractiva; su formalización y prueba quedan abiertas.
+ANEXO A · Pseudocódigo limpio de la criba modular 6k±1 con anteriorM y anteriorNY
+Idea: trabajar solo con candidatos (6k\pm1) (índices de la forma (2i+3)), y marcar compuestos exactamente una vez.\ anteriorM evita visitar índices equivalentes a múltiplos de 3 (que no son (6k\pm1) válidos).\ anteriorNY “salta” aquellos productos que ya quedarían marcados por un factor menor (marcado único).
+Entrada:
+L        # límite "l" de tu TXT; la criba trabaja hasta L^2 en candidatos 2i+3
+Salida:
+p[v]     # array booleano/marcador: 1=candidato (posible primo), 3=compuesto, 0=no candidato
+Funciones auxiliares:
+value(i)      := 2*i + 3                   # i&gt;=0 → valores 5,7,11,13,... (clases 6k±1)
+is_candidate(v): return (v % 6 == 1) or (v % 6 == 5)
+Inicialización (rueda 6):
+Nmax := L*L
+Para v en [0..Nmax]:
+si is_candidate(v): p[v] := 1
+si no:               p[v] := 0
+# Semillas explícitas (por claridad): 2,3,5,7 como primos conocidos
+p[2] := 1; p[3] := 1; p[5] := 1; p[7] := 1
+Criba principal:
+Para n desde 0 hasta floor((L-3)/2):
+pn := value(n)                 # factor "base" (5,7,11,13,...)
+si p[pn] != 1:
+continuar                    # ya marcado como compuesto o fuera de candidatos
+# --- ESTRATEGIA DE MARCADO ÚNICO POR REJILLA CON DOS CONTROLES ---
+# 1) Control anteriorM: saltar m tales que 2m+3 ≡ 0 (mod 3)  (no son 6k±1 válidos)
+#    Observación: 2m+3 ≡ 0 (mod 3)  &lt;=&gt;  m ≡ 0 (mod 3)
+siguiente_m_multiplo3 := 0      # primera posición m que es múltiplo de 3
+# 2) Control anteriorNY: sólo marcar cuando pn &lt;= qm := 2m+3  (factor mínimo -&gt; marcado único)
+#    Implementación "fiel": llevar un puntero sobre la diagonal de la rejilla para saltar remarcas.
+#    Implementación "equivalente práctica": imponer m &gt;= n.
+m := n                          # m inicia en n para asegurar pn &lt;= qm
+mientras true:
+qm := value(m)
+si qm &gt; Nmax / pn: romper     # producto supera L^2 → fin
+# Saltar m ≡ 0 (mod 3) con "anteriorM"
+si (m == siguiente_m_multiplo3):
+siguiente_m_multiplo3 += 3   # preparar próximo múltiplo de 3
+m += 1
+continuar
+# Saltar los qm que no son candidatos 6k±1 (defensivo):
+si !is_candidate(qm):
+m += 1
+continuar
+# Control anteriorNY (marcado único): sólo marcar si pn &lt;= qm
+# (equivale a ir por el triángulo superior de la rejilla; no hay doble marcado)
+si pn &lt;= qm:
+comp := pn * qm
+# Marcar compuestos en progresiones +2pn y +4pn para tocar sólo 6k±1:
+salto1 := 2 * pn
+salto2 := 4 * pn
+j := comp
+usar_salto1 := true
+mientras j &lt;= Nmax:
+si p[j] == 1: p[j] := 3   # marcar; si ya 3, queda igual (idempotente)
+si usar_salto1: j += salto1
+si no:           j += salto2
+usar_salto1 := not usar_salto1
+# Si pn &gt; qm, esa celda de la rejilla la marcará (o marcó) otro n' &lt; n → saltamos (anteriorNY)
+m += 1
+Notas de implementación
+El bucle externo “n” recorre candidatos ascendentes; el interno “m” comienza en n para garantizar factor mínimo (marcado único).
+anteriorM evita visitar (m) que darían (2m+3\equiv 0\pmod 3).
+El marcado usa saltos +2p y +4p (rueda 6) para alcanzar solo valores 6k±1.
+La variante “equivalente práctica” de anteriorNY es m := n (triángulo superior). Si quieres la versión “fielfiel” con contadores ñ, anteriorMM, etc., dime y la escribo tal cual tu rejilla (más verbosa y menos portable).
+ANEXO B · Pseudocódigo de la criba híbrida (ascendente + descendente)
+Idea: las remarcas se concentran al final si cribas “todo hacia arriba”. Reducimos remarcas combinando ascenso y luego una fase inversa (descenso) usando la mitad “ya cribada” como semilla.
+Entrada:
+N                # límite máximo (trabajaremos sobre candidatos 6k±1)
+Salida:
+P[0..N]          # booleano/marcador primalidad (formato 6k±1 o plano; aquí lo expreso plano)
+Fase 0 – Semilla (rueda 6 básica):
+Inicializa P con 0/1 dejando candidatos 6k±1 en 1 (y 2,3 en 1), el resto 0.
+Fase 1 – Ascendente (hasta un pivote M):
+M := floor(N / 2)   # Variante simple (también puedes elegir M≈sqrt(N) si te conviene)
+Para cada primo p encontrado en [5..M] (clases 6k±1):
+# marcar múltiplos de p en [p*p .. M] solo sobre 6k±1:
+j := p*p
+salto1 := 2*p; salto2 := 4*p; toggle := true
+mientras j &lt;= M:
+P[j] := 0
+si toggle: j += salto1; si no: j += salto2
+toggle := not toggle
+Fase 2 – Descendente (de N hacia M usando primos ≤ M como semilla):
+# (La mitad “ascendente” aporta la lista de primos hasta M;
+#  ahora cribamos solo el tramo (M..N) “de bajada”)
+Para cada primo p ≤ sqrt(N) (obtenido de P o de una lista):
+# marcar en (M..N] solo múltiplos 6k±1 de p, desde el tope hacia abajo:
+# encuentra el mayor j ≤ N tal que j ≡ (p*p mod 6p) y j múltiplo de p y 6k±1
+j := mayor_compuesto_valido(N, p)     # función que respeta rueda 6
+salto1 := 2*p; salto2 := 4*p; toggle := (paridad adecuada)
+mientras j &gt; M:
+P[j] := 0
+si toggle: j -= salto1; si no: j -= salto2
+toggle := not toggle
+Resultado:
+P tiene primos en 6k±1 desde 5 hasta N y 2,3.
+Notas
+El pivote M puede ajustarse (mitad, √N, segmentado en bloques…).
+En práctica, implementar segmentación (bloques de tamaño ≈ caché) acelera y reduce I/O.
+Puedes reciclar la lógica de saltos +2p/+4p para conservar rueda 6 también en la fase descendente.
+ANEXO C · Plantillas para reoptimizar factores del doble ajuste (logs vs. raíces)
+Objetivo: encontrar (\text{factor1..6}) que minimicen error y nº de iteraciones en un conjunto de pruebas.\ Dos problemas distintos ⇒ dos optimizaciones separadas (logs y raíces).
+C.1 · Esqueleto de optimización para logaritmos (\log_b a)
+Definiciones:
+Params = (f1..f6)   # f1..f6 ∈ rangos acotados
+Conjunto de entrenamiento T_log = {(a,b)}:
+a ∈ {2,3,5,7,10, ...}, b ∈ {2,3,5,10}, y casos extremos (a≫1, a≪1, b≈1±ε)
+Métrica (fitness):
+Para cada (a,b) en T_log:
+ejecuta log_iterativo(a,b, Params) → (j, iters, status)
+err := | j - log_b(a) |
+coste_parcial := α*err + β*(iters/iter_max) + γ*penalizaciones(status)
+fitness := promedio(coste_parcial) sobre T_log
+# α,β (p.ej. α=0.7, β=0.3); γ penaliza desbordes/no convergencias
+Búsqueda (Random/Grid/SA):
+Mejor := ∞; Params* := None
+para ronda=1..R:
+muestrea Params dentro de [f_min, f_max] con restricciones:
+f1 ∈ [1.05, 1.8]         # multiplicador anti-sobrepaso
+f2 ∈ [0.5, 5.0]          # ajuste multiplicativo
+f3 ∈ [-2.0, -0.1]       # offset exponencial
+f4 ∈ [0.5, 3.0]          # ganancia exponencial
+f5 ∈ [-2.0, -0.1]
+f6 ∈ [0.5, 3.0]
+f := fitness(Params)
+si f &lt; Mejor: Mejor := f; Params* := Params
+devuelve Params*
+Algoritmo iterativo (núcleo, con "guardias" de seguridad):
+función log_iterativo(a,b, Params):
+# guardias de dominio
+si a&lt;=0 o b&lt;=0 o b==1: return (NaN, 0, 'dominio')
+j := 1.0
+d1:=0; d2:=0; d3:=0
+para k=1..Kmax:
+# prevención de sobrepaso
+mientras a / b^j &gt;= b^j:
+j := min(j * f1, j_max)          # f1&gt;1, limita j para no irse al infinito
+j_old := j
+# ecuación base (tu forma)
+j := (a + (a / b^j) - 1) / a
+# diferencias
+d3 := d2; d2 := d1; d1 := j - j_old
+# ajuste multiplicativo
+j := j * (1 + f2 * |d1|)
+# ajuste exponencial 1 (con guardias)
+denom := max(|d3 - d1|, eps)
+factor := f3 + f4 * (d3 - d2)/denom
+factor := clamp(factor, fac_min, fac_max)
+j := sign_preserve_pow(j, |factor|, j_min, j_max)
+# (opcional) segundo ajuste exponencial (si lo usas)
+# idem, con (f5,f6)
+# convergencia
+si |j - j_old| &lt; tol: return (j, k, 'ok')
+return (j, Kmax, 'no_converge')
+Consejos
+Clamps: limita j y los exponentes (factor) para evitar desbordes.
+Curar casos con (b≈1) y (a≈1): añade tests específicos.
+Si el segundo ajuste exponencial no aporta, apágalo (o usa (f5=f3, f6=f4)) y simplifica.
+C.2 · Esqueleto de optimización para raíces (x=\sqrt[n]{a})
+Misma plantilla, pero el núcleo cambia. Los mejores factores NO tienen por qué coincidir con los de logaritmos.
+Conjunto T_root = {(a,n)} con:
+a ∈ {1e-6, 1e-3, 0.5, 1, 2, 10, 1e3, 1e6}
+n ∈ {2,3,5,10,0.5,0.25}    # incluye raíces fraccionarias
+Métrica igual: α*error + β*iteraciones + γ*penalizaciones
+Núcleo iterativo (esqueleto):
+función root_iterativo(a, n, Params):
+si a&lt;0 o n==0: return (NaN, 0, 'dominio')
+x := max(a^(1/n), x_min)  # inicial
+d1:=0; d2:=0; d3:=0
+para k=1..Kmax:
+# base (puedes usar tu forma análoga a logs o Newton-like sin derivadas explícitas)
+x_old := x
+x := (a + a / x^n - 1) / a      # "forma espejo" (ajústala a tu preferida)
+d3:=d2; d2:=d1; d1:= x - x_old
+# ajustes (mismo patrón que logs):
+x := x * (1 + f2*|d1|)
+denom := max(|d3 - d1|, eps)
+factor := f3 + f4 * (d3 - d2)/denom
+factor := clamp(factor, fac_min, fac_max)
+x := sign_preserve_pow(x, |factor|, x_min, x_max)
+si |x - x_old| &lt; tol: return (x, k, 'ok')
+return (x, Kmax, 'no_converge')
+ANEXO D · Miniguía para llevar cada capítulo a artículo científico (LaTeX/Word + figuras)
+D.1 · Estructura tipo IMRaD extendida
+Título y Resumen (150–250 palabras; qué aportas, cómo, qué demuestras/observas).
+Introducción (contexto, trabajos relacionados, hueco que cubres).
+Preliminares (notación, clases (6k\pm1), definiciones básicas).
+Resultados principales
+4.1 Cota de salto y criterio (L(n)-m(n)\ge 2).
+4.2 Sofí: (L4\setminus L2) infinito.
+4.3 Férmines: alineación modular.
+4.4 Cribas nuevas (desmemoriada, modular, híbrida).
+4.5 Ecuaciones generadoras y método gráfico de restos.
+Algoritmos (pseudocódigo claro; complejidad; variantes prácticas).
+Experimentos (benchmarks, tablas de fallo, tiempos, escalado; figuras).
+Discusión (limitaciones, casos límite, comparativas con clásicas).
+Conclusiones y trabajo futuro (líneas para formalización, pruebas, HPC).
+Apéndices: demostraciones largas, listados de código, pruebas adicionales.
+D.2 · Plantilla LaTeX (esqueleto reproducible)
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bbm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\title{Cribas, cotas y estructuras modulares de los primos}
+\author{Víctor Manzanares Alberola}
+\date{\today}
+\newtheorem{theorem}{Teorema}
+\newtheorem{lemma}{Lema}
+\newtheorem{conjecture}{Conjetura}
+\newtheorem{definition}{Definición}
+\begin{document}
+\maketitle
+\begin{abstract}
+Presentamos una cota operativa del salto máximo y un criterio cuantitativo
+para garantizar dos primos, junto con una familia de cribas modulares con marcado
+único en $6k\pm1$, una estructura tipo Sophie Germain (Sofí), y una alineación modular
+de los números de Fermat, con validación experimental.
+\end{abstract}
+\section{Introducción}
+% contexto, contribuciones numeradas
+\section{Preliminares}
+% notación, 6k±1, rueda 6, funciones L(n), m(n)
+\section{Cota del salto y criterio $L(n)-m(n)\ge2$}
+\begin{lemma}[Sobreestimación]
+$m(n) \approx (e-2)\sqrt{n}$.
+\end{lemma}
+\begin{theorem}
+Si $L(n)-m(n)\ge 2$, el intervalo $I(n)$ contiene al menos dos primos.
+\end{theorem}
+\section{Sofí y $L4\setminus L2$ infinito}
+% definición de L1,L3,L4,L2,LSG,U2 y prueba por CRT/Dirichlet
+\section{Alineación modular de los números de Fermat}
+% producto menos dos, base B_n y residuo privilegiado
+\section{Cribas}
+% desmemoriada, modular 6k±1 con pseudocódigo, híbrida
+\section{Ecuaciones generadoras y método gráfico}
+% residuos válidos, figuras
+\section{Experimentos}
+% tablas, figuras
+\section{Conclusiones}
+% trabajo futuro
+\bibliographystyle{plain}
+\bibliography{refs}
+\end{document}
+2) Cotas de salto y criterio — ejemplos ampliados
+n=1000:  L(n)=38,  m(n)≈22.75  →  L−m≈15.25
+n=5000:  L(n)=77,  m(n)≈50.81  →  L−m≈26.19
+n=20000:  L(n)=148,  m(n)≈101.59  →  L−m≈46.41
+n=100000:  L(n)=323,  m(n)≈227.14  →  L−m≈95.86
+Nota: m(n) usa la suma hasta K=floor(floor(sqrt(n))*9/24) y se trunca a i!≤100 para eficiencia; es una sobreestimación conservadora.
+Figura 1 — véase texto para interpretación.
+Figura 2 — véase texto para interpretación.
+Figura 3 — véase texto para interpretación.
+Figura 4 — véase texto para interpretación.
+Anexo E — Script de cálculo (L, m y L−m)
+import math
+E_MINUS_2 = math.e - 2.0
+
+def L(n):
+    return int(math.sqrt(n+3)) + 7
+
+def K(n):
+    return int(int(math.sqrt(n)) * 9/24)
+
+# precompute factorial inverses up to 200
+fac = [1.0]
+for i in range(1,201):
+    fac.append(fac[-1]/i)
+
+
+def m(n):
+    Kmax = max(2, K(n))
+    Kmax = min(Kmax, 200)
+    root = math.sqrt(n+3)
+    s = 0.0
+    for i in range(2, Kmax+1):
+        s += root * fac[i]
+    return s
+
+for n in [1000, 5000, 20000, 100000]:
+    print(n, L(n), m(n), L(n) - m(n))
+Anexo A · Pseudocódigo: criba modular 6k±1 (anteriorM, anteriorNY)
+value(i) := 2*i + 3     # candidatos 5,7,11,13,...
+is_candidate(v) := (v % 6 == 1) or (v % 6 == 5)
+Inicialización: p[v]=1 si is_candidate(v) else 0; p[2]=p[3]=p[5]=p[7]=1
+Para n=0..floor((L-3)/2):  pn:=value(n); si p[pn]!=1: continuar
+m:=n;  siguiente_m_multiplo3:=0
+mientras true:
+qm:=value(m); si qm > Nmax/pn: romper
+si m==siguiente_m_multiplo3: siguiente_m_multiplo3+=3; m+=1; continuar   # anteriorM
+si !is_candidate(qm): m+=1; continuar
+si pn <= qm:  comp:=pn*qm;  j:=comp;  salto1:=2*pn; salto2:=4*pn; toggle:=true
+mientras j<=Nmax: si p[j]==1: p[j]=3;  j+= salto1 si toggle else salto2;  toggle:=!toggle   # marcado único
+m+=1
+Anexo B · Pseudocódigo: criba híbrida (ascendente + descendente)
+Semilla: candidatos 6k±1 y 2,3.
+Fase ascendente: p en [5..M]; marcar p^2..M con saltos +2p/+4p
+Fase descendente: p ≤ √N; desde el mayor múltiplo válido ≤N hacia M con saltos −2p/−4p
+Segmentación por bloques aconsejada para caché; reducción de remarcas al equilibrar fases.
+Anexo C · Plantillas de reoptimización para el doble ajuste
+Función de coste: α·error + β·(iteraciones/iter_max) + γ·penalizaciones (desbordes/no convergencias).
+Logs:  parámetros f1∈[1.05,1.8], f2∈[0.5,5], f3∈[-2,-0.1], f4∈[0.5,3], f5∈[-2,-0.1], f6∈[0.5,3]
+Raíces: mismo esqueleto pero con conjunto T_root y núcleo adaptado; factores óptimos difieren de logs.
+Guardias: clamps de exponente y denominadores, y límites [j_min, j_max] para robustez.
+Anexo D · Mini‑guía para convertir en artículo (LaTeX/Word + figuras)
+Estructura IMRaD: Introducción, Preliminares, Resultados, Algoritmos, Experimentos, Discusión, Conclusiones.
+LaTeX: amsmath, amsthm, algorithm, algpseudocode; numera I(n), L(n), m(n), criterio L−m≥2.
+Word: estilos (Título, Ecuación, Código, Figura) y referencias cruzadas; figuras: (i) L−m vs n; (ii) rejilla 6k±1; (iii) tiempos/fallos; (iv) restos n mod i.
+Tabla — Valores de L(n), m(n) y criterio en I(n)
+Generado: 2025-09-09 16:13
+Definiciones: L(n)=⌊√(n+3)⌋+7; K=⌊⌊√n⌋·9/24⌋; m(n)=√(n+3)·∑_{i=2..K} 1/i!; criterio: L(n)−m(n)≥2 ⇒ I(n) contiene ≥2 primos.
+n
+sqrt(n+3)
+L(n)
+K
+S_K=sum_{i=2..K}1/i!
+m_sum=sqrt(n+3)*S_K
+m_aprox=(e-2)*sqrt(n)
+L-m (sum)
+L-m (aprox)
+≥2? (sum)
+I(n)
+1000
+31.670175
+38
+11
+0.7182818262
+22.748111
+22.714066
+15.251889
+15.285934
+Sí
+[966, 1003]
+2000
+44.754888
+51
+16
+0.7182818285
+32.146623
+32.122540
+18.853377
+18.877460
+Sí
+[1953, 2003]
+5000
+70.731888
+77
+26
+0.7182818285
+50.805430
+50.790195
+26.194570
+26.209805
+Sí
+[4927, 5003]
+10000
+100.014999
+107
+37
+0.7182818285
+71.838956
+71.828183
+35.161044
+35.171817
+Sí
+[9897, 10003]
+20000
+141.431962
+148
+52
+0.7182818285
+101.588009
+101.580390
+46.411991
+46.419610
+Sí
+[19856, 20003]
+50000
+223.613506
+230
+83
+0.7182818285
+160.617518
+160.612700
+69.382482
+69.387300
+Sí
+[49774, 50003]
+100000
+316.232509
+323
+118
+0.7182818285
+227.144065
+227.140658
+95.855935
+95.859342
+Sí
+[99681, 100003]
+200000
+447.216950
+454
+167
+0.7182818285
+321.227808
+321.225399
+132.772192
+132.774601
+Sí
+[199550, 200003]
+500000
+707.108903
+714
+265
+0.7182818285
+507.903475
+507.901952
+206.096525
+206.098048
+Sí
+[499290, 500003]
+1000000
+1000.001500
+1007
+375
+0.7182818285
+718.282906
+718.281828
+288.717094
+288.718172
+Sí
+[998997, 1000003]
+2000000
+1414.214623
+1421
+530
+0.7182818285
+1015.804665
+1015.803903
+405.195335
+405.196097
+Sí
+[1998583, 2000003]
+5000000
+2236.068648
+2243
+838
+0.7182818285
+1606.127477
+1606.126995
+636.872523
+636.873005
+Sí
+[4997761, 5000003]
+10000000
+3162.278135
+3169
+1185
+0.7182818285
+2271.406921
+2271.406580
+897.593079
+897.593420
+Sí
+[9996835, 10000003]
+Notas: S_K es la suma truncada; m_aprox usa (e−2)√n (aproximación alternativa). I(n) = [n − ⌊√(n+3)⌋ − 3, n+3].
+Notas de cálculo:
+L(n)=⌊n+3⌋+7L(n)=\lfloor\sqrt{n+3}\rfloor+7L(n)=⌊n+3​⌋+7; K=⌊⌊n⌋⋅9/24⌋K=\lfloor\lfloor\sqrt n\rfloor\cdot 9/24\rfloorK=⌊⌊n​⌋⋅9/24⌋; m(n)=n+3⋅∑i=2K1i!m(n)=\sqrt{n+3}\cdot\sum_{i=2}^{K}\frac{1}{i!}m(n)=n+3​⋅∑i=2K​i!1​; criterio operativo: si L(n)−m(n)≥2L(n)-m(n)\ge 2L(n)−m(n)≥2 entonces I(n)I(n)I(n) contiene al menos dos primos. (Definiciones y criterio proceden de tu TXT; la tabla fue generada con el sumatorio truncado y también se reporta la aproximación (e−2)n(e-2)\sqrt n(e−2)n​ para comparación.)
+# anexoF_mrauv_calibrador.py
+# Uso: python anexoF_mrauv_calibrador.py  n0=100000  dn=632
+# Estima D_pred, primos en el tramo y L(n)-m(n) en tres puntos para calibrar V0,a0
+import sys, math
+E_MINUS_2 = math.e - 2.0
+def L(n):
+return int(math.sqrt(n+3)) + 7
+def K(n):
+return int(int(math.sqrt(n)) * 9/24)
+# inversos factoriales hasta 2000
+inv = [1.0]
+for i in range(1,2001):
+inv.append(inv[-1]/i)
+def m_sum(n):
+k = max(2, K(n))
+k = min(k, 2000)
+s = sum(inv[2:k+1])
+return math.sqrt(n+3) * s
+if __name__=='__main__':
+# parse args
+n0 = 100000
+dn = int(2*math.sqrt(n0))
+for a in sys.argv[1:]:
+if a.startswith('n0='): n0=int(a.split('=',1)[1])
+if a.startswith('dn='): dn=int(a.split('=',1)[1])
+# tres puntos: n0, n0+dn, n0+2dn
+pts = [n0, n0+dn, n0+2*dn]
+med = []
+for x in pts:
+med.append(L(x) - m_sum(x))
+med0, med1, med2 = med
+V0 = 1.0/med0
+a0 = V0/med1
+j  = a0/med2 if med2!=0 else 0.0
+D0 = 1.0/max(1, int(math.log(max(3,n0)))) # marcador; sustituye por densidad real si se conoce
+D_pred = D0 + V0*dn + 0.5*a0*(dn**2)
+primes_est = int(round(D_pred * dn))
+print(f"n0={n0}, dn={dn}")
+print(f"med0={med0:.6f}, med1={med1:.6f}, med2={med2:.6f}")
+print(f"V0={V0:.6e}, a0={a0:.6e}, j={j:.6e}")
+print(f"D_pred={D_pred:.6f}, primes_range_est={primes_est}")
+// anexoF_criba6kpm1_openmp.c
+// Compilar:  gcc -O3 -fopenmp anexoF_criba6kpm1_openmp.c -o criba
+// Ejecutar:  ./criba 10000000
+// Salida: contador de primos y tiempo aproximado.
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <omp.h>
+#include <stdint.h>
+static inline int is_cand(uint64_t v){ return (v%6==1) || (v%6==5); }
+static inline uint64_t value(uint64_t i){ return 2*i + 3; } // 5,7,11,13,...
+int main(int argc, char** argv){
+if(argc<2){ fprintf(stderr, "Uso: %s N\n", argv[0]); return 1; }
+uint64_t N = strtoull(argv[1], NULL, 10);
+double t0 = omp_get_wtime();
+// Array de candidatos plano [0..N], 0=no cand/compuesto, 1=candidato, 2=primo
+unsigned char *P = (unsigned char*)calloc(N+1, 1);
+if(!P){ perror("calloc"); return 1; }
+// Semilla: marcar candidatos 6k±1 y 2,3
+P[2]=2; P[3]=2;
+for(uint64_t v=5; v<=N; ++v) if(is_cand(v)) P[v]=1; // candidatos
+uint64_t limit = (uint64_t)sqrt((long double)N);
+// Criba principal: marcado único visitando triángulo superior pn<=qm
+for(uint64_t n=0; ; ++n){
+uint64_t pn = value(n);
+if(pn>limit) break;
+if(pn>N) break;
+if(P[pn]==0) continue; // no candidato o ya compuesto
+// Confirmar primo
+P[pn]=2;
+// Marcar productos pn*qm en progresiones +2p/+4p
+uint64_t m = n; // pn <= qm garantiza marcado único
+uint64_t Nmax = N;
+while(1){
+uint64_t qm = value(m);
+if(qm==0) break; // overflow guard
+if(qm > Nmax / pn) break; // fuera de rango
+if(qm%3==0){ m++; continue; } // anteriorM: salta no-candidatos
+if(!is_cand(qm)){ m++; continue; }
+uint64_t comp = pn*qm;
+uint64_t j = comp;
+uint64_t salto1 = 2*pn, salto2 = 4*pn;
+int toggle = 1;
+while(j<=Nmax){
+if(P[j]==1) P[j]=0; // marcar compuesto (de candidato a no-candidato)
+j += toggle ? salto1 : salto2;
+toggle = !toggle;
+}
+m++;
+}
+}
+// Contar primos
+uint64_t count=0;
+for(uint64_t v=2; v<=N; ++v) if(P[v]==2) count++;
+double t1 = omp_get_wtime();
+printf("Primos ≤ %llu: %llu\n", (unsigned long long)N, (unsigned long long)count);
+printf("Tiempo: %.3f s\n", t1-t0);
+free(P);
+return 0;
+}
+Todo esto es un resumen creado por copilot puede contener fallos. Se adjunta entrada.

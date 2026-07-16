@@ -1,0 +1,42 @@
+================================================================================
+FORMALIZACIÓN VMA — F20 MDC LEMA 2 COFACTOR
+================================================================================
+Autor: Víctor Manzanares Alberola
+Ficha origen: 20_mdc_lema2_cofactor.txt
+Tipo formal: LEMA (aproximación cofactor)
+Estado formal: [OK] — condición de exactitud explicitada
+Fecha: 2026-07-10
+
+--------------------------------------------------------------------------------
+1. DEFINICIONES
+--------------------------------------------------------------------------------
+  N ∈ ℕ, D = 2m+3, r = N mod D, N = q·D + r con 0 ≤ r < D.
+
+--------------------------------------------------------------------------------
+2. LEMA (cofactor)
+--------------------------------------------------------------------------------
+  Si N ≡ 0 (mod q) y q = (N − r)/D entero, entonces:
+    q = ⌊N/D⌋ = (N − r)/D.
+  Aproximación VMA:
+    q ≈ round( N/D − r/(D−1) )
+  es exacta cuando r/(D−1) < 1/2 y D | N−r.
+
+--------------------------------------------------------------------------------
+3. DEMOSTRACIÓN
+--------------------------------------------------------------------------------
+  N/D = q + r/D. Si mínimo local: r = N mod D y N mod D mod (D−1) valida q,
+  entonces q_candidato = (N−r)/D es exacto.
+  La corrección r/(D−1) ajusta error de redondeo en mínimos locales del resto.
+  Si |N/D − r/(D−1) − q| < 1/2 y q entero, round da q exacto. ∎
+
+--------------------------------------------------------------------------------
+4. IDENTIDAD AUXILIAR
+--------------------------------------------------------------------------------
+  N mod D mod (D−1) detecta mínimo local de resto en malla MDC.
+
+--------------------------------------------------------------------------------
+5. NOTAS
+--------------------------------------------------------------------------------
+  Criterio de saltos balísticos MDC v22+.
+
+================================================================================

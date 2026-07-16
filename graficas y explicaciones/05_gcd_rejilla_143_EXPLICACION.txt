@@ -1,0 +1,9 @@
+GRÁFICA 05 — REJILLA gcd(n, 2m+3) (n=143)
+═══════════════════════════════════════
+Los factores impares >3 viven en la clase 6k±1, parametrizados como S=2m+3.
+
+Barras rojas: gcd>1 Y S divide n → factor encontrado.
+Naranja: gcd>1 pero no divisor completo.
+Gris: coprimo.
+
+Esto es el "núcleo MDC" de mdc_hypotenuse_jump.py — criba modular propia VMA.

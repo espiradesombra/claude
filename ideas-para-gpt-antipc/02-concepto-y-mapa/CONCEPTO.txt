@@ -1,0 +1,102 @@
+================================================================================
+GPTCOMPUTING — qué es y por qué está aquí
+================================================================================
+Autor: Víctor Manzanares Alberola
+Origen: lee arbusto\gptcomputing (2).txt  (~10.700 líneas, 185 KB)
+Copia:  gptcomputing.txt (idéntica al original; originales intactos)
+
+PEDIDO INICIAL (línea 1-2)
+  Mejorar código para aliviar la carga de la ALU, con explicación científica
+  rigurosa. Partió de text(7).txt (arquitectura red/buffers) y del motor K3/hash
+  (HASHTOOLCODE → k3hash.c).
+
+QUÉ ES ESTE ARCHIVO
+  Conversación fundacional ChatGPT → diseño completo de AntiPC
+  (Adaptive Network Through Parallel Computing), de v0.0.01 a v0.1.0+.
+
+  No es código ejecutable. Es la especificación, los axiomas, el roadmap y la
+  filosofía que luego se implementaron en just run\antipc\.
+
+IDENTIDAD CENTRAL (línea ~1458)
+  La CPU no es el centro del sistema; el conocimiento compartido es el centro.
+  Si la respuesta ya existe (local o en red autorizada), la ALU no trabaja.
+
+HIPÓTESIS CIENTÍFICA (corregida respecto a claims iniciales)
+  Una arquitectura con adquisición desacoplada, buffers lock-free, procesamiento
+  distribuido y representación algebraica de estados puede reducir la carga del
+  procesador respecto a una arquitectura secuencial equivalente.
+  → Medible. No "ALU libre" ni "0 heat".
+
+CINCO EXPERIMENTOS ARQUITECTÓNICOS (A–E)
+  A  Convencional     Red → SO → memcpy → cola → proceso
+  B  Lock-free        Red → buffer circular → worker
+  C  Hubs             Hub 1..N → PC maestro (escalar 1/2/4/8 hubs)
+  D  Grafcet          Matriz de estados + redundancia (no paquete a paquete)
+  E  UDP real         udp_benchmark + hub_node (tejido de cálculo en LAN)
+
+  Implementados en antipc\src\antipc\architectures.py y udp_benchmark.py
+
+ROADMAP DEL TXT → CÓDIGO (ver MAPA_gptcomputing_a_codigo.txt)
+  v0.0.01  Flow Kernel          runtime\kernel.py
+  v0.0.02  Knowledge Buffer     runtime\knowledge.py
+  v0.0.03  Reference Graph      runtime\reference.py
+  v0.0.04  Modelo matemático    runtime\signature.py
+  v0.0.05  Especificación       docs\explicacion_cientifica.txt
+  v0.0.06  Runtime Modes        runtime\modes.py
+  v0.0.065 Plugin System (UPS)  runtime\plugin.py + plugins\k3_plugin.py
+  v0.0.07  Runtime prototype    demo_v010.py
+  v0.0.08  Network prototype    udp_benchmark.py, hub_node.py
+  v0.1.0   Primer entregable    antipc\ (paquete completo)
+
+AXIOMAS CLAVE (selección)
+  Ley de Inmutabilidad      Reference frozen — no se muta conocimiento publicado
+  Ley de Determinismo       Capability.deterministic + plugin K3
+  Ley de Consulta           lookup en Knowledge antes de ejecutar
+  Ley de Activación         EventBus por eventos, sin polling
+  Ley de Neutralidad        El núcleo no conoce hash, OCR, IA, SQL...
+  Axioma 11                 Ciclo de vida por estado, no por reloj físico
+  Axioma 17                 Verificación independiente (consenso, no "verdad")
+
+ECUACIÓN HEURÍSTICA (v0.0.072)
+  Knowledge Value = (Reuse × Execution Cost × Trust) / Storage Cost
+
+NORMA DE INGENIERÍA (final del txt)
+  Ningún componente entra porque "suena bien". Entra si supera benchmark,
+  tiene especificación y aporta valor medible. Ideas fallidas → research/ o
+  philosophy\rejected_ideas.md.
+
+RELACIÓN CON EL ECOSISTEMA VMA
+  · K3/hash     — plugin k3_plugin, k3_dedup, hash_engine.py
+  · MDC         — plugins mdc_factor, mdc_phase, mdc_regla
+  · Grafcet     — grafcet.py (arquitectura D)
+  · vma-run     — RUN.bat antipc lanza udp_benchmark del paquete antipc/
+  · Aleatorovix — misma filosofía: medir, no afirmar sin evidencia
+
+ARCHIVOS EN ESTA CARPETA
+  gptcomputing.txt                  — conversación completa (este documento)
+  MAPA_gptcomputing_a_codigo.txt    — tabla txt → archivos antipc\
+  CONCEPTO.txt                      — este resumen
+
+CONTINUAR EN CHATGPT (Sprint 2+)
+  gptcomputing\CONTINUACION_PARA_GPT.txt  — pegar como 1er mensaje + adjuntar archivos listados
+  Objetivo: AntiPC v0.1.1 Ledger + Policy + Metrics (sin reabrir arquitectura)
+
+CÓMO USARLO
+  1. Leer CONCEPTO.txt (5 min) y MAPA (2 min)
+  2. Ejecutar el código derivado:
+       cd ..\antipc
+       INICIO.bat
+     o: RUN.bat antipc  (desde raíz just run)
+  3. Marco científico formal:
+       antipc\docs\explicacion_cientifica.txt
+  4. Profundizar en diseño:
+       buscar en gptcomputing.txt "v0.0.065", "Flow Kernel", "Knowledge DNA"
+
+RESULTADO MEDIDO (v0.1.0, battery, 500 ops, 35% duplicados)
+  ALU ahorrada ~31%; knowledge hits 157/500; event coalescing activo.
+  UDP benchmark: mejora ALU medida vs arquitectura convencional (ver scripts\03).
+
+NOTA
+  El txt mezcla fases: arquitectura (v0.0.0x), implementación C++ planificada
+  y entrega Python real. El MAPA distingue qué quedó implementado en sale-it.
+================================================================================

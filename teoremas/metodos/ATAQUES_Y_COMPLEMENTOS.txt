@@ -1,0 +1,131 @@
+================================================================================
+ATAQUES Y COMPLEMENTOS — DETALLE POR PARES
+================================================================================
+Autor: Víctor Manzanares Alberola
+Fecha: 2026-07-10
+
+--------------------------------------------------------------------------------
+PAR 1: SOFÍ ↔ GOLDBACH (ANALOGÍA, NO IDENTIDAD)
+--------------------------------------------------------------------------------
+  Plantilla común (claude9 / golbach pp0):
+    Lsg  ↔  PP   (doble supervivencia / primo+primo)
+    L₃   ↔  PC   (n compuesto en rama −1)
+    L₄   ↔  CP   (2n+1 compuesto / rama +1)
+    L₂   ↔  CC   (doble colapso)
+
+  COMPLEMENTO:
+    La analogía orienta búsqueda: si PP=0, forzar simetría cp↔pc (F27).
+
+  ATAQUE:
+    No hay correspondencia bijectiva ni conservación de cardinalidades exactas.
+    π(N) en F27 no está formalizado; Sofí trabaja en un solo n, Goldbach en pares.
+
+  Regla operativa:
+    Usar analogía como mapa heurístico; demostrar con F27/F28, no por metáfora.
+
+--------------------------------------------------------------------------------
+PAR 2: MÉTODO-V ↔ F34 (LÍMITE EXPLÍCITO)
+--------------------------------------------------------------------------------
+  COMPLEMENTO:
+    V en zona Lsg demuestra que F_{M,r} no queda vacía tras cribas (F34 §5).
+
+  ATAQUE (F34):
+    v'(n) evalúa solo n y 2n+1. No mira N−n.
+    Certificar V en 6k−1 no implica que 6k+1 sea primo → pareja puede ser CP/PC.
+
+  Consecuencia:
+    Método-V es filtro de supervivencia factorial, no certificador Goldbach.
+
+--------------------------------------------------------------------------------
+PAR 3: CRIVA ↔ PIE ↔ SOFÍ
+--------------------------------------------------------------------------------
+  COMPLEMENTO (F28):
+    |Lsg| = |L₁| + |L₂| − |L₃| − |L₄|
+    Reparto simétrico (1−criva)/2 entre ramas a+b=100% en conteos.
+
+  ATAQUE:
+    Criva da proporción asintótica; no sustituye test L₃/L₄ caso a caso.
+    Salto √n (F03) es heurística aparte — no deducible solo de criva.
+
+--------------------------------------------------------------------------------
+PAR 4: MDC ↔ MRAUV
+--------------------------------------------------------------------------------
+  COMPLEMENTO:
+    Ambos miran "densidad" local; MDC con ΔS y finestra (F09–F10).
+
+  ATAQUE (MDC a MRAUV):
+    MRAUV asume independencia local de primos (no demostrada).
+    MDC exige señal medible; sin ΔS, MRAUV es extrapolación cinemática.
+
+  ATAQUE (MRAUV a MDC):
+    MDC toy (sale-it N=1147) es laboratorio; MRAUV pretende escala asintótica.
+
+--------------------------------------------------------------------------------
+PAR 5: MDC ↔ PITAGÓRICO (F29)
+--------------------------------------------------------------------------------
+  COMPLEMENTO:
+    Pitagórico busca (2x+3)(2y+3)=n en rejilla; MDC acota zona donde ΔS cambia.
+    Misma familia 6k±1 que Sofí, distinta parametrización (2v+3).
+
+  ATAQUE:
+    Pitagórico visual no prueba unicidad de factorización.
+    Teorema L aplica con 2v+3 en lugar de 2v+2 si L restringe a impares.
+
+--------------------------------------------------------------------------------
+PAR 6: TEOREMA L ↔ NARRATIVAS DE COLAPSO
+--------------------------------------------------------------------------------
+  ATAQUE al pesimismo:
+    Si Φ₁, Φ₂ no colapsan y Φ₁₂ tampoco, subfamilias 2v+2 y 3v+2 siguen infinitas.
+    PIE: el complemento de la unión no se agota por restar cardinalidades finitas.
+
+  COMPLEMENTO con F34:
+    "No colapsa" ≠ "todo es primo" ≠ "Goldbach resuelto".
+
+--------------------------------------------------------------------------------
+PAR 7: PHASEAMPLIFIER K3 ↔ ARITMÉTICA VMA
+--------------------------------------------------------------------------------
+  Sin interacción técnica directa.
+
+  ATAQUE conceptual:
+    Mezclar K3 con Sofí en papers comerciales viola separación de capas
+    (véase sale-it: Ley de Neutralidad del Núcleo, AntiPC).
+
+  COMPLEMENTO narrativo 33×1:
+    Fase/alineación como metáfora de paz — no implicación matemática.
+
+--------------------------------------------------------------------------------
+PAR 8: DOS PRIMOS (F01) ↔ MÉTODO-V GEMELOS (F25 T5)
+--------------------------------------------------------------------------------
+  COMPLEMENTO:
+    F25 T5: p=v+1, q=v−1 primos; testigo V puede certificar supervivencia gemelo.
+
+  ATAQUE:
+    F01 es operativo finito; T5 no reemplaza prueba de primalidad estándar.
+    F07 (siguiente primo acumuladores) está [MAL] — no encadenar sin revisión.
+
+--------------------------------------------------------------------------------
+PAR 9: PRIMOS DECRECEN K (F30) ↔ CRIVA
+--------------------------------------------------------------------------------
+  COMPLEMENTO empírico:
+    K=9/24 como cota observada en ventanas.
+
+  ATAQUE:
+    No es teorema; Criva no predice K sin datos adicionales.
+
+--------------------------------------------------------------------------------
+PAR 10: SUNRAMAN JET ↔ CRIBA MODULAR (C3) ↔ ERATÓSTENES
+--------------------------------------------------------------------------------
+  COMPLEMENTO:
+    Misma ecuación (2n+3)(2m+3)=2v+3. SunRaman = vista diofántica; modular = rejilla.
+
+  COMPLEMENTO con Eratóstenes segmentado:
+    Bloques 1MB Gvma ≈ persistencia segmentada; mecánica distinta (sin if(primo)).
+
+  ATAQUE:
+    Remarcas aceptadas en Jet vs marcado único anteriorNY en C3.
+    O(N log N) declarado vs O(N log log N) Eratóstenes.
+
+  COMPLEMENTO con Sofí:
+    Tras mapa, filtrar L₃/L₄ en candidatos N=2v+3.
+
+================================================================================

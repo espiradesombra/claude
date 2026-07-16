@@ -1,0 +1,1 @@
+gcc -O3 -o fase_k3 fase_k3_industrial.c -lm

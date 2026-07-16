@@ -1,0 +1,15 @@
+                'convergio': error < 1e-10
+---
+                'error': error,
+---
+                'iteraciones': iteraciones,
+---
+            error = abs(resultado - real)
+---
+            real = math.log(a, b)
+---
+            resultado, iteraciones, _ = log_doble_ajuste_simultaneo(a, b, f1, f2, f3, f4, f5, f6)
+---
+            resultados.append({
+---
+            resultados.append({'error': float('inf'), 'iteraciones': 50, 'convergio': False})

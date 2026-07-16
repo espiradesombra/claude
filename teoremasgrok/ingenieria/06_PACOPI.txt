@@ -1,0 +1,30 @@
+================================================================================
+E06 — PACOPI (mecánica de inercia variable / “pájaro en recorrido”)
+================================================================================
+
+QUÉ PROBLEMA RESUELVE (pretensión)
+  - Misma familia que Kilómetro/Quijote: convertir cinética↔potencial en recorrido.
+  - Sincronización de varios “kilómetros” (ForPkm) para desequilibrio temporal.
+  - Base documental de máquina mecánica (Libro 4, Apiñon).
+
+MECANISMO (texto pacopi.txt)
+  - Peso sigue recorrido; media vuelta con poca inercia, empuje del vecino.
+  - Gravedad + rotación del eje; ciclo “onda/pirueta” reinicia estado.
+  - Relacionado con descripción en Apiñon.docx (máquina sin tubo espiral literal).
+
+ESTADO TEÓRICO
+  [REFUTADO] W neto positivo en ciclo cerrado solo con gravedad.
+  [HEUR]     Descripción operativa útil como especificación de simulación.
+  No hay .py dedicado “pacopi.py”; contenido en .txt y chats.
+
+TRL estimado: 2 (documento de diseño)
+
+RUTAS EN EL PC
+  C:\Users\cuent\Desktop\repo\Libro4 Semillas y Energia Verde\pacopi.txt
+  C:\Users\cuent\Desktop\claude-main-extract\claude-main\libro 4 preparacion\pacopi.txt
+  Duplicados en VICTOR\Archivos Copilot\, archivos\UPV EPSA\
+
+REFERENCIAS
+  ingenieria\05_KILOMETRO.txt, 07_APINON.txt, 02_QUIJOTE.txt
+
+================================================================================

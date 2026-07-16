@@ -1,0 +1,57 @@
+V=(v/m! )n!: v<=m<n
+
+dado unos primos gemelos y su proporción/posición con un factorial, es muy probable que en la misma proporción/posición con un factorial mayor haya otro primo.
+
+v=p+1=q-1:p y q son primos.
+obligación para v
+
+Suposicion1:
+Suponiendo está conjetura de que V predice valores de v más lejanos al 0. V predice valores validos de v aún con falsos positivos.
+
+Suposición2:
+para demostrar que la cantidad de valores de v son finitos.( buscando demostrar que esto es imposible).
+
+V+-1=(6j+-1)(6h+-1)=(v/m!)n!+-1
+Ecuación1.
+
+obligamos a V dejar de predecir v, por estar a diferencia de una unidad de un compuesto.
+
+moviendo factores. 
+(6h+1)=((v/m!)n!+1)/ (6j+1)
+(6h+1)=((v/m!)n!-1)/ (6j-1)
+(6h-1)=((v/m!)n!-1)/ (6j+1)
+(6h-1)=((v/m!)n!+1)/ (6j-1)
+
+estas son todas las ecuaciones que se derivan del +-1.
+
+cogiendo una ecuación de las 4 posibles.
+
+(6h-1)=(1/m!(((v)n!+1/m!)/ (6j-1))
+
+despejando m!
+
+(6h-1)m!=(v * n!+1/m!)/(6j-1) :v<=m<n
+
+replicando el proceso en las otras ecuaciones:
+(6h+1)m!=(v * n!-1/m!)/(6j-1) :v<=m<n
+(6h+1)m!=(v * n!+1/m!)/(6j+1) :v<=m<n
+(6h-1)m!=(v * n!-1/m!)/(6j+1) :v<=m<n
+
+observamos una inconsistencia de la suposición 1 o 2:
+
+Si aceptamos que V predice v, cosa que animo a que comprobéis, habrá de sobra. 
+dato: de m=v a n=2*(v-1)-1  los múltiplos de v-1 que es primo, están en n y en m, pero m divide a n, pero si pasas al otro lado del igual m, 1/m! contiene un primo=(v-1) que 6h+-1 o 6j+-1 no contienen, 
+
+generando una inconsistencia de decimales. 
+
+al suponer valores de v limitados, llegamos a la conclusión de que la ecuación1 propuesta, siempre deberá cumplirse, indicando que dado un v/cualquierM! *cualquierN! Ningún V predice al menos para el valor más alto de v.
+Pero esta ecuación no se cumple siempre, ya que, transformándola un poco se aprecia que a veces un lado de la igualdad contiene decimales (primos que dividen) distintos a los del otro lado que a de más son siempre enteros.
+
+Por ejemplo. 
+Deducción al absurdo , no se cumple siempre porque a la derecha hay decimales y a la izquierda no o, porque V no predice, pero comprobadlo.
+
+Otra forma de verlo., 
+
+sitúate en 7!, y súmale una y otra vez (7*5) siempre estos números son %7==0 y acaban en 5 o 0. 
+
+¡Pues si le sumamos a 7!, (7-a)! una y otra vez, los divisores sabremos ( algunos  cuales son como mínimos obligados) pasa lo mismo si calculas ( 0 divisores como mínimo obligado) perdonarme científicos por no saberme vuestra jerga.

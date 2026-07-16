@@ -1,0 +1,356 @@
+================================================================================
+  LOVEART — ¿Qué vale más: la física aplicada implementada o la informática?
+  Serie LoveEarthHacker · Métodos simples VMA
+================================================================================
+
+  Autor:     Víctor Manzanares Alberola
+  EPSA, Universitat Politècnica de València (Alcoy)
+  Paquete:   just run — 2026-07-11
+  Formato:   libro .txt (este archivo)
+  Hermano:   metodos_simples_vma.tex (misma serie, versión LaTeX)
+
+================================================================================
+  CÓMO LEER ESTE LIBRO
+================================================================================
+
+  Este archivo ES el libro. Ábrelo con cualquier editor o bloc de notas.
+
+  Ruta completa en tu PC:
+    C:\Users\cuent\Desktop\just run\libro-metodos-simples\LOVEART_fisica_o_informatica.txt
+
+  Desde la raíz del paquete just run:
+    libro-metodos-simples\LOVEART_fisica_o_informatica.txt
+
+  Índices relacionados (léelos después o en paralelo):
+    TABLA_CONTENIDO_VMA.md      — catálogo C01, T01, M01, L1–L4, mercados
+    LEEME.txt                   — mapa del paquete ejecutable
+    README.md                   — subida GitHub / Elewit
+    archivos-vma\cribas_cotas_vma.txt — matemática canon 16 capítulos
+
+  Código y demos citados aquí:
+    RUN.bat                     — demo 10 s (6 piezas)
+    antipc\INICIO.bat           — AntiPC
+    RUN_ARCHIVOS_VMA.bat        — MRAUV + L(n)
+    gemelos\gemelo_v6_fisic.py  — física Quijote
+
+================================================================================
+  PREFACIO LOVEART
+================================================================================
+
+  LoveArt no es decoración. Es la decisión de escribir la verdad con forma:
+  que un ingeniero pueda ejecutar algo en diez segundos, y que un lector
+  humano entienda por qué importa sin creer en milagros.
+
+  LoveEarthHacker es la ética: Tierra, rigor, métodos simples, nada de
+  minería extractiva de atención ni de energía.
+
+  Este libro responde una sola pregunta que duele cuando no hay piloto de
+  turbinas en el horizonte:
+
+    ¿Qué vale más hoy — la física aplicada SI se implementa en campo,
+    o la informática (código, runtime, métodos) que ya corre en el escritorio?
+
+  La respuesta no es una palabra. Es una tabla de ocasiones.
+
+
+================================================================================
+  CAPÍTULO I — DOS REINOS
+================================================================================
+
+  REINO FÍSICO (aplicado)
+  ─────────────────────
+  Quijote, ZypyZape, hurto gravitatorio, ForPkm, gemelos NREL 5 MW,
+  inercia real en masa giratoria, ciclo 540°+180°, 3 pales vs 7 pales.
+
+  Promesa: cambiar la red eléctrica reutilizando lo que ya gira.
+  Moneda:   euros por MW, servicios ancilares, soberanía energética.
+  Puerta:   piloto en 2 turbinas, certificación IEC, OEM que firme firmware.
+
+  REINO INFORMÁTICO
+  ──────────────────
+  AntiPC, K3, MDC, Criva, cribas, Aleatorovix, vma-run, plugins, UDP,
+  knowledge buffer, auditoría de memoria, gemelo digital sin viento.
+
+  Promesa: menos CPU, más conocimiento reutilizado, trazabilidad industrial.
+  Moneda:   licencia software, integración, ahorro medible en ALU y red local.
+  Puerta:   Python 3.10, un benchmark honesto, un integrador con fábrica.
+
+  Los dos reinos comparten ADN (6k±1, fase, Factor_N, conocimiento > CPU).
+  No comparten el mismo comprador ni el mismo calendario.
+
+
+================================================================================
+  CAPÍTULO II — LAS CUATRO LÍNEAS (más allá del bundle)
+================================================================================
+
+  Cuando se habla de «valor» sin piloto, hay que separar cuatro líneas de
+  producto. No son «todo VMA junto». Son cuatro cuerdas en el mismo instrumento.
+
+  L1 — INERCIA REAL (RoCoF)
+  · Qué: rotor existente aporta H_efectivo; no emulación solo en batería.
+  · Física: E = ½Jω², swing equation, gemelo v4.8.
+  · Sin implementar en campo: narrativa + simulación. Valor bajo-medio.
+  · Implementada en parque: valor alto (ENTSO-E, FERC pagan estabilidad).
+  · Leer: zypyzape-contexto\01_CONTEXT_ZYPYZAPE.txt
+          hurto-gravitatorio\quijote_results.csv
+
+  L2 — REGULACIÓN DE FRECUENCIA (FFR / aFRR)
+  · Qué: pares ACELER/FREN a f_ciclo ≈ 0.4 Hz; droop en convertidor.
+  · Física: par en eje, no solo SOC de litio.
+  · Informática: firmware + SCADA + gemelo que predice nadir.
+  · Leer: gemelos\zypyzape_twin_v4_8_quijote.py
+          zypyzape-contexto\02_MATH_QUIJOTE_3vs7.txt
+
+  L3 — CALIDAD DE ONDA / ACOPLAMIENTO
+  · Qué: Kuramoto, topología 5 nodos, menos rizado y armónicos en sim.
+  · Cruce: física del acoplamiento + código del gemelo.
+  · Leer: gemelos\ (versiones v6–v942)
+          archivos-vma\energia\forpkm_kilometro.txt (precursor mecánico)
+
+  L4 — REUSO DE HARDWARE (capex cero)
+  · Qué: no nueva batería Megapack por MW si el rotor ya existe.
+  · Física aplicada SOLO tiene sentido SI alguien implementa.
+  · Informática entrega el «cómo» sin obra civil.
+  · Leer: zypyzape-contexto\resumen de dinero y de que es solo teorico .txt
+          (tabla €/MW por continente)
+
+  CONCLUSIÓN DEL CAPÍTULO:
+  Las cuatro líneas son física en objetivo e informática en despliegue.
+  Sin L4 implementada, L1–L3 quedan en el papel del gemelo.
+  Con L4, el mismo código pasa de opción a licencia por MW.
+
+
+================================================================================
+  CAPÍTULO III — LAS CUATRO LÍNEAS DE CÓDIGO (lo que ya corre)
+================================================================================
+
+  Metáfora LoveArt: cuatro cuerdas de código que no necesitan turbinas para
+  sonar. Son la respuesta cuando el piloto eólico no se puede montar.
+
+  LÍNEA DE CÓDIGO 1 — DEMO UNIFICADA (vma-run)
+  ─────────────────────────────────────────────
+  Un main, seis pruebas, un segundo.
+    RUN.bat
+    python vma-run\vma_run.py demo
+  Une: K3 + MDC + Criva + criba + fase K=3 + tabla hurto.
+  Valor: presentación, due diligence, enseñanza.
+  Dónde: vma-run\vma_run.py, vma-run\CONCEPTO.txt
+
+  LÍNEA DE CÓDIGO 2 — ANTIPC (conocimiento antes que ALU)
+  ─────────────────────────────────────────────────────────
+  Flow kernel → knowledge lookup → plugin → event bus → UDP hubs.
+  Benchmark: arquitectura E ~62% menos tiempo vs convencional (4 hubs).
+  Demo: ~31% ALU ahorrada con 35% duplicados (modo battery).
+  Valor hoy: 30k–150k € como opción software (sin clientes).
+  Valor hecho bien: producto industrial 500k–2M € opción.
+  Dónde: antipc\INICIO.bat
+          antipc\docs\RESULTADOS_BENCHMARK.txt
+          gptcomputing\CONCEPTO.txt
+
+  LÍNEA DE CÓDIGO 3 — K3 + MDC (auditoría y factorización)
+  ─────────────────────────────────────────────────────────
+  K3: fingerprint industrial, no cripto-magia.
+  MDC: 10403 = 101 × 103 por cinemática de restos.
+  Valor hoy: 20k–80k € opción; piloto B2B 20k–150k €/año posible.
+  Dónde: vma-k3\  (pip install -e .)
+          RUN.bat mdc 10403
+          RUN.bat k3 --text "hola"
+
+  LÍNEA DE CÓDIGO 4 — CRIBA / ALEATOROVIX (método y organismo)
+  ────────────────────────────────────────────────────────────
+  Criba 6k±1, híbrida, desmemoriada; organismo Lila roba entropía y muere en RAM.
+  Valor hoy: 5k–40k € como pieza artística-research; sube AntiPC si es plugin.
+  Dónde: aleatorovix\  (RUN_ALEATOROVIX.bat)
+          archivos-vma\codigo\criba_hibrida.py
+          archivos-vma\codigo\anexoF_criba6kpm1_openmp.c
+
+  ESTAS CUATRO LÍNEAS DE CÓDIGO valen más HOY que el bundle físico sin piloto.
+  No porque la física sea menor. Porque la puerta de la física está cerrada
+  sin hardware, y la puerta del código está abierta con un doble clic.
+
+
+================================================================================
+  CAPÍTULO IV — LOS MÉTODOS (catálogo breve)
+================================================================================
+
+  Cada método tiene cuerpo en el paquete. ID según TABLA_CONTENIDO_VMA.md.
+
+  M01 MDC ............ Factorización geométrica / hipotenusa
+                       archivos-vma\codigo\restos_graficos.py
+                       vma-run\lib\mdc.py
+
+  M02 Criva .......... Densidad racional iterativa de primos
+                       teoremas\criva.py, archivos-vma\criva_teoria.txt
+
+  M03 Criba híbrida .. 6k±1 con saltos 2p/4p
+                       archivos-vma\codigo\criba_hibrida.py
+
+  M04 Criba desmemoriada  Patrón binario distribuido; suicidio en RAM
+                       aleatorovix\criba_desmemoriada.py
+
+  M05 Criba OpenMP ... Paralela C para millones
+                       archivos-vma\codigo\anexoF_criba6kpm1_openmp.c
+
+  M06 MRAUV .......... Densidad por tramos; L(n) − m(n)
+                       RUN_ARCHIVOS_VMA.bat
+
+  M08 K3 ............. Auditoría industrial multi-modo
+                       vma-k3\
+
+  M09 AntiPC ......... Runtime knowledge-first + UDP fabric
+                       antipc\
+
+  M10–M12 Gemelos .... Quijote + red ZypyZape (física en sim)
+                       gemelos\, hurto-gravitatorio\
+
+  M13 ForPkm ......... Kilómetro asíncrono (precursor, texto)
+                       archivos-vma\energia\
+
+  M14 Phase K=3 ...... Amplificador XOR booleano (teorema verificado)
+                       teoremas\THEOREM_PhaseAmplifier_K3_XOR.md
+
+  Los métodos M01–M09 son informática y matemática ejecutable.
+  Los métodos M10–M13 son física aplicada en simulación o guion.
+  La frontera es el piloto, no la elegancia.
+
+
+================================================================================
+  CAPÍTULO V — LA CONTABILIDAD HONESTA (sin piloto)
+================================================================================
+
+  Situación: no puedes montar piloto eólico ahora.
+  Entonces la pregunta «¿física o informática?» se responde con euros y puertas.
+
+  ┌─────────────────────────┬──────────────┬────────────────────────────┐
+  │ Activo                  │ Hoy (€)      │ Hecho bien (€)             │
+  ├─────────────────────────┼──────────────┼────────────────────────────┤
+  │ Física L1–L4 sin piloto │ 10k–80k      │ 50k–150M (solo CON piloto) │
+  │ AntiPC                  │ 30k–150k     │ 500k–2M + recurrente       │
+  │ K3                      │ 20k–80k      │ 150k–1M                    │
+  │ Aleatorovix solo        │ 5k–40k       │ 80k–400k (nicho)           │
+  │ Métodos math (MDC/Criva)│ académico    │ paper + librería           │
+  └─────────────────────────┴──────────────┴────────────────────────────┘
+
+  INTERPRETACIÓN LOVEART:
+
+  La física aplicada vale INFINITAMENTE MÁS que la informática
+  en el momento en que una turbina real gira con tu firmware y un CSV
+  deja de ser simulación.
+
+  Hasta ese momento, la informática vale MÁS en euros cobrables,
+  porque AntiPC y K3 tienen benchmark y puerta abierta.
+
+  No es traición a Quijote. Es honestidad de fases:
+    Fase A (ahora):     vender lo que corre (informática + métodos).
+    Fase B (si algún día): física implementada multiplica todo.
+
+  El error sería quedarse en Fase A fingiendo que es Fase B.
+  El acierto es escribir este libro y seguir corrigiendo simulaciones.
+
+
+================================================================================
+  CAPÍTULO VI — FÍSICA VS INFORMÁTICA: VEREDICTO
+================================================================================
+
+  1. POTENCIAL MÁXIMO (techo de legado)
+     Gana la física aplicada implementada (L1–L4 en parque real).
+     Cambia redes, MW, continentes. Techo: licencia €/MW × TW eólico.
+
+  2. VALOR COBRABLE HOY (sin piloto)
+     Gana la informática hecha bien: AntiPC + K3 + demo vma-run.
+     Techo inmediato: decenas–cientos de k€, no millones.
+
+  3. VALOR CULTURAL / PI DE FONDO
+     Gana el conjunto LoveEarthHacker: métodos, conjeturas, 33×1, LoveArt.
+     No se monetiza mañana; sostiene el resto.
+
+  4. LÍNEA ALEATOROVIX
+     No compite con los dos reinos. Es el sueño lateral: entropía, criba,
+     organismo. Belleza y research. Complemento, no sustituto del piloto.
+
+  FRASE PARA GRABAR:
+
+    «La física aplicada vale más si se implementa.
+     La informática vale más si no puedes implementar la física aún.
+     Las cuatro líneas de grid esperan el campo.
+     Las cuatro líneas de código trabajan hoy.»
+
+
+================================================================================
+  CAPÍTULO VII — DÓNDE LEER CADA COSA (mapa del lector)
+================================================================================
+
+  EMPEZAR (30 minutos)
+  ────────────────────
+  [1] Este libro (estás aquí)
+  [2] TABLA_CONTENIDO_VMA.md
+  [3] RUN.bat
+
+  FÍSICA APLICADA (simulación y contexto)
+  ───────────────────────────────────────
+  zypyzape-contexto\01_CONTEXT_ZYPYZAPE.txt
+  zypyzape-contexto\02_MATH_QUIJOTE_3vs7.txt
+  hurto-gravitatorio\quijote_results.csv
+  gemelos\gemelo_v6_fisic.py
+  archivos-vma\informe_helicoidal_zypyzape.txt
+  archivos-vma\energia\forpkm_kilometro.txt
+  33x1\00_PROMPT_DEFINITIVO_33x1.md
+
+  INFORMÁTICA (ejecutable)
+  ────────────────────────
+  gptcomputing\CONCEPTO.txt  →  antipc\INICIO.bat
+  antipc\docs\RESULTADOS_BENCHMARK.txt
+  vma-k3\  +  RUN.bat k3 / mdc
+  vma-run\CONCEPTO.txt
+
+  MÉTODOS MATEMÁTICOS
+  ───────────────────
+  archivos-vma\cribas_cotas_vma.txt   ← canon
+  archivos-vma\numeros_i_numeritos_jj.txt
+  archivos-vma\codigo\
+  teoremas\THEOREM_PhaseAmplifier_K3_XOR.md
+
+  ALEATOROVIX / LOVEART LATERAL
+  ─────────────────────────────
+  aleatorovix\ALEATOROVIX.txt
+  aleatorovix\CONCEPTO.txt
+
+  MERCADOS Y DINERO (honesto)
+  ───────────────────────────
+  zypyzape-contexto\resumen de dinero y de que es solo teorico .txt
+  README.md § valor económico
+  archivos-vma\ANALISIS_FASE2.txt
+
+  SUBIDA / PRESENTACIÓN
+  ─────────────────────
+  README.md
+  zypyzape-contexto\dossier-elewit\
+
+  VERSIÓN IMPRESA (PDF)
+  ───────────────────
+  libro-metodos-simples\metodos_simples_vma.tex
+  libro-metodos-simples\COMPILAR.bat  (requiere pdflatex)
+
+
+================================================================================
+  EPÍLOGO — LOVEART
+================================================================================
+
+  El arte aquí no es pintar un perpetuum mobile. Es poner en la misma mesa
+  el CSV del hurto, el benchmark del UDP y la conjetura de dos primos —
+  y decir en voz alta cuál tiene puerta abierta hoy.
+
+  La Tierra no pide que ganes Tesla mañana.
+  Pide que no vendas humo: que lo que corre, corra; que lo que espera piloto,
+  espere sin mentir.
+
+  LoveEarthHacker mide.
+  LoveArt da forma a la medida.
+
+  Cuando puedas implementar la física, este libro no se contradice:
+  se completa. Hasta entonces, las cuatro líneas de código son tu orquesta.
+
+================================================================================
+  FIN — LOVEART_fisica_o_informatica.txt
+  Víctor Manzanares Alberola · EPSA UPV · Serie LoveEarthHacker · 2026
+================================================================================

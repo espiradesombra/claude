@@ -1,0 +1,28 @@
+ID: 15_fermat_alineacion
+ESTADO: [OK] — Bien definido dentro del marco VMA
+AUTOR: VMA
+FUENTE: Cribas_cotas §6
+
+--------------------------------------------------------------------------------
+DEFINICIONES
+--------------------------------------------------------------------------------
+  F_n = 2^(2^n) + 1
+  Producto: F₀·F₁·…·F_n = F_{n+1} − 2
+  Base: B_n = 2 · (F₀·F₁·…·F_n)
+
+--------------------------------------------------------------------------------
+PROPIEDAD (alineación modular)
+--------------------------------------------------------------------------------
+Existe único r_n tal que:
+  r_n ≡ 1 (mod 2)
+  r_n ≡ 2 (mod F_k)  para 0 ≤ k ≤ n
+
+Y para todo m ≥ n+1:  F_m ≡ r_n (mod B_n)
+
+--------------------------------------------------------------------------------
+NOTA
+--------------------------------------------------------------------------------
+Resultado de tipo “teorema operativo” sobre Fermat; bien delimitado.
+No confundir con conjetura de que todos F_n son primos.
+
+================================================================================

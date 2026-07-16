@@ -1,0 +1,184 @@
+================================================================================
+AntiPC — Adaptive Network Through Parallel Computing
+Explicación científica (marco formal)
+Autor: derivado del diálogo gptcomputing.txt + implementación funcional
+================================================================================
+
+1. DEFINICIÓN FORMAL DEL PROBLEMA
+--------------------------------------------------------------------------------
+
+Sea un flujo de paquetes P = {p_1, p_2, ..., p_n} que llegan desde la red con
+una tasa λ (paquetes/segundo). Cada paquete p_i contiene un payload b_i ∈ B
+(bytes) que debe atravesar una cadena de transformaciones:
+
+    T(b) = QUERY( INDEX( HASH(b) ) )
+
+En una arquitectura monolítica convencional (A), el procesador central ejecuta
+secuencialmente para cada paquete:
+
+    1. Copia del buffer de red al espacio de usuario (memcpy)
+    2. Encolado con sincronización (mutex / GIL)
+    3. Procesamiento inmediato T(b_i)
+
+La carga de CPU medible C_A es proporcional a:
+
+    C_A = n · (α_copy + α_sync + α_compute)
+
+donde α_copy > 0 representa el coste de copia, α_sync el coste de
+sincronización, y α_compute el coste ALU de T.
+
+
+2. HIPÓTESIS AntiPC
+--------------------------------------------------------------------------------
+
+Hipótesis H1 (desacoplamiento):
+    Una arquitectura con adquisición desacoplada, buffer lock-free y
+    procesamiento por lotes reduce C respecto a C_A para λ constante.
+
+Hipótesis H2 (distribución):
+    Particionar P entre k hubs independientes reduce el tiempo de pared
+    proporcionalmente a E(k), donde E(k) ∈ (0,1] es la eficiencia de
+    coordinación.
+
+Hipótesis H3 (conocimiento reutilizable):
+    Mantener un índice distribuido de hashes K(N) permite que operaciones
+    repetidas tengan coste O(1) en lugar de O(α_compute), aumentando la
+    potencia útil:
+
+    P_util(N) = N · E(N) + K(N)
+
+    donde N = nodos/hubs, E(N) = eficiencia de coordinación,
+    K(N) = valor del conocimiento derivado compartido (cache hits).
+
+
+3. LAS CUATRO ARQUITECTURAS EXPERIMENTALES
+--------------------------------------------------------------------------------
+
+Arquitectura A — Convencional
+    Red → SO → memcpy → cola bloqueante → proceso inmediato
+    Invariante: cada paquete se procesa al llegar, con copia explícita.
+
+Arquitectura B — Lock-free ring buffer
+    Red → buffer circular SPSC → worker
+    Invariante: un productor y un consumidor; sin mutex en el camino crítico;
+    cero copias adicionales (zero-copy lógico en espacio de usuario).
+
+Arquitectura C — Hubs distribuidos
+    Hub_1 ... Hub_k → agregación en nodo maestro
+    Invariante: partición estática round-robin; cada hub mantiene caché local;
+    el maestro solo consolida resultados (mínima coordinación).
+
+Arquitectura E — UDP real (red local como cómputo)
+    Maestro UDP → Hub_1..Hub_k (procesos independientes) → RESULT UDP
+    Invariante: cada hub posee buffer lock-free SPSC; el maestro solo
+    coordina referencias (seq + payload), no ejecuta HASH.
+    Protocolo binario: WORK(0x01), RESULT(0x02), DONE(0x03), PING/PONG.
+    Hash: motor K3 real (port fiel de k3hash.c).
+
+Arquitectura D — Grafcet + matriz de existencia + redundancia
+    Paquetes → lote (matriz) → redundancia → existencia → procesamiento
+    Invariante Grafcet:
+        IDLE → ACCUMULATE → REDUNDANCY → EXISTENCE → PROCESS → EMIT → IDLE
+    La matriz de existencia M[i,j] almacena hashes redundantes del paquete i.
+    Una fila "existe" si al menos 2 de 3 canales redundantes coinciden en
+    paridad (voto por coherencia sin sincronización global).
+    La caché de conocimiento evita recalcular T(b) para payloads ya vistos.
+
+
+4. DEMOSTRACIÓN INFORMAL DE CORRECCIÓN
+--------------------------------------------------------------------------------
+
+Lema 1 (buffer SPSC):
+    Si solo un hilo incrementa head y solo un hilo incrementa tail, y la
+    capacidad es potencia de 2, entonces push/pop son wait-free en ausencia
+    de contención y no se pierden elementos mientras capacity > producción
+    pico. (Demostración estándar de ring buffer clásico.)
+
+Lema 2 (redundancia por mayoría):
+    Con 3 réplicas de hash bajo semillas distintas, si ≥2 coinciden, el
+    voto por mayoría produce un digest estable ante ruido de un canal.
+    Esto reduce falsos positivos en la transición EXISTENCE sin locks.
+
+Lema 3 (correctitud de caché):
+    Si key = HASH(b) y cache[key] = T(b) fue calculado previamente para el
+    mismo b, devolver cache[key] es correcto porque T es determinista.
+
+Teorema (reducción de carga esperada):
+    Para flujos con ratio de duplicados δ > 0, la arquitectura D tiene
+    coste esperado:
+        E[C_D] = n · (α_batch/n_b + (1-δ) · α_compute)
+    que es estrictamente menor que C_A cuando δ · α_compute > α_batch/n_b.
+
+
+5. ANÁLISIS DE COMPLEJIDAD
+--------------------------------------------------------------------------------
+
+                    Temporal              Espacial
+    A convencional  O(n)                  O(1) cola
+    B lock-free     O(n)                  O(capacity)
+    C distribuido   O(n/k) paralelo       O(k · cache_local)
+    D Grafcet       O(n) amortizado       O(batch + |cache|)
+
+El beneficio de D no es asintótico en n sino en δ (tasa de reutilización):
+cuando K(N) crece, el coste marginal por paquete nuevo tiende a α_batch/n_b.
+
+
+6. LIMITACIONES CONOCIDAS (HONESTIDAD CIENTÍFICA)
+--------------------------------------------------------------------------------
+
+- La ALU nunca queda "libre": siempre intervienen NIC, driver, kernel, MMU,
+  caché e interrupciones. AntiPC reduce coordinación innecesaria, no elimina
+  el cómputo físico.
+
+- UDP no evita todo el coste: evita handshake TCP pero no el copy del kernel.
+
+- E(N) decae con k si hay contención de memoria o sincronización en el maestro.
+
+- La matriz de existencia añade latencia de lote (batch_size paquetes antes
+  de emitir). Es un trade-off latencia ↔ throughput.
+
+- Este prototipo usa Python + GIL: los números absolutos no son representativos
+  de producción en C++/DPDK, pero las proporciones entre arquitecturas sí son
+  comparables en un mismo entorno.
+
+
+7. RELACIÓN CON EL ESTADO DEL ARTE
+--------------------------------------------------------------------------------
+
+AntiPC comparte principios con:
+    - RDMA / DPDK / XDP: minimizar copias y saltar el kernel cuando es posible
+    - Dataflow computing: transformaciones en lugar de llamadas
+    - Actor model: nodos con estado local y mensajes
+    - Grafcet (IEC 60848): máquinas de estado para automatización industrial
+
+La contribución propuesta es la capa algebraica: Grafcet + existencia +
+redundancia matemática + índice de conocimiento, de modo que la red procesa
+estados y no solo transporta mensajes.
+
+
+8. CÓMO REPRODUCIR LOS EXPERIMENTOS
+--------------------------------------------------------------------------------
+
+    cd "lee arbusto/antipc"
+    python benchmark.py
+    python benchmark.py --packets 8000 --payload 256 --hubs 8
+    python benchmark.py --udp                    # incluye arquitectura E
+    python udp_benchmark.py --packets 2000     # solo UDP
+    python verify_k3.py                          # verifica port K3 vs C
+
+Interpretar la columna "Carga ALU relativa" respecto a la arquitectura A.
+Valores menores indican menor presión de CPU para el mismo trabajo.
+
+
+9. EXTENSIONES FUTURAS
+--------------------------------------------------------------------------------
+
+    - Implementación en C++20 con DPDK o eBPF para mediciones reales de NIC
+    - Integración con motor K3 (k3hash) del repositorio espiradesombra/claude
+    - Protocolo UDP real entre nodos físicos (no simulación de hubs)
+    - Visualizador en tiempo real de estados Grafcet
+    - Publicación de benchmarks con Docker para reproducibilidad (fase UNION)
+
+================================================================================
+FIN
+================================================================================

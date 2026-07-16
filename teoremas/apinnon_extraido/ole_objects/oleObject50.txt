@@ -1,0 +1,15 @@
+    for f in glob.glob("results/*.csv"):
+---
+    return pd.concat(rows, ignore_index=True)
+---
+<h2>Exactitud (ULP@95%)</h2><img src=\"results/ulp95.png\">
+---
+<h2>Tiempo (ns/call)</h2><img src=\"results/time.png\">
+---
+<p>ns/call y ULP@95% (mismo hardware, software distinto).</p>
+---
+<style>body{font-family:sans-serif} table{border-collapse:collapse} td,th{border:1px solid #ccc;padding:6px}</style>
+---
+C:\Users\Usuario\AppData\Local\Microsoft\Windows\INetCache\Content.Word\gen_report.py
+---
+C:\Users\Usuario\AppData\Local\Temp\{AC27CEBB-B486-4B11-AF7C-E6BFC8C31DBA}\{5D633ABC-3924-4242-8BB0-4D112EAEE0EB}\gen_report.py

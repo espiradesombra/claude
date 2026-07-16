@@ -1,0 +1,101 @@
+================================================================
+ZYPYZAPE DIGITAL TWIN — CONTEXT COMPLET PER A GPT
+Autor: Víctor Manzanares Alberola (EPSA, UPV Alcoi)
+Assistent: Claude Sonnet 4.6
+================================================================
+
+--- QUÈ ÉS ZYPYZAPE ---
+
+Sistema de control de parcs eòlics que converteix les turbines en
+bateria mecànica. Cada mòdul té N=10 turbines (2.5 MW cadascuna,
+R=60m, J=5×10⁶ kg·m²). Les turbines s'organitzen en parelles que
+s'intercanvien energia de forma cíclica (una accelera mentre l'altra
+frena) a f_cicle=0.4 Hz.
+
+Efecte: augmenta la inèrcia sintètica de la xarxa (H_eff = H_sys + H_ZZ)
+i millora el nadir de freqüència i el ROCOF en esdeveniments de xarxa.
+
+--- PARÀMETRES EXACTES DEL MODEL (v4.8) ---
+
+Turbina ZypyZape:
+  R_G        = 60.0 m             (radi rotor)
+  J_G        = 5.0e6 kg·m²        (inèrcia per turbina)
+  S_NOM_G    = 2.5e6 W            (potència nominal)
+  N_BLADES   = 3                  (pales per turbina — ACTUAL)
+  lambda_opt = 7.55               (tip-speed ratio òptim)
+  Cp_max     = 0.486
+  v_rated    = 9.056 m/s          (calculat de S_NOM i Cp_max)
+  omega_rated= 1.1395 rad/s       (= lambda_opt × v_rated / R_G)
+  k_mppt     = 1.6897e6           (= 0.5·rho·A·R³·Cp_max/lambda_opt³)
+
+Per mòdul (10 turbines):
+  P_nominal  = 25 MW
+  J_modul    = 5.0e7 kg·m²
+
+Xarxa modelada:
+  S_total    = 2.0e9 W = 2 GW
+  H_sys      = 4.0 s
+  f0         = 50.0 Hz
+  D_amort    = 0.05
+  R_droop    = 0.05 (5%)
+  T_gov      = 5.0 s
+  Pertorbació de referència: dP = -100 MW
+
+Swing equation usada:
+  H_eff = H_sys + H_ZZ
+  H_ZZ  = 0.5 · J_G · sum(omega_i²) / S_total
+  df/dt = (dP + P_gov) · f0 / (2 · H_eff · S_total) - D · (f - f0)
+
+--- CONTROL PI DE PITCH (calibrat NREL 5MW) ---
+
+  Kp = 2.5 °/(rad/s),  Ki = 0.40,  rate_limit = 8°/s
+  beta ∈ [0°, 30°]
+  Regions: 1=arrancada, 2=MPPT (beta=0°), 3=nominal+ (PI actiu)
+
+--- CICLE ZYPYZAPE ---
+
+  P_ZZ_frac = 0.13 (13% de S_NOM per turbina)
+  T_cicle   = 2.5 s (f=0.4 Hz)
+  Topologia: 2 parells centrals + 2 anells de 4 (N=10)
+  Modulació trapezoïdal per reduir soroll en lambda
+
+--- RESULTATS VALIDATS (v4.6/v4.8) ---
+
+  η global        = 98%
+  beta_mig final  = 2.42° (pitch actiu en ràfagues)
+  f_nadir (ZZ)    = 49.558 Hz  (xarxa 2GW, dP=-100MW)
+  f_nadir (ref)   = 49.556 Hz
+  Millora nadir   = +0.002 Hz per mòdul (lineal amb N_mòduls)
+
+--- QUIJOTE (afegit en v4.7/v4.8) ---
+
+Mecanisme de Modulació d'Inèrcia per Massa Desplaçable.
+Massa m_q per pala que llisca radialment sobre una guia lineal.
+
+  Posició: r_q ∈ [R_Q_MIN=5m, R_Q_MAX=60m]
+  Massa actual: M_Q = 4 kg per pala
+  N_Q = 5 turbines equipades (de 10 totals)
+
+Física:
+  J_total(r) = J_G + N_BLADES · M_Q · r²
+  dJ/dt      = N_BLADES · M_Q · 2 · r · v_slide
+  Equació moviment: J·dω/dt = T_net - ω·(dJ/dt)
+  F_centrífuga = M_Q · ω² · r  (sempre cap a fora)
+
+Control actual (simple simultani):
+  Tots els pesos mouen a la vegada
+  v_slide = clip(K_OM·Δω + K_F·Δf, -V_MAX, +V_MAX)
+  Cap a fora = carrega bateria (J creix)
+  Cap a dins = descarrega (J disminueix)
+
+Resultat mesurat:
+  r_mig final   = 49 m (quasi sempre a la punta amb vent fort)
+  ΔE quijote    = 96 kJ = 23.7% del cicle ZZ per turbina
+  F_centrif_mig = 480 N/pala
+
+Conclusió honesta:
+  A escala de xarxa de 2 GW el quijote és invisible (ΔH_ZZ = 0.00014 s)
+  El seu valor és LOCAL: dinàmica de rotor individual i microxarxes
+  Per a xarxes de 200-500 MW o illes sí és rellevant
+
+================================================================

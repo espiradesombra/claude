@@ -1,0 +1,10 @@
+k3_core_v1.0/
+├── include/
+│   └── k3_engine.h          # Cabecera pública (API)
+├── src/
+│   └── k3_engine.c          # Implementación completa en C
+├── python/
+│   ├── k3_bindings.py       # Wrapper ctypes para Python
+│   └── ejemplo_uso.py       # Demostración completa
+├── build.sh                 # Script de compilación
+└── README.md                # Documentación

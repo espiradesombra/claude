@@ -1,0 +1,44 @@
+================================================================================
+CRIBA HÍBRIDA — ASCENDENTE + DESCENDENTE
+================================================================================
+Autor: Víctor Manzanares Alberola
+Estado: [HEUR]
+Fuentes: Cribas §8.3, archivos\criba_hibrida.py, anexoF_criba6kpm1_openmp.c
+
+--------------------------------------------------------------------------------
+1. ESTRATEGIA
+--------------------------------------------------------------------------------
+  Fase ascendente: criba modular hasta ~mitad del límite.
+  Fase descendente: segunda pasada desde arriba con semilla de residuos.
+  El "fallo" (remarcas / trabajo redundante) se concentra en el borde,
+  no al final como en Eratóstenes clásico.
+
+--------------------------------------------------------------------------------
+2. VARIANTE SEGMENTADA
+--------------------------------------------------------------------------------
+  Calcular residuos por segmento [a,b].
+  Ascender o descender dentro del segmento.
+  Compatible con paralelismo OpenMP.
+
+--------------------------------------------------------------------------------
+3. IMPLEMENTACIÓN C
+--------------------------------------------------------------------------------
+  anexoF_criba6kpm1_openmp.c
+  Compilar: gcc -O3 -fopenmp anexoF_criba6kpm1_openmp.c -o criba
+  Semilla: candidatos 6k±1 y 2, 3
+  Métricas: fallo, iteraciones, tiempos intermedios (tratado §14)
+
+--------------------------------------------------------------------------------
+4. RELACIÓN CON DESMEMORIADA
+--------------------------------------------------------------------------------
+  Ambas buscan eficiencia en generación de primos.
+  Híbrida: optimiza remarcas en C3 local.
+  Desmemoriada: optimiza memoria en cluster (C2).
+
+--------------------------------------------------------------------------------
+5. SEGUNDA PASADA (metáfora AntiPC)
+--------------------------------------------------------------------------------
+  La fase descendente reutiliza conocimiento de la ascendente — análogo a
+  segunda pasada O(1) en sale-it (ver metodos\CADENAS_TIPICAS cadena E).
+
+================================================================================

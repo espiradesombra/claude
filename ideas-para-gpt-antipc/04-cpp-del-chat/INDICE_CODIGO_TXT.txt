@@ -1,0 +1,90 @@
+========================================================================
+INDICE — codigo extraido de gptcomputing.txt
+Origen: C:\Users\cuent\Desktop\just run\gptcomputing\gptcomputing.txt
+Destino: C:\Users\cuent\Desktop\just run\antipc\from_gptcomputing\cpp
+Total archivos: 76
+========================================================================
+
+C++ / pseudocodigo del chat (referencia Sprint 2+):
+  L1191-L1194  core/include/runtime/Runtime_loop_2.h
+  L1201-L1222  core/include/auto/Runtime.h
+  L1230-L1243  core/include/auto/EventBus.h
+  L1252-L1263  core/include/auto/EventType.h
+  L1672-L1677  core/include/auto/fragment.h
+  L1672-L1819  core/include/types/Reference.h
+  L1688-L1693  core/include/auto/Signature.h
+  L1695-L1704  core/include/auto/ReferenceState.h
+  L1706-L1715  core/include/auto/Statistics.h
+  L1717-L1726  core/include/auto/Metadata.h
+  L1728-L1817  core/include/auto/Reference.h
+  L1844-L1851  core/include/auto/PayloadStore.h
+  L1876-L1880  core/include/auto/fragment_2.h
+  L1887-L1907  core/include/auto/PayloadStore_2.h
+  L1911-L1918  core/include/auto/includes_fragment.h
+  L1911-L1950  core/src/storage/PayloadStore.cpp
+  L2002-L2015  core/include/auto/IPayloadBackend.h
+  L2151-L2164  core/include/auto/ReferenceFrame.h
+  L2234-L2251  core/include/auto/ReferenceFrame_2.h
+  L2265-L2278  core/include/auto/EventBus_2.h
+  L2288-L2305  core/include/auto/RingBuffer.h
+  L2315-L2320  core/include/auto/Worker.h
+  L2520-L2533  main.cpp
+  L2520-L2533  main.cpp
+  L3032-L3047  core/include/auto/RuntimeError.h
+  L3333-L3346  core/include/auto/Capability_2.h
+  L3381-L3384  core/include/auto/fragment_3.h
+  L3381-L3415  core/include/knowledge/KnowledgeRouter.h
+  L3389-L3404  core/include/auto/ResolutionSource.h
+  L3406-L3417  core/include/auto/Resolution.h
+  L3419-L3437  core/include/auto/KnowledgeRouter.h
+  L3430-L3475  core/src/knowledge/KnowledgeRouter_resolve.cpp
+  L3497-L3508  core/include/auto/Cost.h
+  L3522-L3531  core/include/auto/KnowledgeIndex.h
+  L3760-L3765  core/include/auto/Edge.h
+  L4052-L4065  core/include/auto/KnowledgeState.h
+  L4122-L4133  core/include/auto/KnowledgeObject.h
+  L4219-L4231  core/include/auto/SecurityManager.h
+  L4633-L4646  core/include/auto/HashPlugin.h
+  L468-L483  core/include/auto/IPlugin.h
+  L488-L499  core/include/auto/PluginInfo.h
+  L501-L514  core/include/auto/PluginType.h
+  L522-L537  core/include/auto/Capability.h
+  L5451-L5464  core/include/auto/KnowledgeCost.h
+  L5686-L5699  core/include/auto/PluginContract.h
+  L6028-L6039  core/include/auto/KnowledgeDNA.h
+  L614-L619  core/include/auto/Dependency.h
+  L6176-L6191  core/include/auto/KnowledgeValue.h
+  L6273-L6280  core/include/auto/ValueEngine.h
+  L6504-L6517  core/include/auto/AdaptiveProfile.h
+  L6959-L6968  core/include/auto/ComputeProvider.h
+  L7218-L7237  core/include/auto/ConflictType.h
+  L7247-L7260  core/include/auto/Resolution_2.h
+  L7410-L7423  core/include/auto/KnowledgeFrame.h
+  L7515-L7526  core/include/auto/fragment_4.h
+  L7561-L7576  core/include/auto/Context.h
+  L806-L809  core/include/runtime/Runtime_loop.h
+  L8195-L8231  core/include/identity/KnowledgeID.h
+  L8215-L8221  core/include/auto/includes_fragment_2.h
+  L8257-L8263  core/include/auto/Signature_2.h
+  L8294-L8365  core/include/identity/Signature_class.h
+  L8321-L8331  core/include/auto/Signature_3.h
+  L8436-L8495  core/include/identity/KnowledgeDNA.h
+  L8453-L8456  core/include/auto/includes_fragment_3.h
+  L8465-L8493  core/include/auto/KnowledgeDNA_2.h
+  L8678-L8689  core/include/auto/SignatureRecord.h
+  L8746-L8761  core/include/auto/K3Identity.h
+  L909-L918  core/include/auto/PendingOperation.h
+  L9290-L9297  core/include/auto/IdentityProvider.h
+  L9597-L9602  core/include/auto/FunctionHeader.h
+  L9653-L9662  core/include/auto/fragment_5.h
+  L9754-L9758  core/include/auto/KOP.h
+  L9754-L9758  k3/include/KOP.h
+  L9802-L9809  k3/include/KOPHeader.h
+  L9803-L9809  core/include/auto/KOPHeader.h
+  PYTHON_IMPLEMENTADO.txt
+
+Python EJECUTABLE (no duplicado en cpp/):
+  Ver PYTHON_IMPLEMENTADO.txt
+
+Regenerar:
+  python scripts/extract_gptcomputing_code.py

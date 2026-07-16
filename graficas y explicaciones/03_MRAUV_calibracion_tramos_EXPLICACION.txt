@@ -1,0 +1,17 @@
+GRÁFICA 03 — MRAUV CALIBRACIÓN POR TRAMOS
+═══════════════════════════════════════
+MRAUV = modelo VMA de densidad de primos (NO está en Hardy-Littlewood ni en Analytic NT estándar).
+
+Funciones propias:
+  L(n) = ⌊√(n+3)⌋ + 7
+  m(n) ≈ (e-2)·√n   — "marcado" de compuestos inducidos
+
+Criterio VMA: si L(n) - m(n) ≥ 2 → el intervalo I(n) contiene al menos 2 primos.
+
+Calibración cinemática en 3 puntos (separación ~2√n₀):
+  V₀ = velocidad de densidad
+  a₀ = aceleración
+  j  = jerk (tercera derivada)
+
+Uso: Goldbach heurístico, cribas adaptativas, segmentación AntiPC.
+Código: mrauv.py · archivos-vma/codigo/

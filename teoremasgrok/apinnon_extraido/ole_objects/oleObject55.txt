@@ -1,0 +1,15 @@
+            bad += std::isnan(got);
+---
+            double got = F(A[i], Nth[i]);
+---
+            double ref = std::pow(A[i], 1.0/Nth[i]);
+---
+            double u = ulp_dist(got, ref);
+---
+            ulps.push_back(u); ulpmax = std::max(ulpmax,u);
+---
+        A[i] = std::ldexp(1.0,(int)e) * (1.0 + 1e-12*v);
+---
+        Nth[i]=choices[(int)std::floor(v*5)%5];
+---
+        double choices[5]={0.5,2.0,3.0,10.0,100.0};

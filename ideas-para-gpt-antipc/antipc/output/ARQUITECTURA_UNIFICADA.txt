@@ -1,0 +1,48 @@
+========================================================================
+  AntiPC — ARQUITECTURA UNIFICADA
+  HASHTOOLCODE + MDC + Flow Kernel + Red + Industrial
+========================================================================
+
+  Hash backend: python
+  Red autorizada: True
+
+  [L0_FOUNDATION] Fundación HASHTOOLCODE
+    Fuente: C:\Users\cuent\Desktop\lee arbusto\antipc\native\k3hash\src\k3hash.c
+      - K3_HASH
+      - hash_engine
+      - HMAC NetworkAuthGate
+
+  [L1_MDC] Regla Mecánica / MDC
+    Fuente: HASHTOOLCODE/cpp y dll/biblio
+      - MDC_PHASE
+      - MDC_REGLA
+      - MDC_FACTOR
+      - ReglaCalculo
+
+  [L2_RUNTIME] Flow Kernel
+    Fuente: gptcomputing.txt v0.1.0
+      - References
+      - KnowledgeResolver
+      - EventBus
+      - PluginManager
+
+  [L3_NETWORK] Red distribuida
+    Fuente: udp_benchmark.py / hub_node.py
+      - UDP hubs
+      - WORK/RESULT protocol
+      - permisos HMAC
+
+  [L4_INDUSTRIAL] Industrial
+    Fuente: industrial_demo.py
+      - Telemetry CSV
+      - ExecutionProfile
+      - K3_FILE dedup
+
+  Plugins registrados:
+      K3_HASH v1 (TRANSFORM)
+      K3_FILE v1 (ACQUIRE)
+      K3_DEDUP v1 (VERIFY)
+      MDC_PHASE v1 (INFER)
+      MDC_REGLA v1 (TRANSFORM)
+      MDC_FACTOR v1 (VERIFY)
+========================================================================

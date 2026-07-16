@@ -1,0 +1,35 @@
+================================================================================
+FORMALIZACIÓN VMA — F08 TRIÁNGULO DE FACTORES (reformulado)
+================================================================================
+Autor: Víctor Manzanares Alberola
+Ficha origen: 08_teorema_triangulo_factores.txt
+Tipo formal: LEMA GEOMÉTRICO (reformulación)
+Estado formal: [PARCIAL] — núcleo salvado como visualización, no caracterización
+Fecha: 2026-07-10
+
+--------------------------------------------------------------------------------
+1. DEFINICIONES
+--------------------------------------------------------------------------------
+  Triángulo VMA: vértices A=(n/2, 2), B=(2, √n) en plano cartesiano.
+  Hipotenusa h: recta ℓ por A y B.
+
+--------------------------------------------------------------------------------
+2. LEMA (visualización MDC)
+--------------------------------------------------------------------------------
+  La recta ℓ es herramienta de visualización para explorar factorizaciones
+  n = (2x+3)(2y+3); NO caracteriza bijectivamente los divisores de n.
+
+--------------------------------------------------------------------------------
+3. DEMOSTRACIÓN (limitación)
+--------------------------------------------------------------------------------
+  La ecuación de ℓ: y − 2 = ((2−√n)/(2−n/2))(x − n/2).
+  Puntos enteros (x,y) en ℓ NO equivalen a (2x+3)(2y+3)=n en general
+  (contraejemplo n=36 en fuente (l)(L).txt).
+  La caracterización exacta es F29 (variante C algebraica).
+
+--------------------------------------------------------------------------------
+4. NOTAS
+--------------------------------------------------------------------------------
+  Reemplaza enunciado contradictorio original. Ver F29.
+
+================================================================================

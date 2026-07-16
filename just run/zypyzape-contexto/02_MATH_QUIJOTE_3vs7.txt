@@ -1,0 +1,128 @@
+================================================================
+MATEMÀTICA DEL QUIJOTE: 3 PALES vs 7 PALES
+Propietat fonamental i comparació ball vs estàtic
+================================================================
+
+--- PROPIETAT FONAMENTAL (vàlida per a N pales) ---
+
+Per a N pales equiespaiades amb quijote en posició sinusoïdal:
+
+  r_k(t) = r0 + A · sin(omega_rot · t + 2·pi·k/N),   k = 0..N-1
+
+La inèrcia total és CONSTANT:
+
+  J_total(t) = m · sum_{k=0}^{N-1} r_k(t)²
+             = m · [ N·r0² + 2·r0·A·sum(sin) + A²·sum(sin²) ]
+
+  sum_{k=0}^{N-1} sin(theta + 2pi·k/N)   = 0   (per N>=2)
+  sum_{k=0}^{N-1} sin²(theta + 2pi·k/N)  = N/2 (per N>=2)
+
+  Per tant:
+  J_total = m · N · (r0² + A²/2) = CONSTANT, independent de t
+
+Això és exactament la mateixa matemàtica que la potència trifàsica
+constant en electrotècnica. El terme de creuament s'anul·la.
+
+--- FACTOR EQUIVALENT A sqrt(3) PER A CADA N ---
+
+En el sistema trifàsic elèctric, sqrt(3) és la ràtio tensió línia/fase.
+L'equivalent mecànic per al quijote és:
+
+  Factor_N = 2 · sin(pi/N)
+
+  N=3:  2·sin(60°) = sqrt(3) ≈ 1.7321   ← el teu cas actual
+  N=6:  2·sin(30°) = 1.0000
+  N=7:  2·sin(π/7) ≈ 0.8678             ← cas nou
+  N=12: 2·sin(15°) ≈ 0.5176
+
+Aquest factor apareix en la relació d'amplituds entre la pala líder
+i les pales seguidores en el control de J constant.
+
+--- REGLA DE CONTROL PER A J CONSTANT ---
+
+Pala líder estén per A → les altres N-1 retrauen per A/(N-1) cadascuna.
+
+Verificació:
+  ΔJ_extensió = m · A · 2·r   (pala líder)
+  ΔJ_retracció = (N-1) · m · (A/(N-1)) · 2·r = m · A · 2·r  ✓
+  ΔJ_net = 0 → J_total constant  ✓
+
+  N=3:  1 estén A,  2 retrauen A/2 cadascuna
+  N=7:  1 estén A,  6 retrauen A/6 cadascuna
+
+--- COMPARACIÓ 3 PALES vs 7 PALES ---
+
+A igual massa m per pala i igual recorregut [r_min, r_max]:
+
+  Quijotes totals:
+    3 pales: 3 quijotes
+    7 pales: 7 quijotes  (+133%)
+
+  ΔJ màxim (tot el recorregut):
+    ΔJ = N · m · (r_max² - r_min²)
+    3p: 3 · m · (60²-5²) = 3 · m · 3575 = 10725·m  kg·m²/kg
+    7p: 7 · m · (60²-5²) = 7 · m · 3575 = 25025·m  kg·m²/kg
+    Ràtio: 7/3 = 2.333×
+
+  ΔE màxim emmagatzemable:
+    ΔE = ½ · ΔJ · omega²
+    3p: ½ · 10725·m · 1.14² = 6971·m   J/kg
+    7p: ½ · 25025·m · 1.14² = 16266·m  J/kg
+    Ràtio: 2.333× (directament proporcional a N)
+
+  Potència pic (ball a v_slide màxim):
+    P_pic = N · m · 2 · r_mig · v_slide · omega²
+    3p: 3 · m · 2 · 32.5 · 0.5 · 1.14² = 127·m   W/kg
+    7p: 7 · m · 2 · 32.5 · 0.5 · 1.14² = 296·m   W/kg
+    Ràtio: 2.333×
+
+--- BALL vs ESTÀTIC: COMPARACIÓ ENERGÈTICA ---
+
+Cas A — Estàtic al màxim (r_fix = r_max):
+  J_estatic = N · m · r_max²
+  ΔE disponible = ½ · N · m · (r_max² - r_min²) · omega²
+  Cost actuador: UNA sola maniobra (estendre + esperar + retraure)
+  Desgast: mínim
+
+Cas B — Ball sinusoïdal (r oscil·la entre r_min i r_max):
+  J_mig_ball = N · m · (r_mig² + A²/2)
+    on r_mig = (r_max+r_min)/2,  A = (r_max-r_min)/2
+  J_mig_ball = N · m · (r_mig² + (r_max-r_min)²/8)
+
+  ΔE disponible = ½ · N · m · (r_max² - r_min²) · omega²  (IGUAL que estàtic!)
+  Cost actuador: CONTINU, desgast constant
+  Avantatge: potència instantània alta (dJ/dt gran)
+
+CONCLUSIÓ CLAU:
+  L'energia total emmagatzemada és IDÈNTICA per ball i estàtic.
+  La diferència és TEMPORAL:
+    · Ball ràpid → "condensador mecànic" (P alta, t curt)    → FFR (<2s)
+    · Estàtic    → "bateria mecànica"    (P baixa, t llarg)  → PFR (10-30s)
+
+--- EFECTE DEL TIMING (observació de Víctor Manzanares) ---
+
+El quijote PERJUDICA la potència de xarxa mentre carrega (va cap a fora):
+  · El terme -omega·(dJ/dt) és parell negatiu addicional al rotor
+  · El rotor frena lleugerament → menys potència al generador
+  · Per tant: carregar durant vent fort és bo (tens marge)
+              carregar durant vent flac és dolent (redueix el poc que queda)
+
+El retorn ha de passar ABANS que s'acabi el vent:
+  · Si el vent cau amb la massa estesa → ω ja baixa per manca de vent
+  · Retraure llavors és menys eficaç (omega baixa → P_q = -omega·dJ/dt·omega baixa)
+  · Control intel·ligent: anticipar dv/dt < 0 i retraure MENTRE el vent aguanta
+
+--- VALIDACIÓ NUMÈRICA AMB VALORS REALS ---
+
+  m = 4 kg per pala, N=3 (actual), omega = 1.14 rad/s
+  r_min=5m, r_max=60m
+
+  ΔE (3 pales, 1 turbina)  = ½·3·4·(60²-5²)·1.14²  = 27,912 J ≈ 28 kJ
+  ΔE (7 pales, 1 turbina)  = ½·7·4·(60²-5²)·1.14²  = 65,127 J ≈ 65 kJ
+  ΔE (7 pales, 10 turbines)= 650 kJ total de granja
+
+  E cicle ZZ per turbina = P_ZZ_frac · S_NOM · T_cicle/2
+                         = 0.13 · 2.5e6 · 1.25 = 406 kJ per turbina
+  ΔE_quijote_7p / E_ZZ   = 65/406 = 16% per turbina (sense escalar)
+
+================================================================

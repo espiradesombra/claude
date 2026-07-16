@@ -1,0 +1,15 @@
+                got = float('nan')
+---
+                got = fn(a, b)
+---
+                got = fn(a, n)
+---
+                j = (abs(j) ** expo)
+---
+                r = float('nan')
+---
+                w.writerow([br.name, f"{br.time_ns:.2f}", f"{br.ulp95:.3f}", f"{br.ulpmax:.3f}", br.bad])
+---
+            except OverflowError:
+---
+            expo = min(abs(factor), 2.0)

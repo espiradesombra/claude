@@ -1,0 +1,437 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans)}
+.wrap{padding:1.5rem 0 3rem}
+h1{font-size:22px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px}
+.sub{font-size:14px;color:var(--color-text-secondary);margin-bottom:1.75rem}
+.section{margin-bottom:2.25rem}
+.sec-hdr{font-size:11px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--color-text-secondary);padding:6px 0;
+  border-bottom:.5px solid var(--color-border-tertiary);margin-bottom:2px}
+.col-hdr{display:grid;grid-template-columns:190px 1fr 155px;
+  font-size:10px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--color-text-tertiary);padding:5px 0 4px}
+.col-hdr .cu{padding-left:10px}
+.row{display:grid;grid-template-columns:190px 1fr 155px;
+  border-top:.5px solid var(--color-border-tertiary);padding:10px 0;align-items:start}
+.rn{font-size:12.5px;font-weight:500;color:var(--color-text-primary);padding-right:10px;line-height:1.55}
+.rf{font-family:var(--font-mono);font-size:11.5px;color:var(--color-text-primary);
+  background:var(--color-background-secondary);border-radius:6px;
+  padding:4px 8px;line-height:1.75;white-space:pre-wrap;word-break:break-word}
+.ru{font-size:11.5px;color:var(--color-text-secondary);padding-left:10px;line-height:1.6}
+.badge{display:inline-block;font-size:10px;font-weight:500;padding:2px 7px;
+  border-radius:10px;margin-bottom:4px;white-space:nowrap}
+.bi{background:var(--color-background-info);color:var(--color-text-info)}
+.bg{background:var(--color-background-success);color:var(--color-text-success)}
+.ba{background:var(--color-background-warning);color:var(--color-text-warning)}
+.bd{background:var(--color-background-danger);color:var(--color-text-danger)}
+</style>
+<div class="wrap">
+<h1>Taula d'equacions · Víctor Manzanares Alberola</h1>
+<p class="sub">Corpus complet extret de <em>Números i numeritos</em> · <em>Recopilació</em> · <em>Libro 5 (MDC)</em></p>
+
+<!-- 1 -->
+<div class="section">
+<div class="sec-hdr">1 · Marc de candidats — Rejilla 6k±1</div>
+<div class="col-hdr"><span>Nom</span><span>Equació / definició</span><span class="cu">Utilitat</span></div>
+
+<div class="row">
+<div class="rn"><span class="badge bi">Candidats</span><br>Rejilla primer</div>
+<div class="rf">{2·3·n ± 1} ∖ {30m±5, 6·7·ℓ±7,
+  6·11·k±11, 6·p·j±p, …}
+
+(6k±1) = 2n+3  →  n mod 3 ≠ 0</div>
+<div class="ru">Redueix l'espai a ~1/3; base de totes les cribes i del MDC</div>
+</div>
+
+<div class="row">
+<div class="rn">Salts per primer p</div>
+<div class="rf">Inici:   p²
+Passos:  +2p, +4p  (alternats, 6k±1 only)
+
+salto  = 2*p
+salto2 = 4*p
+j = p*p; j += salto2; j += salto; ...</div>
+<div class="ru">Criba modular: marca compostos sense repetir posicions; base de la criba híbrida</div>
+</div>
+</div>
+
+<!-- 2 -->
+<div class="section">
+<div class="sec-hdr">2 · Salto Màxim i conjectura d'Andrica</div>
+<div class="col-hdr"><span>Nom</span><span>Equació / definició</span><span class="cu">Utilitat</span></div>
+
+<div class="row">
+<div class="rn"><span class="badge ba">Conjectura</span><br>SaltoMàxim(n)</div>
+<div class="rf">k = ⌊√n⌋ / 3
+SaltoMàxim(n) = (2+4)·(k/2) = √n
+
+Interval mínim (dos primers) per n>3:
+  I(n) = [n − ⌊√(n+3)⌋ − 3,  n + 3]
+  L(n) = ⌊√(n+3)⌋ + 7
+  K    = ⌊⌊√n⌋ · 9/24⌋
+  m(n) = Σ_{i=2}^{K} √(n+3)/i!  ≈ (e−2)·√n
+
+Criteri: L(n) − m(n) ≥ 2  →  ≥2 primers en I(n)</div>
+<div class="ru">Cota superior del buit entre primers; reforça Andrica; "dos primers en √n" verificat numèricament</div>
+</div>
+
+<div class="row">
+<div class="rn"><span class="badge ba">Andrica</span><br>Límit asimptòtic</div>
+<div class="rf">√n − √(n − √n) < 1
+
+lím_{n→∞} [√n − √(n−√n)] → 0 < 1
+
+→ Si es compleix per un n₀, es compleix per tot n>n₀</div>
+<div class="ru">Coherència de la conjectura d'Andrica per a tot n ≥ 1; provat via SaltoMàxim</div>
+</div>
+</div>
+
+<!-- 3 -->
+<div class="section">
+<div class="sec-hdr">3 · Estructura Sofí — isomorfisme Sophie Germain</div>
+<div class="col-hdr"><span>Nom</span><span>Equació / definició</span><span class="cu">Utilitat</span></div>
+
+<div class="row">
+<div class="rn"><span class="badge bg">Isomorfisme Sofí</span><br>Conjunts L</div>
+<div class="rf">L₁ = {n∈ℕ : n ≡ 5 mod 6}
+L₃ = {a∈L₁ : a = (6k−1)(6h+1)}
+L₄ = {a∈L₁ : 2a+1 = (6j−1)(6g+1)}
+L₂ = L₃ ∩ L₄
+LSG = {p∈L₁ : p i 2p+1 primers}
+U₂  = L₁ ∖ (L₃ ∪ L₄)
+
+|L₁|+|L₂|−|L₃|−|L₄| = |LSG|
+U₂ ⊆ LSG     LSG ∪ L₃ ∪ L₄ = L₁</div>
+<div class="ru">Caracteritza exactament les primes de Sophie Germain via partició modular de L₁</div>
+</div>
+
+<div class="row">
+<div class="rn">Infinitud de U₂</div>
+<div class="rf">Per tot q≥5 primer, per TXR: ∃ r mod 6q
+  p ≡ r mod 6q → p ∈ L₄∖L₂
+Per Dirichlet: ∞ tals p → |L₄∖L₂| = ∞
+Anàlogament |L₃∖L₂| = ∞, |L₂| = ∞
+∴ |U₂| = ∞  → infinits prims Sophie Germain</div>
+<div class="ru">Argument d'infinitud via TXR + Dirichlet; evita la hipòtesi directa sobre LSG</div>
+</div>
+
+<div class="row">
+<div class="rn"><span class="badge bi">Férmines</span><br>Fermat modular</div>
+<div class="rf">Fₙ = 2^(2ⁿ) + 1
+F₀·F₁·…·Fₙ = Fₙ₊₁ − 2
+Bₙ = 2·(F₀·F₁·…·Fₙ)
+∃! rₙ : rₙ≡1 mod 2,  rₙ≡2 mod Fₖ  (k≤n)
+→ ∀m≥n+1 : Fₘ ≡ rₙ mod Bₙ</div>
+<div class="ru">Alineació modular dels Fermat; en base 2·∏Fₖ els Fermat prims queden a la primera fila</div>
+</div>
+</div>
+
+<!-- 4 -->
+<div class="section">
+<div class="sec-hdr">4 · Conjectura de Goldbach — asimetria i error quantitatiu</div>
+<div class="col-hdr"><span>Nom</span><span>Equació / definició</span><span class="cu">Utilitat</span></div>
+
+<div class="row">
+<div class="rn"><span class="badge bi">Goldbach</span><br>Condició densitat</div>
+<div class="rf">G(2n) = #{(p,q): p≤q, p+q=2n, ambdós primers}
+
+Condició necessària:   f(x)·2 ≤ f(2x)
+
+G_teo(2n) ≈ 2n / (ln n)²
+
+E(2n) = (G(2n)−G_teo(2n)) / G_teo(2n) · 100%</div>
+<div class="ru">Si la condició falla → conjectura falsa; E% decreix cap a 0, confirmat fins 5·10⁴</div>
+</div>
+
+<div class="row">
+<div class="rn">Error relatiu (forma 6k)</div>
+<div class="rf">E_6k = ((n/6 − 2n/ln(2n)) · 100) / (2n/ln(2n))
+
+Algoritme d'asimetria booleana:
+  acumularFALLO += f(i) − (f(2x)−f(2x−i))
+  alarma si f(x)·2 ≤ f(2x)−acumularFALLO</div>
+<div class="ru">Quantifica la desviació per tramos 6k; l'alarm mai salta → reforça la conjectura</div>
+</div>
+
+<div class="row">
+<div class="rn">Segmentació MRAUV<br>→ Goldbach</div>
+<div class="rf">Δ = ⌊c·√n⌋,  J = ⌊n/Δ⌋
+A_j = [(j-1)Δ+2, jΔ+1]    (tramo baix)
+B_j = [2n−jΔ−1, 2n−(j-1)Δ−2]  (tramo alt)
+
+D⁻_j = D_pred((j-1)Δ, jΔ)   via MRAUV
+D⁺_j = D_pred(2n−(j-1)Δ, 2n−jΔ)
+
+Acumular += (D⁺_j − D⁻_j)
+Criteri: D_1º + Acumular ≥ D_2º</div>
+<div class="ru">Garanteix ≥1 parell Goldbach via densitats MRAUV per tramos simètrics; creix amb n</div>
+</div>
+</div>
+
+<!-- 5 -->
+<div class="section">
+<div class="sec-hdr">5 · MDC — Mètode Diofàntic Cinemàtic (nucli)</div>
+<div class="col-hdr"><span>Nom</span><span>Equació / definició</span><span class="cu">Utilitat</span></div>
+
+<div class="row">
+<div class="rn"><span class="badge bd">MDC core</span><br>Funció d'ona</div>
+<div class="rf">D(m) = 2·(2m+3)         (candidat divisor)
+d(m) = frac(N / D(m))   (part decimal)
+
+Aritmètica entera exacta:
+  R = N mod D            ← numerador
+  D                      ← denominador
+
+Condició de tall exacta:
+  R == D // 2   →   D | N   (factor trobat)</div>
+<div class="ru">Detecta divisors sense float; base del motor cinemàtic; precisió infinita per BigInt</div>
+</div>
+
+<div class="row">
+<div class="rn">Cinemàtica de la pinça</div>
+<div class="rf">4 mesures per direcció → buffer circular
+
+V = ΔR/Δm            (velocitat, Δ¹ dels restos)
+A = ΔV/Δm            (acceleració, Δ²)
+J = ΔA/Δm            (jerk, Δ³)
+
+Invariant parabòlic: A ≈ const → dent estable
+Desfase: mesura en 2 direccions simultànies</div>
+<div class="ru">Determina la curvatura local de la "dent de serra"; prediu posició del mínim sense iterar</div>
+</div>
+
+<div class="row">
+<div class="rn">Salt Mestre (One-Shot)</div>
+<div class="rf">m_next = m − V/A
+
+Verificació O(1):
+  div = 2·(2·m_next+3)
+  si N mod div == 0 → factor!
+
+Límit iteració: max_iter = 2·⌊log₂(N)⌋
+Complexitat reclamada: O(log N)</div>
+<div class="ru">Salta directament al vèrtex de la paràbola local; "balística matemàtica" determinista</div>
+</div>
+</div>
+
+<!-- 6 -->
+<div class="section">
+<div class="sec-hdr">6 · MDC — Radar, Rueda i Densitat de Supervivència</div>
+<div class="col-hdr"><span>Nom</span><span>Equació / definició</span><span class="cu">Utilitat</span></div>
+
+<div class="row">
+<div class="rn">Acumulador harmònic<br>(radar macroscòpic)</div>
+<div class="rf">acumulo += acumulo · (1/i)    (i = índex segment)
+
+Cerca des de: talla/2 = ⌊√N⌋ // 2
+Llindar ressonància: acumulo ≤ umbral_R
+
+Si segment NO ressona → salt massiu al següent
+Si segment ressona → activar pinça cinemàtica</div>
+<div class="ru">Filtre de primer nivell: descarta segments sencers en O(1); evita "pinces en terra estèril"</div>
+</div>
+
+<div class="row">
+<div class="rn">Rueda primorial (MDC-U)</div>
+<div class="rf">p# = 2·3·5·7·…·pₖ    (primorial fins pₖ)
+
+Illes vàlides per cicle:
+  φ(p#) = (p₁−1)·(p₂−1)·…·(pₖ−1)
+
+Densitat activa:  φ(p#) / p#
+
+Ex. p≤5: φ(30)=8, densitat = 8/30 ≈ 26.6%
+Ex. p≤7: φ(210)=48 posicions / cicle de 210</div>
+<div class="ru">Elimina ≥73% de l'espai pre-MDC; la rueda de saltos és l'array de 48 (o φ(p#)) entrades</div>
+</div>
+
+<div class="row">
+<div class="rn"><span class="badge bg">Funció de purgat</span><br>m(p) — recurrència</div>
+<div class="rf">m(p) = m(p−1) + m(p−1) · (1/p)
+      = m(p−1) · (1 + 1/p)    [versió additive]
+
+Forma multiplicativa equivalent:
+  ρ_nova = ρ_ant · (1 − 1/p)
+
+Densitat de supervivència:
+  (1 − m(p)) · talla = isles vàlides en talla
+
+p# = m(p−1) / (m(p) − m(p−1))    [despejament]</div>
+<div class="ru">Mesura exactament quant espai és matemàticament estèril; connecta ρ amb la funció de Euler ϕ</div>
+</div>
+
+<div class="row">
+<div class="rn">Radar topològic discret<br>(MDC-U fusió)</div>
+<div class="rf">// Operar sobre ÍNDEXS de l'array d'illes, no sobre m
+isles = GENERAR_RUEDA(N, prims=[2,3,5])
+ind_esq = 0;  ind_dre = len(isles)−1
+
+while ind_esq < ind_dre:
+    ind_cen = (ind_esq+ind_dre)//2
+    sonda = PINÇA(N, isles[ind_cen])
+    si sonda.velocitat > 0: ind_dre = ind_cen
+    sino:                   ind_esq = ind_cen
+
+    si (ind_dre−ind_esq) < LLINDAR:
+        candidat = isles[ind_esq] − V/A
+        si N mod D(candidat)==0: return D(candidat)</div>
+<div class="ru">Fusió rueda+pinça: busca binària sobre illes (O(log·φ(p#)·N)); sonda mai en terra estèril</div>
+</div>
+</div>
+
+<!-- 7 -->
+<div class="section">
+<div class="sec-hdr">7 · MRAUV — estimació cinemàtica de π(n)</div>
+<div class="col-hdr"><span>Nom</span><span>Equació / definició</span><span class="cu">Utilitat</span></div>
+
+<div class="row">
+<div class="rn"><span class="badge bg">MRAUV</span><br>Model per trams</div>
+<div class="rf">π(x) ≈ x · D(x)
+
+D_pred en [n, n+Δn]:
+  D_pred ≈ D₀ + V₀·Δn + ½·a₀·(Δn)²  (+ jerk opcional)
+
+Estimació: π(n+Δn) ≈ π(n) + D_pred·Δn
+
+Recalibrar cada ~2·√n per controlar error
+Coste: O(M) segments  [M = N/Δn]</div>
+<div class="ru">Estimació local de π amb control d'error explícit; alternativa a ln(x) amb precisió ajustable</div>
+</div>
+</div>
+
+<!-- 8 -->
+<div class="section">
+<div class="sec-hdr">8 · Criva (model de densitat modular iteratiu)</div>
+<div class="col-hdr"><span>Nom</span><span>Equació / definició</span><span class="cu">Utilitat</span></div>
+
+<div class="row">
+<div class="rn"><span class="badge bi">Criva</span><br>Densitat modular</div>
+<div class="rf">Dₙ = (a·p + b) / (b·p)   ≡   a/b + 1/p
+Iteració:  a = a·p + b;  b = b·p
+
+Correcció cap a objectiu T = π(x)/x:
+  Dₙ₊₁ = Dₙ + s·(T − Dₙ)  = (1−s)·Dₙ + s·T
+
+Error:  eₙ = e₀ · (1−s)ⁿ
+Iters. necessàries:  n ≥ log_{1/(1-s)}(e₀/ε)
+
+Cas s=½: n ≥ log₂(e₀/ε)   [~8 iters per 0.01%]</div>
+<div class="ru">Superació de Legendre en precisió local; convergència controlada amb el paràmetre s; programable en C/Python</div>
+</div>
+
+<div class="row">
+<div class="rn">Model fractal per capes<br>(π̃ densitat)</div>
+<div class="rf">D(x) = Σₙ₌₀ᵏ [ D₀ / 2ⁿ · wₙ(x) ]
+
+Capes:  D₀≈0.445 (x<10³), D₁≈0.2233 (10³≤x<10⁵),
+        D₂≈0.1302 (x≥10⁵)
+
+Transició suau: wₙ(x) = 1/(1+exp(−(x−xₙ)/s))
+
+π(x) ≈ x · D(x)   vs. clàssic π(x) ~ x/ln(x)
+Dₙ ≈ D₀·(1/2)ⁿ   → error es redueix a la meitat/pas</div>
+<div class="ru">Arquitectura escalable; reemplaza ln(x) per suma de densitats modulars; intuïtiva i ràpida</div>
+</div>
+
+<div class="row">
+<div class="rn">Heurística e−2<br>(model "dos primers")</div>
+<div class="rf">π(n) ≈ n / (ln n − 2)
+
+Origen: assegurar ≥2 primers en √n sense comptar
+→ el "−2" compensa la sobreestimació
+
+Convergència modular:
+  C(x) = Σ_{p≤P} (a·p+b)/(b·p)
+  π(x) ≈ C(x) · x          [0 < C(x) < 1]</div>
+<div class="ru">Ajust heurístic millor que Gauss per rangs baixos; base per la connexió amb la densitat de Criva</div>
+</div>
+</div>
+
+<!-- 9 -->
+<div class="section">
+<div class="sec-hdr">9 · Criba desmemoriada i criba híbrida</div>
+<div class="col-hdr"><span>Nom</span><span>Equació / definició</span><span class="cu">Utilitat</span></div>
+
+<div class="row">
+<div class="rn"><span class="badge ba">Criba desmemoriada</span></div>
+<div class="rf">Entrades: A=(010001), B=(011101), P=5, Pb=6
+mentre P < límit:
+  C = P veces A
+  C[P]=0; C[Pb·P−P]=0
+  C = P veces C; C[P]=1
+  B = P²·veces B
+  B = B AND C  [des de P fins Pb·P²]
+  mentre B[P+2]==0 && P<límit: P+=2
+retorna B
+
+Complexitat: Θ(4/9·l²) → Θ(8/9·l²)
+             Ω(7/9·l²)  [marcatge únic]</div>
+<div class="ru">Ideal per memòria distribuïda; allibera el primer aviat; substitueix divisió per AND booleà</div>
+</div>
+
+<div class="row">
+<div class="rn">Criba híbrida<br>(ascendent+descendent)</div>
+<div class="rf">1. Criba ascendent fins L/2 → llista de primers
+2. Calcular restos: r = (L²−p²) mod p  per cada p
+3. Criba descendent des de L usant restos:
+     j = L − r;  j −= 2p;  j −= 4p;  ...
+4. Combinar: B_tot = B_asc AND B_desc
+
+Salts: +2p / +4p en les dues direccions</div>
+<div class="ru">Redueix remarcades (errors de doble marcatge) concentrades al final; millora Θ de l'ascendent sola</div>
+</div>
+</div>
+
+<!-- 10 -->
+<div class="section">
+<div class="sec-hdr">10 · Relació (x,a,b) i conjectura del primer seguent</div>
+<div class="col-hdr"><span>Nom</span><span>Equació / definició</span><span class="cu">Utilitat</span></div>
+
+<div class="row">
+<div class="rn">Relació restos (x,a,b)<br>Mètode gràfic</div>
+<div class="rf">Donat x enter i a<x:  b = x mod (x−a)
+
+Pendents 1,2,3,… des de punts clau de la hipotenusa
+→ les interseccions anticipen inici de noves seqüències
+
+Condició de simetria (checker):
+  si (n % x) ≠ (j % x) → n no és primer
+
+  suma += (1/i₂)/ant + 1/n;  ant·=i₂;  i₂+=1
+  si suma > 1 → retorna verdader (és primer)</div>
+<div class="ru">Detecta primalitat via seqüències de restos i pendents; visualitzable amb Matplotlib/Tkinter</div>
+</div>
+
+<div class="row">
+<div class="rn"><span class="badge ba">Conjectura Karnaugh</span><br>Primer seguent</div>
+<div class="rf">n=p₀; m=n+1; ny=n−1
+t=ny²; tt=n²; nt=m²
+
+Per cada pas: t*=ny; tt*=n; nt*=m
+              ny++; n++; m++
+Booleanos: t1=t%ny; t2=t%n; t3=t%m; ...
+
+pas1 = (t3>0 AND nt2==0) OR ant_p1 OR ant2_p1
+pas2 = pas1 AND t2>0 AND tt2>0 AND t3==0 OR ant_p2
+pas3 = ant_p2 AND t1>0 AND (nt1+nt2)==0
+
+si pas3 → ny és el pròxim primer</div>
+<div class="ru">Heurística per trobar el primer seguent a partir d'un conegut; basada en mapes de Karnaugh</div>
+</div>
+
+<div class="row">
+<div class="rn">Equacions quasi-prims<br>(generadores)</div>
+<div class="rf">Si p mod 6 = 5, sobre 6·5=30:
+  residus vàlids = [1, 1+2·5] → genera 11, 41, ...
+Si p mod 6 = 1, sobre 6·7=42:
+  residus vàlids = [1, 1+4·7] \ {7, 3·7}
+
+p = √( (2(3x+√5)+3√2)² / 2 )
+  on x = (i·√2/3 − √5/3),  i∈ℕ, 3∤i</div>
+<div class="ru">Concentren candidats primers en bandes modals específiques; entrada per cribes fines</div>
+</div>
+</div>
+
+</div>

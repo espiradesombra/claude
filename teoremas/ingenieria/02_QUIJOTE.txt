@@ -1,0 +1,39 @@
+================================================================================
+E02 — QUIJOTE (masa móvil / inercia en aspas)
+================================================================================
+
+QUÉ PROBLEMA RESUELVE (pretensión)
+  - Añadir inercia variable en punta de pala sin BESS.
+  - “Hurto gravitatorio”: extraer trabajo de gravedad en ciclo cerrado.
+  - Estabilizar frecuencia de red con masa+fluido (Fe+aceite) en canal radial.
+
+MECANISMO (en teoría)
+  - Masa r_q(t) desliza en canal; F_c + F_ctrl + F_fric.
+  - Término −ω·J_dot en ecuación de potencia del rotor.
+  - Acoplamiento con ZypyZape: pitch modula cuando J sube/baja.
+  - Variantes: 3 vs 7 palas, válvulas, control activo (v5–v10).
+
+ESTADO TEÓRICO
+  [OK]     Energía neta ciclo cerrado ≈ 0 (buffer oscilante, no generador).
+  [OK]     Gemelos v3+ corrigen doble contabilidad y signo P_buf.
+  [REFUTADO] Hurto gravitatorio neto positivo en ciclo cerrado.
+  [NO]     RoCoF frente a BESS: escala temporal mecánica (s) vs red (ms).
+  [HEUR]   Valor como buffer de estabilidad local y narrativa de paper.
+
+TRL estimado: 3–4 (simulación madura; revisión dura en Quijote_Nous_Resultats)
+
+RUTAS EN EL PC
+  C:\Users\cuent\Desktop\gemelo_v3_corregit.py … gemelo_v10_cp_dinamic.py
+  C:\Users\cuent\Desktop\gemelo_v94.py, gemelo_v941.py, gemelo_v942.py
+  C:\Users\cuent\Desktop\repo\zypyzape quijote ballant (0)\
+  C:\Users\cuent\Desktop\claude-main-extract\claude-main\zypyzape quijote ballant\
+    Quijote_Nous_Resultats_per_revisio.md
+    quijote_hurto_veredicte.py, quijote_mantenidor_*.py
+  C:\Users\cuent\Desktop\repo\Quijotee\, repo\quijote\ (papers .docx)
+
+REFERENCIAS CRUZADAS
+  segunda_vuelta\REVISION_QUIJOTE_ZYPYZAPE.txt
+  ingenieria\06_PACOPI.txt (misma familia mecánica)
+  ingenieria\01_ZYPYZAPE.txt
+
+================================================================================

@@ -1,0 +1,95 @@
+================================================================================
+ONE-PAGER — CENTROS DE DATOS / EDGE / INDUSTRIA 4.0
+================================================================================
+Módulo: N₁ AntiPC / Sale-It          |  Autor: Víctor Manzanares Alberola
+Fecha: 2026-07-10                    |  TRL: 4–5
+
+--------------------------------------------------------------------------------
+PROPUESTA EN UNA FRASE
+--------------------------------------------------------------------------------
+  Runtime edge con UDP binario, segunda pasada K(N) y benchmarks reproducibles
+  que reducen coordinación CPU — no “más ALU mágica”, sino menos recálculo.
+
+--------------------------------------------------------------------------------
+COMPRADOR TIPO
+--------------------------------------------------------------------------------
+  - Operador DC regional o edge (50–500 nodos)
+  - Fabricante con PLCs / mantenimiento predictivo
+  - Lab HPC universitario o integrador industrial
+
+--------------------------------------------------------------------------------
+VALOR (MEJOR CASO)
+--------------------------------------------------------------------------------
+  Métrica vendible     | Baseline archivado
+  ---------------------|------------------------------------------
+  ALU relativa         | ~62% mejora E vs A (1000 pkt, 4 hubs)
+  Segunda pasada       | ~93,6% tiempo; 100% knowledge hits (sale-it)
+  Auth                 | HMAC 4/4 en stack UDP
+  Entregable           | CSV + INICIO.bat one-click
+
+--------------------------------------------------------------------------------
+RANGOS ECONÓMICOS (MEJOR CASO)
+--------------------------------------------------------------------------------
+  Nivel 0 Evaluación      | 0 € (repo / zip evaluación 30 días)
+  Nivel 1 Piloto 90 días  | 50–150 k€ (1 sitio, CSV obligatorio)
+  Nivel 2 Integración     | 150–500 k€/año (soporte + adaptación Grafcet)
+  Nivel 3 PI / evolución  | Negociación 33×N (no exige N₅)
+
+  Nota: cifras orientativas para empresa PI boutique; escalar con SLA y nodos.
+
+--------------------------------------------------------------------------------
+QUÉ NO PROMETER
+--------------------------------------------------------------------------------
+  ✗ Paquete 33×1 íntegro
+  ✗ P≠NP, paz 33 años, factorización en el mismo contrato
+  ✗ “ALU libre” sin medir coordinación
+
+--------------------------------------------------------------------------------
+CHECKLIST 90 DÍAS (PILOTO NIVEL 1)
+--------------------------------------------------------------------------------
+  Semana 1–2
+    [ ] Firmar alcance: arquitectura A→E a medir, topología hubs, SLA CSV
+    [ ] Entregar zip sale-it + INICIO.bat en entorno cliente (Windows/Linux acordado)
+    [ ] Baseline: ejecutar benchmark.py / udp_benchmark.py → CSV firmado
+
+  Semana 3–6
+    [ ] Integrar 1 Grafcet industrial o caso DC acordado (WORK/RESULT/DONE)
+    [ ] Segunda pasada: medir K(N), hits, tiempo vs primera pasada
+    [ ] Documentar cuello de botella real (red vs CPU vs serialización)
+
+  Semana 7–10
+    [ ] Variante arquitectura (p. ej. C→E o D→E) con misma carga
+    [ ] Informe comparativo CSV (no PDF solo)
+    [ ] Demo live 1 h con reproducibilidad (mismo seed/comando)
+
+  Semana 11–13
+    [ ] Acta cierre: go/no-go Nivel 2
+    [ ] Si go: roadmap C++/DPDK o runtime industrial (fechas y precio)
+    [ ] Si no-go: entregar datos y licencia evaluación cerrada
+
+--------------------------------------------------------------------------------
+ARTEFACTOS A ADJUNTAR EN PROPUESTA
+--------------------------------------------------------------------------------
+  teoremas\lee arbusto\sale-it\INICIO.bat
+  RESULTADOS_BENCHMARK.txt, PAPER_33x1_IRONIA.txt (§ módulos)
+  ingenieria\08_ANTIPC.txt
+
+--------------------------------------------------------------------------------
+MODALIDAD — SIN COCHE
+--------------------------------------------------------------------------------
+  Preferente: 100% remoto (INICIO.bat en vuestro entorno; kick-off y cierre vídeo).
+  Presencial datacenter: innecesario para N₁; si lo exigís → anticipo viaje + día
+  consultoría (ver REGLAS_REUNION_VIAJES.txt).
+
+--------------------------------------------------------------------------------
+FRASE DE CIERRE
+--------------------------------------------------------------------------------
+  «Traed el piloto con CSV en 90 días. El marco 33×1 queda fuera del SOW.»
+
+--------------------------------------------------------------------------------
+AUTORÍA
+--------------------------------------------------------------------------------
+  Borrador asistido por IA. Resumen del ordenador de Víctor Manzanares Alberola.
+  No firma 33×1 ni personificación en su nombre. NOTA_AUTORIA_IA.txt
+
+================================================================================

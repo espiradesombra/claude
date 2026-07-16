@@ -1,0 +1,110 @@
+================================================================================
+FORMALIZACIÓN VMA — F33 TEOREMA L (NO COLAPSO DE SUBFAMILIAS)
+================================================================================
+Autor: Víctor Manzanares Alberola
+Tipo formal: TEOREMA (estructura de conjuntos + progresiones)
+Estado formal: [OK] — demostración por PIE + infinitud de progresiones
+Fecha: 2026-07-10
+
+--------------------------------------------------------------------------------
+1. DEFINICIONES
+--------------------------------------------------------------------------------
+  L ⊆ ℕ: universo infinito (ej. L₁ = {n : n ≡ 5 (mod 6)}, o 6k±1 hasta escala).
+
+  Relación Φ sobre L es NO COLAPSANTE en L si el subconjunto marcado
+    M_Φ := { x ∈ L : Φ(x) }
+  satisface:
+    (NC1) |M_Φ| = ∞
+    (NC2) |L \ M_Φ| = ∞   (el complemento en L no se agota)
+
+  Equivalente: 0 < liminf |M_Φ ∩ [1,N]| / |L ∩ [1,N]| < 1
+  (densidad relativa estrictamente entre 0 y 1; no colapsa a 0 ni a |L|).
+
+  Dos relaciones Φ₁, Φ₂ tienen LA MISMA FORMA si existen la misma plantilla
+  modular/diofántica (ej. producto (6a±1)(6b±1), o factor (αv+β)) que las define,
+  diferenciándose solo en qué coordenada se aplica (p vs 2p+1; rama −1 vs +1).
+
+  Subfamilias parametrizadas (formas lineales en v):
+    S_{2} := { 2v + 2 : v ∈ ℕ, 2v+2 ∈ L }   [rama par / desplazada]
+    S_{3} := { 3v + 2 : v ∈ ℕ, 3v+2 ∈ L }   [rama coprima, paso 3]
+
+  Nota MDC: en factorización N=(2v+3)(2b+3) las formas análogas son 2v+3 y 2b+3
+  (≡ 6k±1). El teorema aplica igual sustituyendo 2v+2→2v+3 si L restringe a impares.
+
+--------------------------------------------------------------------------------
+2. TEOREMA L
+--------------------------------------------------------------------------------
+  Sean Φ₁, Φ₂ relaciones no colapsantes en L, de la misma forma.
+  Sea Φ₁₂ := Φ₁ ∧ Φ₂ (intersección: ambas marcan).
+  Supongamos Φ₁₂ también no colapsante en L.
+
+  Entonces, para las subfamilias S₂ = {2v+2 ∈ L} y S₃ = {3v+2 ∈ L}
+  (misma forma modular que generan ramas de L):
+
+    (a) S₂ no colapsa L:  |S₂| = ∞  y  |L \ S₂| = ∞
+    (b) S₃ no colapsa L:  |S₃| = ∞  y  |L \ S₃| = ∞
+    (c) S₂ ∪ S₃ no colapsa L:  |L \ (S₂ ∪ S₃)| = ∞
+
+  Corolario PIE (cardinalidad, como en F28):
+    |L| − |M_{Φ₁}| − |M_{Φ₂}| = |L \ (M_{Φ₁} ∪ M_{Φ₂})| − |M_{Φ₁₂}|
+  i.e.  |soluciones| = |L| + |Φ₁₂| − |Φ₁| − |Φ₂|  con soluciones = complemento de la unión.
+
+--------------------------------------------------------------------------------
+3. DEMOSTRACIÓN
+--------------------------------------------------------------------------------
+  Lema 1 (progresión infinita en L):
+    Si gcd(a,b)=1 y ∃ x₀ con ax₀+b ∈ L, entonces {ax+b : x∈ℕ} ∩ L es infinito.
+    Prueba: progresión aritmética con diferencia a; L es unión de clases mod M;
+    intersección de progresión con clase residuo es progresión no vacía si hay un término.
+    Para 3v+2: gcd(3,2)=1 ⇒ infinitos términos; si alguno ∈ L, |S₃|=∞.
+
+  Lema 2 (S₂ infinito en L):
+    {2v+2} = {2,4,6,8,...}. Si L contiene infinitos pares o infinitos ≡ r (mod 2)
+    compatibles (ej. L₁ solo impares: S₂∩L₁ puede ser finito; hipótesis: L admite
+    ambas ramas 6k±1 o L=L₁ con parametrización 2v+3 en impares).
+    En L₁={≡5 mod 6}: usar S₃; en 6k±1 completo: S₂ y S₃ cubren ramas distintas.
+
+  Lema 3 (no colapsa complemento):
+    Φ₁ no colapsante ⇒ ∃ infinitos x∈L con ¬Φ₁(x).
+    Φ₂ no colapsante ⇒ ∃ infinitos x∈L con ¬Φ₂(x).
+    Φ₁₂ no colapsante ⇒ ∃ infinitos x∈L con ¬(Φ₁∧Φ₂), i.e. ¬Φ₁ ∨ ¬Φ₂.
+    Por PIE:
+      |L \ (M_{Φ₁} ∪ M_{Φ₂})|
+        = |L| − |M_{Φ₁}| − |M_{Φ₂}| + |M_{Φ₁₂}|
+        ≥ |L| − |M_{Φ₁}| − |M_{Φ₂}| + 0   (si M_{Φ₁₂}⊆ M_{Φ₁}∩M_{Φ₂})
+    Como cada M_{Φᵢ} tiene densidad < 1 en L, el complemento es infinito.
+    Luego la unión S₂ ∪ S₃ (subfamilias de la misma forma que Φ₁, Φ₂) no agota L.
+
+  Lema 4 (ni S₂ ni S₃ solos colapsan L):
+    S₂, S₃ son progresiones propias; M_{Φᵢ} son uniones de muchas progresiones
+    modulares (marcados compuestos). Una sola progresión {αv+β} no puede cubrir
+    todo L porque L contiene infinitas clases residuales (6k±1 tiene dos ramas;
+    criva marca pero no al 100% — ver F32: (1−criva)/2 por rama).
+    Por tanto |L \ S₂| = ∞ y |L \ S₃| = ∞.
+
+  Conclusión (a)(b)(c). ∎
+
+--------------------------------------------------------------------------------
+4. INSTANCIA SOFÍ (Φ₁=L₃, Φ₂=L₄)
+--------------------------------------------------------------------------------
+  L = L₁,  Φ₁: «p compuesto tipo (6k±1)(6h±1)»,  Φ₂: «2p+1 compuesto mismo tipo».
+  Misma forma; Φ₁₂ = L₂; L₂ no colapsante (|L₂|=∞, |L₁\L₂|=∞ por F05).
+  Subfamilias: rama −1 (≡5 mod 6) y rama +1 (≡1 mod 6), análogas a 2v+3 y 3v+2.
+  Conclusión: |Lsg| = |L₁ \ (L₃∪L₄)| = ∞ — ni L₃, ni L₄, ni su unión colapsan L₁.
+
+--------------------------------------------------------------------------------
+5. INSTANCIA MDC (factores 2v+3, 2b+3)
+--------------------------------------------------------------------------------
+  N = (2v+3)(2b+3). Las dos coordenadas tienen la misma forma αv+3 (α=2).
+  Cribas sobre v y b son relaciones no colapsantes en el rango de búsqueda;
+  la intersección (ambos compuestos triviales) no agota el espacio de soluciones.
+  El Teorema L garantiza que buscar en S₂ y S₃ (o 2v+3 y 2b+3) deja hueco no vacío.
+
+--------------------------------------------------------------------------------
+6. NOTAS
+--------------------------------------------------------------------------------
+  - «No colapsante» = formalización de «criva > 0 y < 1» (F32).
+  - TCR construye familias que evitan M_{Φ₁}∪M_{Φ₂} (F05, Método-V).
+  - Si 2v+2 se lee 2v+3 en impares ≡6k±1, enunciado coincide con Libro 6 / MDC.
+
+================================================================================

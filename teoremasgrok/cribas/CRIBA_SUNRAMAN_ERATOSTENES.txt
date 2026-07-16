@@ -1,0 +1,157 @@
+================================================================================
+CRIBA SUNRAMAN–ERATÓSTENES (SUNTAMAN JET + GVMA)
+================================================================================
+Autor: Víctor Manzanares Alberola
+Estado: [HEUR] — algoritmo + librería C; complejidad declarada en docs, no [OK] formal
+Fecha índice: 2026-07-10
+
+Nombres en el repo (misma familia):
+  SunRaman Jet | Sunraman | Suntaman | Criba segmentada Gvma.h
+
+--------------------------------------------------------------------------------
+1. QUÉ ES (EN UNA FRASE)
+--------------------------------------------------------------------------------
+  Criba diofántica sobre impares 2v+3 (rueda 6k±1): genera compuestos con
+  v = 2nm + 3n + 3m + 3 sin lista previa de primos — espíritu Sundaram, no
+  Eratóstenes clásico. La variante Jet + bloques 1MB + bit-packing la acerca
+  a cribas segmentadas tipo Eratóstenes en persistencia, no en mecánica.
+
+--------------------------------------------------------------------------------
+2. ECUACIÓN NÚCLEO (DIOFÁNTICA)
+--------------------------------------------------------------------------------
+  Número impar candidato:  N = 2v + 3     (v ≥ 0 índice en mapa)
+
+  Factores en rueda 6k±1:  f₁ = 2n + 3 ,  f₂ = 2m + 3   (n, m ≥ 0)
+
+  Producto:
+    (2n+3)(2m+3) = 2v + 3
+
+  Desarrollo → índice compuesto:
+    v = 2nm + 3n + 3m + 3
+
+  Primalidad (en el mapa):  v es primo ⇔ no ∃ n,m enteros ≥ 0 con esa ecuación.
+
+  Equivalente a criba modular VMA (CRIBA_MODULAR_6kpm1.txt):
+    compuesto p[(2n+3)(2m+3)] = 3  con value(i) = 2i+3.
+
+--------------------------------------------------------------------------------
+3. SUNRAMAN vs ERATÓSTENES vs SUNDARAM
+--------------------------------------------------------------------------------
+
+  | Aspecto              | Eratóstenes      | Sundaram clásico | SunRaman Jet VMA      |
+  |----------------------|------------------|------------------|------------------------|
+  | Arranque             | Necesita saber p primo | Solo fórmula i+j+ij | Solo ecuación v(n,m) |
+  | Universo             | Todos los enteros| Impares          | Impares 2v+3 (6k±1)    |
+  | Marca                | Múltiplos de p   | Índices compuestos| v = 2nm+3n+3m+3       |
+  | Complejidad (doc)    | O(N log log N)   | O(N log N)       | O(N log N) declarado   |
+  | Ramas if(primo)      | Sí               | Pocas            | Flujo lineal (GPU)     |
+  | Remarcas             | Evitables        | Sí               | Sí (aceptadas: escritura rápida) |
+  | Segmentación         | Sí (estándar)    | Menos común      | Sí — bloques 1MB Gvma  |
+
+  Híbrido Eratóstenes + SunRaman (idea del ecosistema VMA):
+    - Eratóstenes segmentado / rueda 6: base de referencia en tratado §8.
+    - SunRaman Jet: generación determinista de compuestos 6k±1 sin oráculo primo.
+    - Criba híbrida VMA (ascendente+descendente): reparte remarcas como segmentada.
+
+--------------------------------------------------------------------------------
+4. MANIOBRA JET
+--------------------------------------------------------------------------------
+  Cuando f₁ = 2n+3 > √(2v_max+3), no hace falta recorrer m desde n:
+  se salta m al primer valor que cae en rango (maniobra Jet).
+
+  Pseudológica (Gvma.h):
+    si f1 > limite_raiz y no jet_activado:
+        k = objetivo - (objetivo % f1) / f1
+        m = (k - 3 - ((k-3) % 2)) / 2
+        jet_activado = true
+
+  Objetivo: evitar iterar en "vacío" cuando el factor base ya es grande.
+
+--------------------------------------------------------------------------------
+5. RUEDA 6k±1 (rueda_n / rueda_m)
+--------------------------------------------------------------------------------
+  Alternancia de pasos en n y m (valores 4 ↔ 2) para tocar solo clases 6k±1.
+  Misma filosofía que saltos +2p / +4p en criba modular del tratado.
+
+--------------------------------------------------------------------------------
+6. CRIBRATGE SEGMENTAT — BLOQUES 1MB (GVMA.H)
+--------------------------------------------------------------------------------
+  Arquitectura "cribado superior incremental":
+    - Cada bloc_N.bin = exactamente 1 MB (1 048 576 bytes).
+    - Bit-packing: 8 índices v por byte → 8 388 608 candidatos por bloque.
+    - Cobertura: ~16,7 millones de impares 2v+3 por archivo.
+    - Reprendre: bloc_(ultim+1) sin recalcular anteriores.
+
+  Función clave:
+    ejecutar_criba_segmentada(mapa, v_inici, v_fi)
+    — primer m en segmento: m >= (v_inici - 3n - 3) / (2n+3)
+
+  Consulta O(1):
+    archivo bloc_(X/16777216).bin, byte (X % 16777216)/16, bit correspondiente.
+
+--------------------------------------------------------------------------------
+7. FACTORIZADOR FLASH (PINZA)
+--------------------------------------------------------------------------------
+  Dado v fijo, buscar solución a v = 2nm + 3n + 3m + 3.
+
+  Franjas (hiperboloide bajo (2n+3)(2m+3) = const):
+    m ∈ [0, √v/4]           — factores pequeños (periferia)
+    n ∈ [√v/2, 3√v/4]       — franja media/superior
+
+  Salida: f1 = 2n+3, f2 = 2m+3.
+
+--------------------------------------------------------------------------------
+8. COMPLEJIDAD Y REMARCAS (HONESTO)
+--------------------------------------------------------------------------------
+  Doc SunRaman: O(N log N) temporal; compensa con pipeline lineal (CPU/GPU).
+  Remarcas: números con varios factores (ej. 385 = 5·7·11) se marcan varias veces.
+  VMA acepta remarcas si escritura en mapa es más barata que lógica anti-remarca
+  (anteriorNY en criba modular del tratado hace lo contrario: marcado único).
+
+  sunraman.docx (archivos\) contiene el mismo pseudocódigo modular + análisis
+  asintótico O(l) del bucle — alineado con CRIBA_MODULAR_6kpm1.txt.
+
+--------------------------------------------------------------------------------
+9. IMPLEMENTACIÓN Y COMPILACIÓN
+--------------------------------------------------------------------------------
+  Librería: Gvma.h (C puro, include guards, FFI Python/Rust/Dart)
+
+  Compilar ejemplo:
+    gcc main.c -o programa_SunRaman -lm
+
+  Fuentes docx:
+    Arquitectura de Cribratge Segmentat Suntaman i Llibreria Gvma.docx
+    Análisis Criba Suntaman y Librería C.docx
+    archivos\sunraman.docx (pseudocódigo + O(l) asintótico)
+
+  Repo GitHub (citado): Anàlisi Criba Suntaman i Llibreria C, Nueva carpeta0/
+
+--------------------------------------------------------------------------------
+10. VINCULO CARPETA cribas/
+--------------------------------------------------------------------------------
+  C6 SunRaman–Eratóstenes (este archivo)
+    ↔ C3 Criba modular 6k±1 (misma ecuación, distinta presentación)
+    ↔ C4 Criba híbrida (segmentación ascendente/descendente)
+    ↔ C2 Desmemoriada (AND distribuido; otro camino paralelo)
+    ↔ C5 Sofí (clasifica supervivientes Lsg tras cribas conceptuales)
+
+  Gemini (zypyzape doc): chats "Criba de Sundaram Optimizada con Rueda",
+  "Análisis de Coste Criba SunRaman Jet".
+
+--------------------------------------------------------------------------------
+11. PSEUDOCÓDIGO RESUMIDO (JET CPU)
+--------------------------------------------------------------------------------
+  mapa[0..limite_v] := 0   // 0 = primo candidato, 1 = compuesto
+
+  para n desde 1 mientras (2n+3) <= objetivo/5:
+      f1 := 2n+3
+      m := n  (o salto Jet si f1 > sqrt)
+      mientras m >= 1:
+          v := 2*n*m + 3*n + 3*m + 3
+          si v <= limite_v: mapa[v] := 1
+          m -= paso_rueda_6k±1
+      n += paso_rueda_6k±1
+
+  Primos: { 2v+3 : mapa[v] == 0 } ∪ {2, 3} según semilla.
+
+================================================================================

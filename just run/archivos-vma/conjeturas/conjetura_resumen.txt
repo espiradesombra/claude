@@ -1,0 +1,21 @@
+
+Conjetura
+Entre n! + n y n! - n + SaltoMáximo(n!) + n hay al menos dos números primos que forman dos 6k ± 1 consecutivos.
+
+Demostración para n grande
+1. Expresión Analizada:
+   - Evaluamos la expresión 3 * (sqrt(n!) / ln(sqrt(n!))).
+
+2. Comportamiento Asintótico:
+   - A medida que n tiende a infinito, sqrt(n!) crece mucho más rápido que ln(sqrt(n!)).
+   - Por lo tanto, el cociente sqrt(n!) / ln(sqrt(n!)) tiende a infinito.
+
+3. Multiplicación por 3:
+   - Multiplicar por 3 no cambia el comportamiento asintótico del cociente.
+
+4. Conclusión:
+   - lim_{n -> ∞} 3 * (sqrt(n!) / ln(sqrt(n!))) = ∞
+   - Esto sugiere que, para valores muy grandes de n, el intervalo [n! + n, n! + SaltoMáximo(n!) + n] es lo suficientemente grande como para contener muchos números primos de la forma 6k ± 1.
+
+Conclusión General
+- La conjetura parece ser cierta para valores grandes de n, ya que el intervalo es lo suficientemente grande para contener muchos números primos de la forma 6k ± 1.
