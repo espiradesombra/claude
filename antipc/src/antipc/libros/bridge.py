@@ -429,7 +429,7 @@ _RUN_BY_ID: dict[str, list[str]] = {
     "L3-criva": ["criba", "--limit", "10000"],
     "L3-pitagorico": ["mdc", "analyze", "--n", "1147"],
     "L4-convergencia": ["geo", "--demo"],
-    "L4-aleatorovix": ["geo-masivo", "--bits", "128"],
+    "L4-aleatorovix": ["geo-masivo", "--text", "vma-aleatorovix", "--semilla", "43210"],
     "L4-k3-stream": ["k3", "stream-xor", "--text", "libro4-33x1"],
     "L4-zypyzape": ["gemelo", "run", "zypyzape", "--hubs", "2", "--packets", "5000"],
     "L4-quijote": ["gemelo", "run", "quijote", "--variant", "v5"],

@@ -254,9 +254,16 @@ def cmd_geo_masivo(args: argparse.Namespace) -> int:
 def cmd_geo(args: argparse.Namespace) -> int:
     from native_engine import geo_converge, get_backend, is_full_native
 
-    bits = args.bits
-    tales = [int(x) for x in args.tales.split(",")]
-    puntos = [int(x) for x in args.puntos.split(",")]
+    if args.demo:
+        bits = "0101101011000010"
+        tales_s = "3,5,8,13,21"
+        puntos_s = "6,12,18"
+    else:
+        bits = args.bits
+        tales_s = args.tales
+        puntos_s = args.puntos
+    tales = [int(x) for x in tales_s.split(",")]
+    puntos = [int(x) for x in puntos_s.split(",")]
     if not is_full_native():
         print("ERROR: requiere antipc_native.dll (scripts\\21_build_antipc_native.bat)", file=sys.stderr)
         return 1
@@ -1444,6 +1451,11 @@ def main(argv: list[str] | None = None) -> int:
     p_gm.set_defaults(func=cmd_geo_masivo)
 
     p_geo = sub.add_parser("geo", help="Convergencia geometrica binaria (C)")
+    p_geo.add_argument(
+        "--demo",
+        action="store_true",
+        help="Demo Libro 4 (_demo_convergencia.py defaults)",
+    )
     p_geo.add_argument("--bits", default="0101101011000010")
     p_geo.add_argument("--tales", default="3,5,8,13,21")
     p_geo.add_argument("--puntos", default="6,12,18")

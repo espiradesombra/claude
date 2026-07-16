@@ -85,6 +85,18 @@ python cli.py libro run L4-convergencia
 - `antipc2/` — snapshot anterior; **canónico = `antipc/`**
 - `grok/` · `CLAUDE TXT/` · `copilot 2025/` — chats exportados
 - `UNION/` · `predecir log raiz/` — variantes Newton / log
+- `just run/aleatorovix/` — espejo; **canónico = `aleatorovix/`**
+
+### Fusión `subir/` (no crear carpeta `subir/` en GitHub)
+
+| Origen local `repo/subir/` | Destino canónico en repo |
+|----------------------------|--------------------------|
+| `vma-github-2026/teoremas/` · `teoremas/` | `teoremas/` |
+| `33x1-pack/` | `33x1-pack/` |
+| `VMA-Dossier-Elewit/` | `zypyzape-contexto/dossier-elewit/` |
+| `zip-audit/` · `HASHCODETOOLS…/` | `hashtool-work/` |
+| `VMA-Hash-Pack-v1-staging/` | `vma-k3/` (`staging/`, `vma/k3/`) |
+| `vma-repo-temp/k3hash/` | `vma-k3/c/k3hash/` |
 
 ---
 
