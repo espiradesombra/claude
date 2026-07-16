@@ -1,0 +1,73 @@
+================================================================================
+  AntiPC — INTEGRACIÓN v0.14.0-cmd
+  Fecha: 2026-07-16
+  Autor corpus: Víctor Manzanares Alberola · 33×1
+================================================================================
+
+RESUMEN
+-------
+Cierre de pendientes v0.13 + corpus DeepSeek 6 2026.
+
+NUEVO EN v0.14
+--------------
+1. Criba desmemoriada (L1-desmemoriada)
+   · vma_methods_bridge.sieve_desmemoriada_count()
+   · antipc criba --desmemoriada
+   · libro run 1 --metodo L1-desmemoriada
+
+2. MDC-U jerk / salto balístico (L5-jerk)
+   · mdc_lib/mdc_jerk.py — pinça doble 4+4 (port mdc_v17)
+   · antipc mdc jerk N [-m M] [--factorize]
+   · --factorize enlaza mdc_v23.py (filestot l5)
+
+3. DeepSeek 6 2026 bridge
+   · deepseek/bridge.py
+   · Entradas: mdc-u, libros-tabla, criba-aleatorovix
+   · Scripts: mdc_v23, mdc_v17, ksweep_predictiu, deepseek_python_*.py
+   · antipc deepseek list | info | run
+
+4. Teoremas CLI
+   · teoremas/bridge.py — parse INDICE_MAESTRO.txt
+   · antipc teorema list | info [N] [--id]
+
+ARCHIVOS TOCADOS
+----------------
+  src/antipc/cli.py                    → v0.14.0-cmd
+  src/antipc/vma_methods_bridge.py
+  src/antipc/native_engine.py
+  src/antipc/libros/bridge.py          → L1-desmemoriada, L5-jerk integrados
+  src/antipc/mdc_lib/mdc_jerk.py         → NUEVO
+  src/antipc/deepseek/bridge.py        → NUEVO
+  src/antipc/teoremas/bridge.py          → NUEVO
+  src/antipc/industrial/inventory.py
+  README.md · LEEME.txt
+
+FUENTES DEEPSEEK 6 2026
+-----------------------
+  C:\Users\cuent\Desktop\repo\deepseekjun26\     (35 txt)
+  C:\Users\cuent\Desktop\repo\filestot l5\       (mdc_v15–v23, ksweep)
+  C:\Users\cuent\Desktop\repo\PY L5\             (deepseek_python_20260328_*)
+  C:\Users\cuent\Desktop\repo\cosas\deepseek 6-5-26.txt
+
+COMANDOS DE PRUEBA
+------------------
+  cd repo\antipc\src\antipc
+  python cli.py version
+  python cli.py criba --limit 10000 --desmemoriada
+  python cli.py mdc jerk 1147
+  python cli.py libro run 1 --metodo L1-desmemoriada
+  python cli.py libro run 5 --metodo L5-jerk
+  python cli.py deepseek list
+  python cli.py deepseek info mdc-u
+  python cli.py teorema list
+  python cli.py teorema info 9
+
+PENDIENTE (roadmap)
+-------------------
+  · Criba desmemoriada en DLL C
+  · k3_audit, k3simil/k3search en C
+  · MMO WebSocket, TLS, Docker/K8s
+  · Tests amplios, MANIFEST SHA256 33×1
+  · LAN real cluster (solo localhost verificado)
+
+================================================================================

@@ -1,0 +1,27 @@
+INTEGRACIÓN v0.5.0-c — Newton + K-sweep predictivo
+==================================================
+Fecha: 2026-07-16
+
+AÑADIDO A antipc_native.dll
+---------------------------
+  newton_rapido.c     antipc_newton_oraculo / _rapido / _log
+  mdc_ksweep.c        antipc_mdc_ksweep_classic / _predict
+
+CLI NUEVO
+---------
+  antipc newton 121 -f cuadrados
+  antipc newton 1000 -f potencia --n-exp 3
+  antipc mdc ksweep 1147
+  antipc mdc ksweep 10000319
+
+EJECUTADO OK
+------------
+  K-sweep 1147           D=31    evals=2
+  K-sweep 10000319       D=1949  evals=562
+  K-sweep bench 11d      D=100003 evals=4
+  Newton 121             j=0.992970838543 (idéntico a Python vma-methods)
+
+NOTA Newton: algoritmo VMA no converge en 200 iter para E=121 (también en Python).
+             C replica el comportamiento fielmente.
+
+SIGUIENTE: k3_geo_math + aleatorovix (encriptacionGeometrica)

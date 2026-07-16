@@ -1,0 +1,39 @@
+ANTIPC-PORT-C — Laboratorio C en el Escritorio
+==============================================
+Víctor Manzanares Alberola · 2026
+
+README principal (hitos matemáticos + CLI 0.11):
+  C:\Users\cuent\Desktop\repo\antipc\README.md
+  C:\Users\cuent\Desktop\repo\antipc\LEEME.txt
+
+NO mueve archivos del repo. Solo prototipos y documentación aquí.
+
+ARCHIVOS
+--------
+  00_INVENTARIO_DESKTOP_REPO.md   Qué hay en Desktop + repo
+  01_MAPA_PORT_A_C.md             Qué pasar a C (prioridades)
+  include/antipc_port_v04.h       API propuesta v0.4
+  src/*.c                         Prototipos compilables
+  build_desktop.bat               Compilar port_demo.exe
+  bench_port_c.py                 Bench Python vs DLL vs local C
+
+YA EN C (repo, no tocar)
+------------------------
+  repo\antipc\src\antipc\antipc_native.dll  v0.3.0-c
+  K3 hash, MDC factor, Eratóstenes, Criva, geo, k3_stream
+
+COMPILAR
+--------
+  build_desktop.bat
+  (o x64 Native Tools Prompt for VS)
+
+BENCH
+-----
+  python bench_port_c.py
+
+SIGUIENTE INTEGRACIÓN (copiar al repo, no mover)
+------------------------------------------------
+  1. mdc_trains.c      → antipc mdc analyze rápido
+  2. criba_hibrida.c   → vma-methods compare-cribas
+  3. mdc_ksweep_predict.c ampliado → MDC N grande
+  4. k3_geo_math + aleatorovix desde encriptacionGeometrica\

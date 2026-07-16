@@ -1,0 +1,31 @@
+AntiPC v0.13.0-cmd — Libros 1–6 métodos VMA
+Fecha: 2026-07-16
+
+=== AÑADIDO ===
+
+libros/bridge.py
+  - Registro Libros 1–6 con métodos, ecuaciones, estado, comando AntiPC
+  - Enlace a repo/teoremas (fichas 01–30)
+  - run_metodo() ejecuta CLI AntiPC para métodos integrados
+
+CLI libro
+  antipc libro list
+  antipc libro info {1..6}
+  antipc libro metodos [--libro N]
+  antipc libro run N --metodo ID [--n N]
+
+=== MAPA LIBROS ===
+
+  1  Números i numeritos      → criba 6k±1, eratóstenes (desmemoriada pendiente)
+  2  Números oTra VeZ         → híbrida, dos primos, MRAUV
+  3  Sigo en mis Trece        → Criva, Sofí, pitagórico, K=9/24
+  4  Encriptación/E. Verde    → geo, geo-masivo, k3 stream, gemelos
+  5  (2v+3) factorización     → mdc factor/analyze/ksweep (jerk pendiente)
+  6  Pseudocódigo impl.       → newton (método-V en teoremas/25)
+
+=== PENDIENTE ===
+
+  L1-desmemoriada, L5-jerk → C + CLI
+  Métodos solo en teoremas/*.txt → visor o export JSON
+
+FIN

@@ -1,0 +1,112 @@
+========================================================================
+  INVENTARIO INDUSTRIAL AntiPC
+  Generado: 2026-07-16T17:39:41
+========================================================================
+
+  CLI          : 0.9.0-cmd
+  Native       : 0.7.0-c
+  Backend      : antipc_native:0.7.0-c@antipc_native.dll
+  DLL          : OK C:\Users\cuent\Desktop\repo\antipc\src\antipc\antipc_native.dll
+
+  SALUD OPERATIVA
+------------------------------------------------------------------------
+    k3_parity                OK
+    mdc_factor_10473029      7
+    sieve_1000               168
+    native_alu_ms            1
+    hmac_auth                OK
+    plugins_loaded           6/6
+
+  CAPACIDADES
+------------------------------------------------------------------------
+
+  [Núcleo y fórmula]
+    · P_util(N) = N·E(N) + K(N) — comunicación → cómputo reutilizable
+    · FlowKernel + KnowledgeResolver + Reference inmutable
+    · Microkernel KOPs: Boot, Hash, Identity
+    · ExecutionProfile: portable | server | cluster | laboratory | industrial_audit
+
+  [Arquitecturas A–E (benchmark)]
+    · A — Convencional: memcpy + cola bloqueante
+    · B — Lock-free / SlotRing recvinto (ZypyZape)
+    · C — Distribuido: partición hubs + cache K(N)
+    · D — Grafcet: lotes + matriz existencia + redundancia K3
+    · E — UDP real: hub_node.py + WORK/RESULT + HMAC
+
+  [Plugins industriales (IPlugin)]
+    · K3_HASH — digest buffer determinista
+    · K3_FILE — huella fichero (tamaño + hash streaming C)
+    · K3_DEDUP — grupos duplicados (tamaño, hash)
+    · MDC_FACTOR — factorización toy ≤10 dígitos
+    · MDC_PHASE — fase/curvatura modular
+    · MDC_REGLA — regla mecánica escala log
+
+  [antipc_native.dll (C v0.7.0-c)]
+    · k3hash + k3_suite: file, fingerprint, redundant, heavy, hamming
+    · MDC: factor, scan_trains, ksweep classic/predict
+    · Cribas: Eratóstenes, híbrida VMA, Criva π(x)/x
+    · Newton rápido + oráculo MEcuation
+    · Geo: converge binaria, Aleatorovix, masivo crypt π/e
+    · K3 stream XOR acordeón (33×1)
+
+  [CLI antipc (comandos)]
+    · version | boot | mk hash
+    · hash | wave | mechanical
+    · mdc: factor | analyze | ksweep | visual
+    · native: status | bench
+    · criba | newton | geo | geo-masivo
+    · k3: hash | file | verify | dedup | redundant | heavy | hamming | stream-xor
+    · network demo — B slot-ring → D Grafcet
+    · game demo | game cluster | game bots — MMO masivo
+
+  [Red y MMO]
+    · UdpFabric L3: spawn hubs, AUTH HMAC, WORK/RESULT
+    · hub_node.py — heavy K3 remoto + cache
+    · bd_pipeline — ingest UDP puerto 3333
+    · game_protocol 64B — estado jugador MM
+    · game cluster — validación heavy por shard en hubs L3
+    · AntiPCStack — capas L0..L4 unificadas
+
+  [Pipelines industriales]
+    · Auditoría ficheros: K3_FILE → resolver → K3_DEDUP + telemetría CSV/JSON
+    · industrial_demo.py — monolítico vs industrial vs 2ª pasada K(N)
+    · demo_stack_udp.py — hash remoto en hubs vs local
+    · Telemetría: IndustrialTelemetry → CSV + informe JSON
+
+  [Scripts Windows (scripts/)]
+    · 01_instalar | 02_benchmark | 03_benchmark_udp | 04_udp_solo
+    · 05_verificar_k3 | 08_build_k3hash | 21_build_antipc_native
+    · 09_demo_industrial | 16_antipc_cmd | 17_build_antipc_exe
+    · 20_network_demo | 22_game_mmo_demo | 23_game_cluster_demo
+
+  [Integraciones Desktop VMA]
+    · vma-methods — cribas, Newton, Criva
+    · vma-k3 / HASHTOOLCODE — k3hash.c
+    · encriptacionGeometrica — Aleatorovix, convergencia
+    · mdc_lib — analyze, visual, factoritzacio
+    · antipc-port-c — logs integración v04–v08
+
+  LISTO PARA INDUSTRIA
+------------------------------------------------------------------------
+    ✓ Hash K3 auditable (C + Python paridad)
+    ✓ Reuse knowledge buffer (2ª pasada sin ALU)
+    ✓ Telemetría CSV/JSON exportable
+    ✓ Red con permiso HMAC obligatorio
+    ✓ Plugins deterministas y firmables
+    ✓ DLL nativa unificada para ALU crítica
+    ✓ Demos reproducibles por .bat
+    ✓ MMO cluster con hubs por shard
+
+  BRECHAS / ROADMAP
+------------------------------------------------------------------------
+    △ LEEME.txt desactualizado (v0.1.0 Sale-It vs CLI 0.9.0)
+    △ Sin TLS/HTTPS — UDP laboratorio; no producción WAN
+    △ K3 no criptográfico — no contraseñas ni firma legal
+    △ MDC factor toy ≤10 dígitos — no RSA real
+    △ Sin orquestador Kubernetes/Docker oficial
+    △ Tests automatizados parciales (microkernel, wave)
+    △ antipc.exe PyInstaller — verificar DLL empaquetada en deploy
+
+========================================================================
+  VMA — AntiPC / 33×1
+========================================================================

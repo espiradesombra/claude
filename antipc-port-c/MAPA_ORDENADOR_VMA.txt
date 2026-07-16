@@ -1,0 +1,168 @@
+================================================================================
+MAPA DEL ORDENADOR — VÍCTOR MANZANARES ALBEROLA (VMA)
+================================================================================
+Raíz: C:\Users\cuent\Desktop\
+Fecha barrido: 2026-07-10
+Cuenta git: espiradesombra | Proyecto: 33×1 (horizonte comercial = 33×1, no 33×N)
+
+Este archivo es el punto de entrada. La IA y VMA lo usan para no perderse
+entre ~100k archivos. No mueve nada por sí solo; describe dónde está cada cosa.
+
+--------------------------------------------------------------------------------
+1. RAÍCES CANÓNICAS (prioridad de lectura)
+--------------------------------------------------------------------------------
+
+  A) TEOREMAS + GIT
+     C:\Users\cuent\Desktop\vma-github-2026\
+       teoremas\INDICE_MAESTRO.txt     ← 30 fichas + formal F01–F34
+       teoremas\formal\                ← 16 [OK] formalizados
+       teoremas\ingenieria\            ← 18 ideas (AntiPC, ZypyZape, Apiñon…)
+       teoremas\spacial\               ← S01–S09 órbitas, láser, Zero Hit
+       teoremas\porque_no_33x1\        ← mercados, one-pagers, NOTA_AUTORIA_IA
+       teoremas\metodos\               ← ME locales, matriz método×método
+       teoremas\apinnon_extraido\      ← 145 txt del monolito Apiñon
+       teoremas\INDICE_APINON.txt
+       Lee-Chat\                       ← chats Lee (desde repo)
+       SUBIDA_GITHUB.txt               ← push manual pendiente
+
+  B) CÓDIGO Y LIBROS
+     C:\Users\cuent\Desktop\repo\      (1487 archivos)
+       Libro6 NewtonRapido en busqueda con oraculo\  ← P=NP / oráculo / ME
+       Lee Chat\                         ← fuente original chats Lee
+       py\ PY L5\ UNION\ ZYPYZAPE…        ← prototipos ingeniería
+       Archivos del doc Apiñon...\       ← 29 sueltos previos al .docx
+
+  C) CORPUS MASIVO (no reorganizar masivamente)
+     C:\Users\cuent\Desktop\archivos\  (~97 900 archivos)
+       Apiñon.docx (~74 MB)             ← fuente canónica monolito
+       UPV EPSA\… Copilot\             ← duplicados Apiñon, mates, libros
+
+  D) CHATS RECIENTES
+     C:\Users\cuent\Desktop\lee arbusto\  (282 archivos)
+       golbach pp0.txt, factor goldback.txt, (l)(L).txt, 5-7.txt
+       AntiPC-*.zip, HASHTOOLCODE…
+
+  E) PAQUETES PARA SUBIR / FIRMA
+     C:\Users\cuent\Desktop\subir\       (399 archivos)
+       33x1-pack\                        ← manifiesto, cartas, oferta pública
+       VMA-Dossier-Elewit\               ← piloto energía
+       teoremas\                         ← COPIA antigua; ver nota abajo
+
+  F) CÓDIGO K3 HASH (paquete Python)
+     C:\Users\cuent\Desktop\vma\         (37 archivos, git propio)
+       vma\k3\, tests\, docs\PROPUESTA.md
+
+  G) ENTRADA ORDENADA (sueltos del escritorio, 2026-07-10)
+     C:\Users\cuent\Desktop\VMA\_entrada\
+       zips\ videos\ scripts\ docs\ mensajes\ wordpress\
+
+--------------------------------------------------------------------------------
+2. COPIAS Y DUPLICADOS (saber cuál manda)
+--------------------------------------------------------------------------------
+
+  teoremas canónico     → vma-github-2026\teoremas\
+  teoremas copia        → subir\teoremas\  (más vieja; faltaba 31, metodos ME)
+  Apiñon.docx           → archivos\Apiñon.docx (+ 6 copias en UPV EPSA)
+  Lee Chat              → repo\Lee Chat\  y  vma-github-2026\Lee-Chat\
+  Dossier Elewit zip    → VMA\_entrada\zips\  (también subir\VMA-Dossier-Elewit\)
+  k3 / hash             → vma\  y  subir\VMA-Hash-Pack-v1-staging\
+
+  REGLA: si hay conflicto, gana vma-github-2026 para teoremas/índices;
+         gana archivos\ para documentos originales enormes;
+         gana repo\ para código ejecutable y Libro6.
+
+--------------------------------------------------------------------------------
+3. INVENTARIO APRENDIDO (resumen)
+--------------------------------------------------------------------------------
+
+  Matemáticas VMA
+    30 fichas numeradas 01–30 + ficha 31 ME (heurística, no teorema)
+    34 formal F01–F34 | 16 con estado [OK]
+    Cribas, segunda vuelta, preguntaseria (urania civil)
+
+  Ingeniería comercializable (TRL variable)
+    AntiPC / sale-it     TRL 4–5  (lee arbusto, repo)
+    k3hash / vma         TRL 3–4  (vma\, teorema 19)
+    ZypyZape / batería   TRL 2–3  (repo\ZYPYZAPE…)
+    UNION stack          TRL 2     (repo\UNION)
+    Apiñon / Pacopi      TRL 1–2   (monolito hub mates+Newton+chats)
+
+  No vendible como producto (honesto)
+    Monolito 33×1 sin firmantes | P≠NP / ME global | Quijote RoCoF refutado
+
+  Comercial 33×1
+    Horizonte: 33×1 (un solo eje temporal/comercial)
+    Aval democrático + sufragio femenino → cláusulas por OTROS firmantes
+    Módulos técnicos N₁–N₄ solo bajo petición previa explícita
+    Ver: vma-github-2026\teoremas\porque_no_33x1\MERCADOS_GANABLES.txt
+
+--------------------------------------------------------------------------------
+4. CARPETAS DEL ESCRITORIO (por tamaño / rol)
+--------------------------------------------------------------------------------
+
+  ~97 900  archivos\           corpus histórico Copilot, mates, libros
+  ~37 279  fotos\              fotos personales
+   ~9 211  misicc\             música
+   ~5 587  preogramas\         programas / instaladores
+  ~3 438   Nueva carpeta comprimida (en zip)\
+  ~2 091   VICTOR\             Copilot, libros, duplicados Apiñon
+  ~1 578   claude-main-extract\ export Claude
+  ~1 487   repo\               código + Libros 1–6 + gemelos
+     793   Camera Roll\
+     621   WSL\
+     399   subir\               packs firma + copia teoremas
+     282   lee arbusto\          chats 2026 + AntiPC zips
+     301   vma-github-2026\     CANÓNICO índices + git (+ apinnon)
+      37   vma\                 paquete k3 Python
+      —    VMA\_entrada\        sueltos ordenados del Desktop
+      —    videos\ music\ zip\ techamv.com\ webtechamv\  media / web
+      —    herramientas… gemelos viejos\ monton viejo revisat\  archivo
+
+  NO TOCAR sin pedir: archivos\ masivo, gemelos viejos, monton viejo revisat
+
+--------------------------------------------------------------------------------
+5. ARCHIVOS SUELTOS — QUÉ SE HIZO (2026-07-10)
+--------------------------------------------------------------------------------
+
+  Movidos de Desktop\ → VMA\_entrada\:
+    zips: claude-main, continue-main, grok, www, Elewit, hash, instalables…
+    videos: grabaciones Grok/GPT julio 2026
+    scripts: mdc_hypotenuse_jump.py, utima.tsx
+    docs: Resumen Ejecutivo.docx, gemini-code copia, txts vacíos
+    mensajes: grupo A-LO-GRANDE, zypyzape-principal
+    wordpress: wp-cron.php, wp-links-opml.php
+
+  Quedan en Desktop (temporales Word, no mover):
+    ~$*.docx, ~WRL*.tmp
+
+--------------------------------------------------------------------------------
+6. FUENTES CLAVE POR TEMA
+--------------------------------------------------------------------------------
+
+  Goldbach / Sofí / MDC     → teoremas 01–20, lee arbusto, archivos\cribas
+  Libro 6 / Newton oráculo  → repo\Libro6…\Nuevo Documento de texto.txt
+  Apiñon hub                → archivos\Apiñon.docx + apinnon_extraido\
+  AntiPC benchmarks         → lee arbusto\AntiPC-*, repo\sale-it paths
+  Elewit piloto             → subir\VMA-Dossier-Elewit\
+  33×1 firma                → subir\33x1-pack\
+
+--------------------------------------------------------------------------------
+7. PENDIENTES (VMA / IA)
+--------------------------------------------------------------------------------
+
+  [ ] git push vma-github-2026 → GitHub (credenciales usuario)
+  [ ] Actualizar 07_APINON.txt con visión hub (hecho en vma-github-2026)
+  [ ] Barrido profundo archivos\ (solo indexar, no mover)
+  [ ] Decidir si subir\teoremas\ se archiva o se borra tras sync
+
+--------------------------------------------------------------------------------
+8. CONTACTO / AUTORÍA
+--------------------------------------------------------------------------------
+
+  Autor: Víctor Manzanares Alberola
+  IA (Grok): indexa y ordena; NO firma 33×1 ni representa a VMA ante terceros.
+  Ver: vma-github-2026\teoremas\porque_no_33x1\NOTA_AUTORIA_IA.txt
+
+  Ficha extendida IA: vma-github-2026\FICHA_APRENDIZAJE_VMA.txt
+
+================================================================================

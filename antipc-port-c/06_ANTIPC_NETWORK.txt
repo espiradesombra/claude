@@ -1,0 +1,179 @@
+ANTIPC NETWORK — qué es y para qué sirve (estudio del repo)
+============================================================
+Fecha: 2026-07-16
+Repo: C:\Users\cuent\Desktop\repo\antipc
+
+RESUMEN EN UNA FRASE
+--------------------
+AntiPC network NO es “internet genérico”: son dos pipelines UDP locales que
+demuestran cómo mover datos de red → cómputo (hash K3 / Grafcet) con el mínimo
+de copias y, en el modo distribuido, cómo descargar la ALU del maestro a hubs
+satélite autenticados con HMAC.
+
+
+DOS MODOS DE RED (no confundirlos)
+----------------------------------
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│ MODO 1 — CLI: antipc network demo                                       │
+│ Archivo: src/antipc/network/bd_pipeline.py                              │
+│ Comando: python -m cli network demo [--hubs 4] [--duration 3]           │
+└─────────────────────────────────────────────────────────────────────────┘
+
+  Propósito: benchmark arquitectura B → D (ZypyZape + Grafcet).
+  Es un laboratorio de ingestión UDP en localhost.
+
+  Flujo:
+    hub_emitter.py (N procesos)
+         │  UDP 64B, magic 0x5A59, puerto 3333
+         ▼
+    Maestro: recvfrom_into(slot)     ← arquitectura B (SlotRing)
+         │  1 copia usuario: red → slot fijo
+         ▼
+    Worker thread → GrafcetEngine    ← arquitectura D
+         │  redundant_hash + matriz existencia + heavy_hash + cache
+         ▼
+    Métricas: packets_in, grafcet_out, drops, cache_hits, pkt/s
+
+  Componentes clave:
+    zypyzape/slot_ring.py   — ring SPSC de slots 64B (destino de recvinto)
+    zypyzape/hub_emitter.py — emisor que simula periferia / hubs UDP
+    grafcet.py              — motor de estados + redundancia matemática
+    architectures.py        — define A/B/C/D para comparar CPU
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│ MODO 2 — Red distribuida de hashes (AntiPCStack L3)                     │
+│ Archivos: architecture/udp_fabric.py, hub_node.py, antipc_stack.py    │
+│ Demo:     demo_stack_udp.py, udp_benchmark.py                           │
+└─────────────────────────────────────────────────────────────────────────┘
+
+  Propósito: el maestro envía WORK; los hubs calculan K3 heavy hash y
+  devuelven RESULT. La ALU pesada corre en satélites, no en el nodo central.
+
+  Flujo:
+    AntiPCStack.request_network_permission()  — HMAC local (ley 3)
+         ▼
+    UdpFabric.start_hubs(4)                   — spawn hub_node.py
+         ▼
+    AUTH UDP por hub:
+      AUTH_REQUEST → AUTH_CHALLENGE → AUTH_RESPONSE → AUTH_OK
+         ▼
+    pack_work(seq, payload) → hub → pack_result(seq, digest)
+         ▼
+    Knowledge cache en hub (reuse sin recalcular heavy hash)
+
+  Puertos típicos: maestro 19700, hubs 19701+
+
+
+LAS CUATRO ARQUITECTURAS (contexto del network demo)
+----------------------------------------------------
+  A — Convencional: memcpy + queue.Queue + worker
+  B — Lock-free ring (SPSCRingBuffer) — base del slot-ring ZypyZape
+  C — Distribuido: partición en N hubs con cache local
+  D — Grafcet: matriz de existencia + hashes redundantes + heavy + cache
+
+  El comando `network demo` enlaza explícitamente B (ingest UDP) con D (Grafcet).
+  La idea industrial: la red alimenta el motor de estados sin una segunda cola
+  intermedia con copias extra.
+
+
+GRAFCET (arquitectura D) — qué computa
+--------------------------------------
+  Estados: IDLE → ACCUMULATE → REDUNDANCY → EXISTENCE → PROCESS → EMIT
+
+  Por cada paquete UDP:
+    1. redundant_hash (3 semillas K3) — detecta canal inconsistente
+    2. matriz de existencia — fila “existe” si paridad mayoritaria ≥ umbral
+    3. si existe: heavy_hash (4 rondas K3) o cache hit
+    4. batch_size=32 por defecto — procesa en lotes como línea industrial
+
+  Esto es “compute”: no solo transporta bytes; valida existencia y produce
+  un digest pesado reutilizable (knowledge cache).
+
+
+PROTOCOLO UDP ZypyZape (modo demo, puerto 3333)
+-------------------------------------------------
+  Payload 64 bytes:
+    magic uint16 = 0x5A59 ("ZY")
+    hub_id uint16
+    seq uint32
+    + relleno hash-like
+
+  El maestro parsea seq con struct.unpack("!HHI", ...).
+
+
+PROTOCOLO WORK/RESULT (modo distribuido)
+----------------------------------------
+  udp_protocol.py — MsgType: WORK, RESULT, AUTH_*, PING/PONG, DONE
+  hub_node.py:
+    - SPSCRingBuffer interno
+    - cache dict[int,int] keyed by k3_hash(payload)
+    - _heavy_hash = 4 rondas (mismo que Grafcet)
+
+
+RELACIÓN CON EL RESTO DE ANTIPC
+--------------------------------
+  L0  hash_engine / k3hash.c     — digest base
+  L2  FlowKernel + plugins       — K3_HASH, K3_FILE, K3_DEDUP
+  L3  network (este documento)   — UDP + permisos
+  L4  telemetría CSV             — industrial/runtime.py
+
+  WaveMode (cli hash --wave): prioriza reuse según latencia RTT; es política
+  del kernel, no el pipeline B→D del network demo.
+
+
+COMANDOS ÚTILES
+---------------
+  cd repo\antipc\src\antipc
+
+  # Demo B→D (lo que expone el CLI como "network")
+  python -m cli network demo --hubs 4 --duration 2.5 --packets 15000
+  scripts\20_network_demo.bat
+
+  # Sin lanzar emisores (esperar UDP externo)
+  python -m cli network demo --no-hubs --duration 10
+
+  # Red distribuida hash (stack completo)
+  python demo_stack_udp.py --hubs 4 --max-files 30
+
+  # Hub manual
+  python hub_node.py --port 19701 --require-auth --master-key <hex>
+
+
+MÉTRICAS EJECUTADAS (2026-07-16)
+--------------------------------
+  antipc network demo --hubs 4 --duration 2 --packets 8000
+    UDP in      : 2068
+    Grafcet out : 2068
+    Drops       : 3
+    User copies : 2068 (1× recvinto/slot)
+    Throughput  : ~1033 pkt/s
+    JSON        : output/network_bd_demo.json
+
+  Interpretación:
+    - Casi todos los paquetes recibidos pasan Grafcet (pipeline coherente).
+    - cache_hits=0 en tráfico sintético único (sin duplicados).
+    - Drops = ring lleno momentáneamente (backpressure UDP).
+
+
+QUÉ NO ES
+---------
+  - No es DPDK ni kernel bypass real (Python + UDP estándar).
+  - No sustituye TLS/VPN; HMAC es permiso de laboratorio AntiPC.
+  - No es cifrado K3; el hash es integridad/fingerprint, no autenticación
+    criptográfica fuerte.
+
+
+CONCLUSIÓN PARA “COMPUTE”
+-------------------------
+  AntiPC network demuestra dos ideas de cómputo en red:
+
+  1. Ingestión eficiente: UDP → slot fijo → Grafcet (mínimas copias).
+  2. Descarga de ALU: maestro delega heavy K3 a hubs con cache y auth.
+
+  El núcleo C (antipc_native.dll) acelera K3/redundant/heavy; el pipeline
+  de red sigue siendo Python pero el cómputo hash ya puede ir a C v0.7.0-c.
+
+============================================================
+FIN — VMA / AntiPC / 33×1
+============================================================

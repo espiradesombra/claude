@@ -1,0 +1,54 @@
+INTEGRACIÓN v0.8.0 — AntiPC MMO (videojuegos masivos en línea)
+==============================================================
+Fecha: 2026-07-16
+
+CONCEPTO
+--------
+  Pipeline B→D aplicado a MMO:
+    UDP 64B (estado jugador) → SlotRing recvinto → Grafcet MMO → WorldState
+
+  Cada paquete lleva: entity_id, tick, posición, velocidad, shard, k3_tag.
+  Grafcet valida EXISTENCIA (redundancia K3) antes de aplicar al mundo.
+  Duplicados de estado → cache Grafcet + cache WorldState (no recalcular ALU).
+
+ARCHIVOS NUEVOS
+---------------
+  network/game_protocol.py   — paquete fijo 64B (MAGIC 0x4D4D)
+  network/game_world.py      — WorldState autoritativo por entidad
+  network/game_engine.py     — MmoGrafcetEngine (Grafcet + mundo)
+  network/game_server.py     — servidor slot-ring + métricas MMO
+  network/game_bots.py       — bots simulados (N jugadores × tick_hz)
+  scripts/22_game_mmo_demo.bat
+
+CLI (0.8.0-cmd)
+---------------
+  antipc game demo --players 128 --duration 5 --shards 4
+  antipc game bots --master 127.0.0.1 --players 200
+
+EJECUTADO OK (64 jugadores, 3s)
+--------------------------------
+  UDP in        : 2932
+  Movimientos   : 2532 (~844/s)
+  Entidades     : 64
+  Grafcet cache : 412
+  Estado cache  : 400
+  Throughput    : ~977 pkt/s
+  Drops         : 0
+  JSON          : output/game_mmo_demo.json
+
+USO INDUSTRIAL / JUEGO
+----------------------
+  - Servidor autoritativo valida estados antes de broadcast
+  - k3_tag en wire = anti-tamper ligero + dedup
+  - Shards (entity_id % N) preparado para repartir mundos
+  - Heavy K3 nativo (v0.7.0-c) en validación Grafcet
+
+SIGUIENTE (opcional)
+--------------------
+  - Hubs WORK/RESULT para validación en cluster (L3 AntiPCStack)
+  - WebSocket gateway para clientes reales
+  - Interest management por zona (zone_key en protocolo)
+
+==============================================================
+FIN — VMA / AntiPC MMO
+==============================================================
