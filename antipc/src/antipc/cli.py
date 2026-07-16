@@ -39,7 +39,7 @@ from runtime.plugin import PluginContext
 from runtime.reference import Reference, ReferenceRecord, ReferenceState
 
 
-VERSION = "0.14.0-cmd"
+VERSION = "0.14.1-cmd"
 
 
 def _kernel_with_plugins(*, wave: bool = False, wave_host: str = "8.8.8.8") -> FlowKernel:
@@ -209,6 +209,68 @@ def _run_mdc_v23_factor(n: int) -> None:
     if factor:
         print(f"  Factor    : {factor}  q={n // factor}")
     print(f"  Tiempo    : {t_ms:.2f} ms")
+
+
+def cmd_mrauv_calibrar(args: argparse.Namespace) -> int:
+    from mdc_lib.mrauv import calibrar, format_calibrar
+
+    if args.n0 < 3:
+        print("ERROR: n0 debe ser >= 3", file=sys.stderr)
+        return 1
+    t0 = time.perf_counter()
+    r = calibrar(args.n0, dn=args.dn)
+    ms = int((time.perf_counter() - t0) * 1000)
+    print(format_calibrar(r))
+    print(f"  Tiempo    : {ms} ms")
+    return 0
+
+
+def cmd_mrauv_densidad(args: argparse.Namespace) -> int:
+    from mdc_lib.mrauv import densidad_report, format_densidad
+
+    if args.n < 1:
+        print("ERROR: n debe ser >= 1", file=sys.stderr)
+        return 1
+    t0 = time.perf_counter()
+    r = densidad_report(args.n)
+    ms = int((time.perf_counter() - t0) * 1000)
+    print(format_densidad(r))
+    print(f"  Tiempo    : {ms} ms")
+    return 0
+
+
+def cmd_mrauv_goldbach(args: argparse.Namespace) -> int:
+    from mdc_lib.mrauv import (
+        D,
+        count_goldbach,
+        format_goldbach_scan,
+        scan_goldbach,
+        sieve_primes,
+    )
+
+    if args.n_max < args.n_start:
+        print("ERROR: --n-max debe ser >= --n-start", file=sys.stderr)
+        return 1
+    t0 = time.perf_counter()
+    rows, all_ok = scan_goldbach(args.n_start, args.n_max, args.delta)
+    print(format_goldbach_scan(rows, all_ok))
+
+    if args.compare:
+        max_two = max(2 * n for n in args.compare)
+        primes = sieve_primes(max_two)
+        pset = set(primes)
+        print("\nComparación MRAUV vs Goldbach exacto:")
+        print(f"{'2n':>10}  {'G_exact':>9}  {'D(n)·2n':>10}")
+        print("-" * 35)
+        for n in args.compare:
+            two_n = 2 * n
+            g = count_goldbach(two_n, pset)
+            pred = D(n) * two_n
+            print(f"{two_n:>10}  {g:>9}  {pred:>10.1f}")
+
+    ms = int((time.perf_counter() - t0) * 1000)
+    print(f"  Tiempo    : {ms} ms")
+    return 0 if all_ok else 1
 
 
 def cmd_geo_masivo(args: argparse.Namespace) -> int:
@@ -1238,6 +1300,31 @@ def main(argv: list[str] | None = None) -> int:
         help="Tras jerk, factorizar con mdc_v23 (DeepSeek L5)",
     )
     p_jk.set_defaults(func=cmd_mdc_jerk)
+
+    p_mra = sub.add_parser("mrauv", help="MRAUV densidad cinemática (Libro 2)")
+    p_mra_sub = p_mra.add_subparsers(dest="mrauv_cmd", required=True)
+
+    p_mrc = p_mra_sub.add_parser("calibrar", help="Calibración 3 puntos V0,a0,j")
+    p_mrc.add_argument("n0", type=int, help="Punto inicial n0")
+    p_mrc.add_argument("--dn", type=int, default=None, help="Paso Δ (default 2√n0)")
+    p_mrc.set_defaults(func=cmd_mrauv_calibrar)
+
+    p_mrd = p_mra_sub.add_parser("densidad", help="L(n), m(n), D(n), criterio 2-primos")
+    p_mrd.add_argument("n", type=int)
+    p_mrd.set_defaults(func=cmd_mrauv_densidad)
+
+    p_mrg = p_mra_sub.add_parser("goldbach", help="Barrido criterio MRAUV-Goldbach [HEUR]")
+    p_mrg.add_argument("--n-start", type=int, default=1000)
+    p_mrg.add_argument("--n-max", type=int, default=50_000)
+    p_mrg.add_argument("--delta", type=int, default=5000)
+    p_mrg.add_argument(
+        "--compare",
+        type=int,
+        nargs="*",
+        metavar="N",
+        help="Comparar con conteo exacto en estos n (ej. 100 500 1000)",
+    )
+    p_mrg.set_defaults(func=cmd_mrauv_goldbach)
 
     p_vis = p_mdc_sub.add_parser("visual", help="Animar dos trenes X/Y + colisiones")
     p_vis.add_argument("n", type=int)

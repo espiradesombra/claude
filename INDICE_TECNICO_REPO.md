@@ -17,6 +17,7 @@ Este índice ordena los paquetes ejecutables y el corpus matemático. El resto d
 | **docs/integracion-antipc/** | Logs v04–v14 port C | `14_INTEGRADO_v14.txt` |
 | **encriptacionGeometrica/** | Convergencia binaria, K3, Aleatorovix | `_demo_convergencia.py`, `k3_core.c` |
 | **aleatorovix/** | Organismo v1.0 (entropía + Lila + criba) | `python aleatorovix.py` |
+| **mrauv/** | MRAUV filtrado (Libro 2, densidad primos) | `antipc mrauv calibrar N` |
 | **docs/aleatorovix-firma-geometrica/** | Hub firma geométrica + Aleatorovix | `INDICE_ALEATOROVIX_GEO.txt` |
 | **vma/** | Paquete K3 cross-verifier | `vma/k3/` |
 | **graficas y explicaciones/** | Gráficas MDC, MRAUV, AntiPC | `00_INDICE.txt` |

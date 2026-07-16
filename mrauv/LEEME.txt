@@ -1,0 +1,40 @@
+================================================================================
+  MRAUV — paquete filtrado (Libro 2 / densidad de primos)
+  Víctor Manzanares Alberola · VMA / 33×1
+================================================================================
+
+QUÉ ES
+  Modelo cinemático de densidad de primos por tramos [HEUR].
+  D_pred ≈ D₀ + V₀·Δ + ½a₀·Δ² (+ jerk opcional).
+
+PROCEDENCIA (archivos viejos — solo lo útil)
+  Desktop/archivos/mrauv.py              → calibración 3 puntos
+  Desktop/archivos/anexoF_mrauv_calibrador.py
+  repo/py/mrauv_goldbach.py            → Goldbach + F_eff
+  graficas y explicaciones/generar_todo.py
+
+NO IMPORTADO (ruido / duplicado / warez)
+  archivos/UPV EPSA/ (86k ficheros universitarios)
+  archivos/portables/, monton viejo/preogramas/
+  Alcohol, KMS, cracks — sin relación con MRAUV
+
+CANÓNICO EJECUTABLE
+  antipc/src/antipc/mdc_lib/mrauv.py   ← implementación
+  antipc/src/antipc/cli.py             ← antipc mrauv ...
+
+TEORÍA
+  teoremas/14_mrauv_criterio_goldbach.txt
+  teoremas/23_mrauv_implicaciones.txt
+  Metodo densidad MRAUV/densidad x cine.txt
+
+COMANDOS
+  cd antipc\src\antipc
+  python cli.py mrauv calibrar 100000
+  python cli.py mrauv densidad 1147
+  python cli.py mrauv goldbach --n-max 50000 --delta 5000
+  python cli.py libro run L2-mrauv
+
+DEMO SIN ANTIPC
+  python demo_calibrar.py 100000
+
+================================================================================
