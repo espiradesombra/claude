@@ -1,0 +1,22 @@
+================================================================================
+  GEMELOS DIGITALES VMA — índice filtrado (Libro 4)
+  Víctor Manzanares Alberola · VMA / 33×1
+================================================================================
+
+CANÓNICO 2026
+  gemelo_v3_corregit.py … gemelo_v8_final.py
+  gemelo_v5_quijote_control.py
+  gemelo_v10_cp_dinamic.py   ← Cp(λ,β) NREL 5MW (novedad v10)
+  gemelo_v94.py, gemelo_v941.py, gemelo_v942.py
+
+ANTIPC
+  antipc gemelo list
+  antipc gemelo run quijote --variant v10 --no-plot
+  antipc gemelo run quijote --variant v10 --out salida.png
+  antipc libro run 4 --metodo L4-gemelo-v10
+
+FUENTE FILTRADA
+  filesclaude 6-5/gemelo_v10_cp_dinamic.py
+  monton viejo revisar/gemelo_v10_cp_dinamic.py (duplicado)
+
+================================================================================

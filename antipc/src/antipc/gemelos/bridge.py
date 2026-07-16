@@ -56,9 +56,15 @@ def _build_registry() -> dict[str, GemeloInfo]:
         _DESKTOP_REPO / "Quijotee" / "zypyzape_twin_v4_8_quijote.py",
     )
     quijote_v5 = _first_existing(
+        _DESKTOP_REPO / "2026" / "gemelo_v5_quijote_control.py",
         _DESKTOP_REPO / "quijote" / "gemelo_v5_quijote_control.py",
         _DESKTOP_REPO / "just run" / "gemelos" / "gemelo_v5_quijote_control.py",
         _DESKTOP_REPO / "Quijotee" / "gemelo_v5_quijote_control.py",
+    )
+    quijote_v10 = _first_existing(
+        _DESKTOP_REPO / "2026" / "gemelo_v10_cp_dinamic.py",
+        _DESKTOP_REPO / "gemelos" / "gemelo_v10_cp_dinamic.py",
+        _DESKTOP_REPO / "filesclaude 6-5" / "gemelo_v10_cp_dinamic.py",
     )
     km_base = _DESKTOP_REPO / "kilometre;(soles_bateria)"
     km_v15 = _first_existing(
@@ -96,6 +102,14 @@ def _build_registry() -> dict[str, GemeloInfo]:
                 "v5",
                 quijote_v5,
                 "Gemelo v5 — control activo J(t) con término −ω·J̇",
+            )
+        )
+    if quijote_v10:
+        scripts_q.append(
+            GemeloScript(
+                "v10",
+                quijote_v10,
+                "Gemelo v10 — Cp(λ,β) dinámico NREL 5MW + pitch asíncrono",
             )
         )
 
@@ -141,6 +155,7 @@ def _build_registry() -> dict[str, GemeloInfo]:
             outputs=[
                 "zypyzape_v48_quijote.png",
                 "gemelo_v5_quijote_control.png",
+                "2026/gemelo_v10_cp_dinamic.png",
                 "zypyzape_v4_validacion.png",
             ],
         ),

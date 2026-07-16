@@ -39,7 +39,7 @@ from runtime.plugin import PluginContext
 from runtime.reference import Reference, ReferenceRecord, ReferenceState
 
 
-VERSION = "0.14.3-cmd"
+VERSION = "0.14.4-cmd"
 
 
 def _kernel_with_plugins(*, wave: bool = False, wave_host: str = "8.8.8.8") -> FlowKernel:
@@ -1007,6 +1007,11 @@ def cmd_gemelo_run(args: argparse.Namespace) -> int:
             extra.extend(["--out", args.out])
         if args.no_hubs:
             extra.append("--no-hubs")
+    if key == "quijote" and script.variant == "v10":
+        if args.no_plot:
+            extra.append("--no-plot")
+        elif args.out:
+            extra.extend(["--out", args.out])
 
     print(format_gemelo_info(info))
     print()
@@ -1552,8 +1557,9 @@ def main(argv: list[str] | None = None) -> int:
     p_gr.add_argument("name", choices=["zypyzape", "quijote", "kilometre"])
     p_gr.add_argument(
         "--variant", "-v",
-        help="viability|emitter (zypyzape), v48|v5 (quijote), v15|v14 (kilometre)",
+        help="viability|emitter (zypyzape), v48|v5|v10 (quijote), v15|v14 (kilometre)",
     )
+    p_gr.add_argument("--no-plot", action="store_true", help="Gemelo v10: sin guardar PNG")
     p_gr.add_argument("--hubs", type=int, default=4, help="Solo zypyzape viability")
     p_gr.add_argument("--packets", type=int, default=15_000)
     p_gr.add_argument("--duration", type=float, default=2.5)
