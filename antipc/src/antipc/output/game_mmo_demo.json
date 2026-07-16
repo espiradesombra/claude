@@ -1,0 +1,119 @@
+{
+  "timestamp": "2026-07-16T17:36:40",
+  "pipeline": "B_slot_ring \u2192 D_mmo_grafcet",
+  "mmo": true,
+  "metrics": {
+    "architecture": "B_slot_ring_to_D_mmo_grafcet",
+    "port": 3344,
+    "players": 256,
+    "duration_s": 4.0,
+    "packets_in": 20920,
+    "packets_ingested": 20920,
+    "moves_applied": 17996,
+    "entities_active": 256,
+    "drops": 0,
+    "memcpy_user_copies": 20920,
+    "grafcet_cache_hits": 2999,
+    "state_cache_hits": 2917,
+    "rejected_existence": 0,
+    "rejected_wire": 0,
+    "rejected_stale": 7,
+    "batches_flushed": 654,
+    "max_tick": 79,
+    "elapsed_s": 4.002083599996695,
+    "batch_size": 32,
+    "num_shards": 8
+  },
+  "throughput_pps": 5227.277111357013,
+  "moves_per_sec": 4496.657691012467,
+  "world_sample": [
+    {
+      "entity": 1000,
+      "shard": 0,
+      "tick": 78,
+      "pos": [
+        332.7,
+        0.0,
+        252.89
+      ],
+      "digest": "E1F48401"
+    },
+    {
+      "entity": 1001,
+      "shard": 1,
+      "tick": 79,
+      "pos": [
+        152.78,
+        0.0,
+        446.97
+      ],
+      "digest": "C2922A03"
+    },
+    {
+      "entity": 1002,
+      "shard": 2,
+      "tick": 79,
+      "pos": [
+        -365.43,
+        0.0,
+        448.03
+      ],
+      "digest": "1E5543A9"
+    },
+    {
+      "entity": 1003,
+      "shard": 3,
+      "tick": 79,
+      "pos": [
+        -44.76,
+        0.0,
+        -396.64
+      ],
+      "digest": "7702ADDD"
+    },
+    {
+      "entity": 1004,
+      "shard": 4,
+      "tick": 79,
+      "pos": [
+        275.97,
+        0.0,
+        337.26
+      ],
+      "digest": "23AA465D"
+    },
+    {
+      "entity": 1005,
+      "shard": 5,
+      "tick": 79,
+      "pos": [
+        73.15,
+        0.0,
+        413.28
+      ],
+      "digest": "177C7766"
+    },
+    {
+      "entity": 1006,
+      "shard": 6,
+      "tick": 79,
+      "pos": [
+        345.96,
+        0.0,
+        -304.87
+      ],
+      "digest": "8F7D22A6"
+    },
+    {
+      "entity": 1007,
+      "shard": 7,
+      "tick": 79,
+      "pos": [
+        -474.41,
+        0.0,
+        365.21
+      ],
+      "digest": "9E870F71"
+    }
+  ]
+}

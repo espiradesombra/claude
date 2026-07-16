@@ -31,12 +31,6 @@ def k_sweep_mdc(n: int, m_ini: int, m_fi: int) -> int:
 
 def factorizar_mdc_toy(n: int) -> int:
     try:
-        import sys
-        from pathlib import Path
-
-        root = Path(__file__).resolve().parents[1] / "src" / "antipc"
-        if str(root) not in sys.path:
-            sys.path.insert(0, str(root))
         from native_engine import is_full_native, mdc_factor as native_mdc
 
         if is_full_native():

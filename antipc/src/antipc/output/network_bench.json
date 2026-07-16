@@ -1,0 +1,21 @@
+{
+  "version": "0.11.0-cmd",
+  "items": 256,
+  "hubs": 4,
+  "parity_ok": true,
+  "speedup": 2.565,
+  "classic": {
+    "received": 256,
+    "elapsed_s": 0.0135,
+    "throughput": 18975.9,
+    "singles_sent": 256
+  },
+  "pipelined": {
+    "received": 256,
+    "elapsed_s": 0.0053,
+    "throughput": 48668.3,
+    "batches_sent": 11,
+    "batches_recv": 11,
+    "singles_sent": 0
+  }
+}

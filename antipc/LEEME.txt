@@ -1,0 +1,291 @@
+================================================================================
+  AntiPC — Adaptive Network Through Parallel Computing
+  Víctor Manzanares Alberola · Proyecto 33×1
+  CLI 0.14.0-cmd · DLL 0.10.0-c
+  Lema: "Transforming communication into computation."
+================================================================================
+
+  README completo (hitos matemáticos + comandos):  README.md
+
+
+CONTENIDO DEL PAQUETE
+--------------------------------------------------------------------------------
+
+  src/antipc/          Motor Python (CLI, red, MMO, industrial)
+  src/antipc/antipc_native.dll   ALU unificada C
+  docs/                Arquitectura científica y benchmarks
+  scripts/             Instalación y demos Windows (.bat)
+  README.md            Documentación principal (Markdown)
+  LEEME.txt            Esta guía rápida (español)
+  Desktop/antipc-port-c/   Logs integración v04–v14
+
+
+================================================================================
+  FÓRMULA MAESTRA — base de todo el cómputo AntiPC
+================================================================================
+
+  P_util(N) = N · E(N) + K(N)
+
+  N      = nodos / hubs de cómputo (UDP, shards MMO)
+  E(N)   = eficiencia de coordinación (pipelining, lotes, Grafcet)
+  K(N)   = conocimiento reutilizable (cache hits, KnowledgeResolver)
+
+  Ley operativa: la red no solo transporta — cada WORK/RESULT es ALU remota.
+  Maximizar P_util = subir E(N) (menos esperas) + K(N) (mismo payload → mismo hash).
+
+  Referencia: arquitectura E vs A → ~62 % menos carga ALU (1000 pkt, 4 hubs).
+
+
+================================================================================
+  HITOS MATEMÁTICOS — computación en AntiPC (mapa completo)
+================================================================================
+
+--- H0 · K3 / HASHTOOLCODE (fundación L0) ------------------------------------
+
+  Motor de huella determinista — origen: k3hash.c del ZIP HASHTOOLCODE.
+
+  · Hash streaming     rotaciones + XOR + semilla
+  · Paridad C/Python   verify_k3.py — auditoría bit a bit
+  · Heavy hash         4 rondas K3 encadenadas (Grafcet, hubs L3)
+  · Redundante         3 semillas Grafcet (0xA5A5A5A5, 0x5A5A5A5A, 0x12345678)
+  · Hamming            distancia entre digests hex
+  · Jaccard (k3simil)  similitud por shingles K3
+  · Índice invertido   k3search — término → documentos
+  · Motor acordeón     L+=v+1, v+=2; regla 5L≤2v+1; XOR 33×1
+
+  CLI:  antipc k3 hash | verify | heavy | simil | search | stream-xor
+  DLL:  v0.7.0-c (suite completa)
+
+
+--- H1 · MDC — Método de Descomposición por Convergencia (L1) ----------------
+
+  Exploración numérica VMA — NO factorización RSA industrial.
+
+  · Regla mecánica     (2x + 3)(2y + 3) = n   (semiprimos toy)
+  · Dos trenes         recorrido (x,y) + colisiones en C (mdc_trains.c)
+  · MDC_PHASE          fase / curvatura modular del payload
+  · MDC_REGLA          escala log — planificador "Battery Mode"
+  · K-sweep clásico    barrido entero de candidatos D
+  · K-sweep predictivo predicción de D (menos evaluaciones)
+
+  Demos: 1147=31×37 | 10473029 | K-sweep 10000319→D=1949
+  CLI:   antipc mdc factor | analyze | ksweep | jerk | visual
+  DLL:   v0.4.0-c (trenes), v0.5.0-c (K-sweep predictivo)
+
+
+--- H2 · Teoría de números — vma-methods portado a C (L1) --------------------
+
+  · Eratóstenes        criba clásica
+  · Criba híbrida VMA  fusión desmemoriada + segmentada
+  · Criba modular 6k±1 residuo en clase 6k±1 (teoría VMA)
+  · Criva              estimador iterativo π(x)/x
+  · Newton rápido      convergencia con oráculo MEcuation
+  · Familias oráculo   general | cuadrados | cubos | potencia | kp | mersenne
+
+  CLI:  antipc criba [--hibrida | --modular6k]
+        antipc newton 121 -f cuadrados
+  DLL:  v0.3.0-c (Eratóstenes+Criva), v0.4.0-c (híbrida), v0.5.0-c (Newton),
+        v0.10.0-c (6k±1)
+
+
+--- H3 · Convergencia geométrica — encriptacionGeometrica (L1) ---------------
+
+  Cómputo por perímetros con Decimal (precisión ≥ 100).
+
+  Pares de bits → perímetro (escalas Thales):
+
+    10  → +lado[0]        avance +1 bit
+    11  → +lado[1]        avance +1 bit
+    00  → +lado[0]+lado[1] avance +1 bit
+    01  → paradoja (sin aporte)  avance +2 bits
+
+  · Convergencia binaria   antipc geo
+  · Aleatorovix            perímetro × π ofuscado × e convergente — antipc geo-masivo
+  · Stream K3 geo          (L^v)×golden_ratio → XOR
+
+  Parámetros 33×1: base=33, rel=1
+  DLL: v0.6.0-c
+  Uso civil únicamente — motor educativo/integridad, no AES.
+
+
+--- H4 · Grafcet y matriz de existencia (arquitectura D) ---------------------
+
+  · Matriz existencia    evita recomputar digest ya visto
+  · Lotes Grafcet        amortiza transiciones de estado
+  · Reuse K(N)           2ª pasada: 0 ALU si KnowledgeResolver resuelve
+  · Heavy por shard      validación distribuida entity_id % shards
+
+  Pipeline:  B (slot-ring recvinto) → D (Grafcet) → WorldState (MMO)
+
+
+--- H5 · Red como ALU distribuida (arquitectura E, L3) — v0.11 --------------
+
+  Protocolo UDP: WORK/RESULT + autenticación HMAC
+  Lotes:         WORK_BATCH (0x0B) / RESULT_BATCH (0x0C)
+  Pipelining:    ventana W=128, lote B=24 (PipelinedDispatcher)
+  Throughput:    ~2.56× vs despacho clásico (bench 256 items, 4 hubs)
+  Balanceo:      shard % hubs — LAN con --hub-hosts
+  Caché hub:     K(N) — mismo payload → digest sin heavy recalcular
+
+  CLI:  antipc network bench | demo
+        antipc game demo | cluster | bots
+  Arch: network_compute.py, hub_node.py, udp_fabric.py
+
+
+--- H8 · Libros 1–6 — métodos VMA → AntiPC (v0.13–0.14) --------------------
+
+  Libro 1  Números i numeritos     criba 6k±1, desmemoriada, salto √n
+  Libro 2  Números oTra VeZ        dos primos, MRAUV, criba híbrida
+  Libro 3  Sigo en mis Trece       Sofí, Criva, pitagórico, K=9/24
+  Libro 4  Encriptación/E. Verde   geo, Aleatorovix, gemelos ZZ/Q/Km
+  Libro 5  (2v+3) factorización    mdc factor/analyze/ksweep/jerk
+  Libro 6  Pseudocódigo impl.      newton, método-V*, plantillas 1–7
+
+  CLI:
+    antipc libro list | metodos | info | run
+    antipc criba --desmemoriada
+    antipc mdc jerk 1147 [--factorize]
+
+  Puente:   src\antipc\libros\bridge.py
+
+
+--- H9 · DeepSeek 6 2026 + teoremas CLI (v0.14) ---------------------------
+
+  Corpus DeepSeek jun 2026 (repo/deepseekjun26 + filestot l5 + PY L5):
+    MDC-U jerk 4+4, K-sweep Python, mdc_v15–v23, tablas Libros 1–4
+
+  CLI:
+    antipc deepseek list | info mdc-u | run mdc-u -s mdc-v23 --n N
+    antipc teorema list | info 9
+
+  Puentes:  deepseek/bridge.py · teoremas/bridge.py · mdc_lib/mdc_jerk.py
+  Fichas:   repo\teoremas\INDICE_MAESTRO.txt (01–30)
+
+
+--- H6 · Proyecto 33×1 -------------------------------------------------------
+
+  Tratado [33] + núcleo técnico [1] auditable.
+  Manifiesto SHA256 · uso civil (repo/33x1/02_USO_CIVIL.txt).
+
+
+--- H7 · Gemelos digitales — ZypyZape · Quijote · Kilòmetre (v0.12) --------
+
+  Simulación energética VMA enlazada al repo (puente gemelos/bridge.py).
+
+  ZYPYZAPE (repo/antipc/zypyzape/)
+    · Ecuación rotor: J·dω/dt = T_aero − T_gen + T_ZZ + T_IS
+    · Red AntiPC: slot_ring → arquitectura B (network demo, game server)
+    · Bench: viability_udp.py — UDP A vs B con hubs
+
+  QUIJOTE (repo/quijote/)
+    · J_i(r) = J_G + N_b·m_q·r²  — inercia variable por masa en canal
+    · J·ω̇ = T_net − ω·J̇  (término cinemático Quijote)
+    · Cp(λ,β) calibrado NREL 5MW — gemelo v4.8 y v5 control activo
+
+  KILÒMETRE (repo/kilometre;(soles_bateria)/)
+    · Flotación: F_n = (ρ_fluid − ρ_obj)·V·g
+    · Almacenamiento cinético: E_k = ½·I_tot·ω_max²
+    · Comparativa fluidos: salmuera, Fe+aceite, Ga, Hg (referencia)
+
+  CLI:
+    antipc gemelo list
+    antipc gemelo info quijote
+    antipc gemelo run zypyzape --hubs 4 --packets 15000
+    antipc gemelo run quijote --variant v48
+    antipc gemelo run quijote --variant v5
+    antipc gemelo run kilometre
+
+  Requiere numpy + matplotlib para Quijote/Kilòmetre.
+  TRL variable — simulación, no banco físico.
+
+
+================================================================================
+  ARQUITECTURAS A–E (benchmark reproducible)
+================================================================================
+
+  A  Convencional     memcpy + cola bloqueante          (100 % ALU ref.)
+  B  Lock-free        SlotRing SPSC recvinto
+  C  Distribuido      partición hubs + caché K(N)
+  D  Grafcet          lotes + matriz existencia + reuse
+  E  UDP real         P_util(N) en localhost/LAN        (~38 % ALU vs A)
+
+  scripts\02_benchmark.bat
+  scripts\03_benchmark_udp.bat
+  python cli.py network bench
+
+
+================================================================================
+  LÍNEA TEMPORAL INTEGRACIÓN (antipc_native.dll + CLI)
+================================================================================
+
+  v0.3.0-c   K3, MDC factor, Eratóstenes, Criva, geo, k3_stream
+  v0.4.0-c   mdc_trains, criba_hibrida
+  v0.5.0-c   newton_rapido, mdc_ksweep predictivo
+  v0.6.0-c   Aleatorovix, π/e, geo masivo
+  v0.7.0-c   k3_suite (file, fingerprint, redundant, heavy, hamming)
+  v0.10.0-c  criba_modular6k; k3simil/search Python; hubs remotos LAN
+  v0.11.0-cmd pipelining UDP, WORK_BATCH, network bench 2.56×
+  v0.12.0-cmd gemelos ZypyZape/Quijote/Kilòmetre — CLI gemelo
+  v0.13.0-cmd libros 1–6 métodos VMA — CLI libro
+
+  Logs: Desktop\antipc-port-c\02_INTEGRADO_v04.txt … 11_INTEGRADO_v11.txt
+
+
+================================================================================
+  INSTALACIÓN Y EJECUCIÓN RÁPIDA
+================================================================================
+
+  Requisitos: Windows 10/11, Python 3.10+, solo stdlib
+
+  1. scripts\01_instalar.bat
+  2. scripts\21_build_antipc_native.bat   (si falta DLL)
+  3. cd src\antipc
+     python cli.py version
+     python cli.py network bench
+     python cli.py industrial inventory
+
+
+================================================================================
+  COMANDOS POR ÁREA MATEMÁTICA
+================================================================================
+
+  K3:        antipc k3 hash | verify | heavy | simil | search | stream-xor
+  MDC:       antipc mdc factor | analyze | ksweep | visual
+  Cribas:    antipc criba --limit 50000 [--hibrida | --modular6k]
+  Newton:    antipc newton 121 -f cuadrados
+  Geo:       antipc geo | geo-masivo
+  Red:       antipc network bench | demo
+  MMO:       antipc game demo | cluster --shards 4
+  Gemelos:   antipc gemelo list | info | run
+  Libros:    antipc libro list | metodos | info | run
+  Industrial antipc industrial inventory | audit
+
+
+================================================================================
+  CAPAS AntiPCStack (L0–L4)
+================================================================================
+
+  L4  Industrial   telemetría, auditoría CSV/JSON
+  L3  Red          UdpFabric, hubs, pipelining, HMAC
+  L2  Flow Kernel  referencias, resolver, plugins
+  L1  Dominio      MDC_*, K3_*, auth
+  L0  Fundación    k3hash.c / antipc_native.dll
+
+  Ver: docs\ARQUITECTURA_UNIFICADA.txt
+       python cli.py industrial inventory
+
+
+================================================================================
+  LÍMITES HONESTOS
+================================================================================
+
+  · K3 no es contraseñas ni firma legal
+  · MDC factor ≤ 10 dígitos (toy)
+  · Geo/Aleatorovix — educativo, no cripto militar
+  · UDP sin TLS — laboratorio LAN, no producción WAN
+  · Newton VMA puede no converger en 200 iter (E=121) — C replica Python
+
+
+================================================================================
+  VMA — AntiPC / 33×1 · El Palomar 2026
+================================================================================

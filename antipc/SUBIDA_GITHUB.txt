@@ -1,0 +1,98 @@
+================================================================================
+  SUBIR AntiPC DESDE EL ESCRITORIO — v0.14
+  Víctor Manzanares Alberola · espiradesombra
+================================================================================
+
+SITUACIÓN ACTUAL (2026-07-16)
+------------------------------
+  · Carpeta de trabajo: C:\Users\cuent\Desktop\repo\antipc
+  · NO estaba conectada a GitHub (sin .git)
+  · Repo principal VMA en GitHub: https://github.com/espiradesombra/claude
+  · Repo teoremas local: repo\subir\vma-github-2026 → remote teoremas.git
+    (el push falla sin token o si el repo no existe en GitHub)
+
+YO NO PUEDO SUBIR SOLO
+----------------------
+  GitHub exige tu usuario + Personal Access Token (PAT).
+  Sin gh CLI ni token guardado, el push devuelve "Repository not found"
+  o pide contraseña interactiva.
+
+================================================================================
+  OPCIÓN A — AntiPC como repo nuevo en GitHub (recomendado)
+================================================================================
+
+  1. Crear repo vacío en https://github.com/new
+     Nombre: antipc
+     Sin README (ya lo tienes local)
+
+  2. PowerShell:
+
+     cd C:\Users\cuent\Desktop\repo\antipc
+     git init
+     git add .
+     git commit -m "AntiPC v0.14 — DeepSeek 6 2026, jerk, desmemoriada, teoremas CLI"
+     git branch -M main
+     git remote add origin https://github.com/espiradesombra/antipc.git
+     git push -u origin main
+
+  3. Cuando pida contraseña: pegar el PAT (no la contraseña de GitHub).
+
+================================================================================
+  OPCIÓN B — Carpeta dentro de espiradesombra/claude
+================================================================================
+
+  1. Clonar tu repo (una vez):
+
+     cd C:\Users\cuent\Desktop\repo
+     git clone https://github.com/espiradesombra/claude.git
+
+  2. Copiar AntiPC actualizado:
+
+     xcopy /E /I /Y "C:\Users\cuent\Desktop\repo\antipc" "claude\antipc"
+
+  3. Commit y push:
+
+     cd claude
+     git checkout -b antipc-v0.14
+     git add antipc
+     git commit -m "AntiPC v0.14 — DeepSeek, jerk, teoremas CLI"
+     git push -u origin antipc-v0.14
+
+  Luego en GitHub: Pull Request o merge a main.
+
+================================================================================
+  OPCIÓN C — Teoremas (repo vma-github-2026)
+================================================================================
+
+     cd C:\Users\cuent\Desktop\repo\subir\vma-github-2026
+     git add -A
+     git commit -m "Actualización teoremas + índices"
+     git push origin main
+
+  Si el remote teoremas no existe: créalo en github.com/new o cambia remote:
+
+     git remote set-url origin https://github.com/espiradesombra/teoremas.git
+
+================================================================================
+  CREAR TOKEN (una vez)
+================================================================================
+
+  GitHub → Settings → Developer settings → Personal access tokens
+  · Classic: scope "repo"
+  · O Fine-grained: acceso al repo antipc o claude
+
+  Guardar en variable (opcional, para scripts):
+
+     setx GITHUB_TOKEN "ghp_xxxxxxxx"
+
+================================================================================
+  SCRIPT RÁPIDO
+================================================================================
+
+  Ejecutar desde Escritorio:
+
+     repo\antipc\scripts\24_subir_github.bat
+
+  (pide URL del remote si no está configurado)
+
+================================================================================
