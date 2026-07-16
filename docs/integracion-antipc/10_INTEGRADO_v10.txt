@@ -1,0 +1,47 @@
+INTEGRACIÓN v0.10.0 — criba 6k±1 + k3simil/search + hubs remotos
+==============================================================
+Fecha: 2026-07-16
+
+AÑADIDO DLL 0.10.0-c
+--------------------
+  criba_modular6k.c → antipc_sieve_modular6k_count
+  Fuente: antipc-port-c\src\criba_modular6k.c ← vma-methods/cribas.py CribaModular6k
+
+PYTHON
+------
+  k3_text_tools.py — port k3simil + k3search (vma-k3/c/k3hash/examples/)
+  udp_fabric.py — register_remote_hubs(), HubProcess.host/remote
+  game_cluster.py — hub_hosts para LAN multi-máquina
+
+CLI 0.10.0-cmd
+--------------
+  antipc criba --limit 50000 --modular6k
+  antipc k3 simil --dir carpeta --threshold 0.30
+  antipc k3 search index -o indice.k3idx --dir docs
+  antipc k3 search query indice.k3idx palabra1 palabra2
+  antipc game cluster --hub-hosts 192.168.1.10,192.168.1.11
+
+TESTS
+-----
+  tests/test_k3_text_tools.py
+
+EJECUTADO OK
+------------
+  criba modular6k 50k: 5133 primos, 1 ms
+  DLL: 0.10.0-c
+
+HUBS REMOTOS (uso)
+------------------
+  En cada nodo:
+    python hub_node.py --port 19701 --master-key <hex> --require-auth
+  Maestro:
+    python -m cli game cluster --hub-hosts IP1,IP2 --no-bots
+  (misma clave HMAC que emite AntiPCStack al arrancar)
+
+SIGUE PENDIENTE
+---------------
+  criba desmemoriada, k3_audit, analisi_modular C, WebSocket MMO, Docker
+
+==============================================================
+FIN
+==============================================================

@@ -1,0 +1,45 @@
+AntiPC v0.12.0-cmd — Gemelos ZypyZape · Quijote · Kilòmetre
+Fecha: 2026-07-16
+Ruta: C:\Users\cuent\Desktop\repo\antipc\src\antipc
+
+=== AÑADIDO ===
+
+1. gemelos/bridge.py
+   - Puente a scripts del repo (sin copiar)
+   - ZypyZape: zypyzape/viability_udp.py, hub_emitter.py
+   - Quijote: repo/quijote/zypyzape_twin_v4_8_quijote.py, gemelo_v5_quijote_control.py
+   - Kilòmetre: repo/kilometre;(soles_bateria)/kilometre_v15_fluids_densos.py
+
+2. CLI gemelo
+   - antipc gemelo list
+   - antipc gemelo info {zypyzape|quijote|kilometre}
+   - antipc gemelo run {name} [--variant v48|v5|viability]
+
+3. Documentación
+   - README.md + LEEME.txt — hito H7 gemelos
+   - industrial/inventory.py — sección gemelos
+
+=== MODELOS MATEMÁTICOS ===
+
+  ZypyZape : J·dω/dt = T_aero − T_gen + T_ZZ + T_IS; ring SPSC → AntiPC B
+  Quijote  : J_i(r) = J_G + N_b·m_q·r²; J·ω̇ = T_net − ω·J̇; Cp(λ,β)
+  Kilòmetre: F_n = (ρ_f−ρ_o)·V·g; E_k = ½Iω²; fluidos densos
+
+=== COMANDOS ===
+
+  cd repo\antipc\src\antipc
+  python cli.py gemelo list
+  python cli.py gemelo run zypyzape --hubs 4 --packets 15000
+  python cli.py gemelo run quijote --variant v5
+
+=== NOTA ===
+
+  Quijote/Kilòmetre requieren numpy + matplotlib.
+  Gemelos = simulación TRL variable; no banco físico.
+
+=== SIGUE PENDIENTE ===
+
+  Enlace UDP Quijote ↔ hubs AntiPC (solo ZypyZape viability enlazado hoy)
+  Criba desmemoriada, k3_audit, WebSocket MMO, Docker, LAN multi-PC
+
+FIN

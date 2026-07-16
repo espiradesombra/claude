@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vma-methods"
+version = "0.1.0"
+description = "Teoría de números VMA — cribas, Criva, Newton Rápido"
+readme = "LEEME.txt"
+requires-python = ">=3.10"
+dependencies = [
+    "matplotlib>=3.7",
+]
+
+[project.scripts]
+vma-methods = "vma_methods.cli:main"
+vma-gui = "vma_methods.gui.app:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["vma_methods*"]

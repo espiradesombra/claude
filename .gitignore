@@ -1,0 +1,38 @@
+# Python / build
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+*.obj
+*.exe
+
+# CMake / C
+CMakeFiles/
+cmake-build-*/
+**/native/antipc_core/build/
+
+# IDE / OS
+.vs/
+.vscode/
+.DS_Store
+Thumbs.db
+~$*
+
+# Archivos pesados / temporales
+*.zip
+*.7z
+*.rar
+_zip_extract/
+_clone_claude/
+
+# Logs locales AntiPC (mantener docs/integracion-antipc)
+antipc/output/*.json
+antipc/output/*.csv
+antipc/output/*.gif
+
+# Credenciales
+.env
+*.pem
+*_token*

@@ -1,0 +1,27 @@
+VMA-METHODS — Librería de teoría de números (Víctor Manzanares Alberola)
+========================================================================
+
+Módulos v0.1:
+  cribas   — Desmemoriada, Modular 6k±1, Híbrida (+ segmentada)
+  criva    — Estimador iterativo de densidad π(x)/x
+  newton   — Newton Rápido + oráculos MEcuation
+  classic  — Eratóstenes, π(x), trial division
+
+Instalar (desarrollo):
+  cd vma-methods
+  pip install -e .
+
+Uso CLI:
+  vma-methods criba --limit 5000
+  vma-methods criva --x 10000 --compare 100,1000,10000
+  vma-methods newton --E 121 --familia cuadrados
+  vma-methods compare-cribas --limit 5000
+  vma-gui
+
+Uso Python:
+  import vma_methods as vma
+  vma.cribas.CribaModular6k(1000).run()
+  vma.criva.criva(10000)
+  vma.newton.log_con_oraculo(121, familia="cuadrados")
+
+Autor: Víctor Manzanares Alberola · 2026

@@ -1,0 +1,73 @@
+AntiPC v0.11.0-cmd — Cómputo en red mejorado
+Fecha: 2026-07-16
+Ruta: C:\Users\cuent\Desktop\repo\antipc\src\antipc
+
+=== MEJORAS RED (L3) ===
+
+1. network_compute.py (NUEVO/AMPLIADO)
+   - PipelinedDispatcher: ventana en vuelo 128, lotes WORK_BATCH/RESULT_BATCH
+   - classic_dispatch() para benchmark comparativo
+   - hub_process_work() + hub_drain_ring_burst() para hubs
+   - heavy_digest() con fallback k3_heavy_hash nativo
+   - tune_socket() SO_RCVBUF/SO_SNDBUF 1 MiB
+   - run_network_bench() métricas clásico vs pipelined
+
+2. udp_protocol.py
+   - MsgType WORK_BATCH (0x0B), RESULT_BATCH (0x0C)
+   - pack/unpack_work_batch, pack/unpack_result_batch
+   - Sincronizado en repo/antipc/udp_protocol.py (árbol dual)
+
+3. hub_node.py
+   - WORK_BATCH procesado inline (hub_process_work)
+   - Ring SPSC drenado en ráfagas (hub_drain_ring_burst)
+   - Buffers UDP afinados, heavy hash nativo vía network_compute
+
+4. architecture/udp_fabric.py
+   - dispatch_hashes() → PipelinedDispatcher (antes: pausa cada 32 WORK)
+   - Parámetros: dispatch_window=128, dispatch_batch=24
+   - Métricas en _last_dispatch_metrics
+
+5. network/game_cluster.py
+   - validate_heavy_batch() usa pipelining + routing por shard
+
+6. network/bd_pipeline.py
+   - SlotRing 4096 (antes 1024)
+   - SO_RCVBUF/SO_SNDBUF 1 MiB en master UDP
+   - Worker sin sleep agresivo en hot path
+
+7. CLI
+   - antipc network bench [--count 512] [--hubs 4] [--window 128] [--batch 24]
+   - Versión: 0.11.0-cmd
+   - sys.path fijado a src/antipc al arrancar cli.py
+
+=== BENCHMARK LOCAL (256 items, 4 hubs) ===
+
+  Clásico   : 18976 hash/s  (0.013 s)
+  Pipelined : 48668 hash/s  (0.005 s)
+  Speedup   : 2.56×
+  Paridad K3: OK
+  Lotes UDP : send=11 recv=11
+
+=== DEMO B→D (2 s, 10k packets, 4 hubs) ===
+
+  UDP in     : 10000
+  Grafcet out: 10000
+  Drops      : 0
+  Throughput : 4988 pkt/s
+
+=== COMANDOS ===
+
+  cd repo\antipc\src\antipc
+  python cli.py network bench
+  python cli.py network demo
+  python cli.py game cluster --shards 4
+
+=== ARCHIVOS CLAVE ===
+
+  network/network_compute.py
+  udp_protocol.py
+  hub_node.py
+  architecture/udp_fabric.py
+  network/game_cluster.py
+  network/bd_pipeline.py
+  cli.py (0.11.0-cmd)

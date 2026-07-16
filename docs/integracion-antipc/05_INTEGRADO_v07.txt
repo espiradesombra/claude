@@ -1,0 +1,45 @@
+INTEGRACIÓN v0.7.0-c — HASHTOOLCODE K3 suite
+=============================================
+Fecha: 2026-07-16
+
+FUENTE
+------
+  repo/vma-k3/c/k3hash/ (k3hash.c, k3dedup.c, k3simil.c)
+  grafcet.py (redundant_hash, _heavy_hash)
+  native/k3hash/src/k3hash.c (ya en DLL)
+
+AÑADIDO
+-------
+  k3_suite.c
+    antipc_k3_hash_file
+    antipc_k3_fingerprint_file
+    antipc_k3_redundant_hashes
+    antipc_k3_heavy_hash
+    antipc_k3_hamming / antipc_k3_similarity
+
+PYTHON
+------
+  native_engine.py: k3_hash_file, k3_fingerprint_file, k3_dedup_paths,
+                    k3_redundant_hashes, k3_heavy_hash, k3_hamming
+  plugins/k3_file_plugin.py → fingerprint nativo (streaming)
+  cli.py → grupo `antipc k3`
+
+CLI
+---
+  antipc k3 hash -t "texto"
+  antipc k3 file archivo --fingerprint
+  antipc k3 verify
+  antipc k3 dedup a.txt b.txt
+  antipc k3 redundant -t "test"
+  antipc k3 heavy -t "AntiPC"
+  antipc k3 hamming DEADBEEF CAFEBABE
+  antipc k3 stream-xor -t "hola"
+
+EJECUTADO OK
+------------
+  verify_k3.py: 5/5 OK engine==python
+  k3 dedup demo: 2 copias 18 bytes hash=87B9702E
+  k3 file streaming: 1 ms
+  heavy/redundant: paridad con grafcet.py
+  DLL: antipc_native 0.7.0-c
+  CLI: 0.7.0-cmd

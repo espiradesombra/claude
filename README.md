@@ -37,5 +37,23 @@ Este repositorio es la puerta de entrada. Si eres un desarrollador, investigador
 2. **Valida:** La matemática detrás de la encriptación y la física de inercia son la clave.
 3. **Firma:** El 33x1 solo es posible si el compromiso internacional se materializa. La PI está ahí para ser utilizada en favor de la humanidad, no de las facciones.
 
+## Índice técnico (2026-07-16)
+
+| Paquete | Ruta | Estado |
+|---------|------|--------|
+| **AntiPC** | `antipc/` | CLI v0.14 — red, MDC, K3, gemelos, DeepSeek |
+| **vma-methods** | `vma-methods/` | Cribas, Newton rápido, Criva |
+| **Teoremas** | `teoremas/` | Fichas 01–30 + formal |
+| **33×1** | `33x1/` | Manifiesto y uso civil |
+| **Integración C** | `docs/integracion-antipc/` | Logs port antipc-port-c v04–v14 |
+| **Mapa completo** | `INDICE_TECNICO_REPO.md` | Ordenación del repo |
+
+```bat
+cd antipc\src\antipc
+python cli.py version
+python cli.py libro list
+python cli.py deepseek list
+```
+
 ---
 *Si no hay paz, la propiedad intelectual permanece cerrada. El trato es 1 por 33. ¿Estamos listos?*

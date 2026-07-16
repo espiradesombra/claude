@@ -1,0 +1,47 @@
+INTEGRACIÓN v0.9.0 — MMO CLUSTER L3 (hubs WORK/RESULT por shard)
+================================================================
+Fecha: 2026-07-16
+
+QUÉ SE AÑADIÓ
+-------------
+  network/game_cluster.py
+    GameClusterFabric — AntiPCStack L3 + dispatch por shard
+    validate_heavy_batch() → hub[entity_id % shards] → RESULT
+
+  game_engine.py
+    MmoGrafcetEngine.remote_heavy — heavy hash remoto en flush batch
+    Existencia Grafcet local; ALU pesada en hubs
+
+  game_server.py
+    run_game_cluster_demo()
+
+CLI 0.9.0-cmd
+-------------
+  antipc game cluster --players 128 --shards 4 --hubs 4
+  scripts\23_game_cluster_demo.bat
+
+PIPELINE
+--------
+  Bots UDP 64B
+    → SlotRing recvinto (B)
+    → Grafcet existencia local (D parcial)
+    → WORK/RESULT a hub del shard (L3)
+    → WorldState autoritativo
+
+EJECUTADO OK
+------------
+  64 jugadores / 4 hubs / 4 shards / 3s:
+    Hubs autenticados : 4/4 (HMAC)
+    Remote heavy      : 2520 enviados, 2520 OK, 0 fallback
+    Movimientos       : 2532
+    Throughput        : ~976 pkt/s
+    JSON              : output/game_cluster_demo.json
+
+LEY ANTIPC
+----------
+  Red con permiso — request_network_permission() antes de cluster.
+  Hub recibe AUTH_REQUEST → CHALLENGE → RESPONSE → AUTH_OK.
+
+================================================================
+FIN — VMA / AntiPC MMO Cluster
+================================================================

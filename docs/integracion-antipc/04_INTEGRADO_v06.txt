@@ -1,0 +1,28 @@
+INTEGRACIÓN v0.6.0-c — π/e + Aleatorovix
+========================================
+Fecha: 2026-07-16
+
+FUENTE
+------
+  encriptacionGeometrica/deepseek_c_20260716_f0b9a1.c
+  encriptacionGeometrica/gemini-code-1784158392232.py
+
+AÑADIDO
+-------
+  k3_geo_aleatorovix.c
+    antipc_geo_clave_default
+    antipc_geo_fase_encrypt / _decrypt
+    antipc_aleatorovix_xor
+    antipc_geo_masivo_crypt
+
+CLI
+---
+  antipc geo-masivo -t "mensaje" --semilla 43210
+
+EJECUTADO OK
+------------
+  Mensaje gemini 80 bytes → cifrar 1 ms → descifrar 0 ms → Round-trip OK
+  Hash fase: 2.086740345048e+03
+  native bench aleatorovix roundtrip=True
+
+DLL: antipc_native 0.6.0-c

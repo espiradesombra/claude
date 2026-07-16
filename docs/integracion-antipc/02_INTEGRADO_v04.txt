@@ -1,0 +1,27 @@
+INTEGRACIÓN v0.4.0-c — ejecutado en repo (sin mover Escritorio)
+=============================================================
+Fecha: 2026-07-16
+
+AÑADIDO A antipc_native.dll (repo\antipc\src\antipc\)
+-----------------------------------------------------
+  mdc_trains.c        antipc_mdc_scan_trains
+  criba_hibrida.c     antipc_sieve_hibrida_count
+
+PYTHON ACTUALIZADO
+------------------
+  native_engine.py    bindings + sieve_hibrida_count + mdc_scan_trains
+  mdc_analyze.py      analyze() usa C en un solo paso
+  cli.py v0.4         criba --hibrida, native bench ampliado
+
+RESULTADOS EJECUTADOS
+---------------------
+  antipc mdc analyze 1147          OK  31×37
+  antipc mdc analyze 10473029      OK  3 factores propios
+  antipc criba --limit 50000 --hibrida   5133 primos, ~1 ms
+  antipc native bench              MDC trains ~3 ms @ n=1047029
+
+SIGUIENTE (prototipos aún en Escritorio\antipc-port-c\src\)
+------------------------------------------------------------
+  newton_rapido.c
+  mdc_ksweep_predict.c (versión completa predictiva)
+  k3_geo_math + aleatorovix (encriptacionGeometrica)
