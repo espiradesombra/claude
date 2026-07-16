@@ -1,0 +1,24 @@
+================================================================================
+  DOS PRIMOS VMA — paquete filtrado (Libro 2 / teorema 01)
+  Víctor Manzanares Alberola · VMA / 33×1
+================================================================================
+
+QUÉ ES
+  Criterio operativo: si L(n)−m(n) ≥ 2 entonces I(n) tiene ≥2 primos.
+  I(n) = [n−⌊√(n+3)⌋−3, n+3]
+
+PROCEDENCIA
+  _extract_vma/anexoE_L_m_script.py
+  Lm_dataset_v3.csv + Tabla_L_m_intervalos_v3.csv (OneDrive pack v3)
+
+CANÓNICO
+  antipc/src/antipc/mdc_lib/dos_primos.py
+  mrauv/datos/*.csv
+
+COMANDOS
+  python cli.py dos-primos verify 10000
+  python cli.py dos-primos tabla
+  python cli.py dos-primos audit
+  python cli.py libro run 2 --metodo L2-dos-primos
+
+================================================================================

@@ -34,6 +34,14 @@ COMANDOS
   python cli.py mrauv goldbach --n-max 50000 --delta 5000
   python cli.py libro run L2-mrauv
 
+DOS PRIMOS (teorema 01 / anexoE)
+  mrauv/datos/Lm_dataset_v3.csv
+  mrauv/datos/Tabla_L_m_intervalos_v3.csv
+  antipc dos-primos verify 10000
+  antipc dos-primos tabla
+  antipc dos-primos audit
+  antipc libro run 2 --metodo L2-dos-primos
+
 DEMO SIN ANTIPC
   python demo_calibrar.py 100000
 

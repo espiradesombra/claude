@@ -39,7 +39,7 @@ from runtime.plugin import PluginContext
 from runtime.reference import Reference, ReferenceRecord, ReferenceState
 
 
-VERSION = "0.14.4-cmd"
+VERSION = "0.14.5-cmd"
 
 
 def _kernel_with_plugins(*, wave: bool = False, wave_host: str = "8.8.8.8") -> FlowKernel:
@@ -265,6 +265,51 @@ def cmd_discriminant_trajectory(args: argparse.Namespace) -> int:
     print(format_trajectory(args.n, rows))
     print(f"  Tiempo    : {ms} ms")
     return 0
+
+
+def cmd_dos_primos_verify(args: argparse.Namespace) -> int:
+    from mdc_lib.dos_primos import format_verify, verify_n
+
+    if args.n < 3:
+        print("ERROR: n debe ser >= 3", file=sys.stderr)
+        return 1
+    t0 = time.perf_counter()
+    r = verify_n(args.n, check_csv=not args.no_csv)
+    ms = int((time.perf_counter() - t0) * 1000)
+    print(format_verify(r))
+    print(f"  Tiempo    : {ms} ms")
+    return 0 if r.criterio_ok and r.interval_ok else 1
+
+
+def cmd_dos_primos_tabla(args: argparse.Namespace) -> int:
+    from mdc_lib.dos_primos import format_tabla, load_tabla
+
+    rows = load_tabla()
+    if not rows:
+        print("ERROR: Tabla_L_m_intervalos_v3.csv no encontrada en mrauv/datos/", file=sys.stderr)
+        return 1
+    if args.limit:
+        rows = rows[: args.limit]
+    print(format_tabla(rows))
+    return 0
+
+
+def cmd_dos_primos_audit(args: argparse.Namespace) -> int:
+    from mdc_lib.dos_primos import (
+        audit_dataset,
+        audit_tabla_primes,
+        format_audit_dataset,
+        format_audit_tabla,
+    )
+
+    t0 = time.perf_counter()
+    ok_ds, err_ds = audit_dataset()
+    ok_tb, err_tb = audit_tabla_primes()
+    ms = int((time.perf_counter() - t0) * 1000)
+    print(format_audit_dataset(ok_ds, err_ds))
+    print(format_audit_tabla(ok_tb, err_tb))
+    print(f"  Tiempo    : {ms} ms")
+    return 0 if ok_ds and ok_tb else 1
 
 
 def cmd_salto_ventana(args: argparse.Namespace) -> int:
@@ -1462,6 +1507,21 @@ def main(argv: list[str] | None = None) -> int:
     p_dist.add_argument("n", type=int)
     p_dist.add_argument("--all", action="store_true", help="Mostrar todos los pasos S")
     p_dist.set_defaults(func=cmd_discriminant_trajectory)
+
+    p_dp = sub.add_parser("dos-primos", help="Criterio L(n)−m(n)≥2 e I(n) (Libro 2)")
+    p_dp_sub = p_dp.add_subparsers(dest="dos_primos_cmd", required=True)
+
+    p_dpv = p_dp_sub.add_parser("verify", help="Verificar n: L, m, I(n), primos")
+    p_dpv.add_argument("n", type=int)
+    p_dpv.add_argument("--no-csv", action="store_true", help="Sin comparar Lm_dataset_v3.csv")
+    p_dpv.set_defaults(func=cmd_dos_primos_verify)
+
+    p_dpt = p_dp_sub.add_parser("tabla", help="Mostrar Tabla_L_m_intervalos_v3.csv")
+    p_dpt.add_argument("--limit", type=int, default=None, help="Primeras N filas")
+    p_dpt.set_defaults(func=cmd_dos_primos_tabla)
+
+    p_dpa = p_dp_sub.add_parser("audit", help="Auditar CSV vs anexoE y conteo I(n)")
+    p_dpa.set_defaults(func=cmd_dos_primos_audit)
 
     p_sal = sub.add_parser("salto", help="Salto máximo ventana √n (Libro 1)")
     p_sal_sub = p_sal.add_subparsers(dest="salto_cmd", required=True)
