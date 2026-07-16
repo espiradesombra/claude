@@ -39,7 +39,7 @@ from runtime.plugin import PluginContext
 from runtime.reference import Reference, ReferenceRecord, ReferenceState
 
 
-VERSION = "0.14.1-cmd"
+VERSION = "0.14.2-cmd"
 
 
 def _kernel_with_plugins(*, wave: bool = False, wave_host: str = "8.8.8.8") -> FlowKernel:
@@ -235,6 +235,34 @@ def cmd_mrauv_densidad(args: argparse.Namespace) -> int:
     r = densidad_report(args.n)
     ms = int((time.perf_counter() - t0) * 1000)
     print(format_densidad(r))
+    print(f"  Tiempo    : {ms} ms")
+    return 0
+
+
+def cmd_discriminant_factor(args: argparse.Namespace) -> int:
+    from mdc_lib.discriminant import discriminant_factor, format_result
+
+    if args.n < 2:
+        print("ERROR: n debe ser >= 2", file=sys.stderr)
+        return 1
+    t0 = time.perf_counter()
+    r = discriminant_factor(args.n)
+    ms = int((time.perf_counter() - t0) * 1000)
+    print(format_result(r))
+    print(f"  Tiempo    : {ms} ms")
+    return 0
+
+
+def cmd_discriminant_trajectory(args: argparse.Namespace) -> int:
+    from mdc_lib.discriminant import delta_trajectory, format_trajectory
+
+    if args.n < 2:
+        print("ERROR: n debe ser >= 2", file=sys.stderr)
+        return 1
+    t0 = time.perf_counter()
+    rows = delta_trajectory(args.n, show_all=args.all)
+    ms = int((time.perf_counter() - t0) * 1000)
+    print(format_trajectory(args.n, rows))
     print(f"  Tiempo    : {ms} ms")
     return 0
 
@@ -1325,6 +1353,18 @@ def main(argv: list[str] | None = None) -> int:
         help="Comparar con conteo exacto en estos n (ej. 100 500 1000)",
     )
     p_mrg.set_defaults(func=cmd_mrauv_goldbach)
+
+    p_dis = sub.add_parser("discriminant", help="Método discriminante Δ(S)=k² (Libro 5)")
+    p_dis_sub = p_dis.add_subparsers(dest="discriminant_cmd", required=True)
+
+    p_disf = p_dis_sub.add_parser("factor", help="Factorizar / filtro primo por cuadrado perfecto")
+    p_disf.add_argument("n", type=int, help="Entero N a analizar")
+    p_disf.set_defaults(func=cmd_discriminant_factor)
+
+    p_dist = p_dis_sub.add_parser("trajectory", help="Trayectoria Δ(S) hasta parada determinista")
+    p_dist.add_argument("n", type=int)
+    p_dist.add_argument("--all", action="store_true", help="Mostrar todos los pasos S")
+    p_dist.set_defaults(func=cmd_discriminant_trajectory)
 
     p_vis = p_mdc_sub.add_parser("visual", help="Animar dos trenes X/Y + colisiones")
     p_vis.add_argument("n", type=int)

@@ -1,0 +1,32 @@
+================================================================================
+  DISCRIMINANTE VMA — paquete filtrado (Libro 5 / pinza atrappament)
+  Víctor Manzanares Alberola · VMA / 33×1
+================================================================================
+
+QUÉ ES
+  Filtro determinista de factorización: busca cuadrados perfectos de
+  Δ(S) = S² + 6S − (N−9) = k² en ventana algebraica alrededor de √N.
+
+PROCEDENCIA (archivos viejos — solo lo útil)
+  repo/filesclaude 6-5/discriminant.py   → núcleo Δ(S), parada geométrica
+  teoremas/09_mdc_teorema1_delta_S.txt   → N = (2v+3)(2b+3), v=(S+k)/2
+  teoremas/11_mdc_teorema_atrappament.txt
+
+NO IMPORTADO
+  archivos/UPV EPSA/, portables, warez
+  Código C++ referencia (analisi_modular.hpp) — ya en antipc/referencia/mdc/
+
+CANÓNICO EJECUTABLE
+  antipc/src/antipc/mdc_lib/discriminant.py   ← implementación
+  antipc/src/antipc/cli.py                    ← antipc discriminant ...
+
+COMANDOS
+  cd antipc\src\antipc
+  python cli.py discriminant factor 11449
+  python cli.py discriminant trajectory 143 --all
+  python cli.py libro run L5-pinza
+
+DEMO SIN ANTIPC
+  python demo_factor.py 1147
+
+================================================================================

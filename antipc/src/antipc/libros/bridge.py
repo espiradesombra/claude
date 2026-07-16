@@ -287,9 +287,9 @@ def _build_registry() -> dict[int, LibroInfo]:
                     "L5-pinza",
                     "Pinza / atrappament",
                     "Δ(S)=S²+6S−(N−9)=k²",
-                    "teoremas/09,11 + mdc analyze",
-                    "parcial",
-                    "Formal F09",
+                    "antipc discriminant factor | trajectory",
+                    "integrado",
+                    "mdc_lib/discriminant.py — filtrado filesclaude 6-5 2026-07-16",
                 ),
             ],
         ),
@@ -440,6 +440,7 @@ _RUN_BY_ID: dict[str, list[str]] = {
     "L5-ksweep": ["mdc", "ksweep", "1147"],
     "L5-jerk": ["mdc", "jerk", "1147"],
     "L5-numeritos": ["mdc", "analyze", "--n", "10473029"],
+    "L5-pinza": ["discriminant", "factor", "11449"],
     "L6-newton": ["newton", "121", "-f", "cuadrados"],
 }
 
