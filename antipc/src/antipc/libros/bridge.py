@@ -70,6 +70,14 @@ def _build_registry() -> dict[int, LibroInfo]:
                     "DLL 0.10.0-c criba_modular6k",
                 ),
                 LibroMetodo(
+                    "L1-criba-openmp",
+                    "Criba 6k±1 anexoF",
+                    "Candidatos 6k±1 + marcado pn·qm (+2p/+4p); conteo 1∪2",
+                    "antipc criba --openmp --limit N",
+                    "integrado",
+                    "mdc_lib/criba_openmp.py — anexoF 2026-07-17",
+                ),
+                LibroMetodo(
                     "L1-salto",
                     "Salto máximo",
                     "SaltoMaximo(n) ≈ √n (peor caso 6k±1)",
@@ -326,6 +334,14 @@ def _build_registry() -> dict[int, LibroInfo]:
                     "newton_rapido.c DLL 0.5.0-c",
                 ),
                 LibroMetodo(
+                    "L6-me-detector",
+                    "Detector MEcuation (SVD)",
+                    "κ=σ_min/σ_max + bootstrap → oráculo j_inicial",
+                    "antipc me scan | detect | oracle",
+                    "integrado",
+                    "mdc_lib/me_detector.py — py/me_detector 2026-07-17",
+                ),
+                LibroMetodo(
                     "L6-metodo-V",
                     "Método-V factorial",
                     "n>2v−2>m>v−1; V=v·n!/m!",
@@ -443,6 +459,7 @@ _RUN_BY_ID: dict[str, list[str]] = {
     "L1-salto": ["salto", "ventana", "1000"],
     "L1-goldbach-asim": ["goldbach", "analyze", "100"],
     "L1-6k-rejilla": ["criba", "--limit", "50000", "--modular6k"],
+    "L1-criba-openmp": ["criba", "--limit", "10000", "--openmp"],
     "L1-eratostenes": ["criba", "--limit", "10000"],
     "L1-siguiente-primo": ["siguiente", "next", "3"],
     "L3-densidad-fractal": ["riemann", "compare", "10000", "100000"],
@@ -467,6 +484,7 @@ _RUN_BY_ID: dict[str, list[str]] = {
     "L5-numeritos": ["mdc", "analyze", "--n", "10473029"],
     "L5-pinza": ["discriminant", "factor", "11449"],
     "L6-newton": ["newton", "121", "-f", "cuadrados"],
+    "L6-me-detector": ["me", "oracle", "121", "-f", "cuadrados"],
     "L6-fermat": ["fermat", "align", "3"],
 }
 

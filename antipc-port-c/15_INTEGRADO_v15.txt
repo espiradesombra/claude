@@ -1,0 +1,32 @@
+AntiPC 0.14.7-cmd — integración 2026-07-17
+==========================================
+
+Nuevo
+-----
+  mdc_lib/criba_openmp.py
+    Criba 6k±1 anexoF (Python). Conteo corregido: estados 1∪2.
+    CLI: antipc criba --openmp --limit N
+
+  mdc_lib/me_detector.py
+    Detector MEcuation SVD + bootstrap (oráculo Newton).
+    CLI:
+      antipc me scan
+      antipc me detect cuadrados
+      antipc me oracle 121 -f cuadrados
+
+  antipc-port-c/src/criba_6k_openmp.c
+    Port C con el mismo conteo corregido.
+
+Libros bridge
+-------------
+  L1-criba-openmp  → criba --openmp
+  L6-me-detector   → me oracle 121
+
+Pruebas rápidas
+---------------
+  python cli.py criba --limit 10000 --openmp
+  python cli.py me scan --n 10 --bootstrap 80
+  python cli.py me detect cuadrados --n 12
+  python cli.py me oracle 121 -f cuadrados
+  python cli.py libro run 1 --metodo L1-criba-openmp
+  python cli.py libro run 6 --metodo L6-me-detector

@@ -39,7 +39,7 @@ from runtime.plugin import PluginContext
 from runtime.reference import Reference, ReferenceRecord, ReferenceState
 
 
-VERSION = "0.14.6-cmd"
+VERSION = "0.14.7-cmd"
 
 
 def _kernel_with_plugins(*, wave: bool = False, wave_host: str = "8.8.8.8") -> FlowKernel:
@@ -109,6 +109,15 @@ def cmd_criba(args: argparse.Namespace) -> int:
         sieve_primes,
     )
 
+    if getattr(args, "openmp", False):
+        from mdc_lib.criba_openmp import format_result, sieve_6k_openmp
+
+        sample = args.max_list if args.list else 0
+        r = sieve_6k_openmp(args.limit, sample=sample)
+        print(format_result(r))
+        print("  Backend: python (anexoF 6k±1)")
+        return 0
+
     t0 = time.perf_counter()
     if args.desmemoriada:
         count = sieve_desmemoriada_count(args.limit)
@@ -130,6 +139,50 @@ def cmd_criba(args: argparse.Namespace) -> int:
     if args.list:
         primes = sieve_primes(args.limit, cap=min(count, args.max_list))
         print(f"  Lista  : {primes[: args.max_list]}")
+    return 0
+
+
+def cmd_me_scan(args: argparse.Namespace) -> int:
+    from mdc_lib.me_detector import format_scan, scan_familias
+
+    t0 = time.perf_counter()
+    rows = scan_familias(n=args.n, bootstrap_n=args.bootstrap, seed=args.seed)
+    ms = int((time.perf_counter() - t0) * 1000)
+    print(format_scan(rows))
+    print(f"  Tiempo    : {ms} ms")
+    return 0
+
+
+def cmd_me_detect(args: argparse.Namespace) -> int:
+    from mdc_lib.me_detector import (
+        detectar_mecuation,
+        format_detect,
+        generar_familia,
+    )
+
+    kwargs: dict = {}
+    if args.k is not None:
+        kwargs["k"] = args.k
+    if args.lista:
+        kwargs["lista"] = [int(x) for x in args.lista.split(",")]
+    t0 = time.perf_counter()
+    datos = generar_familia(args.familia, n_elementos=args.n, **kwargs)
+    r = detectar_mecuation(
+        datos, bootstrap_n=args.bootstrap, seed=args.seed, tau=args.tau
+    )
+    ms = int((time.perf_counter() - t0) * 1000)
+    print(format_detect(args.familia, r))
+    print(f"  Tiempo    : {ms} ms")
+    return 0 if r.existe else 1
+
+
+def cmd_me_oracle(args: argparse.Namespace) -> int:
+    from mdc_lib.me_detector import format_oracle
+
+    if args.E <= 0:
+        print("ERROR: E debe ser > 0", file=sys.stderr)
+        return 1
+    print(format_oracle(args.E, args.familia))
     return 0
 
 
@@ -1805,9 +1858,53 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Criba desmemoriada VMA (vma-methods Python)",
     )
+    p_criba.add_argument(
+        "--openmp",
+        action="store_true",
+        help="Criba 6k±1 anexoF (Python; conteo corregido 1∪2)",
+    )
     p_criba.add_argument("--list", action="store_true", help="Mostrar lista de primos")
     p_criba.add_argument("--max-list", type=int, default=32)
     p_criba.set_defaults(func=cmd_criba)
+
+    p_me = sub.add_parser("me", help="MEcuation detector (oráculo Newton, Libro 6)")
+    p_me_sub = p_me.add_subparsers(dest="me_cmd", required=True)
+    p_mes = p_me_sub.add_parser("scan", help="Escanear familias (cuadrados, cubos, …)")
+    p_mes.add_argument("--n", type=int, default=12, help="Observaciones por familia")
+    p_mes.add_argument("--bootstrap", type=int, default=200)
+    p_mes.add_argument("--seed", type=int, default=42)
+    p_mes.set_defaults(func=cmd_me_scan)
+    p_med = p_me_sub.add_parser("detect", help="Detectar ME en una familia")
+    p_med.add_argument(
+        "familia",
+        choices=[
+            "cuadrados",
+            "cubos",
+            "semiprimos",
+            "semiprimos_cercanos",
+            "k_primo",
+            "mersenne",
+            "potencia_mixta",
+            "sophie_germain",
+            "custom",
+        ],
+    )
+    p_med.add_argument("--n", type=int, default=15)
+    p_med.add_argument("--k", type=int, default=None, help="k para familia k_primo")
+    p_med.add_argument("--lista", help="Lista E para custom: 4,9,25,49")
+    p_med.add_argument("--bootstrap", type=int, default=300)
+    p_med.add_argument("--tau", type=float, default=1e-4)
+    p_med.add_argument("--seed", type=int, default=42)
+    p_med.set_defaults(func=cmd_me_detect)
+    p_meo = p_me_sub.add_parser("oracle", help="j_inicial para Newton Rápido")
+    p_meo.add_argument("E", type=float, help="Valor E (ej. 121)")
+    p_meo.add_argument(
+        "--familia",
+        "-f",
+        default="cuadrados",
+        choices=["cuadrados", "cubos", "general"],
+    )
+    p_meo.set_defaults(func=cmd_me_oracle)
 
     p_newton = sub.add_parser("newton", help="Newton Rapido + oraculo MEcuation (C)")
     p_newton.add_argument("E", type=float, help="Valor E (ej. 121)")
