@@ -1,0 +1,54 @@
+================================================================================
+  ALEATOROVIX v1.0 — organismo unificado
+  Víctor Manzanares Alberola · VMA / 33×1
+================================================================================
+
+QUÉ ES
+  Organismo que roba entropía (nanos, pila, basura, ping opcional),
+  aplica la máscara Lila, decide con intérprete mutante y ejecuta:
+    0 — Criba Desmemoriada (olvido)
+    1 — Salto 6k+1
+    2 — Salto 6k-1
+    3 — Inercia ZypyZape (resonancia MDC)
+  Tras cada ciclo borra su rastro en RAM.
+
+EJECUTAR (Windows)
+  RUN_ALEATOROVIX.bat
+  python aleatorovix.py
+  python aleatorovix.py -n 30 --n-mdc 10403
+  python demos\demo_organismo.py
+  python demos\demo_primos.py
+  python demos\demo_mdc_N.py
+
+ESTRUCTURA v1.0
+  aleatorovix.py           Organismo principal (Python)
+  aleatorovix.js           Motor navegador (SIN Math.random)
+  index.html               Web del ramo ❤️🌹 (carga aleatorovix.js)
+  nucleo/
+    entropia.py            Nanos, pila, basura, ping
+    mascara_lila.py        Curvatura + campanas + mutante
+    acciones.py            Select case + desmemoria
+    mdc_memoria.py         Heat map v6 + d(m)
+    criba.py               Criba 6k±1 híbrida
+  demos/                   Tres demostraciones
+  organismo_lila_v99.c     Versión C original (WSL)
+
+WEB
+  ..\index.html            → script src="aleatorovix/aleatorovix.js"
+  index.html               → script src="aleatorovix.js"
+  API: Aleatorovix.bit() | .random() | .randomInt(n) | .ciclo()
+
+LEGACY (v0.x)
+  criba_desmemoriada.py    Criba sola (determinista)
+  mdc_v6_aleatorovix.py    Esquema memoria (ahora en nucleo/mdc_memoria.py)
+
+BENCHMARK
+  python benchmarks\benchmark_aleatorovix.py
+  benchmarks\RESULTADOS_BENCHMARK.txt
+  benchmarks\results.csv
+
+PRÓXIMO (v1.1)
+  4 hilos competiendo por entropía
+  Integración plugin AntiPC mdc_*
+
+================================================================================

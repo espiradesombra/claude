@@ -1,0 +1,490 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+K3 + Aleatorovix — MODO INDUSTRIAL ❤️🌹 (muchos corazones y rosas)
+================================================================
+Uso civil / educativo · Proyecto 33×1
+
+Genera chorros MASIVOS de flores:
+  ❤️ = bit 1 = K = factor_msl = talla industrial
+  🌹 = bit 0 = L = factor_lsl = longitud de onda
+
+Motores:
+  A) Aleatorovix (Decimal msl/lsl) — chorro caótico
+  B) K3 industrial (acordeón uint64, base=33 rel=1) — stream tipo k3_core.c
+
+Ejecutar:
+  python k3_aleatorovix_industrial.py
+  python k3_aleatorovix_industrial.py mural
+  python k3_aleatorovix_industrial.py rain 50000
+  python k3_aleatorovix_industrial.py ventanas
+  python k3_aleatorovix_industrial.py full
+"""
+
+from __future__ import annotations
+
+import argparse
+import math
+import random
+import sys
+import time
+from dataclasses import dataclass, field
+from decimal import Decimal, getcontext
+from pathlib import Path
+from typing import Dict, Iterator, List, Optional, Tuple
+
+getcontext().prec = 120
+
+# ---------------------------------------------------------------------------
+K_HEART = "❤️"
+L_ROSE = "🌹"
+PAIR = f"{K_HEART}{L_ROSE}"
+SEP = "·"
+
+# Escalones industriales (volumen de flores)
+ESCALAS = {
+    "micro": {"bits": 256, "lineas": 8, "ancho_linea": 32, "ventanas": 8},
+    "mini": {"bits": 1024, "lineas": 16, "ancho_linea": 48, "ventanas": 16},
+    "std": {"bits": 4096, "lineas": 32, "ancho_linea": 64, "ventanas": 32},
+    "industrial": {"bits": 16384, "lineas": 64, "ancho_linea": 80, "ventanas": 64},
+    "planta": {"bits": 65536, "lineas": 128, "ancho_linea": 96, "ventanas": 128},
+    "megalopolis": {"bits": 262144, "lineas": 200, "ancho_linea": 100, "ventanas": 200},
+}
+
+
+def bits_a_flores(bits: str) -> str:
+    return "".join(K_HEART if b == "1" else L_ROSE for b in bits if b in "01")
+
+
+def digito_a_flores(d: int) -> str:
+    return bits_a_flores(format(abs(int(d)) % 10, "04b"))
+
+
+def numero_floral(n: int) -> str:
+    if n < 0:
+        return "−" + numero_floral(-n)
+    if n == 0:
+        return digito_a_flores(0)
+    return SEP.join(digito_a_flores(int(c)) for c in str(int(n)))
+
+
+def entero_a_flores(n: int, ancho: Optional[int] = None) -> str:
+    if n < 0:
+        return "−" + entero_a_flores(-n, ancho)
+    bits = bin(int(n))[2:] if n else "0"
+    if ancho:
+        bits = bits.zfill(ancho)
+    return bits_a_flores(bits)
+
+
+def contar_flores(texto: str) -> Tuple[int, int]:
+    """Cuenta ❤️ y 🌹 en un texto (emojis multi-codepoint)."""
+    h = texto.count(K_HEART)
+    r = texto.count(L_ROSE)
+    return h, r
+
+
+# ===========================================================================
+# Motor A — Aleatorovix (chorro msl/lsl)
+# ===========================================================================
+
+class AleatorovixIndustrial:
+    def __init__(self, semilla: int = 33, msl: str = "42.123456789", lsl: str = "0.000123456"):
+        self.estado = Decimal(str(semilla if semilla else 33))
+        self.factor_msl = Decimal(msl)  # ❤️
+        self.factor_lsl = Decimal(lsl)  # 🌹
+        self.bits_emitidos = 0
+        self.corazones = 0
+        self.rosas = 0
+
+    def bit(self) -> str:
+        term = Decimal(str(math.cos(float(self.estado * self.factor_lsl))))
+        fase = (self.estado * self.factor_msl) + term
+        self.estado = fase - fase.to_integral_value(rounding="ROUND_FLOOR")
+        b = "1" if self.estado > Decimal("0.5") else "0"
+        self.bits_emitidos += 1
+        if b == "1":
+            self.corazones += 1
+        else:
+            self.rosas += 1
+        return b
+
+    def flor(self) -> str:
+        return K_HEART if self.bit() == "1" else L_ROSE
+
+    def chorro_bits(self, n: int) -> str:
+        return "".join(self.bit() for _ in range(n))
+
+    def chorro_flores(self, n: int) -> str:
+        return "".join(self.flor() for _ in range(n))
+
+    def iter_flores(self, n: int) -> Iterator[str]:
+        for _ in range(n):
+            yield self.flor()
+
+    def mural(
+        self,
+        lineas: int = 64,
+        ancho: int = 80,
+        separador_fila: str = "",
+    ) -> List[str]:
+        """Muro denso de ❤️🌹 — industrial visual."""
+        rows = []
+        for _ in range(lineas):
+            rows.append(self.chorro_flores(ancho) + separador_fila)
+        return rows
+
+    def lluvia(self, total: int = 10000, por_linea: int = 64) -> List[str]:
+        """Lluvia de flores: miles de corazones y rosas en filas."""
+        filas = []
+        emitidos = 0
+        while emitidos < total:
+            n = min(por_linea, total - emitidos)
+            filas.append(self.chorro_flores(n))
+            emitidos += n
+        return filas
+
+    def ventanas_masivas(
+        self,
+        total_bits: int = 16384,
+        num_ventanas: int = 64,
+        min_ancho: int = 16,
+        max_ancho: int = 128,
+    ) -> List[dict]:
+        bits = self.chorro_bits(total_bits)
+        out = []
+        for i in range(num_ventanas):
+            ancho = random.randint(min_ancho, min(max_ancho, total_bits))
+            max_start = max(0, total_bits - ancho)
+            start = random.randint(0, max_start)
+            seg = bits[start : start + ancho]
+            if not seg:
+                continue
+            valor = int(seg, 2)
+            out.append(
+                {
+                    "ventana": i + 1,
+                    "start": start,
+                    "end": start + ancho,
+                    "ancho": ancho,
+                    "flores": bits_a_flores(seg),
+                    "floral": numero_floral(valor % (10**12)),  # compacto
+                    "valor": valor,
+                    "corazones": seg.count("1"),
+                    "rosas": seg.count("0"),
+                }
+            )
+        return out
+
+
+# ===========================================================================
+# Motor B — K3 industrial (acordeón C: v, L · base=33 rel=1)
+# ===========================================================================
+
+@dataclass
+class K3MotorIndustrial:
+    """Réplica Python de k3_core.c (sin mlock/memset destructivo)."""
+
+    v: int = 33  # base 33×1
+    L: int = 1   # rel
+    bytes_emitidos: int = 0
+    corazones: int = 0
+    rosas: int = 0
+
+    def step_byte(self) -> int:
+        self.L = (self.L + (self.v + 1)) & 0xFFFFFFFFFFFFFFFF
+        self.v = (self.v + 2) & 0xFFFFFFFFFFFFFFFF
+        if (5 * self.L) <= (2 * self.v + 1):
+            self.L = (self.L + (self.v * 2)) & 0xFFFFFFFFFFFFFFFF
+        stream = ((self.L ^ self.v) * 0x9E3779B97F4A7C15) & 0xFFFFFFFFFFFFFFFF
+        b = stream & 0xFF
+        self.bytes_emitidos += 1
+        return b
+
+    def bits_from_byte(self, b: int) -> str:
+        return f"{b:08b}"
+
+    def chorro_bits(self, n_bits: int) -> str:
+        bits = []
+        while len(bits) < n_bits:
+            for ch in self.bits_from_byte(self.step_byte()):
+                bits.append(ch)
+                if ch == "1":
+                    self.corazones += 1
+                else:
+                    self.rosas += 1
+                if len(bits) >= n_bits:
+                    break
+        return "".join(bits)
+
+    def chorro_flores(self, n: int) -> str:
+        return bits_a_flores(self.chorro_bits(n))
+
+    def mural(self, lineas: int = 64, ancho: int = 80) -> List[str]:
+        return [self.chorro_flores(ancho) for _ in range(lineas)]
+
+
+# ===========================================================================
+# Orquestador industrial
+# ===========================================================================
+
+@dataclass
+class InformeIndustrial:
+    escala: str
+    total_flores: int
+    corazones: int
+    rosas: int
+    ratio_heart: float
+    segundos: float
+    motor: str
+    extra: Dict = field(default_factory=dict)
+
+    def resumen_floral(self) -> str:
+        return (
+            f"escala={self.escala} motor={self.motor}\n"
+            f"total flores: {numero_floral(self.total_flores)}\n"
+            f"{K_HEART} corazones: {numero_floral(self.corazones)}  "
+            f"({self.corazones})\n"
+            f"{L_ROSE} rosas: {numero_floral(self.rosas)}  "
+            f"({self.rosas})\n"
+            f"ratio ❤️: {self.ratio_heart:.4f}  tiempo: {self.segundos:.3f}s"
+        )
+
+
+class PlantaFloral:
+    """Fábrica industrial de corazones y rosas."""
+
+    def __init__(self, semilla: int = 33):
+        self.ale = AleatorovixIndustrial(semilla=semilla)
+        self.k3 = K3MotorIndustrial(v=33, L=1)
+        self.semilla = semilla
+
+    def producir_mural(
+        self,
+        escala: str = "industrial",
+        motor: str = "dual",
+    ) -> Tuple[List[str], InformeIndustrial]:
+        cfg = ESCALAS.get(escala, ESCALAS["industrial"])
+        lineas, ancho = cfg["lineas"], cfg["ancho_linea"]
+        t0 = time.perf_counter()
+        rows: List[str] = []
+
+        if motor in ("ale", "aleatorovix", "dual"):
+            rows.extend(self.ale.mural(lineas=lineas // (2 if motor == "dual" else 1), ancho=ancho))
+        if motor in ("k3", "industrial", "dual"):
+            rows.extend(self.k3.mural(lineas=lineas // (2 if motor == "dual" else 1) or 1, ancho=ancho))
+
+        dt = time.perf_counter() - t0
+        texto = "\n".join(rows)
+        h, r = contar_flores(texto)
+        total = h + r
+        inf = InformeIndustrial(
+            escala=escala,
+            total_flores=total,
+            corazones=h,
+            rosas=r,
+            ratio_heart=(h / total) if total else 0.0,
+            segundos=dt,
+            motor=motor,
+            extra={"lineas": len(rows), "ancho": ancho},
+        )
+        return rows, inf
+
+    def producir_lluvia(self, n_flores: int = 50000, por_linea: int = 80) -> Tuple[List[str], InformeIndustrial]:
+        t0 = time.perf_counter()
+        # mitad ale, mitad k3
+        n1 = n_flores // 2
+        n2 = n_flores - n1
+        filas = self.ale.lluvia(n1, por_linea) + [
+            self.k3.chorro_flores(min(por_linea, n2 - i * por_linea))
+            for i in range((n2 + por_linea - 1) // por_linea)
+            if n2 - i * por_linea > 0
+        ]
+        dt = time.perf_counter() - t0
+        texto = "".join(filas)
+        h, r = contar_flores(texto)
+        total = h + r
+        return filas, InformeIndustrial(
+            escala=f"lluvia-{n_flores}",
+            total_flores=total,
+            corazones=h,
+            rosas=r,
+            ratio_heart=(h / total) if total else 0.0,
+            segundos=dt,
+            motor="dual",
+            extra={"filas": len(filas)},
+        )
+
+    def producir_ventanas(self, escala: str = "industrial") -> Tuple[List[dict], InformeIndustrial]:
+        cfg = ESCALAS.get(escala, ESCALAS["industrial"])
+        t0 = time.perf_counter()
+        data = self.ale.ventanas_masivas(
+            total_bits=cfg["bits"],
+            num_ventanas=cfg["ventanas"],
+            min_ancho=16,
+            max_ancho=min(256, cfg["bits"] // 4),
+        )
+        dt = time.perf_counter() - t0
+        h = sum(d["corazones"] for d in data)
+        r = sum(d["rosas"] for d in data)
+        total = h + r
+        return data, InformeIndustrial(
+            escala=escala,
+            total_flores=total,
+            corazones=h,
+            rosas=r,
+            ratio_heart=(h / total) if total else 0.0,
+            segundos=dt,
+            motor="ale+ventanas",
+            extra={"ventanas": len(data), "bits_base": cfg["bits"]},
+        )
+
+    def exportar_txt(self, path: Path, filas: List[str], informe: InformeIndustrial) -> Path:
+        path = Path(path)
+        with path.open("w", encoding="utf-8") as f:
+            f.write(f"# Mural industrial K3+Aleatorovix {PAIR}\n")
+            f.write(f"# {informe.resumen_floral().replace(chr(10), chr(10)+'# ')}\n\n")
+            for row in filas:
+                f.write(row + "\n")
+        return path
+
+
+def banner() -> str:
+    return (
+        f"{PAIR * 20}\n"
+        f"  PLANTA FLORAL INDUSTRIAL 33×1  {PAIR}\n"
+        f"  {K_HEART} msl/K/talla   {L_ROSE} lsl/L/onda\n"
+        f"{PAIR * 20}"
+    )
+
+
+def cmd_mural(escala: str, motor: str, out: Optional[str]) -> None:
+    print(banner())
+    planta = PlantaFloral(semilla=33)
+    filas, inf = planta.producir_mural(escala=escala, motor=motor)
+    # mostrar (si es enorme, muestra muestra + stats)
+    max_show = 40 if len(filas) > 40 else len(filas)
+    print(f"\n--- mural {escala} ({len(filas)} líneas, mostrando {max_show}) ---\n")
+    for row in filas[:max_show]:
+        print(row)
+    if len(filas) > max_show:
+        print(f"\n... (+{len(filas) - max_show} líneas ocultas; usa --out para volcar todo)\n")
+    print("\n" + inf.resumen_floral())
+    if out:
+        p = planta.exportar_txt(Path(out), filas, inf)
+        print(f"\nExportado: {p} ({inf.total_flores} flores)")
+
+
+def cmd_lluvia(n: int, out: Optional[str]) -> None:
+    print(banner())
+    planta = PlantaFloral(semilla=33 * 1)
+    filas, inf = planta.producir_lluvia(n_flores=n, por_linea=80)
+    max_show = 25
+    print(f"\n--- lluvia de {n} flores (muestra {max_show} filas) ---\n")
+    for row in filas[:max_show]:
+        print(row)
+    if len(filas) > max_show:
+        print(f"... +{len(filas) - max_show} filas")
+    print("\n" + inf.resumen_floral())
+    if out:
+        p = planta.exportar_txt(Path(out), filas, inf)
+        print(f"\nExportado: {p}")
+
+
+def cmd_ventanas(escala: str) -> None:
+    print(banner())
+    planta = PlantaFloral()
+    data, inf = planta.producir_ventanas(escala=escala)
+    print(f"\n--- {len(data)} ventanas sobre chorro industrial ---\n")
+    for w in data[:20]:
+        preview = w["flores"][:60] + ("…" if len(w["flores"]) > 60 else "")
+        print(
+            f"v{w['ventana']:03d} [{w['start']}:{w['end']}] "
+            f"a={w['ancho']} {K_HEART}{w['corazones']} {L_ROSE}{w['rosas']}"
+        )
+        print(f"  {preview}")
+        print(f"  floral: {w['floral']}")
+    if len(data) > 20:
+        print(f"... +{len(data) - 20} ventanas")
+    print("\n" + inf.resumen_floral())
+
+
+def cmd_full(escala: str, out_dir: Optional[str]) -> None:
+    print(banner())
+    print("\n[1/3] MURAL densísimo…")
+    planta = PlantaFloral(33)
+    filas, inf_m = planta.producir_mural(escala=escala, motor="dual")
+    for row in filas[:15]:
+        print(row)
+    print(f"... mural completo: {inf_m.total_flores} flores\n")
+    print(inf_m.resumen_floral())
+
+    print("\n[2/3] LLUVIA 20000…")
+    filas_l, inf_l = planta.producir_lluvia(20000, 100)
+    for row in filas_l[:8]:
+        print(row)
+    print(inf_l.resumen_floral())
+
+    print("\n[3/3] VENTANAS…")
+    data, inf_v = planta.producir_ventanas(escala=escala)
+    print(f"ventanas={len(data)}")
+    print(inf_v.resumen_floral())
+
+    total_h = inf_m.corazones + inf_l.corazones + inf_v.corazones
+    total_r = inf_m.rosas + inf_l.rosas + inf_v.rosas
+    print(f"\n{'=' * 50}")
+    print(f"TOTAL PLANTA {PAIR}")
+    print(f"  {K_HEART} corazones: {total_h}  → {numero_floral(total_h)}")
+    print(f"  {L_ROSE} rosas:     {total_r}  → {numero_floral(total_r)}")
+    print(f"  SUM flores:  {total_h + total_r}")
+    print(f"{'=' * 50}")
+
+    if out_dir:
+        d = Path(out_dir)
+        d.mkdir(parents=True, exist_ok=True)
+        planta.exportar_txt(d / "mural_industrial.txt", filas, inf_m)
+        planta.exportar_txt(d / "lluvia_industrial.txt", filas_l, inf_l)
+        print(f"\nArchivos en: {d}")
+
+
+def main(argv: Optional[List[str]] = None) -> None:
+    p = argparse.ArgumentParser(description=f"Planta floral industrial {PAIR}")
+    p.add_argument(
+        "modo",
+        nargs="?",
+        default="full",
+        choices=["mural", "rain", "lluvia", "ventanas", "full", "escalas"],
+    )
+    p.add_argument(
+        "escala_o_n",
+        nargs="?",
+        default=None,
+        help="escala (micro|mini|std|industrial|planta|megalopolis) o N flores para rain",
+    )
+    p.add_argument("--motor", default="dual", choices=["ale", "k3", "dual"])
+    p.add_argument("--out", default=None, help="archivo o carpeta de exportación")
+    args = p.parse_args(argv)
+
+    if args.modo == "escalas":
+        print("Escalas industriales:")
+        for k, v in ESCALAS.items():
+            approx = v["lineas"] * v["ancho_linea"]
+            print(f"  {k:12} → ~{approx} flores/mural | bits={v['bits']} | ventanas={v['ventanas']}")
+        return
+
+    if args.modo == "mural":
+        escala = args.escala_o_n or "industrial"
+        cmd_mural(escala, args.motor, args.out)
+    elif args.modo in ("rain", "lluvia"):
+        n = int(args.escala_o_n or 50000)
+        cmd_lluvia(n, args.out)
+    elif args.modo == "ventanas":
+        escala = args.escala_o_n or "industrial"
+        cmd_ventanas(escala)
+    else:
+        escala = args.escala_o_n or "industrial"
+        cmd_full(escala, args.out)
+
+
+if __name__ == "__main__":
+    main()
