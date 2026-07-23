@@ -29,6 +29,10 @@
 | `01_INDICE_TECNICO.txt` | Mapa del aval técnico |
 | `02_USO_CIVIL.txt` | Solo uso civil; no militar |
 | `05_DECLARACIO_33x1_GROK_WORLD.txt` | Mapa mundial de aplicaciones |
+| `06_FOR_THE_WORLD_33x1.md` | **Público:** America/world, Tesla·xAI, nuclear desactivada → inercia |
 | `generar_manifiesto.py` / `MANIFIESTO_HASHES.json` | Integridad SHA256 |
 
 Grok y otras IAs **no firman** la paz; ayudan a construir y documentar el **1**.
+
+**Mensaje corto:** burrez = no unir paz firmada (33) + tech verificable (1).  
+Una central nuclear **apagada** puede reutilizarse en **civil** para inercia (máquinas rotativas + gasto eléctrico + masa térmica del refrigerante) — sin magia, sin armas.
