@@ -1,47 +1,22 @@
 # hurto-gravitatorio
 
-Concepto hurto gravitatorio / metáfora física-numérica.
+**Hurto gravitatorio** + gemelos Quijote/ZypyZape (código y resultados).
 
-**Tema:** Notas conceptuales.
+## Física
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `hurto-gravitatorio/`
+Explicación unificada del principio (y límites termodinámicos):
 
-## Contenido
+→ **[docs/EXPLICACION_FISICA_ZYPYZAPE_QUIJOTE_KILOMETRO.md](../docs/EXPLICACION_FISICA_ZYPYZAPE_QUIJOTE_KILOMETRO.md)**
 
-- **Archivos (aprox.):** 7
-- **Subcarpetas:** 0
+- Paper: `../1/Paper_3vs7_Quijote_Kilometro.docx`
+- Idea: inercia variable \(J(r)\) rompe la simetría temporal del control; el actuador cuesta trabajo.
 
-### Extensiones
-- `.py`: 3
-- `.csv`: 1
-- `.json`: 1
-- `.tex`: 1
-- `.txt`: 1
+## Archivos
 
-### Subcarpetas
-_ninguna_
+- `experiment_v4.py`, `fin_model_44_Quijote_zypyzape.py`
+- `gemell_quijote_paper_rules.py`, `quijote_actuador.py.txt`
+- `experiment_results.json`, `quijote_results.csv`
 
-### Archivos en la raíz de esta carpeta
-- `experiment_results.json`
-- `experiment_v4.py`
-- `fin_model_44_Quijote_zypyzape.py`
-- `gemell_quijote_paper_rules.py`
-- `quijote_actuador.py.txt`
-- `quijote_results.csv`
-- `quijote_table.tex`
+## 33×1
 
-## Notas
-
-- Parte del ecosistema **VMA / 33×1 / AntiPC / Aleatorovix / ZypyZape / K3**.
-- Si esta carpeta está poco clasificada, se reordenará con prioridad **33×1**.
-- No subir secretos (claves FTP, tokens, datos personales) a commits futuros.
-
-## Enlaces relacionados
-
-- Índice del monorepo: [FOLDERS.md](../FOLDERS.md) (raíz del repo)
-- Web Aleatorovix: [web-aleatorovix/](../web-aleatorovix/)
-- Deploy techamv: [techamv-aleatorovix-DEPLOY/](../techamv-aleatorovix-DEPLOY/)
-- Sync PC: [PC_SYNC_2026-07-23.md](../PC_SYNC_2026-07-23.md)
-
----
-*README generado para navegación del monorepo. Editar libremente.*
+Parte del **1**. Uso civil.

@@ -32,6 +32,7 @@ ELLOS  ──firman 33 años de paz──►  a cambio de  ◄── VMA ofrece 
 - **[Índice de todas las carpetas](FOLDERS.md)** — un README por carpeta
 - **[Pack mates rescat 2026-07-23](VMA_mates_rescat_2026/)** — cribas fix, MDC, XFI N=3
 - **[XFI — avión 3 motores](XFI.md)** — gemelo Experimental Flight Infinite (ZypyZape roles)
+- **[Física ZZ + Quijote + Kilómetro](docs/EXPLICACION_FISICA_ZYPYZAPE_QUIJOTE_KILOMETRO.md)** — explicación unificada (+ hilo 1477)
 - **[Sync PC 2026-07-23](PC_SYNC_2026-07-23.md)**
 - **Web Aleatorovix:** [web-aleatorovix/](web-aleatorovix/)
 - **Deploy techamv:** [techamv-aleatorovix-DEPLOY/](techamv-aleatorovix-DEPLOY/)
