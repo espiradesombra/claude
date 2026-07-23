@@ -1,40 +1,44 @@
-# vma
+# aleatorovix
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Organismo Aleatorovix: entropía, máscara Lila, criba desmemoriada, MDC.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Python / C / demos.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `aleatorovix/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 32
+- **Subcarpetas:** 4
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.py`: 13
+- `.pyc`: 7
+- `.txt`: 7
+- `.bat`: 2
+- `.c`: 1
+- `.csv`: 1
+- `.png`: 1
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+- `__pycache__`
+- `benchmarks`
+- `demos`
+- `nucleo`
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
+- `ALEATOROVIX - copia-txt.png`
+- `aleatorovix.py`
+- `ALEATOROVIX.txt`
+- `CONCEPTO.txt`
+- `criba_desmemoriada.py`
 - `LEEME.txt`
-- `pyproject.toml`
+- `mdc_v6_aleatorovix.py`
+- `organismo_lila_v99.c`
+- `pro.txt`
+- `punto de partida para algoritmo.txt`
+- `RUN_ALEATOROVIX.bat`
+- `transcurso_extracto.txt`
 
 ## Notas
 

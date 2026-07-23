@@ -1,40 +1,40 @@
-# vma
+# biblio
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Bibliografía y referencias.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Referencias.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `biblio/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 20
+- **Subcarpetas:** 0
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.hpp`: 10
+- `.txt`: 6
+- `.cpp`: 4
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+_ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+- `analisi_modular.hpp`
+- `aritmetica_modular.hpp`
+- `chat gemini.txt`
+- `copi.txt`
+- `factoritzacio_mdc.hpp`
+- `grok.txt`
+- `mdc_crt.hpp`
+- `mdc_factor_pollard.hpp`
+- `Nuevo Documento de texto.txt`
+- `primalitat.hpp`
+- `README.txt`
+- `regla_calculo.hpp`
+- `ReglaMecanicaUniversal_Consolidado.cpp`
+- `ReglaMecanicaUniversal_Consolidadov3 (1).cpp`
+- `ReglaMecanicaUniversal_Consolidadov3.cpp`
 
 ## Notas
 

@@ -1,40 +1,40 @@
-# vma
+# cosas
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Cajón de sastre de archivos.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Misc (revisar).
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `cosas/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 17
+- **Subcarpetas:** 0
 
 ### Extensiones
 - `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.docx`: 4
+- `.py`: 1
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+_ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+- `2a+3 final.txt`
+- `33x1 i aceptem.txt`
+- `conpsro.txt`
+- `deepseek 6-5-26.txt`
+- `Document_bilingüe_QUIJOTE_+_ZYPYZAPE_v9.4.2.docx`
+- `dospunto0.txt`
+- `Escuela de Raspall.txt`
+- `gptquijote.py`
+- `gptquijote.txt`
+- `Kilometre_ZypyZape_doc_tecnic.docx`
+- `Mati .txt`
+- `Nuevo Documento de .txt`
+- `Nuevo Documento de texto (3).txt`
+- `pro.txt`
+- `prompt para claude .txt`
 
 ## Notas
 

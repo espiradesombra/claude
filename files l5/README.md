@@ -1,40 +1,25 @@
-# vma
+# files l5
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Archivos auxiliares L5.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Misc L5.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `files l5/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 2
+- **Subcarpetas:** 0
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.py`: 2
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+_ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+- `ksweep_predictiu.py`
+- `militar_test.py`
 
 ## Notas
 

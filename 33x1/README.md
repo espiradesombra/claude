@@ -1,41 +1,44 @@
-# txt l5
+# 33x1
 
-Textos y chats del Libro 5 (incl. corpus Aleatorovix).
+Paquete 33×1: eje político-técnico del proyecto VMA.
 
-**Tema:** Corpus textual.
+**Tema:** Manifiesto y materiales 33×1.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `txt l5/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `33x1/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 17
+- **Archivos (aprox.):** 18
 - **Subcarpetas:** 0
 
 ### Extensiones
-- `.txt`: 14
-- `.pptx`: 1
-- `.svg`: 1
-- `.tex`: 1
+- `.txt`: 8
+- `.docx`: 4
+- `.md`: 2
+- `.bat`: 1
+- `.html`: 1
+- `.json`: 1
+- `.py`: 1
 
 ### Subcarpetas
 _ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `2a+3 final.txt`
-- `2a+3 importa.txt`
-- `ALEATOROVIX.txt`
-- `codigos.txt`
-- `conpsro.txt`
-- `dospunto0.txt`
-- `intento algoritmo.txt`
-- `mapa_conceptual_vma.svg`
-- `Nuevo Documento de texto.txt`
-- `pro.txt`
-- `punto de partida para algoritmo.txt`
-- `recopilacion de libros.txt`
-- `todo libro5.txt`
-- `transcurso.txt`
-- `v15 en adelante.txt`
+- `00_AHORA.txt`
+- `00_PROMPT_DEFINITIVO_33x1.md`
+- `01_INDICE_TECNICO.txt`
+- `02_USO_CIVIL.txt`
+- `03_COMANDOS.txt`
+- `04_MEDIOS.txt`
+- `1477.md`
+- `ABRIR_GUI.bat`
+- `El_Que_Ja_Tenim_VMA_2026.docx`
+- `gemini-code-1784049033991.html`
+- `generar_manifiesto.py`
+- `Inercia_Gravetat_Girs_VMA_2026.docx`
+- `INVENTARIO_grok_y_zip.txt`
+- `INVENTARIO_monton_viejo_revisar.txt`
+- `Kuramoto_ZypyZape_VMA_2026.docx`
 
 ## Notas
 

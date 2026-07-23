@@ -1,40 +1,35 @@
-# vma
+# webtechamv
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Hubs K3 / licencia software (React TSX) y materiales promo HashCode.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Frontend de negocio K3.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `webtechamv/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 13
+- **Subcarpetas:** 1
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.tsx`: 11
+- `.txt`: 2
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+- `promo 1`
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+- `k3_green_software_landing_page.tsx`
+- `k3_software_business_license_hub (1).tsx`
+- `k3_software_business_license_hub.tsx`
+- `k3_software_hub (1).tsx`
+- `k3_software_hub (2).tsx`
+- `k3_software_hub (3).tsx`
+- `k3_software_hub (4).tsx`
+- `k3_software_hub (5).tsx`
+- `k3_software_hub (6).tsx`
+- `k3_software_hub (7).tsx`
+- `k3_software_hub.tsx`
 
 ## Notas
 

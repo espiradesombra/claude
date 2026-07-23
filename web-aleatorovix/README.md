@@ -1,59 +1,55 @@
-# Aleatorovix 33×1 · Web del ramo ❤️🌹
+# web-aleatorovix
 
-Sitio público del **motor Aleatorovix** en el navegador (sin `Math.random`).
+Web del ramo ❤️🌹 + motor Aleatorovix en el navegador (sin Math.random). Destino: techamv.com.
 
-Autor: **Víctor Manzanares Alberola** · espiradesombra · VMA / 33×1  
-Dominio de destino: [techamv.com](https://techamv.com)
+**Tema:** Código web, JS, Python, demos.
 
-## Estructura mínima para hosting (techamv)
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `web-aleatorovix/`
 
-```
-index.html                 ← home (ramo, modo Princesa, Leonor)
-aleatorovix/
-  aleatorovix.js           ← motor (entropía → máscara Lila → bit flor)
-```
+## Contenido
 
-Opcional: carpeta completa `aleatorovix/` (Python, C, demos, corpus).
+- **Archivos (aprox.):** 48
+- **Subcarpetas:** 1
 
-## Probar en local
+### Extensiones
+- `.py`: 18
+- `.txt`: 12
+- `.html`: 11
+- `.bat`: 2
+- `.c`: 1
+- `.csv`: 1
+- `.gitignore`: 1
+- `.ipynb`: 1
 
-Abre `index.html` en el navegador (o sirve la carpeta con cualquier HTTP estático).
+### Subcarpetas
+- `aleatorovix`
 
-```bash
-# Python
-python -m http.server 8080
-# luego http://localhost:8080
-```
+### Archivos en la raíz de esta carpeta
+- `.gitignore`
+- `aleatorovix_san_valent_n (1).html`
+- `aleatorovix_san_valent_n (2).html`
+- `aleatorovix_san_valent_n (3).html`
+- `aleatorovix_san_valent_n (33).html`
+- `aleatorovix_san_valent_n.html`
+- `ALEATOROVIX.txt`
+- `index - lepanto.html`
+- `index.html`
+- `index.httml.html`
+- `indexcoret.html`
+- `indexnv.html`
 
-## API JS
+## Notas
 
-```js
-Aleatorovix.bit()        // 0 | 1
-Aleatorovix.random()     // [0, 1)
-Aleatorovix.randomInt(n) // [0, n)
-Aleatorovix.ciclo()      // { decision, medida, k, bit, u, m }
-```
+- Parte del ecosistema **VMA / 33×1 / AntiPC / Aleatorovix / ZypyZape / K3**.
+- Si esta carpeta está poco clasificada, se reordenará con prioridad **33×1**.
+- No subir secretos (claves FTP, tokens, datos personales) a commits futuros.
 
-## Python (paquete técnico)
+## Enlaces relacionados
 
-```bash
-cd aleatorovix
-python aleatorovix.py
-RUN_ALEATOROVIX.bat
-```
+- Índice del monorepo: [FOLDERS.md](../FOLDERS.md) (raíz del repo)
+- Web Aleatorovix: [web-aleatorovix/](../web-aleatorovix/)
+- Deploy techamv: [techamv-aleatorovix-DEPLOY/](../techamv-aleatorovix-DEPLOY/)
+- Sync PC: [PC_SYNC_2026-07-23.md](../PC_SYNC_2026-07-23.md)
 
-## Subir a techamv.com (Nominalia / FTP)
-
-1. Entra al panel de hosting (FTP o administrador de archivos).
-2. Sube **`index.html`** a la **raíz pública** del dominio (suele ser `public_html`, `www` o `httpdocs`).
-3. Crea la carpeta **`aleatorovix/`** en esa misma raíz.
-4. Sube **`aleatorovix/aleatorovix.js`** dentro de esa carpeta.
-5. Comprueba: `https://techamv.com/` y en la consola del navegador (F12) que no haya error 404 de `aleatorovix.js`.
-
-**Importante:** si solo subes el HTML y no el `.js`, el ramo no usará Aleatorovix (fallará la carga del script).
-
-Copia lista para subir: carpeta del Escritorio `techamv-aleatorovix-DEPLOY/`.
-
-## Licencia / uso
-
-Proyecto 33×1 · uso civil / educativo. Ver corpus en `aleatorovix/ALEATOROVIX.txt` y `LEEME.txt`.
+---
+*README generado para navegación del monorepo. Editar libremente.*

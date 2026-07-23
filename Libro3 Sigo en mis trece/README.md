@@ -1,40 +1,34 @@
-# vma
+# Libro3 Sigo en mis trece
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Libro 3: Sigo en mis trece.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Obra VMA.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `Libro3 Sigo en mis trece/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 9
+- **Subcarpetas:** 0
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.docx`: 4
+- `.txt`: 3
+- `.pdf`: 2
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+_ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+- `Cribas_cotas_y_estructuras_de_primos_VMA (1)-msi-mek.docx`
+- `Cribas_cotas_y_estructuras_de_primos_VMA.docx`
+- `guia para editar el doc.txt`
+- `Nuevo Documento de Microsoft Word-msi-mek.docx`
+- `Nuevo Documento de texto.txt`
+- `reiman i legendre.docx`
+- `reimn.txt`
+- `Sigo en mis trecE (2).pdf`
+- `sigo en mis Trece.pdf`
 
 ## Notas
 

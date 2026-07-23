@@ -1,10 +1,10 @@
-# txt l5
+# Nueva carpeta
 
-Textos y chats del Libro 5 (incl. corpus Aleatorovix).
+Carpeta temporal / sin clasificar.
 
-**Tema:** Corpus textual.
+**Tema:** Pendiente de ordenar.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `txt l5/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `Nueva carpeta/`
 
 ## Contenido
 
@@ -12,30 +12,30 @@ Textos y chats del Libro 5 (incl. corpus Aleatorovix).
 - **Subcarpetas:** 0
 
 ### Extensiones
-- `.txt`: 14
-- `.pptx`: 1
-- `.svg`: 1
-- `.tex`: 1
+- `.docx`: 8
+- `.pdf`: 4
+- `.txt`: 3
+- `.png`: 2
 
 ### Subcarpetas
 _ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `2a+3 final.txt`
-- `2a+3 importa.txt`
-- `ALEATOROVIX.txt`
-- `codigos.txt`
-- `conpsro.txt`
-- `dospunto0.txt`
-- `intento algoritmo.txt`
-- `mapa_conceptual_vma.svg`
+- `~$meros i numeritos.pdf`
+- `~$oria_restos.docx`
+- `Chat de WhatsApp con +34 656 91 54 79.txt`
+- `Chat de WhatsApp con +675 7164 5092.txt`
+- `Guardado con Autorrecuperación de primos.asd.docx`
+- `Guardado con Autorrecuperación de primos.docx`
+- `IMG-20240715-WA0000.png`
+- `IMG-20240715-WA0001.png`
+- `la forma de algunos .docx`
+- `minimo2.docx`
+- `minimo2.pdf`
+- `mínimodos.pdf`
+- `Nuevo Documento de Microsoft Word.docx`
 - `Nuevo Documento de texto.txt`
-- `pro.txt`
-- `punto de partida para algoritmo.txt`
-- `recopilacion de libros.txt`
-- `todo libro5.txt`
-- `transcurso.txt`
-- `v15 en adelante.txt`
+- `Números i numeritos.pdf`
 
 ## Notas
 

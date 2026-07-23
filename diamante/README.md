@@ -1,40 +1,43 @@
-# vma
+# diamante
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Proyecto o metáfora diamante.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Materiales.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `diamante/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 54
+- **Subcarpetas:** 0
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.txt`: 28
+- `.py`: 12
+- `.c`: 9
+- `.docx`: 3
+- `.2`: 1
+- `.pdf`: 1
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+_ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+- `10.0 Comparativa.c`
+- `6_2.c`
+- `6.2`
+- `6.2.c`
+- `9.3 1.c`
+- `9.3.c`
+- `anexoE_L_m_script (1).py`
+- `anexoE_L_m_script.py`
+- `anexoF_criba6kpm1_openmp (1).c`
+- `anexoF_criba6kpm1_openmp (2).c`
+- `anexoF_criba6kpm1_openmp.c`
+- `anexoF_mrauv_calibrador (1).py`
+- `anexoF_mrauv_calibrador (2).py`
+- `anexoF_mrauv_calibrador.py`
+- `antiprimos.txt`
 
 ## Notas
 

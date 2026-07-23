@@ -1,41 +1,41 @@
-# txt l5
+# coses velles
 
-Textos y chats del Libro 5 (incl. corpus Aleatorovix).
+Cosas viejas a revisar / archivo histórico.
 
-**Tema:** Corpus textual.
+**Tema:** Legacy.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `txt l5/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `coses velles/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 17
+- **Archivos (aprox.):** 26
 - **Subcarpetas:** 0
 
 ### Extensiones
-- `.txt`: 14
+- `.docx`: 21
+- `.txt`: 3
+- `.pdf`: 1
 - `.pptx`: 1
-- `.svg`: 1
-- `.tex`: 1
 
 ### Subcarpetas
 _ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `2a+3 final.txt`
-- `2a+3 importa.txt`
-- `ALEATOROVIX.txt`
-- `codigos.txt`
-- `conpsro.txt`
-- `dospunto0.txt`
-- `intento algoritmo.txt`
-- `mapa_conceptual_vma.svg`
-- `Nuevo Documento de texto.txt`
-- `pro.txt`
-- `punto de partida para algoritmo.txt`
-- `recopilacion de libros.txt`
-- `todo libro5.txt`
-- `transcurso.txt`
-- `v15 en adelante.txt`
+- `beso ns de sofi germany (1).docx`
+- `besons.docx`
+- `Criva marcado unico.pptx`
+- `Document (1).docx`
+- `Document.docx`
+- `Documento8.docx`
+- `ideas.docx`
+- `La forma de algunos.docx`
+- `lo que sobra.docx`
+- `Los 6k+-1.docx`
+- `manoatxt Word (3).pdf`
+- `Me molan los números y voy a intentar describirlos.docx`
+- `metodo hibrido .docx`
+- `Nuevo Documento de Microsoft Word (2).docx`
+- `Nuevo Documento de Microsoft Word (5).docx`
 
 ## Notas
 

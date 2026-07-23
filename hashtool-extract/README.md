@@ -1,40 +1,29 @@
-# vma
+# hashtool-extract
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Extracción de herramientas hash / K3 hash.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Hash tooling.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `hashtool-extract/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 29
+- **Subcarpetas:** 1
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
+- `.c`: 9
+- `.txt`: 9
+- `.zip`: 5
+- `.h`: 4
 - `(sin ext)`: 1
+- `.a`: 1
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+- `HASHCODETOOLS(L)(l)L(L)()`
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+_ver subcarpetas_
 
 ## Notas
 

@@ -1,45 +1,42 @@
-# UNION
+# txt25 5
 
-Unión de packs logbench / Docker / benches.
+Textos adicionales línea 5 / 25.
 
-**Tema:** Infra de comparación.
+**Tema:** Corpus textual.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `UNION/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `txt25 5/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 45
-- **Subcarpetas:** 1
+- **Archivos (aprox.):** 26
+- **Subcarpetas:** 0
 
 ### Extensiones
-- `.cpp`: 9
-- `.csv`: 9
-- `.zip`: 8
-- `.py`: 5
-- `(sin ext)`: 3
-- `.hpp`: 3
-- `.txt`: 3
-- `.dockerfile`: 2
+- `.txt`: 15
+- `.docx`: 5
+- `.pdf`: 4
+- `.csv`: 1
+- `.md`: 1
 
 ### Subcarpetas
-- `Nueva carpeta`
+_ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `bench_log.cpp`
-- `bench_root.cpp`
-- `CMakeLists.txt`
-- `deepseek_dockerfile_20250906_1a4ca5.dockerfile`
-- `deepseek_dockerfile_20250906_4bc6c4.dockerfile`
-- `Dockerfile`
-- `gen_report.py`
-- `gpt5.docx`
-- `logbench-pack.zip`
-- `MALOlogbench-pack.zip`
-- `mini_comparativa (1).py`
-- `mini_comparativa.py`
-- `minipy_results_v2.zip`
-- `minipy_results.zip`
+- `2a+3 importa.txt`
+- `34.txt`
+- `404_4.txt`
+- `ALEATOROVIX.txt`
+- `bataller_goldbach_v2.docx`
+- `deepseek 6-5-26 - copia.txt`
+- `Encriptación y Energía Verde.docx`
+- `gpt ponte al dia .txt`
+- `index.txt`
+- `lee.txt`
+- `medici-n-1-b-squeda-lado-izquierdo-11 (1).csv`
 - `newton rápido los a base b es j.docx`
+- `Nuevo Documento de texto (2).txt`
+- `Nuevo Documento de texto (3).txt`
+- `Nuevo Documento de texto (4).txt`
 
 ## Notas
 

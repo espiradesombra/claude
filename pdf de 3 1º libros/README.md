@@ -1,40 +1,25 @@
-# vma
+# pdf de 3 1º libros
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+PDFs de los primeros libros.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Publicaciones.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `pdf de 3 1º libros/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 2
+- **Subcarpetas:** 0
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.pdf`: 2
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+_ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+- `Apiñon.pdf`
+- `tres.pdf`
 
 ## Notas
 

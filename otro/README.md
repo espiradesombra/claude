@@ -1,40 +1,30 @@
-# vma
+# otro
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Otro material sin clasificar.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Misc.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `otro/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 5
+- **Subcarpetas:** 0
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.docx`: 3
+- `.pdf`: 1
+- `.txt`: 1
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+_ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+- `besons.docx`
+- `monica erast.docx`
+- `Nuevo Documento de texto.txt`
+- `pagina 3 de 4  vma.docx`
+- `prhge_envio_de_manuscritos.f452a65cb955.pdf`
 
 ## Notas
 

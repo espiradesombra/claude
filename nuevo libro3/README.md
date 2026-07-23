@@ -1,40 +1,34 @@
-# vma
+# nuevo libro3
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Borradores / anexos Libro 3.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Libro 3.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `nuevo libro3/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 10
+- **Subcarpetas:** 0
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.docx`: 7
+- `.txt`: 3
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+_ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+- `Cribas_cotas_y_estructuras_de_primos_VMA (1)-msi-mek.docx`
+- `Cribas_cotas_y_estructuras_de_primos_VMA (1).docx`
+- `Cribas_cotas_y_estructuras_de_primos_VMA.docx`
+- `guia para editar el doc.txt`
+- `no_Cribas_cotas_y_estructuras_de_primos_VMA.docx`
+- `Nuevo Documento de Microsoft Word-msi-mek.docx`
+- `Nuevo Documento de Microsoft Word.docx`
+- `Nuevo Documento de texto.txt`
+- `reiman i legendre.docx`
+- `reimn.txt`
 
 ## Notas
 

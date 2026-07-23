@@ -1,40 +1,39 @@
-# vma
+# grokbash
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Grok + bash / automatizaciones de sesión.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Scripts y logs.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `grokbash/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 12
+- **Subcarpetas:** 0
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.jsonl`: 5
+- `.json`: 4
+- `.lock`: 1
+- `.sqlite`: 1
+- `.txt`: 1
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+_ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+- `chat_history.jsonl`
+- `events.jsonl`
+- `prompt_context.json`
+- `prompt_history.jsonl`
+- `resources_state.json`
+- `rewind_points.jsonl`
+- `session_search.sqlite`
+- `signals.json`
+- `summary.json`
+- `summary.json.lock`
+- `system_prompt.txt`
+- `updates.jsonl`
 
 ## Notas
 

@@ -1,40 +1,35 @@
-# vma
+# hashtool-work
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Área de trabajo de hash tools.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Hash tooling.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `hashtool-work/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 49
+- **Subcarpetas:** 5
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
+- `.txt`: 15
+- `.hpp`: 10
+- `.c`: 9
+- `.zip`: 5
+- `.cpp`: 4
+- `.h`: 4
 - `(sin ext)`: 1
+- `.a`: 1
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+- `comunicacion hashcode`
+- `cpp y dll`
+- `hashcode`
+- `hashcode-tools`
+- `k3hash`
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+_ver subcarpetas_
 
 ## Notas
 

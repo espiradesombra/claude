@@ -1,40 +1,31 @@
-# vma
+# docs
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Documentación general del monorepo.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Docs.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `docs/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 34
+- **Subcarpetas:** 2
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.txt`: 19
+- `.c`: 9
+- `.md`: 2
+- `.bat`: 1
+- `.h`: 1
+- `.json`: 1
+- `.py`: 1
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+- `aleatorovix-firma-geometrica`
+- `integracion-antipc`
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+_ver subcarpetas_
 
 ## Notas
 

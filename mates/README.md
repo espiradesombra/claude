@@ -1,10 +1,10 @@
-# txt l5
+# mates
 
-Textos y chats del Libro 5 (incl. corpus Aleatorovix).
+Matemáticas generales VMA.
 
-**Tema:** Corpus textual.
+**Tema:** Notas mates.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `txt l5/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `mates/`
 
 ## Contenido
 
@@ -12,30 +12,29 @@ Textos y chats del Libro 5 (incl. corpus Aleatorovix).
 - **Subcarpetas:** 0
 
 ### Extensiones
-- `.txt`: 14
-- `.pptx`: 1
-- `.svg`: 1
-- `.tex`: 1
+- `.docx`: 11
+- `.txt`: 4
+- `.pdf`: 2
 
 ### Subcarpetas
 _ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `2a+3 final.txt`
-- `2a+3 importa.txt`
-- `ALEATOROVIX.txt`
-- `codigos.txt`
-- `conpsro.txt`
-- `dospunto0.txt`
-- `intento algoritmo.txt`
-- `mapa_conceptual_vma.svg`
+- `4.txt`
+- `46891.docx`
+- `besons.docx`
+- `Densidad de primos cinematica.docx`
+- `densidad x cine.txt`
+- `massaENTREvolumenPORcinematica.docx`
+- `monica erast.docx`
+- `Nuevo Documento de Microsoft Word (5).docx`
+- `Nuevo Documento de Microsoft Word (6).docx`
+- `Nuevo Documento de Microsoft Word (7).docx`
+- `Nuevo Documento de Microsoft Word (8).docx`
+- `Nuevo Documento de texto (2).txt`
 - `Nuevo Documento de texto.txt`
-- `pro.txt`
-- `punto de partida para algoritmo.txt`
-- `recopilacion de libros.txt`
-- `todo libro5.txt`
-- `transcurso.txt`
-- `v15 en adelante.txt`
+- `pagina 3 de 4  vma.docx`
+- `prhge_envio_de_manuscritos.f452a65cb955.pdf`
 
 ## Notas
 

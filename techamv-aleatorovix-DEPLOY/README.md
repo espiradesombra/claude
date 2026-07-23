@@ -1,40 +1,25 @@
-# vma
+# techamv-aleatorovix-DEPLOY
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Pack mínimo listo para FTP a techamv.com: index.html + aleatorovix.js.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Despliegue estático.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `techamv-aleatorovix-DEPLOY/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 2
+- **Subcarpetas:** 1
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.html`: 1
+- `.js`: 1
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+- `aleatorovix`
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+- `index.html`
 
 ## Notas
 

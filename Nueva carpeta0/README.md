@@ -1,40 +1,29 @@
-# vma
+# Nueva carpeta0
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Carpeta temporal / sin clasificar.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Pendiente de ordenar.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `Nueva carpeta0/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 6
+- **Subcarpetas:** 0
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.docx`: 6
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+_ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+- `Anàlisi Criba Suntaman i Llibreria C.docx`
+- `Análisis Criba Suntaman y Librería C.docx`
+- `Arquitectura de Cribratge Segmentat Suntaman i Llibreria Gvma.docx`
+- `Arquitectura de Cribratge Segmentat Suntaman i Llibreria Gvma(1).docx`
+- `Comparativa de Cribas y Marcados.docx`
+- `Comparativa de Cribas y Marcados(1).docx`
 
 ## Notas
 

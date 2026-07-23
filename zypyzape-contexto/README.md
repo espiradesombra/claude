@@ -1,40 +1,31 @@
-# vma
+# zypyzape-contexto
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Contexto y notas alrededor de ZypyZape.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Background del producto.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `zypyzape-contexto/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 18
+- **Subcarpetas:** 1
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.txt`: 9
+- `.png`: 3
+- `.py`: 3
+- `.md`: 2
+- `.docx`: 1
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+- `dossier-elewit`
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+- `01_CONTEXT_ZYPYZAPE.txt`
+- `02_MATH_QUIJOTE_3vs7.txt`
+- `gemelo_v6_fisic.py`
+- `resumen de dinero y de que es solo teorico .txt`
 
 ## Notas
 

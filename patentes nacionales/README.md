@@ -1,40 +1,30 @@
-# vma
+# patentes nacionales
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Material de patentes nacionales (borradores).
 
-**Tema:** Teoría y código VMA.
+**Tema:** IP / legal-tech.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `patentes nacionales/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 5
+- **Subcarpetas:** 0
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.pdf`: 3
+- `.docx`: 1
+- `.zip`: 1
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+_ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+- `beso ns de sofi germany.docx`
+- `claude-main.zip`
+- `Cramer_ONeil_Conjecture_v2.pdf`
+- `Documento 1_ El Inventario de la Abundancia - Plan 33x1.pdf`
+- `Plan_33x1_Bosquejo_Zero_VMA.pdf`
 
 ## Notas
 

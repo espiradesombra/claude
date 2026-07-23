@@ -1,40 +1,39 @@
-# vma
+# PY L5
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Python asociado al Libro 5 / factorización.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Código L5.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `PY L5/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 27
+- **Subcarpetas:** 0
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.py`: 26
+- `.txt`: 1
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+_ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+- `benchmark_frontera.py`
+- `copia_de_untitled1..txt`
+- `copia_de_untitled1.py`
+- `deepseek_python_20260328_115c63 (1).py`
+- `deepseek_python_20260328_115c63.py`
+- `deepseek_python_20260328_c8a6e9.py`
+- `deepseek_python_20260328_d003d6.py`
+- `deepseek_python_20260328_ff181e.py`
+- `mdc_benchmark.py`
+- `mdc_estudi_senyal.py`
+- `mdc_factorizador.py`
+- `mdc_fusio_v3.py`
+- `mdc_hybrid_v4.py`
+- `mdc_hybrid_v44.py`
+- `mdc_hybrid_v444.py`
 
 ## Notas
 

@@ -1,41 +1,41 @@
-# txt l5
+# VMA-Dossier-Elewit
 
-Textos y chats del Libro 5 (incl. corpus Aleatorovix).
+Dossier VMA orientado a Elewit / interlocutores industriales.
 
-**Tema:** Corpus textual.
+**Tema:** Documentación comercial-técnica.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `txt l5/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `VMA-Dossier-Elewit/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 17
+- **Archivos (aprox.):** 14
 - **Subcarpetas:** 0
 
 ### Extensiones
-- `.txt`: 14
-- `.pptx`: 1
-- `.svg`: 1
-- `.tex`: 1
+- `.txt`: 6
+- `.png`: 3
+- `.md`: 2
+- `.py`: 2
+- `.docx`: 1
 
 ### Subcarpetas
 _ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `2a+3 final.txt`
-- `2a+3 importa.txt`
-- `ALEATOROVIX.txt`
-- `codigos.txt`
-- `conpsro.txt`
-- `dospunto0.txt`
-- `intento algoritmo.txt`
-- `mapa_conceptual_vma.svg`
-- `Nuevo Documento de texto.txt`
-- `pro.txt`
-- `punto de partida para algoritmo.txt`
-- `recopilacion de libros.txt`
-- `todo libro5.txt`
-- `transcurso.txt`
-- `v15 en adelante.txt`
+- `01_CONTEXT_ZYPYZAPE.txt`
+- `COMO-EJECUTAR.txt`
+- `EMAIL-INTRODUCCION.txt`
+- `gemelo_v8_final.png`
+- `gemelo_v94.py`
+- `GUION-VIDEO-3MIN.txt`
+- `MEMO-1-PAGINA.md`
+- `PLAN-A-LO-GRANDE.md`
+- `RESUMEN-HONESTO.txt`
+- `TEXTO-FORMULARIO-ELEWIT.txt`
+- `ZypyZape_Propuesta_Elewit_REE_2026.docx`
+- `zypyzape_twin_v4_8_quijote.py`
+- `zypyzape_v4_dinamica.png`
+- `zypyzape_v4_validacion.png`
 
 ## Notas
 

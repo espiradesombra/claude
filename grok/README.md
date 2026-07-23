@@ -1,40 +1,30 @@
-# vma
+# grok
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Material generado o trabajado con Grok.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Notas y código.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `grok/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 15
+- **Subcarpetas:** 1
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.txt`: 7
+- `.bat`: 6
+- `.md`: 1
+- `.py`: 1
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+- `ideas-para-gpt-antipc`
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+- `gotcomputer.txt`
+- `MAPA_ORDENADOR_VMA.txt`
+- `mdc_hypotenuse_jump.py`
+- `www.github.com7espiradesombra7claude.txt`
 
 ## Notas
 

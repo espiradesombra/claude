@@ -1,40 +1,38 @@
-# vma
+# archivos-vma
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Archivos varios VMA.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Misc VMA.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `archivos-vma/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 32
+- **Subcarpetas:** 5
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.txt`: 15
+- `.py`: 13
+- `.c`: 3
+- `.png`: 1
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+- `codigo`
+- `conjeturas`
+- `energia`
+- `graficas_libro`
+- `matematica_extra`
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+- `ANALISIS_FASE2.txt`
+- `antiprimos.txt`
+- `CONCEPTO.txt`
+- `criba_desmemoriada_guion.txt`
+- `cribas_cotas_vma.txt`
+- `criva_teoria.txt`
+- `informe_helicoidal_zypyzape.txt`
+- `numeros_i_numeritos_jj.txt`
 
 ## Notas
 

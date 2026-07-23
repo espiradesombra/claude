@@ -1,40 +1,29 @@
-# vma
+# libro 4 preparacion filesgrans
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Files grandes de preparación Libro 4.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Assets L4.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `libro 4 preparacion filesgrans/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 5
+- **Subcarpetas:** 0
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.docx`: 4
+- `.pdf`: 1
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+_ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+- `sigo en mis Trece - copia.docx`
+- `Sigo en mis trece.docx`
+- `sigo en mis Trece.pdf`
+- `Sigo en mis trece0.docx`
+- `vs format.docx`
 
 ## Notas
 

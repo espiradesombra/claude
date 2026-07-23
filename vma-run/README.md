@@ -1,40 +1,34 @@
-# vma
+# vma-run
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Lanzadores y entornos de ejecución VMA.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Scripts de arranque.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma-run/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 26
+- **Subcarpetas:** 2
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.pyc`: 9
+- `.py`: 6
+- `.toc`: 4
+- `.txt`: 2
+- `.html`: 1
+- `.pkg`: 1
+- `.pyz`: 1
+- `.spec`: 1
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+- `build`
+- `lib`
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+- `CONCEPTO.txt`
+- `vma_run.py`
+- `vma-run.spec`
 
 ## Notas
 

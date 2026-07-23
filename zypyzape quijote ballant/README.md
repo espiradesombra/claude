@@ -1,41 +1,45 @@
-# txt l5
+# zypyzape quijote ballant
 
-Textos y chats del Libro 5 (incl. corpus Aleatorovix).
+Cruce ZypyZape × Quijote (metáfora / presentación).
 
-**Tema:** Corpus textual.
+**Tema:** Narrativa y materiales.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `txt l5/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `zypyzape quijote ballant/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 17
+- **Archivos (aprox.):** 66
 - **Subcarpetas:** 0
 
 ### Extensiones
-- `.txt`: 14
-- `.pptx`: 1
-- `.svg`: 1
-- `.tex`: 1
+- `.py`: 27
+- `.txt`: 15
+- `.png`: 11
+- `.docx`: 4
+- `.csv`: 3
+- `.tex`: 3
+- `.ipynb`: 1
+- `.json`: 1
 
 ### Subcarpetas
 _ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `2a+3 final.txt`
-- `2a+3 importa.txt`
-- `ALEATOROVIX.txt`
-- `codigos.txt`
-- `conpsro.txt`
-- `dospunto0.txt`
-- `intento algoritmo.txt`
-- `mapa_conceptual_vma.svg`
-- `Nuevo Documento de texto.txt`
-- `pro.txt`
-- `punto de partida para algoritmo.txt`
-- `recopilacion de libros.txt`
-- `todo libro5.txt`
-- `transcurso.txt`
-- `v15 en adelante.txt`
+- `analysis_experiment_v4.ipynb`
+- `best_policy.txt`
+- `cloud.txt`
+- `code 2 76.txt`
+- `code 76.txt`
+- `comparativa_estabilitat.py`
+- `comparativa_final.py`
+- `comparativa_rocof.py`
+- `copi.txt`
+- `correcio gpt.txt`
+- `experiment_results.json`
+- `experiment_summary.png`
+- `experiment_v4_logging.py`
+- `experiment_v4.py`
+- `fallo.txt`
 
 ## Notas
 

@@ -1,40 +1,36 @@
-# vma
+# html l5
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+HTML del Libro 5.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Web estática L5.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `html l5/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 12
+- **Subcarpetas:** 0
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.html`: 6
+- `.pdf`: 6
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+_ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+- `7e86c804-f223-4a0d-b5c1-6eb82d78920a.pdf`
+- `dents_de_serra.html`
+- `dents_de_serra2.html`
+- `dents_de_serra3.html`
+- `Guia_para_la_fusion_de_cuentas_en_OEPMSEI.pdf`
+- `Manual_de_Usuario_OEPMSEI.pdf`
+- `Manual_de_usuario_para_acceso_mediante_doble_factor_de_autenticacion.pdf`
+- `Manual_Solic_Patentes_Ley_24_2015.pdf`
+- `Perfecto.pdf`
+- `secuencia_global_dientes.html`
+- `taula_completa_vma.html`
+- `taula_equacions_vma.html`
 
 ## Notas
 

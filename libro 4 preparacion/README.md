@@ -1,40 +1,41 @@
-# vma
+# libro 4 preparacion
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Preparación del Libro 4.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Borradores L4.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `libro 4 preparacion/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 17
+- **Subcarpetas:** 0
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.docx`: 10
+- `.pdf`: 5
+- `.py`: 1
+- `.txt`: 1
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+_ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+- `1477.docx`
+- `4aXm0d0.0,0,, (1).docx`
+- `4aXm0d0.0,0,,.docx`
+- `4vma.docx`
+- `Binder1.pdf`
+- `Binder2.pdf`
+- `catorceSetentaisiete.docx`
+- `Cribas_cotas_y_estructuras_de_primos_VMA (1).docx`
+- `cuatro largo.pdf`
+- `cuatro.pdf`
+- `ed.py`
+- `lo que sobra.docx`
+- `Microsoft Word (4).docx`
+- `Números i numeritos.pdf.docx`
+- `Números otra vez 1205.docx`
 
 ## Notas
 

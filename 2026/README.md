@@ -1,40 +1,41 @@
-# vma
+# 2026
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Material fechado / línea 2026.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Cronológico.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `2026/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 26
+- **Subcarpetas:** 0
 
 ### Extensiones
-- `.txt`: 12
+- `.png`: 11
 - `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.txt`: 4
+- `.docx`: 2
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+_ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+- `01_CONTEXT_ZYPYZAPE.txt`
+- `02_MATH_QUIJOTE_3vs7.txt`
+- `03_TASCA_GPT.txt`
+- `control_integrat_complet.png`
+- `energia_per_cicle.png`
+- `firmware_v49_estats.png`
+- `gemelo_v10_cp_dinamic.py`
+- `gemelo_v3_corregit.png`
+- `gemelo_v3_corregit.py`
+- `gemelo_v3_final.png`
+- `gemelo_v4_vent_real.png`
+- `gemelo_v4_vent_real.py`
+- `gemelo_v5_quijote_control.png`
+- `gemelo_v5_quijote_control.py`
+- `gemelo_v6_fisic.png`
 
 ## Notas
 

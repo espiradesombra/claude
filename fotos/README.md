@@ -1,41 +1,39 @@
-# txt l5
+# fotos
 
-Textos y chats del Libro 5 (incl. corpus Aleatorovix).
+Fotografías del proyecto.
 
-**Tema:** Corpus textual.
+**Tema:** Assets.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `txt l5/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `fotos/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 17
+- **Archivos (aprox.):** 24
 - **Subcarpetas:** 0
 
 ### Extensiones
-- `.txt`: 14
-- `.pptx`: 1
-- `.svg`: 1
-- `.tex`: 1
+- `.jpg`: 23
+- `.mp4`: 1
 
 ### Subcarpetas
 _ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `2a+3 final.txt`
-- `2a+3 importa.txt`
-- `ALEATOROVIX.txt`
-- `codigos.txt`
-- `conpsro.txt`
-- `dospunto0.txt`
-- `intento algoritmo.txt`
-- `mapa_conceptual_vma.svg`
-- `Nuevo Documento de texto.txt`
-- `pro.txt`
-- `punto de partida para algoritmo.txt`
-- `recopilacion de libros.txt`
-- `todo libro5.txt`
-- `transcurso.txt`
-- `v15 en adelante.txt`
+- `Imagen de WhatsApp 2025-09-19 a las 15.16.47_87f3066c.jpg`
+- `Imagen de WhatsApp 2025-09-19 a las 15.17.00_58d36a8c.jpg`
+- `Imagen de WhatsApp 2025-09-20 a las 12.41.05_9eb0edb5.jpg`
+- `IMG-20250919-WA0002.jpg`
+- `IMG-20250920-WA0001.jpg`
+- `IMG-20250920-WA0002.jpg`
+- `IMG-20250920-WA0003.jpg`
+- `IMG-20250920-WA0004.jpg`
+- `IMG-20250920-WA0005.jpg`
+- `IMG-20250920-WA0006.jpg`
+- `IMG-20250920-WA0007.jpg`
+- `IMG-20250920-WA0008.jpg`
+- `IMG-20250920-WA0009.jpg`
+- `IMG-20250920-WA0010.jpg`
+- `IMG-20250920-WA0011.jpg`
 
 ## Notas
 

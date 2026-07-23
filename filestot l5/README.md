@@ -1,40 +1,40 @@
-# vma
+# filestot l5
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Conjunto total de files L5.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Misc L5.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `filestot l5/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 20
+- **Subcarpetas:** 0
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.py`: 18
+- `.png`: 1
+- `.csv`: 1
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+_ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+- `benchmark_frontera.csv`
+- `benchmark_frontera.py`
+- `ksweep_predictiu.py`
+- `mdc_estudi_senyal.png`
+- `mdc_estudi_senyal.py`
+- `mdc_hybrid_v2.py`
+- `mdc_hybrid_v3.py`
+- `mdc_hybrid_v4.py`
+- `mdc_parabola_hybrid.py`
+- `mdc_v15.py`
+- `mdc_v16.py`
+- `mdc_v17.py`
+- `mdc_v18.py`
+- `mdc_v19.py`
+- `mdc_v20.py`
 
 ## Notas
 

@@ -1,40 +1,32 @@
-# vma
+# 33x1-pack
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Pack empaquetado 33×1 para distribución.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Archivos del pack.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `33x1-pack/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 9
+- **Subcarpetas:** 0
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.md`: 9
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+_ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+- `CARTA-33x1-APOYO.md`
+- `CARTA-GOBIERNO-VALORACION.md`
+- `DOCUMENTOS-FIRMA-ES-EN.md`
+- `MANIFIESTO-1-PARA-SIEMPRE.md`
+- `OFERTA-PUBLICA-VMA.md`
+- `PRENSA-33x1.md`
+- `QUE-NECESITO-DE-TI.md`
+- `VMA-HUB-LICENCIA-PAIS.md`
+- `ZIP-PUBLICO-RECOMENDADO.md`
 
 ## Notas
 

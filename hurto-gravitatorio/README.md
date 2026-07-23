@@ -1,40 +1,34 @@
-# vma
+# hurto-gravitatorio
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Concepto hurto gravitatorio / metáfora física-numérica.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Notas conceptuales.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `hurto-gravitatorio/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 7
+- **Subcarpetas:** 0
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.py`: 3
+- `.csv`: 1
+- `.json`: 1
+- `.tex`: 1
+- `.txt`: 1
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+_ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+- `experiment_results.json`
+- `experiment_v4.py`
+- `fin_model_44_Quijote_zypyzape.py`
+- `gemell_quijote_paper_rules.py`
+- `quijote_actuador.py.txt`
+- `quijote_results.csv`
+- `quijote_table.tex`
 
 ## Notas
 

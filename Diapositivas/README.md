@@ -1,40 +1,36 @@
-# vma
+# Diapositivas
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Presentaciones / diapositivas.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Slides.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `Diapositivas/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 12
+- **Subcarpetas:** 0
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.pptx`: 10
+- `.docx`: 2
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+_ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+- `~$do par no primo es suma de dos.docx`
+- `Criva marcado unico.pptx`
+- `Presentación1.pptx`
+- `Presentaciones_de_Victor.pptx`
+- `SaltoMaximo.pptx`
+- `Siguiente primo.pptx`
+- `Todo par no primo es suma de dos.docx`
+- `Todo par no primo es suma de dos.pptx`
+- `ZypyZape_Pitch_Comercial (2).pptx`
+- `ZypyZape_Pitch_Comercial.pptx`
+- `ZypyZape_presentacion.pptx`
+- `zypyzape.pptx`
 
 ## Notas
 

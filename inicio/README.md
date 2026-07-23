@@ -1,40 +1,29 @@
-# vma
+# inicio
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Punto de entrada / materiales de inicio.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Onboarding.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `inicio/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 7
+- **Subcarpetas:** 1
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.docx`: 4
+- `.txt`: 2
+- `.pdf`: 1
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+- `teoremas`
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+- `Nuevo Documento de Microsoft Word (5).docx`
+- `Nuevo Documento de Microsoft Word (6).docx`
+- `Nuevo Documento de texto (2).txt`
+- `sg sxb.docx`
 
 ## Notas
 

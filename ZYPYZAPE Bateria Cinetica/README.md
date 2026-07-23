@@ -1,16 +1,58 @@
-Aqui la carpeta de gemelos virtuales de molinos con el modo de control zypyzape. 
-se supone el hardware y se itera sobre la idea ya desarollada buscando la sincronizacion de los molinos por sintonia . 
+# ZYPYZAPE Bateria Cinetica
 
-se observa un desarrolo de versiones por la IA pero esta validada por varias IAs y es reproducible. 
-la esencia de zypyzape es dejarle un poco de energia a tu compañero y cuando te la devuelva con un poco de la suya usar lo justo para ponerte en fase con la velocidad del viento.
-y cambiar de roles entre compañeros. 
+ZypyZape: inercia sintética y batería cinética para redes renovables.
 
-pero son molinos no se si se les puede llamar modulos compañeros a si no hay quien se pueda queiar. 
-espero os gusten estos gemekis que cumplen con normativa europea ENTSO y modelos RNW de 5KW
+**Tema:** Pitch y teoría ZypyZape.
 
-perdon por no saberme el modelo, ya hace mucho, 
-zypyzape se usa como termino en el desarrollo teorico de otros modelos y tiene zypyzapear como verbo propio soliendo ser referencia a de alguna forma como zypyzapear a mas frecuencia. 
-principios matematicos del zypyzapeo dependen de la maquina por ejemplo cantidad de motores en la red, o velocidad de helices en helicopteros. 
-pero con la sincronizacion kuramoto podemos hacer que en poco tiempo se autosincronicen las hélices. 
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `ZYPYZAPE Bateria Cinetica/`
 
+## Contenido
 
+- **Archivos (aprox.):** 46
+- **Subcarpetas:** 0
+
+### Extensiones
+- `.py`: 17
+- `.docx`: 9
+- `.png`: 8
+- `.pptx`: 5
+- `.txt`: 4
+- `.csv`: 1
+- `.gif`: 1
+- `.pdf`: 1
+
+### Subcarpetas
+_ninguna_
+
+### Archivos en la raíz de esta carpeta
+- `claude v2 v3 v4 gemelo.txt`
+- `comercial zypyzape d_d.pptx`
+- `zypy_zape_digital_twin_python (0).py`
+- `zypy_zape_digital_twin_python.py`
+- `zypyzape doc.txt`
+- `zypyzape gpt.txt`
+- `zypyzape presentacion comercial.pdf`
+- `ZypyZape_Documento_Tecnico_1.docx`
+- `ZypyZape_Documento_Tecnico_2.docx`
+- `ZypyZape_Documento_Tecnico_3.docx`
+- `ZypyZape_Documento_Tecnico_4.docx`
+- `ZypyZape_Documento_Tecnico_GemeloVirtual_2026.docx`
+- `ZypyZape_Documento_Tecnico.docx`
+- `ZypyZape_Pitch_Comercial (2).pptx`
+- `ZypyZape_Pitch_Comercial.pptx`
+
+## Notas
+
+- Parte del ecosistema **VMA / 33×1 / AntiPC / Aleatorovix / ZypyZape / K3**.
+- Si esta carpeta está poco clasificada, se reordenará con prioridad **33×1**.
+- No subir secretos (claves FTP, tokens, datos personales) a commits futuros.
+
+## Enlaces relacionados
+
+- Índice del monorepo: [FOLDERS.md](../FOLDERS.md) (raíz del repo)
+- Web Aleatorovix: [web-aleatorovix/](../web-aleatorovix/)
+- Deploy techamv: [techamv-aleatorovix-DEPLOY/](../techamv-aleatorovix-DEPLOY/)
+- Sync PC: [PC_SYNC_2026-07-23.md](../PC_SYNC_2026-07-23.md)
+
+---
+*README generado para navegación del monorepo. Editar libremente.*

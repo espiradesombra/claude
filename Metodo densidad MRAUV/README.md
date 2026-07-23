@@ -1,40 +1,32 @@
-# vma
+# Metodo densidad MRAUV
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Método de densidad MRAUV.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Densidad de primos / estructura.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `Metodo densidad MRAUV/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 8
+- **Subcarpetas:** 0
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.docx`: 7
+- `.txt`: 1
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+_ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+- `densidad x cine.txt`
+- `densidad.docx`
+- `desde0-msi-mek.docx`
+- `desde0.docx`
+- `massaENTREvolumenPORcinematica.docx`
+- `Método MRAUV desde0 .docx`
+- `Nuevo Documento de Microsoft Word (7).docx`
+- `Nuevo Documento de Microsoft Word (8).docx`
 
 ## Notas
 

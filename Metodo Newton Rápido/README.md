@@ -1,40 +1,34 @@
-# vma
+# Metodo Newton Rápido
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Método Newton Rápido: logs, raíces, oráculos MEcuation.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Algoritmos numéricos.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `Metodo Newton Rápido/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 85
+- **Subcarpetas:** 3
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
+- `.py`: 22
+- `.docx`: 20
+- `.cpp`: 10
+- `.csv`: 9
 - `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.txt`: 6
+- `(sin ext)`: 3
+- `.hpp`: 3
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+- `otro`
+- `predecir log raiz`
+- `xd`
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+- `newton_rapido_preprint.docx`
+- `paper1_newton_rapido.docx`
 
 ## Notas
 

@@ -1,40 +1,29 @@
-# vma
+# libro-metodos-simples
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Libro / notas de métodos simples.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Didáctica.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `libro-metodos-simples/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 4
+- **Subcarpetas:** 0
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.txt`: 2
+- `.tex`: 1
+- `.bat`: 1
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+_ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
+- `COMPILAR.bat`
 - `LEEME.txt`
-- `pyproject.toml`
+- `LOVEART_fisica_o_informatica.txt`
+- `metodos_simples_vma.tex`
 
 ## Notas
 

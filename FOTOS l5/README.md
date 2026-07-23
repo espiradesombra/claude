@@ -1,40 +1,39 @@
-# vma
+# FOTOS l5
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Imágenes y capturas del Libro 5.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Assets visuales.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `FOTOS l5/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 14
+- **Subcarpetas:** 0
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.png`: 8
+- `.ipynb`: 5
+- `.csv`: 1
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+_ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+- `acordio_interseccions.png`
+- `ALEATOROVIX - copia-txt.png`
+- `benchmark_mdc.csv`
+- `benchmark_mdc.png`
+- `Copia de Untitled1.ipynb`
+- `Copia_de_Untitled1 (1).ipynb`
+- `Copia_de_Untitled1 (bueno).ipynb`
+- `Copia_de_Untitled1.ipynb`
+- `espais_geometria.png`
+- `mdc_estudi_senyal.png`
+- `mdc_N10403.png`
+- `mdc_N3127.png`
+- `mdc_N47053.png`
+- `Untitled1.ipynb`
 
 ## Notas
 

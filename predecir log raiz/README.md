@@ -1,40 +1,35 @@
-# vma
+# predecir log raiz
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Predicción de log y raíz (Newton / comparativas).
 
-**Tema:** Teoría y código VMA.
+**Tema:** Benchmarks y código.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `predecir log raiz/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 82
+- **Subcarpetas:** 4
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.py`: 22
+- `.docx`: 17
+- `.cpp`: 10
+- `.zip`: 10
+- `.csv`: 9
+- `.txt`: 5
+- `(sin ext)`: 3
+- `.hpp`: 3
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+- `COMPARATIVA`
+- `log`
+- `raiz`
+- `UNION`
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+- `Nueva carpeta comprimida (en zip) (2).zip`
+- `ult.zip`
 
 ## Notas
 

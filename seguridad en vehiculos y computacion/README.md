@@ -1,40 +1,29 @@
-# vma
+# seguridad en vehiculos y computacion
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Seguridad en vehículos y computación.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Notas de seguridad.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `seguridad en vehiculos y computacion/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 6
+- **Subcarpetas:** 0
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.txt`: 6
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+_ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+- `176.txt`
+- `196.txt`
+- `5p.txt`
+- `copia_de_untitled1..txt`
+- `Nuevo Documento de texto (6).txt`
+- `transcurso.txt`
 
 ## Notas
 

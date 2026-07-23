@@ -1,40 +1,39 @@
-# vma
+# sale-it
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Material de venta / go-to-market.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Comercial.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `sale-it/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 80
+- **Subcarpetas:** 4
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.py`: 45
+- `.bat`: 13
+- `.txt`: 13
+- `.hpp`: 4
+- `.h`: 2
+- `.pyc`: 2
+- `.c`: 1
 
 ### Subcarpetas
-- `_entrada`
-- `c`
 - `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+- `referencia`
+- `scripts`
+- `src`
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
+- `FICHA_PRODUCTO.txt`
+- `INICIO.bat`
 - `LEEME.txt`
-- `pyproject.toml`
+- `LICENCIA.txt`
+- `MANIFEST.txt`
+- `PRODUCT_SHEET_EN.txt`
+- `README_EN.txt`
 
 ## Notas
 

@@ -1,40 +1,32 @@
-# vma
+# vma-methods
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Librería de métodos numéricos VMA: cribas, Criva, Newton rápido.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Teoría de números aplicada.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma-methods/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 19
+- **Subcarpetas:** 2
 
 ### Extensiones
-- `.txt`: 12
 - `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
+- `.txt`: 6
+- `.cmd`: 2
 - `(sin ext)`: 1
+- `.toml`: 1
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+- `vma_methods`
+- `vma_methods.egg-info`
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
 - `LEEME.txt`
 - `pyproject.toml`
+- `vma-gui.cmd`
+- `vma-methods.cmd`
 
 ## Notas
 

@@ -1,40 +1,37 @@
-# vma
+# Libro6 NewtonRapido en busqueda con oraculo
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Libro 6: Newton Rápido con oráculo.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Obra VMA + algoritmos.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `Libro6 NewtonRapido en busqueda con oraculo/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 11
+- **Subcarpetas:** 0
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.docx`: 5
+- `.txt`: 4
+- `.eml`: 1
+- `.html`: 1
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+_ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+- `chat dot .html`
+- `chat dot html.txt`
+- `Documento.docx`
+- `grok4.1.docx`
+- `n diff np).docx`
+- `nnonp.docx`
+- `nnonp(1).docx`
+- `Nuevo Documento de texto.txt`
+- `Nuevo Documento de texto2.txt`
+- `Propuesta para implementar Zypyzape.txt`
+- `Pseudocódigo de implicaciones.eml`
 
 ## Notas
 

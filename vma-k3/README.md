@@ -1,76 +1,53 @@
-# VMA — Theorem K3
+# vma-k3
 
-Repositorio unificado del ecosistema **Víctor Manzanares Alberola (VMA)**:
-motor de auditoría industrial K3, variantes Toffoli, librería C legada y herramientas CLI.
+Integración VMA × K3 (motor base 33, rel 1, hash/dedup).
 
-> **K3 no es criptográfico.** Uso previsto: integridad de memoria, telemetría, fingerprinting industrial.
+**Tema:** K3 + VMA.
 
-## Qué hay aquí (v0.1)
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma-k3/`
 
-| Componente | Ruta | Estado |
-|------------|------|--------|
-| Motor industrial Python | `vma/k3/cross_verifier.py` | Listo |
-| Variante Toffoli + banderitas | `vma/k3/toffoli_hash.py` | Listo |
-| CLI `vma-k3` | `vma/cli.py` | Listo |
-| Librería C básica (streaming) | `c/k3hash/` | Copiada del zip |
-| Ejemplos 3 modos | `examples/run_modos.py` | Listo |
-| Tests | `tests/` | Listo |
+## Contenido
 
-## Instalación rápida
+- **Archivos (aprox.):** 65
+- **Subcarpetas:** 7
 
-```powershell
-cd C:\Users\cuent\Desktop\vma
-pip install -e .
-```
+### Extensiones
+- `.c`: 21
+- `.py`: 13
+- `.txt`: 11
+- `.h`: 9
+- `.md`: 4
+- `.pyc`: 4
+- `(sin ext)`: 1
+- `.gitignore`: 1
 
-## Uso
+### Subcarpetas
+- `c`
+- `docs`
+- `examples`
+- `staging`
+- `tests`
+- `vma`
+- `vma_k3.egg-info`
 
-```powershell
-# Modo usual — auditoría lineal
-vma-k3 --modo usual "LECTURA_DE_SENSORES_DATA"
+### Archivos en la raíz de esta carpeta
+- `.gitignore`
+- `AGENTS.md`
+- `LEEME.txt`
+- `pyproject.toml`
 
-# Modo propio A — salta telemetría volátil
-vma-k3 --modo propio-a -f volcado.bin
+## Notas
 
-# Modo propio B — marcas finales
-vma-k3 --bits 32 --registros 4 --mark 0x4:0x10 --mark 0x99999999:0xEE datos.txt
+- Parte del ecosistema **VMA / 33×1 / AntiPC / Aleatorovix / ZypyZape / K3**.
+- Si esta carpeta está poco clasificada, se reordenará con prioridad **33×1**.
+- No subir secretos (claves FTP, tokens, datos personales) a commits futuros.
 
-# Demo de los 3 modos
-python examples/run_modos.py
-```
+## Enlaces relacionados
 
-## Los 3 modos operativos
+- Índice del monorepo: [FOLDERS.md](../FOLDERS.md) (raíz del repo)
+- Web Aleatorovix: [web-aleatorovix/](../web-aleatorovix/)
+- Deploy techamv: [techamv-aleatorovix-DEPLOY/](../techamv-aleatorovix-DEPLOY/)
+- Sync PC: [PC_SYNC_2026-07-23.md](../PC_SYNC_2026-07-23.md)
 
-| Modo | bits | desfase | Uso |
-|------|------|---------|-----|
-| **Usual** | 32 | 0 | Flash/RAM homogénea |
-| **Propio A** | 16 | 2 | Buses con campos volátiles |
-| **Propio B** | 32 | 0 + marcas | Trazabilidad hardware |
-
-## Firma anti-tamper
-
-El bloque cero siempre procesa los caracteres activos del algoritmo:
-
-```
-x^=(B*0x9E3779B1);x+=rotar(B,6);estado[0]=x;
-```
-
-Si alguien altera el código fuente, el hash cambia.
-
-## Roadmap (siguiente fase)
-
-1. Portar `cross_verifier` a C (`c/k3_audit/`) con CMake.
-2. Bindings Python `ctypes` al core nativo.
-3. Empaquetado pip con `.dll` / `.so`.
-4. Skill Grok `k3-toolkit` para evaluar zips y compilar.
-5. Hub web (`k3_ultimo_software_hub.tsx`) conectado al CLI.
-
-## Documentación
-
-- `docs/PROPUESTA.md` — arquitectura y decisiones.
-- `docs/CRONOLOGIA-CODIGOS.md` — glosario del chat.
-- `vma/glossary.py` — mismo glosario en código.
-
-## Licencia
-
-Propiedad intelectual VMA. Plan comercial B2B documentado en materiales del Proyecto 33x1.
+---
+*README generado para navegación del monorepo. Editar libremente.*

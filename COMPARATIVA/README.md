@@ -1,40 +1,33 @@
-# vma
+# COMPARATIVA
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Comparativas de métodos (cribas, Newton, logs).
 
-**Tema:** Teoría y código VMA.
+**Tema:** Tablas y benches.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `COMPARATIVA/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 8
+- **Subcarpetas:** 0
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.docx`: 6
+- `.cpp`: 1
+- `.txt`: 1
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+_ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+- `junto.docx`
+- `Metodo de los para raiz.docx`
+- `newton rápido los a base b es j con Parametros optimizados.docx`
+- `newton rápido los a base b es j.docx`
+- `Nuevo Documento de Microsoft Word (2).docx`
+- `Nuevo Documento de Microsoft Word (9).docx`
+- `Nuevo Documento de texto (3).txt`
+- `tu_algo.cpp`
 
 ## Notas
 

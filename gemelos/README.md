@@ -1,40 +1,39 @@
-# vma
+# gemelos
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Primos gemelos y variantes.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Matemáticas.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `gemelos/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 17
+- **Subcarpetas:** 0
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.py`: 16
+- `.txt`: 1
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+_ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
+- `gemelo_v10_cp_dinamic.py`
+- `gemelo_v3_corregit.py`
+- `gemelo_v4_vent_real.py`
+- `gemelo_v5_quijote_control.py`
+- `gemelo_v6_fisic.py`
+- `gemelo_v7_leechat.py`
+- `gemelo_v8_final.py`
+- `gemelo_v9_equilibrat.py`
+- `gemelo_v94.py`
+- `gemelo_v941.py`
+- `gemelo_v942.py`
+- `gemelo_v9b_valvules.py`
+- `gemelo_virtual_aprendre.py`
 - `LEEME.txt`
-- `pyproject.toml`
+- `zypyzape_minigemelo.py`
 
 ## Notas
 

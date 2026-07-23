@@ -1,40 +1,32 @@
-# vma
+# DOCX l5
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Documentos Word del Libro 5.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Docs.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `DOCX l5/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 9
+- **Subcarpetas:** 0
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.docx`: 9
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+_ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+- `contribucions_matematiques_val.docx`
+- `l5 checkp.docx`
+- `l5 checkp(1).docx`
+- `MDC_Descobriments_VMA.docx`
+- `MDC_Descobriments_VMAj.docx`
+- `MDC_paper.docx`
+- `metodo_diofantico_cinematico.docx`
+- `Optimización de la búsqueda de factores.docx`
+- `wieferich_paper.docx`
 
 ## Notas
 

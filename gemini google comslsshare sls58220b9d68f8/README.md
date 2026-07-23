@@ -1,41 +1,41 @@
-# txt l5
+# gemini google comslsshare sls58220b9d68f8
 
-Textos y chats del Libro 5 (incl. corpus Aleatorovix).
+Exportes o trabajo con IA: **gemini google comslsshare sls58220b9d68f8**.
 
-**Tema:** Corpus textual.
+**Tema:** Chats, código y notas.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `txt l5/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `gemini google comslsshare sls58220b9d68f8/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 17
+- **Archivos (aprox.):** 19
 - **Subcarpetas:** 0
 
 ### Extensiones
-- `.txt`: 14
-- `.pptx`: 1
-- `.svg`: 1
-- `.tex`: 1
+- `.docx`: 9
+- `.pdf`: 8
+- `.txt`: 1
+- `.xlsx`: 1
 
 ### Subcarpetas
 _ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `2a+3 final.txt`
-- `2a+3 importa.txt`
-- `ALEATOROVIX.txt`
-- `codigos.txt`
-- `conpsro.txt`
-- `dospunto0.txt`
-- `intento algoritmo.txt`
-- `mapa_conceptual_vma.svg`
+- `besons.docx`
+- `FILOSOFÍA DEL ABSURDE.pdf`
+- `Guardado con Autorrecuperación de primos.asd.docx`
+- `Guardado con Autorrecuperación de primos.docx`
+- `la forma de algunos .docx`
+- `La forma de algunos.docx`
+- `Las ventajas de ser un loco cuerdo.pdf`
+- `Libro1.xlsx`
+- `minimo2.docx`
+- `minimo2.pdf`
+- `mínimodos.pdf`
+- `mitos y leyendas.pdf`
 - `Nuevo Documento de texto.txt`
-- `pro.txt`
-- `punto de partida para algoritmo.txt`
-- `recopilacion de libros.txt`
-- `todo libro5.txt`
-- `transcurso.txt`
-- `v15 en adelante.txt`
+- `Números i numeritos.pdf`
+- `Números otra ve75 .pdf`
 
 ## Notas
 

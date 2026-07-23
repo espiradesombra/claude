@@ -1,40 +1,45 @@
-# vma
+# techamv-web
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Sitio ZypyZape / TechAMV (índices HTML, chat.php, factor.php, docs VMA).
 
-**Tema:** Teoría y código VMA.
+**Tema:** Web de producto e inercia de fase.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `techamv-web/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 49
+- **Subcarpetas:** 0
 
 ### Extensiones
+- `.html`: 21
 - `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.php`: 7
+- `.docx`: 5
+- `.csv`: 1
+- `.doc`: 1
+- `.png`: 1
+- `.xlsx`: 1
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+_ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+- `404_0.txt`
+- `404_1.txt`
+- `404_2.txt`
+- `404_3.txt`
+- `404_4.txt`
+- `404_7.txt`
+- `404anterior.html`
+- `404f11.html`
+- `404sin easter.html`
+- `bizum.txt`
+- `Carta prospección clientes.doc`
+- `chat.php`
+- `El_Que_Ja_Tenim_VMA_2026.docx`
+- `empresas_inercia_europa_top100_v4_canales_entrada.xlsx`
+- `enviar_correo.php`
 
 ## Notas
 

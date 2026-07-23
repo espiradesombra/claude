@@ -1,40 +1,38 @@
-# vma
+# Libro5 Factorizacion con 2v+3
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Libro 5: Factorización con 2v+3 / MDC / Aleatorovix.
 
-**Tema:** Teoría y código VMA.
+**Tema:** Obra VMA + factorización.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `Libro5 Factorizacion con 2v+3/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos (aprox.):** 120
+- **Subcarpetas:** 8
 
 ### Extensiones
-- `.txt`: 12
-- `.py`: 9
-- `.zip`: 9
-- `.c`: 7
-- `.h`: 3
-- `.md`: 3
-- `.php`: 2
-- `(sin ext)`: 1
+- `.py`: 64
+- `.txt`: 14
+- `.png`: 10
+- `.docx`: 9
+- `.html`: 6
+- `.pdf`: 6
+- `.ipynb`: 5
+- `.csv`: 3
 
 ### Subcarpetas
-- `_entrada`
-- `c`
-- `docs`
-- `examples`
-- `tests`
-- `vma`
-- `vma_k3.egg-info`
+- `DOCX l5`
+- `files l5`
+- `filestot l5`
+- `FOTOS l5`
+- `html l5`
+- `PY L5`
+- `tot l5`
+- `txt l5`
 
 ### Archivos en la raíz de esta carpeta
-- `.gitignore`
-- `AGENTS.md`
-- `LEEME.txt`
-- `pyproject.toml`
+_ver subcarpetas_
 
 ## Notas
 
