@@ -8,9 +8,9 @@ Idea original (Víctor Manzanares):
   - Variant: 4 turbines (cotxe/camió o craft)
 
 Ús:
-  python gemelo_xfi_avion_4turbinas.py          # N=4
-  python gemelo_xfi_avion_4turbinas.py --n 3    # N=3 (avió clàssic del xat)
-  python gemelo_xfi_avion_4turbinas.py --compare
+  python gemelo_xfi_avion_4turbinas.py              # N=3 (avió XFI del xat)
+  python gemelo_xfi_avion_4turbinas.py --n 4        # variant 4 turbines
+  python gemelo_xfi_avion_4turbinas.py --compare    # N=3 vs N=4 + PNGs
 
 Sortides:
   xfi_avion_dinamica_N3.png / N4.png
