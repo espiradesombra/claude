@@ -1,38 +1,62 @@
-# 33x1
+# 33×1 — el trato
 
-**Eje político-técnico del monorepo VMA.**
+Definición del trato: el **1** es TODO este monorepo civil; el **33** son 33 años de paz firmada por los países. Uso civil, comandos, manifiesto de hashes.
 
-## El trato (definición)
-
-> **33×1 = cambiar el “1” (TODO este repositorio técnico civil)  
-> por “33” (33 años de paz FIRMADA por los países — ellos).**
-
-| Lado | Significado | Quién |
-|------|-------------|--------|
-| **[1]** | Todo el monorepo civil: mates, energía, K3, AntiPC, demos… | VMA ofrece |
-| **[33]** | 33 años de paz firmada + marco de sociedad | **Los países / Estados** |
-
-- Definición completa: [`00_QUE_ES_33x1.md`](./00_QUE_ES_33x1.md)
-- Uso civil (límites del 1): [`02_USO_CIVIL.txt`](./02_USO_CIVIL.txt)
-- Qué hacer hoy: [`00_AHORA.txt`](./00_AHORA.txt)
-- Índice técnico: [`01_INDICE_TECNICO.txt`](./01_INDICE_TECNICO.txt)
-- Declaración mundial + Grok: [`05_DECLARACIO_33x1_GROK_WORLD.txt`](./05_DECLARACIO_33x1_GROK_WORLD.txt)
+**Tema:** 33×1 (prioridad)
 
 **Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `33x1/`
 
-## Contenido clave
+## Contenido
 
-| Archivo | Rol |
-|---------|-----|
-| `00_QUE_ES_33x1.md` | Qué es el trato 33×1 |
-| `00_AHORA.txt` | Pasos inmediatos en el PC |
-| `01_INDICE_TECNICO.txt` | Mapa del aval técnico |
-| `02_USO_CIVIL.txt` | Solo uso civil; no militar |
-| `05_DECLARACIO_33x1_GROK_WORLD.txt` | Mapa mundial de aplicaciones |
-| `06_FOR_THE_WORLD_33x1.md` | **Público:** America/world, Tesla·xAI, nuclear desactivada → inercia |
-| `generar_manifiesto.py` / `MANIFIESTO_HASHES.json` | Integridad SHA256 |
+- **Archivos totales (aprox., recursivo):** 21
+- **En la raíz de la carpeta:** 21
+- **Subcarpetas (primer nivel):** 0
 
-Grok y otras IAs **no firman** la paz; ayudan a construir y documentar el **1**.
+### Extensiones (recursivo, top)
+- `.txt`: 9
+- `.md`: 4
+- `.docx`: 4
+- `.bat`: 1
+- `.html`: 1
+- `.py`: 1
+- `.json`: 1
 
-**Mensaje corto:** burrez = no unir paz firmada (33) + tech verificable (1).  
-Una central nuclear **apagada** puede reutilizarse en **civil** para inercia (máquinas rotativas + gasto eléctrico + masa térmica del refrigerante) — sin magia, sin armas.
+### Subcarpetas
+_ninguna_
+
+### Archivos en la raíz de esta carpeta
+- `00_AHORA.txt`
+- `00_PROMPT_DEFINITIVO_33x1.md`
+- `00_QUE_ES_33x1.md`
+- `01_INDICE_TECNICO.txt`
+- `02_USO_CIVIL.txt`
+- `03_COMANDOS.txt`
+- `04_MEDIOS.txt`
+- `05_DECLARACIO_33x1_GROK_WORLD.txt`
+- `06_FOR_THE_WORLD_33x1.md`
+- `1477.md`
+- `ABRIR_GUI.bat`
+- `El_Que_Ja_Tenim_VMA_2026.docx`
+- `gemini-code-1784049033991.html`
+- `Inercia_Gravetat_Girs_VMA_2026.docx`
+- `INVENTARIO_grok_y_zip.txt`
+- `INVENTARIO_monton_viejo_revisar.txt`
+- `Kuramoto_ZypyZape_VMA_2026.docx`
+- `PAPER_33x1_IRONIA.txt`
+- `ZypyZape_Quijote_1_3Angular_2026.docx`
+
+## Notas
+
+- Parte del ecosistema **VMA / 33×1 / AntiPC / Aleatorovix / ZypyZape / K3**.
+- Prioridad del monorepo: **33×1** (el **1** = todo el repo civil).
+- No subir secretos (claves FTP, tokens, datos personales) a commits futuros.
+
+## Enlaces relacionados
+
+- Mapa temático: [MAPA.md](../MAPA.md)
+- Índice alfabético: [FOLDERS.md](../FOLDERS.md)
+- README raíz: [README.md](../README.md)
+- 33×1: [33x1/](../33x1/)
+
+---
+*README generado para navegación del monorepo. Editar libremente.*

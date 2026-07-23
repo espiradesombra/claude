@@ -26,11 +26,17 @@ ELLOS  ──firman 33 años de paz──►  a cambio de  ◄── VMA ofrece 
 
 ---
 
-## Navegación
+## Navegación (cómo entender el repo)
+
+1. **[MAPA.md](MAPA.md)** — mapa **temático** de todas las carpetas (empieza aquí si no sabes por dónde).
+2. **[FOLDERS.md](FOLDERS.md)** — índice **alfabético**: cada carpeta enlaza a su `README.md` con **qué es y qué contiene**.
+3. Cada carpeta de primer nivel tiene un **`README.md`** propio (descripción + listado de contenido).
+
+### Documentos clave
 
 - **[Qué es 33×1](33x1/00_QUE_ES_33x1.md)** — definición del trato
 - **[FOR THE WORLD — 33×1](33x1/06_FOR_THE_WORLD_33x1.md)** — America/world, Tesla·xAI, nuclear apagada → inercia civil
-- **[Índice de todas las carpetas](FOLDERS.md)** — un README por carpeta
+- **[Índice técnico](INDICE_TECNICO_REPO.md)** — paquetes ejecutables y comandos
 - **[Pack mates rescat 2026-07-23](VMA_mates_rescat_2026/)** — cribas fix, MDC, XFI N=3
 - **[XFI — avión 3 motores](XFI.md)** — gemelo Experimental Flight Infinite (ZypyZape roles)
 - **[Física ZZ + Quijote + Kilómetro](docs/EXPLICACION_FISICA_ZYPYZAPE_QUIJOTE_KILOMETRO.md)** — explicación unificada (+ hilo 1477)
@@ -52,8 +58,25 @@ ELLOS  ──firman 33 años de paz──►  a cambio de  ◄── VMA ofrece 
 | Métodos | `vma-methods/`, `Metodo Newton Rápido/`, `teoremas/`, `VMA_mates_rescat_2026/` |
 | Libros | `Libro1…` … `Libro6…` |
 
+## Convención de commits
+
+Los mensajes de commit deben **nombrar la carpeta** y **resumir su contenido**, por ejemplo:
+
+```
+docs(MAPA): mapa temático + README por carpeta (qué es y qué hay dentro)
+feat(web-aleatorovix): motor JS sin Math.random + UI del ramo para techamv
+fix(01_cribas): fase modular 6k±1 en pack VMA_mates_rescat_2026
+```
+
+Regenerar mapa e índices:
+
+```bat
+python tools\describe_folders.py
+```
+
 ## Aviso
 
-Monorepo histórico: hay carpetas sin clasificar (`Nueva carpeta`, `coses velles`, …). Se irán ordenando; **33×1** es prioridad.
+Monorepo histórico: hay carpetas sin clasificar (`Nueva carpeta`, `coses velles`, …). Se irán ordenando; **33×1** es prioridad.  
+Los `README` de archivo histórico **no listan** chats personales ni datos sensibles.
 
 **Licencia / uso:** civil y educativo. **No militar.** La paz del [33] la firman los países; este GitHub es el [1].

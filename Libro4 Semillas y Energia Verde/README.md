@@ -1,18 +1,19 @@
-# Libro4 Semillas y Energia Verde
+# Libro 4 — Semillas y Energía Verde
 
-Libro 4: Semillas y Energía Verde / ZypyZape.
+Cuarto libro: semillas, energía verde, ZypyZape / convergencias.
 
-**Tema:** Obra VMA + energía.
+**Tema:** Libros / energía
 
 **Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `Libro4 Semillas y Energia Verde/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 21
-- **Subcarpetas:** 0
+- **Archivos totales (aprox., recursivo):** 22
+- **En la raíz de la carpeta:** 22
+- **Subcarpetas (primer nivel):** 0
 
-### Extensiones
-- `.docx`: 12
+### Extensiones (recursivo, top)
+- `.docx`: 13
 - `.png`: 4
 - `.pdf`: 3
 - `.txt`: 2
@@ -36,19 +37,25 @@ _ninguna_
 - `Nuevo Documento de Microsoft Word (2).docx`
 - `Nuevo Documento de Microsoft Word (3).docx`
 - `Nuevo Documento de Microsoft Word (9).docx`
+- `Nuevo Documento de texto (3).txt`
+- `pacopi.txt`
+- `Propuesta 1.docx`
+- `ZYPYZAPE_Topologia_Real_2centrales_3anillo.docx`
+- `ZYPYZAPE_v2.docx`
+- `zypyzapeSin título.png`
 
 ## Notas
 
 - Parte del ecosistema **VMA / 33×1 / AntiPC / Aleatorovix / ZypyZape / K3**.
-- Si esta carpeta está poco clasificada, se reordenará con prioridad **33×1**.
+- Prioridad del monorepo: **33×1** (el **1** = todo el repo civil).
 - No subir secretos (claves FTP, tokens, datos personales) a commits futuros.
 
 ## Enlaces relacionados
 
-- Índice del monorepo: [FOLDERS.md](../FOLDERS.md) (raíz del repo)
-- Web Aleatorovix: [web-aleatorovix/](../web-aleatorovix/)
-- Deploy techamv: [techamv-aleatorovix-DEPLOY/](../techamv-aleatorovix-DEPLOY/)
-- Sync PC: [PC_SYNC_2026-07-23.md](../PC_SYNC_2026-07-23.md)
+- Mapa temático: [MAPA.md](../MAPA.md)
+- Índice alfabético: [FOLDERS.md](../FOLDERS.md)
+- README raíz: [README.md](../README.md)
+- 33×1: [33x1/](../33x1/)
 
 ---
 *README generado para navegación del monorepo. Editar libremente.*

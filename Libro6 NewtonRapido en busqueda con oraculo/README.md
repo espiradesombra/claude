@@ -1,21 +1,22 @@
-# Libro6 NewtonRapido en busqueda con oraculo
+# Libro 6 — Newton Rápido con oráculo
 
-Libro 6: Newton Rápido con oráculo.
+Sexto libro: Newton Rápido y búsqueda con oráculo MEcuation.
 
-**Tema:** Obra VMA + algoritmos.
+**Tema:** Libros / Newton
 
 **Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `Libro6 NewtonRapido en busqueda con oraculo/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 11
-- **Subcarpetas:** 0
+- **Archivos totales (aprox., recursivo):** 11
+- **En la raíz de la carpeta:** 11
+- **Subcarpetas (primer nivel):** 0
 
-### Extensiones
+### Extensiones (recursivo, top)
 - `.docx`: 5
 - `.txt`: 4
-- `.eml`: 1
 - `.html`: 1
+- `.eml`: 1
 
 ### Subcarpetas
 _ninguna_
@@ -26,8 +27,8 @@ _ninguna_
 - `Documento.docx`
 - `grok4.1.docx`
 - `n diff np).docx`
-- `nnonp.docx`
 - `nnonp(1).docx`
+- `nnonp.docx`
 - `Nuevo Documento de texto.txt`
 - `Nuevo Documento de texto2.txt`
 - `Propuesta para implementar Zypyzape.txt`
@@ -36,15 +37,15 @@ _ninguna_
 ## Notas
 
 - Parte del ecosistema **VMA / 33×1 / AntiPC / Aleatorovix / ZypyZape / K3**.
-- Si esta carpeta está poco clasificada, se reordenará con prioridad **33×1**.
+- Prioridad del monorepo: **33×1** (el **1** = todo el repo civil).
 - No subir secretos (claves FTP, tokens, datos personales) a commits futuros.
 
 ## Enlaces relacionados
 
-- Índice del monorepo: [FOLDERS.md](../FOLDERS.md) (raíz del repo)
-- Web Aleatorovix: [web-aleatorovix/](../web-aleatorovix/)
-- Deploy techamv: [techamv-aleatorovix-DEPLOY/](../techamv-aleatorovix-DEPLOY/)
-- Sync PC: [PC_SYNC_2026-07-23.md](../PC_SYNC_2026-07-23.md)
+- Mapa temático: [MAPA.md](../MAPA.md)
+- Índice alfabético: [FOLDERS.md](../FOLDERS.md)
+- README raíz: [README.md](../README.md)
+- 33×1: [33x1/](../33x1/)
 
 ---
 *README generado para navegación del monorepo. Editar libremente.*

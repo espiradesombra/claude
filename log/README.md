@@ -1,17 +1,18 @@
 # log
 
-Logs y experimentos de logaritmo.
+Logs y experimentos de logaritmo (Python + docx).
 
-**Tema:** Numérico.
+**Tema:** Métodos / mates
 
 **Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `log/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 26
-- **Subcarpetas:** 0
+- **Archivos totales (aprox., recursivo):** 26
+- **En la raíz de la carpeta:** 26
+- **Subcarpetas (primer nivel):** 0
 
-### Extensiones
+### Extensiones (recursivo, top)
 - `.py`: 17
 - `.docx`: 8
 - `.txt`: 1
@@ -35,19 +36,30 @@ _ninguna_
 - `deepseek_python_20250905_b2a965_10.py`
 - `deepseek_python_20250905_b2a965_11.py`
 - `deepseek_python_20250905_de142f_3.py`
+- `deepseek_python_20250905_df6a66_7.py`
+- `deepseek_python_20250905_e39bfe_5.py`
+- `deepseek_python_20250905_e76829_14.py`
+- `deepseek_text_20250905_75555e_12b.txt`
+- `Documentolog a base b da j iterando sin derivar.docx`
+- `junto.docx`
+- `newton rápido los a base b es j con ajuste de parametros version mitad iteraciones - copia (2).docx`
+- `newton rápido los a base b es j con ajuste de parametros version mitad iteraciones - copia.docx`
+- `newton rápido los a base b es j con Parametros optimizados.docx`
+- `newton rápido los a base b es jmodificado.docx`
+- `segunda parte.docx`
 
 ## Notas
 
 - Parte del ecosistema **VMA / 33×1 / AntiPC / Aleatorovix / ZypyZape / K3**.
-- Si esta carpeta está poco clasificada, se reordenará con prioridad **33×1**.
+- Prioridad del monorepo: **33×1** (el **1** = todo el repo civil).
 - No subir secretos (claves FTP, tokens, datos personales) a commits futuros.
 
 ## Enlaces relacionados
 
-- Índice del monorepo: [FOLDERS.md](../FOLDERS.md) (raíz del repo)
-- Web Aleatorovix: [web-aleatorovix/](../web-aleatorovix/)
-- Deploy techamv: [techamv-aleatorovix-DEPLOY/](../techamv-aleatorovix-DEPLOY/)
-- Sync PC: [PC_SYNC_2026-07-23.md](../PC_SYNC_2026-07-23.md)
+- Mapa temático: [MAPA.md](../MAPA.md)
+- Índice alfabético: [FOLDERS.md](../FOLDERS.md)
+- README raíz: [README.md](../README.md)
+- 33×1: [33x1/](../33x1/)
 
 ---
 *README generado para navegación del monorepo. Editar libremente.*

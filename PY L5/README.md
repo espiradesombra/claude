@@ -1,17 +1,18 @@
-# PY L5
+# PY L5 — Python del Libro 5
 
-Python asociado al Libro 5 / factorización.
+Scripts Python del Libro 5 / factorización MDC.
 
-**Tema:** Código L5.
+**Tema:** Libros / MDC
 
 **Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `PY L5/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 27
-- **Subcarpetas:** 0
+- **Archivos totales (aprox., recursivo):** 27
+- **En la raíz de la carpeta:** 27
+- **Subcarpetas (primer nivel):** 0
 
-### Extensiones
+### Extensiones (recursivo, top)
 - `.py`: 26
 - `.txt`: 1
 
@@ -34,19 +35,31 @@ _ninguna_
 - `mdc_hybrid_v4.py`
 - `mdc_hybrid_v44.py`
 - `mdc_hybrid_v444.py`
+- `mdc_libro5.py`
+- `mdc_v15.py`
+- `mdc_v16.py`
+- `mdc_v17.py`
+- `mdc_v18.py`
+- `mdc_v19.py`
+- `mdc_v20.py`
+- `mdc_v21_1.py`
+- `mdc_v22_1.py`
+- `mdc_v23.py`
+- `militar_test.py`
+- `record_mundial.py`
 
 ## Notas
 
 - Parte del ecosistema **VMA / 33×1 / AntiPC / Aleatorovix / ZypyZape / K3**.
-- Si esta carpeta está poco clasificada, se reordenará con prioridad **33×1**.
+- Prioridad del monorepo: **33×1** (el **1** = todo el repo civil).
 - No subir secretos (claves FTP, tokens, datos personales) a commits futuros.
 
 ## Enlaces relacionados
 
-- Índice del monorepo: [FOLDERS.md](../FOLDERS.md) (raíz del repo)
-- Web Aleatorovix: [web-aleatorovix/](../web-aleatorovix/)
-- Deploy techamv: [techamv-aleatorovix-DEPLOY/](../techamv-aleatorovix-DEPLOY/)
-- Sync PC: [PC_SYNC_2026-07-23.md](../PC_SYNC_2026-07-23.md)
+- Mapa temático: [MAPA.md](../MAPA.md)
+- Índice alfabético: [FOLDERS.md](../FOLDERS.md)
+- README raíz: [README.md](../README.md)
+- 33×1: [33x1/](../33x1/)
 
 ---
 *README generado para navegación del monorepo. Editar libremente.*

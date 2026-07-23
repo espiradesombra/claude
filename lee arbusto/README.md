@@ -1,29 +1,29 @@
 # lee arbusto
 
-Material Lee Arbusto.
+Material Lee Arbusto: Libro 4 convergencias, zips y textos.
 
-**Tema:** Misc / chat.
+**Tema:** Sesiones IA / archivo
 
 **Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `lee arbusto/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 36
-- **Subcarpetas:** 1
+- **Archivos totales (aprox., recursivo):** 30
+- **En la raíz de la carpeta:** 16
+- **Subcarpetas (primer nivel):** 1
 
-### Extensiones
+### Extensiones (recursivo, top)
 - `.txt`: 22
 - `.pdf`: 6
-- `.zip`: 6
 - `.py`: 2
 
 ### Subcarpetas
 - `lee arbusto`
 
 ### Archivos en la raíz de esta carpeta
-- `(L).txt`
-- `(l)(L).txt`
 - `(L)(L)(L).txt`
+- `(l)(L).txt`
+- `(L).txt`
 - `33x1-análisis-completo-de-tu-repositorio-+-plan-de-acción-definitivo.pdf`
 - `33x1-estrategia-máxima-de-comunicación-y-ejecución.pdf`
 - `33x1-investigación-de-validación-científica-y-técnica.pdf`
@@ -36,19 +36,20 @@ Material Lee Arbusto.
 - `gptcomputing.txt`
 - `grok hascode .txt`
 - `libro4_encriptacion_convergencias.py`
+- `Nuevo Documento de texto.txt`
 
 ## Notas
 
 - Parte del ecosistema **VMA / 33×1 / AntiPC / Aleatorovix / ZypyZape / K3**.
-- Si esta carpeta está poco clasificada, se reordenará con prioridad **33×1**.
+- Prioridad del monorepo: **33×1** (el **1** = todo el repo civil).
 - No subir secretos (claves FTP, tokens, datos personales) a commits futuros.
 
 ## Enlaces relacionados
 
-- Índice del monorepo: [FOLDERS.md](../FOLDERS.md) (raíz del repo)
-- Web Aleatorovix: [web-aleatorovix/](../web-aleatorovix/)
-- Deploy techamv: [techamv-aleatorovix-DEPLOY/](../techamv-aleatorovix-DEPLOY/)
-- Sync PC: [PC_SYNC_2026-07-23.md](../PC_SYNC_2026-07-23.md)
+- Mapa temático: [MAPA.md](../MAPA.md)
+- Índice alfabético: [FOLDERS.md](../FOLDERS.md)
+- README raíz: [README.md](../README.md)
+- 33×1: [33x1/](../33x1/)
 
 ---
 *README generado para navegación del monorepo. Editar libremente.*

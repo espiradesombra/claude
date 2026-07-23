@@ -1,25 +1,25 @@
-# vma-k3
+# vma-k3 — motor K3
 
-Integración VMA × K3 (motor base 33, rel 1, hash/dedup).
+Integración VMA × K3: hash, dedup, demos C/Python, telemetría de marcas de código.
 
-**Tema:** K3 + VMA.
+**Tema:** K3 / cifrado
 
 **Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma-k3/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 65
-- **Subcarpetas:** 7
+- **Archivos totales (aprox., recursivo):** 66
+- **En la raíz de la carpeta:** 4
+- **Subcarpetas (primer nivel):** 7
 
-### Extensiones
+### Extensiones (recursivo, top)
 - `.c`: 21
 - `.py`: 13
 - `.txt`: 11
+- `.md`: 9
 - `.h`: 9
-- `.md`: 4
-- `.pyc`: 4
-- `(sin ext)`: 1
-- `.gitignore`: 1
+- `(sin ext)`: 2
+- `.toml`: 1
 
 ### Subcarpetas
 - `c`
@@ -39,15 +39,15 @@ Integración VMA × K3 (motor base 33, rel 1, hash/dedup).
 ## Notas
 
 - Parte del ecosistema **VMA / 33×1 / AntiPC / Aleatorovix / ZypyZape / K3**.
-- Si esta carpeta está poco clasificada, se reordenará con prioridad **33×1**.
+- Prioridad del monorepo: **33×1** (el **1** = todo el repo civil).
 - No subir secretos (claves FTP, tokens, datos personales) a commits futuros.
 
 ## Enlaces relacionados
 
-- Índice del monorepo: [FOLDERS.md](../FOLDERS.md) (raíz del repo)
-- Web Aleatorovix: [web-aleatorovix/](../web-aleatorovix/)
-- Deploy techamv: [techamv-aleatorovix-DEPLOY/](../techamv-aleatorovix-DEPLOY/)
-- Sync PC: [PC_SYNC_2026-07-23.md](../PC_SYNC_2026-07-23.md)
+- Mapa temático: [MAPA.md](../MAPA.md)
+- Índice alfabético: [FOLDERS.md](../FOLDERS.md)
+- README raíz: [README.md](../README.md)
+- 33×1: [33x1/](../33x1/)
 
 ---
 *README generado para navegación del monorepo. Editar libremente.*

@@ -1,21 +1,22 @@
-# gemini google comslsshare sls58220b9d68f8
+# gemini share export
 
-Exportes o trabajo con IA: **gemini google comslsshare sls58220b9d68f8**.
+Export HTML/docs de una sesión Gemini compartida (Kuramoto/Zipi-Zape y anexos).
 
-**Tema:** Chats, código y notas.
+**Tema:** Sesiones IA / archivo
 
 **Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `gemini google comslsshare sls58220b9d68f8/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 19
-- **Subcarpetas:** 0
+- **Archivos totales (aprox., recursivo):** 19
+- **En la raíz de la carpeta:** 19
+- **Subcarpetas (primer nivel):** 0
 
-### Extensiones
+### Extensiones (recursivo, top)
 - `.docx`: 9
 - `.pdf`: 8
-- `.txt`: 1
 - `.xlsx`: 1
+- `.txt`: 1
 
 ### Subcarpetas
 _ninguna_
@@ -31,24 +32,28 @@ _ninguna_
 - `Libro1.xlsx`
 - `minimo2.docx`
 - `minimo2.pdf`
-- `mínimodos.pdf`
 - `mitos y leyendas.pdf`
+- `mínimodos.pdf`
 - `Nuevo Documento de texto.txt`
 - `Números i numeritos.pdf`
 - `Números otra ve75 .pdf`
+- `Números otra vez2-5.pdf`
+- `sunraman.docx`
+- `Teoria_restos.docx`
+- `Teoria_restos_.docx`
 
 ## Notas
 
 - Parte del ecosistema **VMA / 33×1 / AntiPC / Aleatorovix / ZypyZape / K3**.
-- Si esta carpeta está poco clasificada, se reordenará con prioridad **33×1**.
+- Prioridad del monorepo: **33×1** (el **1** = todo el repo civil).
 - No subir secretos (claves FTP, tokens, datos personales) a commits futuros.
 
 ## Enlaces relacionados
 
-- Índice del monorepo: [FOLDERS.md](../FOLDERS.md) (raíz del repo)
-- Web Aleatorovix: [web-aleatorovix/](../web-aleatorovix/)
-- Deploy techamv: [techamv-aleatorovix-DEPLOY/](../techamv-aleatorovix-DEPLOY/)
-- Sync PC: [PC_SYNC_2026-07-23.md](../PC_SYNC_2026-07-23.md)
+- Mapa temático: [MAPA.md](../MAPA.md)
+- Índice alfabético: [FOLDERS.md](../FOLDERS.md)
+- README raíz: [README.md](../README.md)
+- 33×1: [33x1/](../33x1/)
 
 ---
 *README generado para navegación del monorepo. Editar libremente.*

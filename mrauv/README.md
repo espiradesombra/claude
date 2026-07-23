@@ -1,17 +1,18 @@
-# mrauv
+# mrauv — datos y scripts densitat
 
-Material MRAUV (movimiento / densidad).
+CSV y scripts del modelo MRAUV de densidad de primos.
 
-**Tema:** Notas MRAUV.
+**Tema:** Métodos / mates
 
 **Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `mrauv/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 4
-- **Subcarpetas:** 1
+- **Archivos totales (aprox., recursivo):** 4
+- **En la raíz de la carpeta:** 2
+- **Subcarpetas (primer nivel):** 1
 
-### Extensiones
+### Extensiones (recursivo, top)
 - `.csv`: 2
 - `.py`: 1
 - `.txt`: 1
@@ -26,15 +27,15 @@ Material MRAUV (movimiento / densidad).
 ## Notas
 
 - Parte del ecosistema **VMA / 33×1 / AntiPC / Aleatorovix / ZypyZape / K3**.
-- Si esta carpeta está poco clasificada, se reordenará con prioridad **33×1**.
+- Prioridad del monorepo: **33×1** (el **1** = todo el repo civil).
 - No subir secretos (claves FTP, tokens, datos personales) a commits futuros.
 
 ## Enlaces relacionados
 
-- Índice del monorepo: [FOLDERS.md](../FOLDERS.md) (raíz del repo)
-- Web Aleatorovix: [web-aleatorovix/](../web-aleatorovix/)
-- Deploy techamv: [techamv-aleatorovix-DEPLOY/](../techamv-aleatorovix-DEPLOY/)
-- Sync PC: [PC_SYNC_2026-07-23.md](../PC_SYNC_2026-07-23.md)
+- Mapa temático: [MAPA.md](../MAPA.md)
+- Índice alfabético: [FOLDERS.md](../FOLDERS.md)
+- README raíz: [README.md](../README.md)
+- 33×1: [33x1/](../33x1/)
 
 ---
 *README generado para navegación del monorepo. Editar libremente.*

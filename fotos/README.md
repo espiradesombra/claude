@@ -1,17 +1,18 @@
 # fotos
 
-Fotografías del proyecto.
+Fotografías del proyecto (jpg).
 
-**Tema:** Assets.
+**Tema:** Media
 
 **Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `fotos/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 24
-- **Subcarpetas:** 0
+- **Archivos totales (aprox., recursivo):** 24
+- **En la raíz de la carpeta:** 24
+- **Subcarpetas (primer nivel):** 0
 
-### Extensiones
+### Extensiones (recursivo, top)
 - `.jpg`: 23
 - `.mp4`: 1
 
@@ -19,9 +20,6 @@ Fotografías del proyecto.
 _ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `Imagen de WhatsApp 2025-09-19 a las 15.16.47_87f3066c.jpg`
-- `Imagen de WhatsApp 2025-09-19 a las 15.17.00_58d36a8c.jpg`
-- `Imagen de WhatsApp 2025-09-20 a las 12.41.05_9eb0edb5.jpg`
 - `IMG-20250919-WA0002.jpg`
 - `IMG-20250920-WA0001.jpg`
 - `IMG-20250920-WA0002.jpg`
@@ -34,19 +32,27 @@ _ninguna_
 - `IMG-20250920-WA0009.jpg`
 - `IMG-20250920-WA0010.jpg`
 - `IMG-20250920-WA0011.jpg`
+- `IMG-20250920-WA0012.jpg`
+- `IMG-20250920-WA0013.jpg`
+- `IMG-20250920-WA0014.jpg`
+- `IMG-20250920-WA0015.jpg`
+- `IMG-20250920-WA0016.jpg`
+- `IMG-20250920-WA0017.jpg`
+- `IMG-20250920-WA0018.jpg`
+- `IMG-20250920-WA0019.jpg`
 
 ## Notas
 
 - Parte del ecosistema **VMA / 33×1 / AntiPC / Aleatorovix / ZypyZape / K3**.
-- Si esta carpeta está poco clasificada, se reordenará con prioridad **33×1**.
+- Prioridad del monorepo: **33×1** (el **1** = todo el repo civil).
 - No subir secretos (claves FTP, tokens, datos personales) a commits futuros.
 
 ## Enlaces relacionados
 
-- Índice del monorepo: [FOLDERS.md](../FOLDERS.md) (raíz del repo)
-- Web Aleatorovix: [web-aleatorovix/](../web-aleatorovix/)
-- Deploy techamv: [techamv-aleatorovix-DEPLOY/](../techamv-aleatorovix-DEPLOY/)
-- Sync PC: [PC_SYNC_2026-07-23.md](../PC_SYNC_2026-07-23.md)
+- Mapa temático: [MAPA.md](../MAPA.md)
+- Índice alfabético: [FOLDERS.md](../FOLDERS.md)
+- README raíz: [README.md](../README.md)
+- 33×1: [33x1/](../33x1/)
 
 ---
 *README generado para navegación del monorepo. Editar libremente.*

@@ -1,17 +1,18 @@
 # diamante
 
-Proyecto o metáfora diamante.
+Proyecto diamante: txt/py/c de exploración numérica / metáfora.
 
-**Tema:** Materiales.
+**Tema:** Experimentos
 
 **Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `diamante/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 54
-- **Subcarpetas:** 0
+- **Archivos totales (aprox., recursivo):** 54
+- **En la raíz de la carpeta:** 54
+- **Subcarpetas (primer nivel):** 0
 
-### Extensiones
+### Extensiones (recursivo, top)
 - `.txt`: 28
 - `.py`: 12
 - `.c`: 9
@@ -24,9 +25,9 @@ _ninguna_
 
 ### Archivos en la raíz de esta carpeta
 - `10.0 Comparativa.c`
-- `6_2.c`
 - `6.2`
 - `6.2.c`
+- `6_2.c`
 - `9.3 1.c`
 - `9.3.c`
 - `anexoE_L_m_script (1).py`
@@ -38,19 +39,45 @@ _ninguna_
 - `anexoF_mrauv_calibrador (2).py`
 - `anexoF_mrauv_calibrador.py`
 - `antiprimos.txt`
+- `besons - copia.docx`
+- `criba desmemoriada .txt`
+- `criba_hibrida.py`
+- `criba_modular.py`
+- `Cribas_cotas_y_estructuras_de_primos_VMA (1).txt`
+- `criva.txt`
+- `densidad x cine 1.txt`
+- `densidad x cine.txt`
+- `Don_Quijote_de_la_Mancha-Cervantes_Miguel.pdf`
+- `estructura_sofi.py`
+- `fermat_modular.py`
+- `heuristica_logs.py`
+- `heuristica_raices.py`
+- `Instrucciones.txt`
+- `jaja siempre pàsa.txt`
+- `jj.txt`
+- `la forma de algunos  - copia.docx`
+- `metodo_calculo_primos (1).txt`
+- `metodo_calculo_primos (2).txt`
+- `metodo_calculo_primos.txt`
+- `MPI.6.c`
+- `mrauv.py`
+- `Nuevo Doc8umento de texto.txt`
+- `Nuevo DocumDDento de texto (2).txt`
+- `Nuevo DocumenSSto de texto (2).txt`
+- … y 14 más
 
 ## Notas
 
 - Parte del ecosistema **VMA / 33×1 / AntiPC / Aleatorovix / ZypyZape / K3**.
-- Si esta carpeta está poco clasificada, se reordenará con prioridad **33×1**.
+- Prioridad del monorepo: **33×1** (el **1** = todo el repo civil).
 - No subir secretos (claves FTP, tokens, datos personales) a commits futuros.
 
 ## Enlaces relacionados
 
-- Índice del monorepo: [FOLDERS.md](../FOLDERS.md) (raíz del repo)
-- Web Aleatorovix: [web-aleatorovix/](../web-aleatorovix/)
-- Deploy techamv: [techamv-aleatorovix-DEPLOY/](../techamv-aleatorovix-DEPLOY/)
-- Sync PC: [PC_SYNC_2026-07-23.md](../PC_SYNC_2026-07-23.md)
+- Mapa temático: [MAPA.md](../MAPA.md)
+- Índice alfabético: [FOLDERS.md](../FOLDERS.md)
+- README raíz: [README.md](../README.md)
+- 33×1: [33x1/](../33x1/)
 
 ---
 *README generado para navegación del monorepo. Editar libremente.*

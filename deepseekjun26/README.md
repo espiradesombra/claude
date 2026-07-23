@@ -1,17 +1,18 @@
 # deepseekjun26
 
-Sesiones DeepSeek (jun 2026).
+Sesiones y tablas DeepSeek de junio 2026 (MDC / cribas).
 
-**Tema:** IA + código.
+**Tema:** Sesiones IA / archivo
 
 **Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `deepseekjun26/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 35
-- **Subcarpetas:** 0
+- **Archivos totales (aprox., recursivo):** 35
+- **En la raíz de la carpeta:** 35
+- **Subcarpetas (primer nivel):** 0
 
-### Extensiones
+### Extensiones (recursivo, top)
 - `.txt`: 35
 
 ### Subcarpetas
@@ -33,19 +34,39 @@ _ninguna_
 - `Nuevo Documento de texto (21).txt`
 - `Nuevo Documento de texto (22).txt`
 - `Nuevo Documento de texto (23).txt`
+- `Nuevo Documento de texto (24).txt`
+- `Nuevo Documento de texto (25).txt`
+- `Nuevo Documento de texto (26).txt`
+- `Nuevo Documento de texto (27).txt`
+- `Nuevo Documento de texto (28).txt`
+- `Nuevo Documento de texto (29).txt`
+- `Nuevo Documento de texto (3).txt`
+- `Nuevo Documento de texto (30).txt`
+- `Nuevo Documento de texto (31).txt`
+- `Nuevo Documento de texto (32).txt`
+- `Nuevo Documento de texto (33).txt`
+- `Nuevo Documento de texto (34).txt`
+- `Nuevo Documento de texto (4).txt`
+- `Nuevo Documento de texto (5).txt`
+- `Nuevo Documento de texto (6).txt`
+- `Nuevo Documento de texto (7).txt`
+- `Nuevo Documento de texto (8).txt`
+- `Nuevo Documento de texto (9).txt`
+- `Nuevo Documento de texto.txt`
+- `Sin título.txt`
 
 ## Notas
 
 - Parte del ecosistema **VMA / 33×1 / AntiPC / Aleatorovix / ZypyZape / K3**.
-- Si esta carpeta está poco clasificada, se reordenará con prioridad **33×1**.
+- Prioridad del monorepo: **33×1** (el **1** = todo el repo civil).
 - No subir secretos (claves FTP, tokens, datos personales) a commits futuros.
 
 ## Enlaces relacionados
 
-- Índice del monorepo: [FOLDERS.md](../FOLDERS.md) (raíz del repo)
-- Web Aleatorovix: [web-aleatorovix/](../web-aleatorovix/)
-- Deploy techamv: [techamv-aleatorovix-DEPLOY/](../techamv-aleatorovix-DEPLOY/)
-- Sync PC: [PC_SYNC_2026-07-23.md](../PC_SYNC_2026-07-23.md)
+- Mapa temático: [MAPA.md](../MAPA.md)
+- Índice alfabético: [FOLDERS.md](../FOLDERS.md)
+- README raíz: [README.md](../README.md)
+- 33×1: [33x1/](../33x1/)
 
 ---
 *README generado para navegación del monorepo. Editar libremente.*

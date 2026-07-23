@@ -1,25 +1,27 @@
-# antipc-port-c
+# antipc-port-c — port C de módulos
 
-Port a C de módulos AntiPC (criba, MDC trenes, Newton rápido) + inventarios.
+Port a C de criba, MDC trenes, Newton rápido + inventarios de integración v04–v14.
 
-**Tema:** Código C y mapas de port.
+**Tema:** AntiPC / C
 
 **Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `antipc-port-c/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 48
-- **Subcarpetas:** 3
+- **Archivos totales (aprox., recursivo):** 48
+- **En la raíz de la carpeta:** 37
+- **Subcarpetas (primer nivel):** 3
 
-### Extensiones
+### Extensiones (recursivo, top)
 - `.txt`: 21
-- `.c`: 7
 - `.json`: 7
+- `.c`: 7
 - `.obj`: 6
 - `.md`: 2
 - `.py`: 2
 - `.bat`: 1
 - `.exe`: 1
+- `.h`: 1
 
 ### Subcarpetas
 - `include`
@@ -42,19 +44,41 @@ Port a C de módulos AntiPC (criba, MDC trenes, Newton rápido) + inventarios.
 - `11_INTEGRADO_v11.txt`
 - `12_INTEGRADO_v12.txt`
 - `13_INTEGRADO_v13.txt`
+- `14_INTEGRADO_v14.txt`
+- `15_INTEGRADO_v15.txt`
+- `bench_port_c.py`
+- `build_desktop.bat`
+- `create.json`
+- `criba_hibrida.obj`
+- `criba_modular6k.obj`
+- `delete.json`
+- `get_results.json`
+- `gotcomputer.txt`
+- `LEEME.txt`
+- `list.json`
+- `MAPA_ORDENADOR_VMA.txt`
+- `mdc_hypotenuse_jump.py`
+- `mdc_ksweep_predict.obj`
+- `mdc_trains.obj`
+- `newton_rapido.obj`
+- `pause.json`
+- `port_demo.exe`
+- `port_demo.obj`
+- `update.json`
+- `www.github.com7espiradesombra7claude.txt`
 
 ## Notas
 
 - Parte del ecosistema **VMA / 33×1 / AntiPC / Aleatorovix / ZypyZape / K3**.
-- Si esta carpeta está poco clasificada, se reordenará con prioridad **33×1**.
+- Prioridad del monorepo: **33×1** (el **1** = todo el repo civil).
 - No subir secretos (claves FTP, tokens, datos personales) a commits futuros.
 
 ## Enlaces relacionados
 
-- Índice del monorepo: [FOLDERS.md](../FOLDERS.md) (raíz del repo)
-- Web Aleatorovix: [web-aleatorovix/](../web-aleatorovix/)
-- Deploy techamv: [techamv-aleatorovix-DEPLOY/](../techamv-aleatorovix-DEPLOY/)
-- Sync PC: [PC_SYNC_2026-07-23.md](../PC_SYNC_2026-07-23.md)
+- Mapa temático: [MAPA.md](../MAPA.md)
+- Índice alfabético: [FOLDERS.md](../FOLDERS.md)
+- README raíz: [README.md](../README.md)
+- 33×1: [33x1/](../33x1/)
 
 ---
 *README generado para navegación del monorepo. Editar libremente.*

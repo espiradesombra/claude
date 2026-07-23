@@ -1,19 +1,20 @@
-# pyy
+# pyy — más Python
 
-Más scripts Python / variantes.
+Variantes y scripts Python adicionales.
 
-**Tema:** Código Python.
+**Tema:** Código
 
 **Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `pyy/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 59
-- **Subcarpetas:** 1
+- **Archivos totales (aprox., recursivo):** 60
+- **En la raíz de la carpeta:** 54
+- **Subcarpetas (primer nivel):** 1
 
-### Extensiones
+### Extensiones (recursivo, top)
 - `.py`: 54
-- `.md`: 5
+- `.md`: 6
 
 ### Subcarpetas
 - `README`
@@ -34,19 +35,45 @@ Más scripts Python / variantes.
 - `deepseek_python_20250905_ae6c48_12.py`
 - `deepseek_python_20250905_b2a965_10.py`
 - `deepseek_python_20250905_b2a965_11.py`
+- `deepseek_python_20250905_de142f_3.py`
+- `deepseek_python_20250905_df6a66_7.py`
+- `deepseek_python_20250905_e39bfe_5.py`
+- `deepseek_python_20250905_e76829_14.py`
+- `discriminant.py`
+- `fermat_modular.py`
+- `gen_report.py`
+- `goldbach_vma.py`
+- `mdc.py`
+- `mdc_benchmark.py`
+- `mdc_factorizador.py`
+- `me_detector.py`
+- `metodo_restos.py`
+- `mini_comparativa (1).py`
+- `mini_comparativa.py`
+- `mrauv_goldbach.py`
+- `riemann_deformado.py`
+- `salto_maximo.py`
+- `siguiente_primo.py`
+- `sofi_structure.py`
+- `zypy_zape_digital_twin_python (0).py`
+- `zypy_zape_digital_twin_python.py`
+- `zypyzape_minigemelo (1).py`
+- `zypyzape_minigemelo.py`
+- `zypyzape_twin_v2.py`
+- … y 14 más
 
 ## Notas
 
 - Parte del ecosistema **VMA / 33×1 / AntiPC / Aleatorovix / ZypyZape / K3**.
-- Si esta carpeta está poco clasificada, se reordenará con prioridad **33×1**.
+- Prioridad del monorepo: **33×1** (el **1** = todo el repo civil).
 - No subir secretos (claves FTP, tokens, datos personales) a commits futuros.
 
 ## Enlaces relacionados
 
-- Índice del monorepo: [FOLDERS.md](../FOLDERS.md) (raíz del repo)
-- Web Aleatorovix: [web-aleatorovix/](../web-aleatorovix/)
-- Deploy techamv: [techamv-aleatorovix-DEPLOY/](../techamv-aleatorovix-DEPLOY/)
-- Sync PC: [PC_SYNC_2026-07-23.md](../PC_SYNC_2026-07-23.md)
+- Mapa temático: [MAPA.md](../MAPA.md)
+- Índice alfabético: [FOLDERS.md](../FOLDERS.md)
+- README raíz: [README.md](../README.md)
+- 33×1: [33x1/](../33x1/)
 
 ---
 *README generado para navegación del monorepo. Editar libremente.*

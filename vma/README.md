@@ -1,25 +1,28 @@
-# vma
+# vma — núcleo VMA
 
-Núcleo y materiales VMA (Víctor Manzanares Alberola).
+Núcleo y materiales VMA (K3 cross-verifier, packs, txt/py).
 
-**Tema:** Teoría y código VMA.
+**Tema:** VMA núcleo
 
 **Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `vma/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 50
-- **Subcarpetas:** 7
+- **Archivos totales (aprox., recursivo):** 36
+- **En la raíz de la carpeta:** 4
+- **Subcarpetas (primer nivel):** 6
 
-### Extensiones
-- `.txt`: 12
+### Extensiones (recursivo, top)
 - `.py`: 9
-- `.zip`: 9
+- `.txt`: 7
 - `.c`: 7
+- `.md`: 4
 - `.h`: 3
-- `.md`: 3
 - `.php`: 2
 - `(sin ext)`: 1
+- `.toml`: 1
+- `.docx`: 1
+- `.tsx`: 1
 
 ### Subcarpetas
 - `_entrada`
@@ -28,7 +31,6 @@ Núcleo y materiales VMA (Víctor Manzanares Alberola).
 - `examples`
 - `tests`
 - `vma`
-- `vma_k3.egg-info`
 
 ### Archivos en la raíz de esta carpeta
 - `.gitignore`
@@ -39,15 +41,15 @@ Núcleo y materiales VMA (Víctor Manzanares Alberola).
 ## Notas
 
 - Parte del ecosistema **VMA / 33×1 / AntiPC / Aleatorovix / ZypyZape / K3**.
-- Si esta carpeta está poco clasificada, se reordenará con prioridad **33×1**.
+- Prioridad del monorepo: **33×1** (el **1** = todo el repo civil).
 - No subir secretos (claves FTP, tokens, datos personales) a commits futuros.
 
 ## Enlaces relacionados
 
-- Índice del monorepo: [FOLDERS.md](../FOLDERS.md) (raíz del repo)
-- Web Aleatorovix: [web-aleatorovix/](../web-aleatorovix/)
-- Deploy techamv: [techamv-aleatorovix-DEPLOY/](../techamv-aleatorovix-DEPLOY/)
-- Sync PC: [PC_SYNC_2026-07-23.md](../PC_SYNC_2026-07-23.md)
+- Mapa temático: [MAPA.md](../MAPA.md)
+- Índice alfabético: [FOLDERS.md](../FOLDERS.md)
+- README raíz: [README.md](../README.md)
+- 33×1: [33x1/](../33x1/)
 
 ---
 *README generado para navegación del monorepo. Editar libremente.*

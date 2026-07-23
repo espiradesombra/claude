@@ -1,22 +1,23 @@
-# New conversation - Grok.html. ojalamia_files (L)
+# New conversation Grok (export)
 
-Exportes o trabajo con IA: **New conversation - Grok.html. ojalamia_files (L)**.
+Export grande de conversación Grok (html/files).
 
-**Tema:** Chats, código y notas.
+**Tema:** Sesiones IA / archivo
 
 **Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `New conversation - Grok.html. ojalamia_files (L)/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 80
-- **Subcarpetas:** 0
+- **Archivos totales (aprox., recursivo):** 80
+- **En la raíz de la carpeta:** 80
+- **Subcarpetas (primer nivel):** 0
 
-### Extensiones
+### Extensiones (recursivo, top)
 - `.descarga`: 71
 - `.css`: 4
 - `(sin ext)`: 2
-- `.html`: 1
 - `.loaded_0`: 1
+- `.html`: 1
 - `.webp`: 1
 
 ### Subcarpetas
@@ -38,19 +39,45 @@ _ninguna_
 - `371cd29b25d577d7.js.descarga`
 - `3accd0f30cf3de25.css`
 - `3dd2968450944bd9.js.descarga`
+- `3fc3b8758fc29dd9.js.descarga`
+- `43482539a0b57606.js.descarga`
+- `54ad11ccb4fafb9d.js.descarga`
+- `570149b7bc929189.js.descarga`
+- `570a392c48b723d8.js.descarga`
+- `58b754b505a8a1ce.js.descarga`
+- `58e7f19cd4b34ebc.js.descarga`
+- `5a34e237b2e76a52.js.descarga`
+- `5c03ef1e14105957.js.descarga`
+- `65ffb4780c7d64e6.js.descarga`
+- `661b310bec6be3fc.js.descarga`
+- `6a5b6d6b8d65d0e2.js.descarga`
+- `6c36c08cd0795a3c.js.descarga`
+- `6f008cf4b10d68e9.js.descarga`
+- `748e9f3a62ee19fc.js.descarga`
+- `7a499c3dae54feb2.js.descarga`
+- `7def54fc3966a629.js.descarga`
+- `7e55a0ef2394deca.js.descarga`
+- `7f61de89bf3e5ebe.js.descarga`
+- `8068269fee4c52c8.js.descarga`
+- `84b3eb12eadb4902.js.descarga`
+- `84e15e1196f84286.js.descarga`
+- `8df1a8e7cb5598e9.js.descarga`
+- `9de86a024f6b5d86.js.descarga`
+- `9e341644ff7c95b7.css`
+- … y 40 más
 
 ## Notas
 
 - Parte del ecosistema **VMA / 33×1 / AntiPC / Aleatorovix / ZypyZape / K3**.
-- Si esta carpeta está poco clasificada, se reordenará con prioridad **33×1**.
+- Prioridad del monorepo: **33×1** (el **1** = todo el repo civil).
 - No subir secretos (claves FTP, tokens, datos personales) a commits futuros.
 
 ## Enlaces relacionados
 
-- Índice del monorepo: [FOLDERS.md](../FOLDERS.md) (raíz del repo)
-- Web Aleatorovix: [web-aleatorovix/](../web-aleatorovix/)
-- Deploy techamv: [techamv-aleatorovix-DEPLOY/](../techamv-aleatorovix-DEPLOY/)
-- Sync PC: [PC_SYNC_2026-07-23.md](../PC_SYNC_2026-07-23.md)
+- Mapa temático: [MAPA.md](../MAPA.md)
+- Índice alfabético: [FOLDERS.md](../FOLDERS.md)
+- README raíz: [README.md](../README.md)
+- 33×1: [33x1/](../33x1/)
 
 ---
 *README generado para navegación del monorepo. Editar libremente.*

@@ -1,27 +1,25 @@
-# conjunto
+# tools — utilidades del monorepo
 
-Conjuntos y estructuras (material corto).
+Scripts de mantenimiento: `describe_folders.py` regenera MAPA.md, FOLDERS.md y READMEs por carpeta.
 
-**Tema:** Métodos / mates
+**Tema:** Docs / tooling
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `conjunto/`
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `tools/`
 
 ## Contenido
 
-- **Archivos totales (aprox., recursivo):** 3
-- **En la raíz de la carpeta:** 3
+- **Archivos totales (aprox., recursivo):** 1
+- **En la raíz de la carpeta:** 1
 - **Subcarpetas (primer nivel):** 0
 
 ### Extensiones (recursivo, top)
-- `.pdf`: 3
+- `.py`: 1
 
 ### Subcarpetas
 _ninguna_
 
 ### Archivos en la raíz de esta carpeta
-- `cuatro largo.pdf`
-- `cuatro.pdf`
-- `tres.pdf`
+- `describe_folders.py`
 
 ## Notas
 

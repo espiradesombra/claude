@@ -1,17 +1,18 @@
 # copilot 2025
 
-Sesiones / código con Copilot 2025.
+Sesiones y código con Copilot 2025 (docx/png/pdf).
 
-**Tema:** IA + código.
+**Tema:** Sesiones IA / archivo
 
 **Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `copilot 2025/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 12
-- **Subcarpetas:** 0
+- **Archivos totales (aprox., recursivo):** 12
+- **En la raíz de la carpeta:** 12
+- **Subcarpetas (primer nivel):** 0
 
-### Extensiones
+### Extensiones (recursivo, top)
 - `.docx`: 6
 - `.png`: 3
 - `.pdf`: 2
@@ -37,15 +38,15 @@ _ninguna_
 ## Notas
 
 - Parte del ecosistema **VMA / 33×1 / AntiPC / Aleatorovix / ZypyZape / K3**.
-- Si esta carpeta está poco clasificada, se reordenará con prioridad **33×1**.
+- Prioridad del monorepo: **33×1** (el **1** = todo el repo civil).
 - No subir secretos (claves FTP, tokens, datos personales) a commits futuros.
 
 ## Enlaces relacionados
 
-- Índice del monorepo: [FOLDERS.md](../FOLDERS.md) (raíz del repo)
-- Web Aleatorovix: [web-aleatorovix/](../web-aleatorovix/)
-- Deploy techamv: [techamv-aleatorovix-DEPLOY/](../techamv-aleatorovix-DEPLOY/)
-- Sync PC: [PC_SYNC_2026-07-23.md](../PC_SYNC_2026-07-23.md)
+- Mapa temático: [MAPA.md](../MAPA.md)
+- Índice alfabético: [FOLDERS.md](../FOLDERS.md)
+- README raíz: [README.md](../README.md)
+- 33×1: [33x1/](../33x1/)
 
 ---
 *README generado para navegación del monorepo. Editar libremente.*

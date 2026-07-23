@@ -1,17 +1,18 @@
-# just run
+# just run — listos para ejecutar
 
-Paquetes listos para ejecutar (incl. aleatorovix).
+Paquetes y scripts listos para ejecutar (incluye aleatorovix y gemelos).
 
-**Tema:** Scripts y demos runnable.
+**Tema:** Ejecutables
 
 **Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `just run/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 112
-- **Subcarpetas:** 9
+- **Archivos totales (aprox., recursivo):** 111
+- **En la raíz de la carpeta:** 0
+- **Subcarpetas (primer nivel):** 9
 
-### Extensiones
+### Extensiones (recursivo, top)
 - `.py`: 49
 - `.txt`: 39
 - `.md`: 5
@@ -20,6 +21,8 @@ Paquetes listos para ejecutar (incl. aleatorovix).
 - `.bat`: 3
 - `.csv`: 2
 - `.tex`: 2
+- `.json`: 1
+- `.docx`: 1
 
 ### Subcarpetas
 - `33x1`
@@ -33,20 +36,20 @@ Paquetes listos para ejecutar (incl. aleatorovix).
 - `zypyzape-contexto`
 
 ### Archivos en la raíz de esta carpeta
-- `just-run-unificado.zip`
+_ninguno listable_ o solo subcarpetas
 
 ## Notas
 
 - Parte del ecosistema **VMA / 33×1 / AntiPC / Aleatorovix / ZypyZape / K3**.
-- Si esta carpeta está poco clasificada, se reordenará con prioridad **33×1**.
+- Prioridad del monorepo: **33×1** (el **1** = todo el repo civil).
 - No subir secretos (claves FTP, tokens, datos personales) a commits futuros.
 
 ## Enlaces relacionados
 
-- Índice del monorepo: [FOLDERS.md](../FOLDERS.md) (raíz del repo)
-- Web Aleatorovix: [web-aleatorovix/](../web-aleatorovix/)
-- Deploy techamv: [techamv-aleatorovix-DEPLOY/](../techamv-aleatorovix-DEPLOY/)
-- Sync PC: [PC_SYNC_2026-07-23.md](../PC_SYNC_2026-07-23.md)
+- Mapa temático: [MAPA.md](../MAPA.md)
+- Índice alfabético: [FOLDERS.md](../FOLDERS.md)
+- README raíz: [README.md](../README.md)
+- 33×1: [33x1/](../33x1/)
 
 ---
 *README generado para navegación del monorepo. Editar libremente.*

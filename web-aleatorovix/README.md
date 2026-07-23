@@ -1,23 +1,68 @@
-# web-aleatorovix (techamv / ramo)
+# web-aleatorovix — ramo en el navegador
 
-Fuente canónica en Desktop:
-`web per llançar mobles/aleatorovix/`
+Sitio del ramo ❤️🌹 + motor JS Aleatorovix para techamv.com (sin Math.random). Incluye HTML, favicons y paquete técnico.
 
-## Icono leona
-- `favicon.ico`, `favicon-32.png`, … y `leona-icon-512.png`
-- En el `<head>` de `index.html` (no quita easter eggs)
+**Tema:** Aleatorovix / web
 
-## Easter eggs (intactos)
-- Escribe **leonor** (teclado) → panel científico
-- Escribe **princesa de asturias su majestad de españa** → modo Princesa (3301, mód, doble mód)
-- Escribe **normal** → sale del modo Princesa
+**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `web-aleatorovix/`
 
-## Entropía / “red”
-En `aleatorovix.js`, `red_x` mezcla:
-1. jitter de CPU local (como siempre)
-2. **opcional** `navigator.connection` (rtt/downlink) + online/offline si el navegador lo da
+## Contenido
 
-No depende de red: si no hay API de red, sigue funcionando.
+- **Archivos totales (aprox., recursivo):** 57
+- **En la raíz de la carpeta:** 21
+- **Subcarpetas (primer nivel):** 1
 
-## Subir a techamv.com
-Sube carpeta deploy `techamv-aleatorovix-DEPLOY/` o esta carpeta con `index.html` + `aleatorovix.js` + favicons en la raíz del site.
+### Extensiones (recursivo, top)
+- `.py`: 18
+- `.txt`: 12
+- `.html`: 11
+- `.png`: 7
+- `.js`: 2
+- `.bat`: 2
+- `(sin ext)`: 1
+- `.ico`: 1
+- `.ipynb`: 1
+- `.c`: 1
+- `.csv`: 1
+
+### Subcarpetas
+- `aleatorovix`
+
+### Archivos en la raíz de esta carpeta
+- `.gitignore`
+- `aleatorovix.js`
+- `ALEATOROVIX.txt`
+- `aleatorovix_san_valent_n (1).html`
+- `aleatorovix_san_valent_n (2).html`
+- `aleatorovix_san_valent_n (3).html`
+- `aleatorovix_san_valent_n (33).html`
+- `aleatorovix_san_valent_n.html`
+- `favicon-16.png`
+- `favicon-180.png`
+- `favicon-192.png`
+- `favicon-32.png`
+- `favicon-48.png`
+- `favicon-512.png`
+- `favicon.ico`
+- `index - lepanto.html`
+- `index.html`
+- `index.httml.html`
+- `indexcoret.html`
+- `indexnv.html`
+- `leona-icon-512.png`
+
+## Notas
+
+- Parte del ecosistema **VMA / 33×1 / AntiPC / Aleatorovix / ZypyZape / K3**.
+- Prioridad del monorepo: **33×1** (el **1** = todo el repo civil).
+- No subir secretos (claves FTP, tokens, datos personales) a commits futuros.
+
+## Enlaces relacionados
+
+- Mapa temático: [MAPA.md](../MAPA.md)
+- Índice alfabético: [FOLDERS.md](../FOLDERS.md)
+- README raíz: [README.md](../README.md)
+- 33×1: [33x1/](../33x1/)
+
+---
+*README generado para navegación del monorepo. Editar libremente.*

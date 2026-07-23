@@ -1,20 +1,22 @@
-# hashtool-extract
+# hashtool-extract — extractos hash/K3
 
-Extracción de herramientas hash / K3 hash.
+Extracción y material de referencia de herramientas hash / K3.
 
-**Tema:** Hash tooling.
+**Tema:** K3 / cifrado
 
 **Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `hashtool-extract/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 29
-- **Subcarpetas:** 1
+- **Archivos totales (aprox., recursivo):** 34
+- **En la raíz de la carpeta:** 0
+- **Subcarpetas (primer nivel):** 1
 
-### Extensiones
-- `.c`: 9
+### Extensiones (recursivo, top)
 - `.txt`: 9
+- `.c`: 9
 - `.zip`: 5
+- `.md`: 5
 - `.h`: 4
 - `(sin ext)`: 1
 - `.a`: 1
@@ -23,20 +25,20 @@ Extracción de herramientas hash / K3 hash.
 - `HASHCODETOOLS(L)(l)L(L)()`
 
 ### Archivos en la raíz de esta carpeta
-_ver subcarpetas_
+_ninguno listable_ o solo subcarpetas
 
 ## Notas
 
 - Parte del ecosistema **VMA / 33×1 / AntiPC / Aleatorovix / ZypyZape / K3**.
-- Si esta carpeta está poco clasificada, se reordenará con prioridad **33×1**.
+- Prioridad del monorepo: **33×1** (el **1** = todo el repo civil).
 - No subir secretos (claves FTP, tokens, datos personales) a commits futuros.
 
 ## Enlaces relacionados
 
-- Índice del monorepo: [FOLDERS.md](../FOLDERS.md) (raíz del repo)
-- Web Aleatorovix: [web-aleatorovix/](../web-aleatorovix/)
-- Deploy techamv: [techamv-aleatorovix-DEPLOY/](../techamv-aleatorovix-DEPLOY/)
-- Sync PC: [PC_SYNC_2026-07-23.md](../PC_SYNC_2026-07-23.md)
+- Mapa temático: [MAPA.md](../MAPA.md)
+- Índice alfabético: [FOLDERS.md](../FOLDERS.md)
+- README raíz: [README.md](../README.md)
+- 33×1: [33x1/](../33x1/)
 
 ---
 *README generado para navegación del monorepo. Editar libremente.*

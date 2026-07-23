@@ -1,17 +1,18 @@
-# encriptacionGeometrica
+# encriptacionGeometrica — cifrado por convergencia
 
-Encriptación por convergencia geométrica (Thales, K3, polígonos).
+Encriptación por convergencia geométrica (Thales, perímetros, K3 base 33 rel 1), demos Python/C y launcher.
 
-**Tema:** Python, C, notas.
+**Tema:** K3 / cifrado
 
 **Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `encriptacionGeometrica/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 52
-- **Subcarpetas:** 0
+- **Archivos totales (aprox., recursivo):** 52
+- **En la raíz de la carpeta:** 52
+- **Subcarpetas (primer nivel):** 0
 
-### Extensiones
+### Extensiones (recursivo, top)
 - `.py`: 25
 - `.c`: 11
 - `.sh`: 8
@@ -37,19 +38,45 @@ _ninguna_
 - `deepseek_python_20260715_c74991 (1).py`
 - `deepseek_python_20260715_c74991.py`
 - `deepseek_python_20260716_0398b0.py`
+- `deepseek_python_20260716_0af4d7.py`
+- `deepseek_python_20260716_3832e6 (1).py`
+- `deepseek_python_20260716_3832e6.py`
+- `deepseek_python_20260716_4d2cfd.py`
+- `deepseek_python_20260716_678cf6.py`
+- `deepseek_python_20260716_79f803.py`
+- `deepseek_python_20260716_8aa76d.py`
+- `deepseek_text_20260716_0e0eb2.txt`
+- `deepseek_text_20260716_11aee7 (1).txt`
+- `deepseek_text_20260716_11aee7.txt`
+- `deepseek_text_20260716_5cda82.txt`
+- `deepseek_text_20260716_d645b0.txt`
+- `encriptacion.txt`
+- `gemini-code-1784158352338.sh`
+- `gemini-code-1784158362728.c`
+- `gemini-code-1784158370505 - copia.c`
+- `gemini-code-1784158370505.c`
+- `gemini-code-1784158379836 - copia.py`
+- `gemini-code-1784158379836.py`
+- `gemini-code-1784158392232.py`
+- `gemini-code-1784158874806.py`
+- `gemini-code-1784159368616.py`
+- `gemini-code-1784159492940 - copia.py`
+- `gemini-code-1784159492940.py`
+- `gemini-code-1784159497452.py`
+- … y 12 más
 
 ## Notas
 
 - Parte del ecosistema **VMA / 33×1 / AntiPC / Aleatorovix / ZypyZape / K3**.
-- Si esta carpeta está poco clasificada, se reordenará con prioridad **33×1**.
+- Prioridad del monorepo: **33×1** (el **1** = todo el repo civil).
 - No subir secretos (claves FTP, tokens, datos personales) a commits futuros.
 
 ## Enlaces relacionados
 
-- Índice del monorepo: [FOLDERS.md](../FOLDERS.md) (raíz del repo)
-- Web Aleatorovix: [web-aleatorovix/](../web-aleatorovix/)
-- Deploy techamv: [techamv-aleatorovix-DEPLOY/](../techamv-aleatorovix-DEPLOY/)
-- Sync PC: [PC_SYNC_2026-07-23.md](../PC_SYNC_2026-07-23.md)
+- Mapa temático: [MAPA.md](../MAPA.md)
+- Índice alfabético: [FOLDERS.md](../FOLDERS.md)
+- README raíz: [README.md](../README.md)
+- 33×1: [33x1/](../33x1/)
 
 ---
 *README generado para navegación del monorepo. Editar libremente.*

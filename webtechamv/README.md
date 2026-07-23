@@ -1,19 +1,21 @@
-# webtechamv
+# webtechamv — hubs K3 / promo
 
-Hubs K3 / licencia software (React TSX) y materiales promo HashCode.
+Hubs K3, licencia software (React/TSX) y materiales promo HashCode.
 
-**Tema:** Frontend de negocio K3.
+**Tema:** Web / K3
 
 **Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `webtechamv/`
 
 ## Contenido
 
-- **Archivos (aprox.):** 13
-- **Subcarpetas:** 1
+- **Archivos totales (aprox., recursivo):** 14
+- **En la raíz de la carpeta:** 11
+- **Subcarpetas (primer nivel):** 1
 
-### Extensiones
+### Extensiones (recursivo, top)
 - `.tsx`: 11
 - `.txt`: 2
+- `.md`: 1
 
 ### Subcarpetas
 - `promo 1`
@@ -34,15 +36,15 @@ Hubs K3 / licencia software (React TSX) y materiales promo HashCode.
 ## Notas
 
 - Parte del ecosistema **VMA / 33×1 / AntiPC / Aleatorovix / ZypyZape / K3**.
-- Si esta carpeta está poco clasificada, se reordenará con prioridad **33×1**.
+- Prioridad del monorepo: **33×1** (el **1** = todo el repo civil).
 - No subir secretos (claves FTP, tokens, datos personales) a commits futuros.
 
 ## Enlaces relacionados
 
-- Índice del monorepo: [FOLDERS.md](../FOLDERS.md) (raíz del repo)
-- Web Aleatorovix: [web-aleatorovix/](../web-aleatorovix/)
-- Deploy techamv: [techamv-aleatorovix-DEPLOY/](../techamv-aleatorovix-DEPLOY/)
-- Sync PC: [PC_SYNC_2026-07-23.md](../PC_SYNC_2026-07-23.md)
+- Mapa temático: [MAPA.md](../MAPA.md)
+- Índice alfabético: [FOLDERS.md](../FOLDERS.md)
+- README raíz: [README.md](../README.md)
+- 33×1: [33x1/](../33x1/)
 
 ---
 *README generado para navegación del monorepo. Editar libremente.*
