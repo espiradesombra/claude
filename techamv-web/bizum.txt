@@ -1,0 +1,48 @@
+<?php
+// Permitimos comunicación con React
+header('Content-Type: application/json');
+header("Access-Control-Allow-Origin: *");
+
+$archivo_db = __DIR__ . '/ips_autorizadas.json';
+$ip_cliente = $_SERVER['REMOTE_ADDR'];
+$accion = $_GET['accion'] ?? 'check';
+
+// Leemos la "base de datos" de IPs (un simple archivo JSON)
+$accesos = file_exists($archivo_db) ? json_decode(file_get_contents($archivo_db), true) : [];
+$ahora = time();
+$horas_33 = 33 * 3600; // 33 horas convertidas a segundos
+$modificado = false;
+
+// 1. SISTEMA DE BORRADO IMPLACABLE
+// Revisamos todas las IPs guardadas y borramos las que hayan caducado
+foreach ($accesos as $ip => $timestamp) {
+    if ($ahora - $timestamp > $horas_33) {
+        unset($accesos[$ip]);
+        $modificado = true;
+    }
+}
+
+// 2. PROCESAR LA PETICIÓN DE LA WEB
+if ($accion === 'pagar') {
+    // NOTA: En producción, este bloque se ejecutaría SÓLO cuando Stripe (o tu banco) devuelva un pago exitoso.
+    // Por ahora simulamos que el pago se ha confirmado y abrimos la puerta a esta IP.
+    $accesos[$ip_cliente] = $ahora;
+    $modificado = true;
+    $respuesta = ['status' => 'success', 'message' => 'IP registrada. Autodestrucción de permisos en 33 horas.'];
+} else {
+    // Acción por defecto: Comprobar si la IP actual tiene permiso
+    if (isset($accesos[$ip_cliente])) {
+        $tiempo_restante = $horas_33 - ($ahora - $accesos[$ip_cliente]);
+        $respuesta = ['autorizado' => true, 'segundos_restantes' => $tiempo_restante];
+    } else {
+        $respuesta = ['autorizado' => false];
+    }
+}
+
+// 3. GUARDAR CAMBIOS
+if ($modificado) {
+    file_put_contents($archivo_db, json_encode($accesos));
+}
+
+echo json_encode($respuesta);
+?>

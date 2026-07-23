@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZypyZape Technologies | Inercia de Fase</title>
+    <!-- Cargamos React, ReactDOM y Babel -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Cargamos Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Configuración personalizada de Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #f8fafc; overflow-x: hidden; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .glass-panel { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.3); }
+        .chat-scroll::-webkit-scrollbar { width: 6px; }
+        .chat-scroll::-webkit-scrollbar-track { background: transparent; }
+        .chat-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // --- ICONOS SVG ---
+        const Icons = {
+          Wind: ({ className = "w-6 h-6" }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/><path d="M9.6 4.6A2 2 0 1 1 11 8H2"/><path d="M12.6 19.4A2 2 0 1 0 14 16H2"/></svg>,
+          Leaf: ({ className = "w-6 h-6" }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>,
+          Globe: ({ className = "w-6 h-6" }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>,
+          Send: ({ className = "w-5 h-5" }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>,
+          Bot: ({ className = "w-6 h-6" }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/></svg>,
+          User: ({ className = "w-6 h-6" }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
+          Activity: ({ className = "w-6 h-6" }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>,
+          TrendingDown: ({ className = "w-6 h-6" }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>,
+          DollarSign: ({ className = "w-6 h-6" }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+          Zap: ({ className = "w-6 h-6" }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+          Power: ({ className = "w-6 h-6" }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg>,
+          Layers: ({ className = "w-6 h-6" }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 17 22 12"/></svg>,
+          Battery: ({ className = "w-6 h-6" }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect x="2" y="7" width="16" height="10" rx="2" ry="2"/><line x1="22" y1="11" x2="22" y2="13"/></svg>,
+          Settings: ({ className = "w-6 h-6" }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>,
+          Network: ({ className = "w-6 h-6" }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M5 16v-3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3"/><path d="M12 8v4"/></svg>,
+          Trash: ({ className = "w-5 h-5" }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>,
+          TrendingUp: ({ className = "w-6 h-6" }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>,
+          Shield: ({ className = "w-6 h-6" }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+          Code: ({ className = "w-6 h-6" }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>,
+          Sun: ({ className = "w-6 h-6" }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="M4.93 4.93l1.41 1.41"/><path d="M17.66 17.66l1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="M6.34 17.66l-1.41 1.41"/><path d="M19.07 4.93l-1.41 1.41"/></svg>,
+          Cpu: ({ className = "w-6 h-6" }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>,
+          Menu: ({ className = "w-6 h-6" }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>,
+          X: ({ className = "w-6 h-6" }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        };
+
+        const INITIAL_MESSAGE = {
+          role: 'bot',
+          text: '¡Hola! Soy el asesor estratégico de ZypyZape. Estoy aquí para hablarte del impacto económico, modelo de negocio, tecnología de inercia sintética y ventajas competitivas. ¿En qué te puedo ayudar hoy?'
+        };
+
+        function ZypyZapeWeb() {
+          const [currentPage, setCurrentPage] = useState('home');
+          const [messages, setMessages] = useState([INITIAL_MESSAGE]);
+          const [inputText, setInputText] = useState('');
+          const [isTyping, setIsTyping] = useState(false);
+          const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+          const messagesEndRef = useRef(null);
+
+          useEffect(() => {
+            messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+          }, [messages, isTyping]);
+
+          const handleClearChat = () => {
+            setMessages([INITIAL_MESSAGE]);
+          };
+
+          const handleSendMessage = async (e) => {
+            e?.preventDefault();
+            if (!inputText.trim() || isTyping) return;
+
+            const userMessage = { role: 'user', text: inputText };
+            setMessages(prev => [...prev, userMessage]);
+            setInputText('');
+            setIsTyping(true);
+
+            try {
+              // Conexión segura a tu backend en Nominalia
+              const response = await fetch('/api/chat.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text: inputText })
+              });
+
+              if (!response.ok) throw new Error('Error en la comunicación del servidor');
+              
+              const data = await response.json();
+              const botReply = data.reply || "Lo siento, el servidor ha devuelto una respuesta vacía.";
+              
+              setMessages(prev => [...prev, { role: 'bot', text: botReply }]);
+            } catch (error) {
+              console.error(error);
+              setMessages(prev => [...prev, { role: 'bot', text: "⚠️ En este momento el enlace con la central ZypyZape está saturado. Por favor, inténtalo de nuevo en unos minutos." }]);
+            } finally {
+              setIsTyping(false);
+            }
+          };
+
+          // Botón del menú para ordenadores (Desktop)
+          const DesktopNavButton = ({ id, label }) => (
+            <button 
+              onClick={() => setCurrentPage(id)}
+              className={`font-bold text-sm transition-all duration-300 py-3 px-3 border-b-2 whitespace-nowrap outline-none ${
+                currentPage === id 
+                  ? 'text-emerald-600 border-emerald-500' 
+                  : 'text-slate-500 border-transparent hover:text-emerald-500 hover:border-emerald-200'
+              }`}
+            >
+              {label}
+            </button>
+          );
+
+          // Botón del menú para móviles (dentro de la hamburguesa)
+          const MobileNavButton = ({ id, label }) => (
+            <button 
+              onClick={() => {
+                setCurrentPage(id);
+                setIsMobileMenuOpen(false); // Cierra el menú al hacer clic
+              }}
+              className={`w-full text-left font-bold text-base py-4 px-6 transition-all duration-300 border-l-4 ${
+                currentPage === id 
+                  ? 'text-emerald-700 border-emerald-500 bg-emerald-50/80' 
+                  : 'text-slate-600 border-transparent hover:bg-slate-50 hover:text-emerald-600'
+              }`}
+            >
+              {label}
+            </button>
+          );
+
+          // --- COMPONENTES DE LAS "VENTANAS" (PÁGINAS) ---
+
+          // Ventana 1: Dashboard (Inicio)
+          const renderHome = () => (
+            <div className="flex flex-col lg:flex-row gap-8 lg:gap-20 items-center">
+              <div className="flex-1 space-y-8 md:space-y-10 z-10">
+                <div className="space-y-4 md:space-y-6 animate-fade-in-up" style={{ animationDelay: '0.1s', opacity: 0 }}>
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-emerald-100/80 backdrop-blur-sm text-emerald-800 font-bold text-[10px] md:text-xs uppercase tracking-widest border border-emerald-200 shadow-sm">
+                    <span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-emerald-500 animate-pulse" />
+                    Deep Tech para la Red Eléctrica
+                  </div>
+                  <h1 className="text-4xl md:text-7xl lg:text-[5.5rem] font-black text-slate-900 leading-[1.1] tracking-tight">
+                    El Futuro Respira <br className="hidden md:block" />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-500 via-emerald-400 to-cyan-500">Energía Pura.</span>
+                  </h1>
+                  <p className="text-base md:text-xl text-slate-600 leading-relaxed max-w-2xl font-medium">
+                    ZypyZape transforma la forma en que entendemos el viento y el sol. Mediante la optimización de la inercia de fase y módulos de 5 nodos, actuamos como el corazón que bombea y regula la red eléctrica global.
+                  </p>
+                </div>
+
+                <div className="grid sm:grid-cols-2 gap-4 md:gap-6">
+                  <div className="glass-panel p-6 md:p-8 rounded-3xl shadow-lg shadow-sky-900/5 hover:-translate-y-1 hover:shadow-xl hover:shadow-sky-900/10 transition-all duration-300 animate-fade-in-up" style={{ animationDelay: '0.2s', opacity: 0 }}>
+                    <div className="w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br from-sky-100 to-blue-50 text-sky-600 rounded-2xl flex items-center justify-center mb-4 md:mb-6 shadow-inner border border-sky-100">
+                      <Icons.Globe className="w-5 h-5 md:w-6 md:h-6" />
+                    </div>
+                    <h3 className="text-lg md:text-xl font-extrabold text-slate-800 mb-2 md:mb-3">Impacto Económico</h3>
+                    <p className="text-slate-600 text-xs md:text-sm leading-relaxed">
+                      Reducimos drásticamente los costes de estabilización y abrimos la puerta al mercado de regulación, multiplicando las vías de ingresos.
+                    </p>
+                  </div>
+                  
+                  <div className="glass-panel p-6 md:p-8 rounded-3xl shadow-lg shadow-emerald-900/5 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-900/10 transition-all duration-300 animate-fade-in-up" style={{ animationDelay: '0.3s', opacity: 0 }}>
+                    <div className="w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br from-emerald-100 to-teal-50 text-emerald-600 rounded-2xl flex items-center justify-center mb-4 md:mb-6 shadow-inner border border-emerald-100">
+                      <Icons.Leaf className="w-5 h-5 md:w-6 md:h-6" />
+                    </div>
+                    <h3 className="text-lg md:text-xl font-extrabold text-slate-800 mb-2 md:mb-3">Jubilación Nuclear</h3>
+                    <p className="text-slate-600 text-xs md:text-sm leading-relaxed">
+                      Proporcionamos la "Inercia Base" que históricamente justificaba a la energía nuclear. Hacemos posible un ecosistema 100% renovable.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* CHATBOT MEJORADO Y RESPONSIVE */}
+              <div className="w-full lg:w-[480px] flex-shrink-0 flex flex-col glass-panel rounded-[2rem] md:rounded-[2.5rem] shadow-2xl shadow-emerald-900/10 border-white/60 overflow-hidden h-[550px] md:h-[650px] z-10 animate-fade-in-up" style={{ animationDelay: '0.4s', opacity: 0 }}>
+                <div className="bg-gradient-to-r from-teal-600 to-emerald-500 p-4 md:p-6 text-white shrink-0 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none"></div>
+                  <div className="flex items-center justify-between relative z-10">
+                    <div className="flex items-center gap-3 md:gap-4">
+                      <div className="w-10 h-10 md:w-12 md:h-12 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center shadow-inner border border-white/20">
+                        <Icons.Bot className="w-5 h-5 md:w-6 md:h-6 text-white" />
+                      </div>
+                      <div>
+                        <h2 className="text-base md:text-lg font-bold tracking-wide">Asesor ZypyZape</h2>
+                        <p className="text-teal-50 text-[10px] md:text-xs font-medium flex items-center gap-1.5">
+                          <span className="w-1.5 h-1.5 md:w-2 md:h-2 bg-emerald-300 rounded-full shadow-[0_0_8px_rgba(110,231,183,0.8)] animate-pulse" />
+                          Inteligencia en línea
+                        </p>
+                      </div>
+                    </div>
+                    <button 
+                      onClick={handleClearChat}
+                      title="Reiniciar conversación"
+                      className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors border border-transparent hover:border-white/30"
+                    >
+                      <Icons.Trash className="w-4 h-4 text-white" />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 md:space-y-6 bg-slate-50/50 chat-scroll">
+                  {messages.map((msg, index) => (
+                    <div key={index} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in-up`} style={{animationDuration: '0.4s'}}>
+                      <div className={`flex max-w-[90%] md:max-w-[88%] gap-2 md:gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
+                        <div className={`w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center shrink-0 shadow-sm ${msg.role === 'user' ? 'bg-gradient-to-br from-slate-200 to-slate-300 text-slate-600' : 'bg-gradient-to-br from-teal-100 to-emerald-100 text-teal-700 border border-teal-200/50'}`}>
+                          {msg.role === 'user' ? <Icons.User className="w-3 h-3 md:w-4 md:h-4" /> : <Icons.Bot className="w-3 h-3 md:w-4 md:h-4" />}
+                        </div>
+                        <div className={`p-3 md:p-4 text-[13px] md:text-[14.5px] leading-relaxed shadow-sm ${
+                          msg.role === 'user' 
+                            ? 'bg-gradient-to-br from-teal-600 to-emerald-600 text-white rounded-2xl rounded-tr-sm shadow-emerald-900/20' 
+                            : 'bg-white border border-slate-100 text-slate-700 rounded-2xl rounded-tl-sm'
+                        }`}>
+                          {msg.text}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  {isTyping && (
+                    <div className="flex justify-start animate-fade-in-up" style={{animationDuration: '0.3s'}}>
+                      <div className="flex gap-2 md:gap-3">
+                        <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-gradient-to-br from-teal-100 to-emerald-100 text-teal-700 border border-teal-200/50 flex items-center justify-center shrink-0">
+                          <Icons.Bot className="w-3 h-3 md:w-4 md:h-4" />
+                        </div>
+                        <div className="bg-white border border-slate-100 p-3 md:p-4 rounded-2xl rounded-tl-sm shadow-sm flex items-center gap-1.5 h-[45px] md:h-[52px]">
+                          <span className="w-1.5 h-1.5 md:w-2 md:h-2 bg-teal-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                          <span className="w-1.5 h-1.5 md:w-2 md:h-2 bg-teal-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                          <span className="w-1.5 h-1.5 md:w-2 md:h-2 bg-teal-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  <div ref={messagesEndRef} />
+                </div>
+
+                <form onSubmit={handleSendMessage} className="p-3 md:p-4 bg-white/80 backdrop-blur-md border-t border-slate-100 shrink-0">
+                  <div className="relative flex items-center group">
+                    <input
+                      type="text"
+                      value={inputText}
+                      onChange={(e) => setInputText(e.target.value)}
+                      placeholder="Pregunta al asesor..."
+                      className="w-full bg-slate-100/50 border border-slate-200 rounded-full py-3 md:py-4 pl-4 md:pl-6 pr-12 md:pr-14 text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:bg-white transition-all placeholder:text-slate-400 shadow-inner"
+                      disabled={isTyping}
+                    />
+                    <button
+                      type="submit"
+                      disabled={!inputText.trim() || isTyping}
+                      className="absolute right-1 md:right-2 w-8 h-8 md:w-10 md:h-10 bg-emerald-500 text-white rounded-full flex items-center justify-center hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform active:scale-95 shadow-md shadow-emerald-500/30"
+                    >
+                      <Icons.Send className="w-3 h-3 md:w-5 md:h-5" />
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          );
+
+          // NUEVA VENTANA 6: INVERSORES / ROI
+          const renderInversores = () => (
+            <div className="space-y-10 md:space-y-16 py-4 md:py-8">
+              <div className="text-center max-w-4xl mx-auto space-y-4 md:space-y-6 animate-fade-in-up" style={{ opacity: 0 }}>
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-emerald-100/80 backdrop-blur-sm text-emerald-800 font-bold text-[10px] md:text-xs uppercase tracking-widest border border-emerald-200 shadow-sm">
+                  <span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  Modelo de Negocio & Deep Tech
+                </div>
+                <h2 className="text-3xl md:text-6xl font-black text-slate-900 tracking-tight">
+                  SaaS para la <br className="hidden md:block"/> <span className="text-emerald-600">Industria Pesada</span>
+                </h2>
+                <p className="text-base md:text-xl text-slate-600 leading-relaxed px-4 md:px-0 font-medium">
+                  Tratamos a ZypyZape como una <strong>"Caja Negra"</strong>. Actualizamos el firmware y la topología de parques existentes (eólicos y solares) sin incurrir en riesgos masivos de hardware.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-8">
+                {/* Bloque 1: VPP */}
+                <div className="glass-panel p-8 md:p-10 rounded-[2.5rem] shadow-xl border-t-[6px] border-teal-500 hover:-translate-y-1 hover:shadow-2xl transition-all duration-300 animate-fade-in-up" style={{ animationDelay: '0.1s', opacity: 0 }}>
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-14 h-14 bg-teal-50 text-teal-600 rounded-2xl flex items-center justify-center border border-teal-100">
+                      <Icons.TrendingUp className="w-7 h-7" />
+                    </div>
+                    <h3 className="text-2xl font-black text-slate-900">Virtual Power Plant</h3>
+                  </div>
+                  <p className="text-slate-600 leading-relaxed font-medium mb-4">
+                    Cobramos un <strong>Revenue Share</strong> en el <em>Mercado de Regulación Secundaria (Frequency Response)</em>.
+                  </p>
+                  <ul className="space-y-3 text-sm text-slate-600">
+                    <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-teal-500 rounded-full"></span> Las energéticas facturan por estabilizar la red.</li>
+                    <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-teal-500 rounded-full"></span> Habilitamos esa capacidad sin comprar baterías químicas.</li>
+                  </ul>
+                </div>
+
+                {/* Bloque 2: Hardware Estudiado / De-risking */}
+                <div className="glass-panel p-8 md:p-10 rounded-[2.5rem] shadow-xl border-t-[6px] border-amber-500 hover:-translate-y-1 hover:shadow-2xl transition-all duration-300 animate-fade-in-up" style={{ animationDelay: '0.2s', opacity: 0 }}>
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-14 h-14 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center border border-amber-100">
+                      <Icons.Cpu className="w-7 h-7" />
+                    </div>
+                    <h3 className="text-2xl font-black text-slate-900">Hardware "Commodity"</h3>
+                  </div>
+                  <p className="text-slate-600 leading-relaxed font-medium mb-4">
+                    <strong>Riesgo Cero en Fabricación.</strong> No inventamos rotores nuevos. Usamos hardware "viejo" y altamente estudiado por la industria (molinos tradicionales).
+                  </p>
+                  <ul className="space-y-3 text-sm text-slate-600">
+                    <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-amber-500 rounded-full"></span> Componentes "Bankable" y probados durante décadas.</li>
+                    <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-amber-500 rounded-full"></span> La innovación reside exclusivamente en el firmware y topología.</li>
+                  </ul>
+                </div>
+
+                {/* Bloque 3: Solar Hibridación */}
+                <div className="glass-panel p-8 md:p-10 rounded-[2.5rem] shadow-xl border-t-[6px] border-orange-500 hover:-translate-y-1 hover:shadow-2xl transition-all duration-300 animate-fade-in-up" style={{ animationDelay: '0.3s', opacity: 0 }}>
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-14 h-14 bg-orange-50 text-orange-600 rounded-2xl flex items-center justify-center border border-orange-100">
+                      <Icons.Sun className="w-7 h-7" />
+                    </div>
+                    <h3 className="text-2xl font-black text-slate-900">Hibridación Solar Nativa</h3>
+                  </div>
+                  <p className="text-slate-600 leading-relaxed font-medium mb-4">
+                    Integramos energía solar a la red a través de los neutros del sistema de 5 nodos, creando una auténtica <strong>planta híbrida 24/7</strong> sin desperdiciar recursos.
+                  </p>
+                  <ul className="space-y-3 text-sm text-slate-600">
+                    <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-orange-500 rounded-full"></span> Maximización del Punto de Conexión a Red (Capacidad).</li>
+                    <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-orange-500 rounded-full"></span> Reducción drástica del curtailment mixto.</li>
+                  </ul>
+                </div>
+
+                {/* Bloque 4: Gemelo Digital y Foso Defensivo */}
+                <div className="glass-panel p-8 md:p-10 rounded-[2.5rem] shadow-xl border-t-[6px] border-sky-500 hover:-translate-y-1 hover:shadow-2xl transition-all duration-300 animate-fade-in-up" style={{ animationDelay: '0.4s', opacity: 0 }}>
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-14 h-14 bg-sky-50 text-sky-600 rounded-2xl flex items-center justify-center border border-sky-100">
+                      <Icons.Shield className="w-7 h-7" />
+                    </div>
+                    <h3 className="text-2xl font-black text-slate-900">Moat & Gemelo Digital</h3>
+                  </div>
+                  <p className="text-slate-600 leading-relaxed font-medium mb-4">
+                    Física demostrada en entorno "In-Silico" mediante un Gemelo Digital v4.0 sobre turbinas NREL 5MW. Nuestro foso defensivo se basa en Patentes + Secreto Industrial (Trade Secrets).
+                  </p>
+                  <div className="mt-6 p-4 bg-slate-900 rounded-2xl text-center">
+                      <h4 className="text-xl font-black text-emerald-400">0€ CAPEX</h4>
+                      <p className="text-white/60 text-xs font-bold uppercase tracking-widest">En nuevas baterías químicas</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+
+          // Ventana 2: Paradigma
+          const renderParadigma = () => (
+            <div className="space-y-10 md:space-y-16 py-4 md:py-8">
+              <div className="text-center max-w-4xl mx-auto space-y-4 md:space-y-6 animate-fade-in-up" style={{ opacity: 0 }}>
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-indigo-50 text-indigo-700 font-bold text-[10px] md:text-xs uppercase tracking-widest mb-2 border border-indigo-100">
+                  Cambio de Reglas de Juego
+                </div>
+                <h2 className="text-3xl md:text-6xl font-black text-slate-900 leading-tight tracking-tight">
+                  De Generador Pasivo a <br className="hidden md:block"/>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-500 to-teal-500">Regulador de Red Activo</span>
+                </h2>
+                <p className="text-base md:text-xl text-slate-600 leading-relaxed px-4 md:px-0">
+                  La industria eólica ha sido históricamente "pasiva". ZypyZape rompe este límite convirtiendo cada molino en una batería de inercia y un escudo cinemático para la red, aprovechando uniones en módulos de 5 molinos.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                <div className="glass-panel p-6 md:p-10 rounded-[2rem] md:rounded-[2.5rem] shadow-xl border-t-[4px] md:border-t-[6px] border-slate-800 hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 animate-fade-in-up" style={{ animationDelay: '0.1s', opacity: 0 }}>
+                  <div className="w-12 h-12 md:w-16 md:h-16 bg-slate-100 text-slate-800 rounded-2xl flex items-center justify-center mb-4 md:mb-6">
+                    <Icons.Wind className="w-6 h-6 md:w-8 h-8" />
+                  </div>
+                  <h3 className="text-lg md:text-2xl font-black text-slate-900 mb-3 md:mb-4">Fin de la Generación Ciega</h3>
+                  <p className="text-sm md:text-base text-slate-600 leading-relaxed font-medium">
+                    Los molinos convencionales envían energía sucia y fluctuante. Al poseer <strong className="text-slate-900">Inercia de Fase</strong> nativa, entregamos una onda perfecta sin depender de las ráfagas.
+                  </p>
+                </div>
+
+                <div className="glass-panel p-6 md:p-10 rounded-[2rem] md:rounded-[2.5rem] shadow-xl border-t-[4px] md:border-t-[6px] border-teal-500 hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 animate-fade-in-up" style={{ animationDelay: '0.2s', opacity: 0 }}>
+                  <div className="w-12 h-12 md:w-16 md:h-16 bg-teal-50 text-teal-600 rounded-2xl flex items-center justify-center mb-4 md:mb-6">
+                    <Icons.Layers className="w-6 h-6 md:w-8 h-8" />
+                  </div>
+                  <h3 className="text-lg md:text-2xl font-black text-slate-900 mb-3 md:mb-4">El Mercado de Regulación</h3>
+                  <p className="text-sm md:text-base text-slate-600 leading-relaxed font-medium">
+                    Las eléctricas ganan grandes márgenes ofreciendo "Frequency Response". ZypyZape permite a los parques eólicos <strong className="text-teal-700">entrar y monetizar este lucrativo mercado</strong>.
+                  </p>
+                </div>
+
+                <div className="glass-panel p-6 md:p-10 rounded-[2rem] md:rounded-[2.5rem] shadow-xl border-t-[4px] md:border-t-[6px] border-emerald-500 hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 animate-fade-in-up" style={{ animationDelay: '0.3s', opacity: 0 }}>
+                  <div className="w-12 h-12 md:w-16 md:h-16 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mb-4 md:mb-6">
+                    <Icons.Power className="w-6 h-6 md:w-8 h-8" />
+                  </div>
+                  <h3 className="text-lg md:text-2xl font-black text-slate-900 mb-3 md:mb-4">Relevo de la Nuclear</h3>
+                  <p className="text-sm md:text-base text-slate-600 leading-relaxed font-medium">
+                    El gran argumento de la nuclear es que aporta "inercia base" que sostiene la red. <strong className="text-emerald-700">ZypyZape aporta esa inercia con el viento.</strong> Es el fin de la era nuclear.
+                  </p>
+                </div>
+              </div>
+            </div>
+          );
+
+          // Ventana 3: Inercia de Fase
+          const renderInercia = () => (
+            <div className="space-y-10 md:space-y-16 py-4 md:py-8">
+              <div className="text-center max-w-4xl mx-auto space-y-4 md:space-y-6 animate-fade-in-up" style={{ opacity: 0 }}>
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-cyan-50 text-cyan-700 font-bold text-[10px] md:text-xs uppercase tracking-widest mb-2 border border-cyan-100">
+                  Física Aplicada
+                </div>
+                <h2 className="text-3xl md:text-6xl font-black text-slate-900 tracking-tight">El Secreto: <span className="text-cyan-600">La Inercia de Fase</span></h2>
+                <p className="text-base md:text-xl text-slate-600 leading-relaxed px-4 md:px-0">
+                  La industria eólica persigue molinos gigantes para atrapar más viento. El secreto real no es la fuerza bruta, sino la <strong className="text-slate-900">conservación inercial del movimiento</strong> e hibridación con solar.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                <div className="glass-panel p-6 md:p-8 rounded-[2rem] md:rounded-3xl shadow-lg hover:shadow-xl transition-all animate-fade-in-up" style={{ animationDelay: '0.1s', opacity: 0 }}>
+                  <div className="w-12 h-12 md:w-14 md:h-14 bg-cyan-50 text-cyan-600 rounded-2xl flex items-center justify-center mb-4 md:mb-6 border border-cyan-100"><Icons.Activity /></div>
+                  <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3 text-slate-800">Tormentas (Ley del Cubo)</h3>
+                  <p className="text-sm md:text-base text-slate-600 font-medium">A diferencia de la eólica actual que se apaga en tormentas, ZypyZape capta exponencialmente más energía cuando hay turbulencias gracias al acoplamiento.</p>
+                </div>
+                <div className="glass-panel p-6 md:p-8 rounded-[2rem] md:rounded-3xl shadow-lg hover:shadow-xl transition-all animate-fade-in-up" style={{ animationDelay: '0.2s', opacity: 0 }}>
+                  <div className="w-12 h-12 md:w-14 md:h-14 bg-cyan-50 text-cyan-600 rounded-2xl flex items-center justify-center mb-4 md:mb-6 border border-cyan-100"><Icons.Zap /></div>
+                  <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3 text-slate-800">Eficiencia sin Fricción</h3>
+                  <p className="text-sm md:text-base text-slate-600 font-medium">Al mantener una Inercia perfecta, la mecánica sufre menos estrés. Gira más libre, produciendo más kilovatios por ráfaga.</p>
+                </div>
+                <div className="glass-panel p-6 md:p-8 rounded-[2rem] md:rounded-3xl shadow-lg hover:shadow-xl transition-all animate-fade-in-up" style={{ animationDelay: '0.3s', opacity: 0 }}>
+                  <div className="w-12 h-12 md:w-14 md:h-14 bg-cyan-50 text-cyan-600 rounded-2xl flex items-center justify-center mb-4 md:mb-6 border border-cyan-100"><Icons.Leaf /></div>
+                  <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3 text-slate-800">Menor Tamaño, Mayor Captación</h3>
+                  <p className="text-sm md:text-base text-slate-600 font-medium">No necesitamos aspas monstruosas que dañen el paisaje. Diseños compactos en módulos de 5 nodos superan la rentabilidad del mercado.</p>
+                </div>
+              </div>
+            </div>
+          );
+
+          // Ventana 4: Regulación
+          const renderRegulacion = () => (
+            <div className="space-y-10 md:space-y-16 py-4 md:py-8">
+              <div className="flex flex-col lg:flex-row gap-10 md:gap-16 items-center">
+                <div className="flex-1 space-y-6 md:space-y-8 animate-fade-in-up" style={{ opacity: 0 }}>
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-blue-50 text-blue-700 font-bold text-[10px] md:text-xs uppercase tracking-widest border border-blue-100">
+                    Estabilidad Absoluta
+                  </div>
+                  <h2 className="text-3xl md:text-6xl font-black text-slate-900 tracking-tight">
+                    La Cura para la <br className="hidden md:block"/> <span className="text-blue-600">Intermitencia</span>
+                  </h2>
+                  <p className="text-base md:text-xl text-slate-600 leading-relaxed font-medium">
+                    El enemigo de la eólica no es la falta de viento, es la inestabilidad. Los picos irregulares provocan caídas de tensión y apagones.
+                  </p>
+                  <p className="text-sm md:text-lg text-slate-500 leading-relaxed">
+                    ZypyZape actúa como un <strong className="text-slate-800">amortiguador cinemático gigante</strong>. Nuestra inercia absorbe ráfagas violentas y suple las caídas, entregando una onda perfectamente lisa a 50Hz.
+                  </p>
+                </div>
+                
+                <div className="flex-1 w-full glass-panel p-6 md:p-10 rounded-[2rem] md:rounded-[3rem] shadow-2xl border-white animate-fade-in-up" style={{ animationDelay: '0.2s', opacity: 0 }}>
+                  <h3 className="text-center font-black text-lg md:text-xl text-slate-800 mb-6 md:mb-10 tracking-wide uppercase">Onda de Entrega a Red</h3>
+                  
+                  <div className="space-y-6 md:space-y-10">
+                    <div className="p-4 md:p-6 bg-slate-50 rounded-2xl border border-slate-100">
+                      <div className="flex justify-between text-[10px] md:text-xs font-bold text-rose-500 mb-3 md:mb-4 uppercase tracking-widest">
+                        <span>Eólica Actual</span>
+                        <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 md:w-2 md:h-2 bg-rose-500 rounded-full animate-ping"></span> Inestable</span>
+                      </div>
+                      <div className="h-16 md:h-20 flex items-center justify-between border-b-2 border-slate-200 relative overflow-hidden">
+                        {[...Array(30)].map((_, i) => (
+                          <div key={i} className="w-[1.5%] bg-gradient-to-t from-rose-200 to-rose-400 rounded-t-sm transition-all duration-500" style={{ height: `${20 + Math.random() * 80}%` }}></div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="p-4 md:p-6 bg-emerald-50/50 rounded-2xl border border-emerald-100">
+                      <div className="flex justify-between text-[10px] md:text-xs font-bold text-emerald-600 mb-3 md:mb-4 uppercase tracking-widest">
+                        <span>ZypyZape</span>
+                        <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 md:w-2 md:h-2 bg-emerald-500 rounded-full"></span> 50Hz Perfecto</span>
+                      </div>
+                      <div className="h-16 md:h-20 flex items-center justify-between border-b-2 border-emerald-200 relative overflow-hidden">
+                        {[...Array(30)].map((_, i) => (
+                          <div key={i} className="w-[1.5%] bg-gradient-to-t from-emerald-300 to-emerald-500 rounded-t-sm" style={{ height: `${75 + Math.sin(i) * 5}%` }}></div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+
+          // Ventana 5: Gasto
+          const renderGasto = () => (
+            <div className="space-y-10 md:space-y-16 py-4 md:py-8">
+              <div className="text-center max-w-4xl mx-auto space-y-4 md:space-y-6 animate-fade-in-up" style={{ opacity: 0 }}>
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-rose-50 text-rose-700 font-bold text-[10px] md:text-xs uppercase tracking-widest mb-2 border border-rose-100">
+                  La Hemorragia Financiera
+                </div>
+                <h2 className="text-3xl md:text-6xl font-black text-slate-900 tracking-tight">
+                  Costes Ocultos <span className="text-rose-600">2020 - 2026</span>
+                </h2>
+                <p className="text-base md:text-xl text-slate-600 leading-relaxed px-4 md:px-0">
+                  La industria eólica sobrevive gracias a costosos "parches" para corregir su falta de inercia. Este es el dinero que se quema cada año por no usar ZypyZape.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                {[
+                  { icon: <Icons.Battery className="w-6 h-6 md:w-8 md:h-8" />, color: "rose", title: "+ €350 Mil Millones", subtitle: "Baterías (BESS)", desc: "Gasto en litio obligatorio para inyectar energía en caídas repentinas." },
+                  { icon: <Icons.Layers className="w-6 h-6 md:w-8 md:h-8" />, color: "purple", title: "€45.000 Millones", subtitle: "Condensadores Síncronos", desc: "Máquinas gigantes solo para crear 'inercia artificial'." },
+                  { icon: <Icons.TrendingDown className="w-6 h-6 md:w-8 md:h-8" />, color: "orange", title: "15% - 25%", subtitle: "Energía Tirada", desc: "Curtailment por apagar molinos en picos de viento incontrolables." },
+                  { icon: <Icons.Settings className="w-6 h-6 md:w-8 md:h-8" />, color: "amber", title: "+40% Coste", subtitle: "Mantenimiento O&M", desc: "Estrés mecánico por no resonar con las ráfagas destroza multiplicadoras." },
+                  { icon: <Icons.Network className="w-6 h-6 md:w-8 md:h-8" />, color: "sky", title: "€1.2 Billones", subtitle: "Expansión de Red", desc: "Líneas nuevas solo para soportar los picos fluctuantes hacia 2030." },
+                  { icon: <Icons.Globe className="w-6 h-6 md:w-8 md:h-8 text-white" />, color: "emerald", isSolution: true, title: "€0 en Parches", subtitle: "Inercia Nativa", desc: "Prevención desde el diseño mecánico. Cero baterías extra." }
+                ].map((stat, i) => (
+                  <div key={i} className={`glass-panel p-6 md:p-8 rounded-3xl md:rounded-[2rem] shadow-lg flex flex-col items-center text-center hover:-translate-y-2 transition-all duration-300 animate-fade-in-up ${stat.isSolution ? 'bg-gradient-to-br from-emerald-500 to-teal-600 text-white border-none shadow-emerald-500/30' : `border-t-4 border-${stat.color}-500`}`} style={{ animationDelay: `${0.1 * i}s`, opacity: 0 }}>
+                    <div className={`w-12 h-12 md:w-16 md:h-16 rounded-2xl flex items-center justify-center mb-4 md:mb-5 ${stat.isSolution ? 'bg-white/20 backdrop-blur-md shadow-inner' : `bg-${stat.color}-50 text-${stat.color}-600`}`}>
+                      {stat.icon}
+                    </div>
+                    <h4 className={`text-2xl md:text-3xl lg:text-4xl font-black mb-2 ${stat.isSolution ? 'text-white' : 'text-slate-900'}`}>{stat.title}</h4>
+                    <p className={`text-[10px] md:text-xs font-bold uppercase tracking-widest mb-3 md:mb-4 ${stat.isSolution ? 'text-emerald-100' : `text-${stat.color}-600`}`}>{stat.subtitle}</p>
+                    <p className={`text-xs md:text-sm font-medium ${stat.isSolution ? 'text-emerald-50' : 'text-slate-500'}`}>{stat.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+
+          return (
+            <div className="min-h-screen font-sans selection:bg-emerald-200 selection:text-emerald-900 flex flex-col relative">
+              
+              {/* ELEMENTOS DE FONDO (Esferas difuminadas para diseño premium) */}
+              <div className="fixed top-[-10%] left-[-10%] w-[80%] md:w-[40%] h-[40%] bg-emerald-300/20 rounded-full blur-[80px] md:blur-[120px] pointer-events-none -z-10 animate-float"></div>
+              <div className="fixed bottom-[-10%] right-[-10%] w-[80%] md:w-[40%] h-[40%] bg-teal-300/20 rounded-full blur-[80px] md:blur-[120px] pointer-events-none -z-10 animate-float" style={{ animationDelay: '-3s' }}></div>
+              <div className="fixed top-[40%] left-[60%] w-[60%] md:w-[30%] h-[30%] bg-cyan-200/20 rounded-full blur-[80px] md:blur-[100px] pointer-events-none -z-10 animate-float" style={{ animationDelay: '-1.5s' }}></div>
+              
+              {/* NAVEGACIÓN PRINCIPAL */}
+              <nav className="glass-panel sticky top-0 z-50 border-b border-white/40 shadow-sm shadow-slate-200/50">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                  <div className="flex items-center justify-between h-16 lg:h-20">
+                    
+                    {/* LOGO */}
+                    <div 
+                      className="flex items-center gap-3 cursor-pointer shrink-0 group" 
+                      onClick={() => setCurrentPage('home')}
+                    >
+                      <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-emerald-400 to-teal-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-emerald-500/30 group-hover:rotate-12 transition-transform duration-300">
+                        <Icons.Wind className="w-5 h-5 md:w-7 md:h-7" />
+                      </div>
+                      <span className="text-xl md:text-2xl font-black tracking-tighter text-slate-900">
+                        Zypy<span className="text-emerald-600">Zape</span>
+                      </span>
+                    </div>
+                    
+                    {/* BOTÓN HAMBURGUESA (SÓLO EN MÓVIL) */}
+                    <div className="flex lg:hidden">
+                      <button 
+                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                        className="text-slate-600 hover:text-emerald-600 focus:outline-none p-2 bg-white/50 rounded-lg border border-slate-200 shadow-sm"
+                      >
+                        {isMobileMenuOpen ? <Icons.X className="w-6 h-6" /> : <Icons.Menu className="w-6 h-6" />}
+                      </button>
+                    </div>
+
+                    {/* MENÚ ORDENADOR (DESKTOP) */}
+                    <div className="hidden lg:flex items-center space-x-8">
+                      <DesktopNavButton id="home" label="Dashboard" />
+                      <DesktopNavButton id="inversores" label="Inversores / ROI" />
+                      <DesktopNavButton id="paradigma" label="Paradigma" />
+                      <DesktopNavButton id="inercia" label="Inercia de Fase" />
+                      <DesktopNavButton id="regulacion" label="Mercado Regulación" />
+                      <DesktopNavButton id="gasto" label="Auditoría Global" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* MENÚ DESPLEGABLE MÓVIL */}
+                {isMobileMenuOpen && (
+                  <div className="lg:hidden absolute top-[100%] left-0 w-full bg-white/95 backdrop-blur-xl border-b border-slate-200 shadow-2xl flex flex-col py-2 animate-fade-in-up" style={{ animationDuration: '0.2s' }}>
+                    <MobileNavButton id="home" label="Dashboard Inicial" />
+                    <MobileNavButton id="inversores" label="Inversores y Deep Tech" />
+                    <MobileNavButton id="paradigma" label="Nuevo Paradigma" />
+                    <MobileNavButton id="inercia" label="Inercia de Fase y Tormentas" />
+                    <MobileNavButton id="regulacion" label="Mercado de Regulación" />
+                    <MobileNavButton id="gasto" label="Costes Ocultos y Gasto" />
+                  </div>
+                )}
+              </nav>
+
+              {/* AQUÍ ES DONDE SE MUESTRAN LAS VENTANAS */}
+              <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 md:py-10 lg:py-16 relative z-10">
+                {currentPage === 'home' && renderHome()}
+                {currentPage === 'inversores' && renderInversores()}
+                {currentPage === 'paradigma' && renderParadigma()}
+                {currentPage === 'inercia' && renderInercia()}
+                {currentPage === 'regulacion' && renderRegulacion()}
+                {currentPage === 'gasto' && renderGasto()}
+              </main>
+
+              {/* FOOTER */}
+              <footer className="glass-panel border-t border-white/40 mt-auto shrink-0 relative z-10">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
+                  <p className="text-slate-500 text-sm font-medium text-center md:text-left">
+                    © 2026 ZypyZape Technologies. Regulando la red del futuro.
+                  </p>
+                  <div className="flex items-center gap-4 text-xs md:text-sm font-bold text-emerald-800 bg-emerald-50/50 px-4 py-2 rounded-full border border-emerald-100/50 shadow-sm">
+                    <span>Víctor Manzanares Alberola</span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                    <span>Deep Tech</span>
+                  </div>
+                </div>
+              </footer>
+            </div>
+          );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<ZypyZapeWeb />);
+    </script>
+</body>
+</html>

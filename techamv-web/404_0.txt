@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Laboratorio I+D | TechAMV</title>
+    <!-- React, ReactDOM, Babel -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'fade-in-up': 'fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-20px)' } },
+                        fadeInUp: { '0%': { opacity: '0', transform: 'translateY(20px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        serif: ['Georgia', 'Cambria', '"Times New Roman"', 'Times', 'serif'],
+                        mono: ['"Fira Code"', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #f8fafc; overflow-x: hidden; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Sliders Premium */
+        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%; background: #10b981; cursor: pointer; margin-top: -8px; box-shadow: 0 2px 6px rgba(16, 185, 129, 0.4); border: 3px solid #ffffff; transition: transform 0.1s; }
+        input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.1); }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 8px; cursor: pointer; background: #e2e8f0; border-radius: 4px; border: 1px solid #cbd5e1; }
+        input[type=range]:focus { outline: none; }
+        input[type=range]:disabled::-webkit-slider-thumb { background: #94a3b8; box-shadow: none; cursor: not-allowed; }
+        input[type=range]:disabled::-webkit-slider-runnable-track { background: #e2e8f0; cursor: not-allowed; opacity: 0.5; }
+        
+        .math-text { font-family: 'Georgia', serif; font-style: italic; letter-spacing: 0.05em; }
+        
+        /* Toggle Switch */
+        .toggle-checkbox:checked { right: 0; border-color: #10b981; }
+        .toggle-checkbox:checked + .toggle-label { background-color: #10b981; }
+
+        /* Pantalla Casio LCD */
+        .casio-screen { background-color: #8fa48c; box-shadow: inset 0 3px 12px rgba(0,0,0,0.3); color: #1a2218; font-family: 'Courier New', Courier, monospace; text-shadow: 1px 1px 0px rgba(255,255,255,0.1); }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef, useMemo, memo, createContext, useContext } = React;
+
+        // ==========================================
+        // 0. BUS MATEMÁTICO (MATH CONTEXT)
+        // ==========================================
+        const MathContext = createContext({ globalN: 250, isGlobal: false });
+
+        // ==========================================
+        // 1. CORE MATEMÁTICO PURO (VMA_Math)
+        // ==========================================
+        const VMA_Math = {
+            isBase: (x) => x % 6 === 1 || x % 6 === 5,
+            
+            getFilterData: (limit) => {
+                const data = [];
+                for(let i = 1; i <= limit; i++) data.push({ x: i, active: VMA_Math.isBase(i) });
+                return data;
+            },
+            
+            getIntersections: (limit, p) => {
+                const data = [];
+                for(let x = 1; x <= limit; x++) {
+                    if(!VMA_Math.isBase(x)) continue;
+                    let type = 0; 
+                    if(x % p === 0) type = 1; 
+                    if(x % (6*p) === p) type = 2; 
+                    data.push({ x, type });
+                }
+                return data;
+            },
+            
+            getRemainders: (n) => {
+                const data = [];
+                let maxR = 1;
+                for(let x = 1; x <= n; x++) {
+                    const r = n % x;
+                    if(r > maxR) maxR = r;
+                    data.push({ x, r });
+                }
+                return { data, maxR };
+            },
+
+            // NUEVA FUNCIÓN: Mínimos locales y cambios de pendiente
+            getLocalMinima: (n) => {
+                const data = [];
+                const boundaries = [];
+                let maxR = 1;
+                
+                for(let x = 1; x <= n; x++) {
+                    const r = n % x;
+                    if(r > maxR) maxR = r;
+                    const isDivisor = r === 0;
+                    data.push({ x, r, isDivisor });
+                }
+                
+                // Límites donde cambia la pendiente (n/k)
+                for(let k = 1; k <= 12; k++) {
+                    const b = Math.floor(n/k);
+                    if(b > 0 && !boundaries.some(item => item.x === b)) {
+                        boundaries.push({ x: b, k });
+                    }
+                }
+                
+                return { data, maxR, boundaries };
+            },
+
+            getCasioDensity: (n) => {
+                const limit = Math.floor(Math.sqrt(n));
+                const basePrimes = [5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71];
+                const activePrimes = basePrimes.filter(p => p <= limit);
+                let currentD = 1;
+                const logs = [];
+                activePrimes.forEach(p => {
+                    currentD *= (1 - 1/p);
+                    logs.push(`D*(1-1/${p}) → D`);
+                });
+                return { logs, expected: Math.floor(n * (0.3333 * currentD)) };
+            }
+        };
+
+        // ==========================================
+        // 2. SISTEMA DE DISEÑO (Tokens)
+        // ==========================================
+        const STYLES = {
+            card: "glass-panel rounded-3xl overflow-hidden shadow-lg border-emerald-200 shadow-emerald-500/10 w-full h-full flex flex-col",
+            inputRow: "flex justify-between items-center text-sm font-bold text-slate-600 mb-2",
+            badge: "text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg font-mono",
+            infoIcon: "p-2 rounded-full transition-colors",
+            canvasWrapper: "bg-slate-900 rounded-2xl border border-slate-700 shadow-inner relative overflow-hidden"
+        };
+
+        // --- ICONOS SVG ---
+        const Icons = {
+            ArrowLeft: () => <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>,
+            ChevronLeft: () => <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"></polyline></svg>,
+            ChevronRight: () => <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6"></polyline></svg>,
+            Info: () => <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>,
+            Code: () => <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>,
+            Layers: ({c}) => <svg className={`w-5 h-5 ${c}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 17 22 12"></polyline></svg>
+        };
+
+        // ==========================================
+        // 3. TARJETA DEL CARRUSEL
+        // ==========================================
+        const CarouselCard = memo(({ title, equationNode, infoText, children }) => {
+            const [showInfo, setShowInfo] = useState(false);
+
+            return (
+                <div className={STYLES.card}>
+                    <div className="p-6 md:p-8 flex flex-col md:flex-row justify-between items-center gap-4 bg-white/40 border-b border-slate-200/50 shrink-0">
+                        <div className="flex flex-col items-center md:items-start w-full">
+                            <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-emerald-600 mb-2">{title}</span>
+                            <div className="math-text text-2xl md:text-3xl text-slate-800 font-semibold">{equationNode}</div>
+                        </div>
+                        <div className="flex items-center shrink-0">
+                            <button onClick={() => setShowInfo(!showInfo)} className={`${STYLES.infoIcon} ${showInfo ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'}`} title="Información técnica">
+                                <Icons.Info />
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className={`overflow-hidden transition-all duration-300 bg-slate-50/50 shrink-0 ${showInfo ? 'max-h-40 border-b border-slate-200/50' : 'max-h-0'}`}>
+                        <div className="p-6 text-sm text-slate-600 font-medium leading-relaxed flex gap-4 items-start">
+                            <div className="text-emerald-500 mt-0.5"><Icons.Code /></div>
+                            <p>{infoText}</p>
+                        </div>
+                    </div>
+
+                    <div className="p-6 md:p-8 bg-white/20 flex-1 flex flex-col justify-center">
+                        {children}
+                    </div>
+                </div>
+            );
+        });
+
+        // ==========================================
+        // 4. MÓDULOS DEL LABORATORIO (Subscribers al Contexto)
+        // ==========================================
+
+        const ModuloCasio = memo(() => {
+            const { globalN, isGlobal } = useContext(MathContext);
+            const [localN, setLocalN] = useState(100);
+            const n = isGlobal ? globalN : localN;
+            const result = useMemo(() => VMA_Math.getCasioDensity(n), [n]);
+
+            return (
+                <div className="space-y-6 w-full">
+                    <div className={STYLES.inputRow}><span>Entrada Iterativa (N):</span><span className={STYLES.badge}>{n}</span></div>
+                    <input type="range" min="10" max="5000" value={n} disabled={isGlobal} onChange={e => setLocalN(Number(e.target.value))} />
+                    
+                    <div className="flex flex-col md:flex-row gap-6">
+                        <div className="flex-1 border-8 border-slate-800 rounded-2xl overflow-hidden bg-slate-800 relative shadow-2xl">
+                            <div className="bg-slate-700 py-1 px-4 text-slate-400 text-[10px] font-bold tracking-widest flex justify-between">
+                                <span>CASIO fx-Pro</span><span>PRGM MODE</span>
+                            </div>
+                            <div className="casio-screen p-4 min-h-[220px] flex flex-col">
+                                <div className="text-sm mb-2 opacity-80">========== DENSITY.BAS ==========</div>
+                                <div>? &rarr; {n}</div>
+                                <div>1/3 &rarr; D</div>
+                                {result.logs.length > 0 ? (
+                                    result.logs.map((line, idx) => (
+                                        <div key={idx} className="ml-2 animate-fade-in-up" style={{animationDelay: `${idx * 0.02}s`}}>{line}</div>
+                                    ))
+                                ) : (
+                                    <div className="ml-2 text-black/50">N &lt; 25. Saltando bucle...</div>
+                                )}
+                                <div className="mt-4 font-bold">N * D &rarr; <span className="animate-pulse">{result.expected}</span></div>
+                            </div>
+                        </div>
+                        <div className="flex-1 bg-slate-50 border border-slate-200 rounded-2xl p-6 flex flex-col justify-center">
+                            <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center mb-4 shadow-sm border border-slate-100"><Icons.Code /></div>
+                            <h4 className="text-sm font-bold text-slate-900 mb-2 uppercase tracking-widest">Optimización de Bucles Numéricos</h4>
+                            <p className="text-sm text-slate-600 leading-relaxed mb-4">
+                                El modelo extrae el cálculo matemático iterativo a rutinas puras en el Core, asegurando que el renderizado mantenga fluidez absoluta sin recomputar la densidad innecesariamente.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            );
+        });
+
+        // NUEVO MÓDULO: Mínimos Locales y Pendientes (El que pediste)
+        const ModuloMinimosLocales = memo(() => {
+            const { globalN, isGlobal } = useContext(MathContext);
+            const [localN, setLocalN] = useState(200);
+            const n = isGlobal ? globalN : localN;
+
+            const { data, maxR, boundaries } = useMemo(() => VMA_Math.getLocalMinima(n), [n]);
+            const canvasRef = useRef(null);
+
+            useEffect(() => {
+                const canvas = canvasRef.current;
+                const ctx = canvas.getContext('2d');
+                const dpr = window.devicePixelRatio || 1;
+                const w = canvas.offsetWidth;
+                const h = canvas.offsetHeight;
+                canvas.width = w * dpr;
+                canvas.height = h * dpr;
+                ctx.scale(dpr, dpr);
+                ctx.clearRect(0, 0, w, h);
+
+                // Dibujar Límites de Pendiente (n/k)
+                boundaries.forEach(b => {
+                    const bx = (b.x / n) * w;
+                    ctx.beginPath();
+                    ctx.strokeStyle = 'rgba(56, 189, 248, 0.3)'; // sky-400
+                    ctx.lineWidth = 1;
+                    ctx.setLineDash([4, 4]);
+                    ctx.moveTo(bx, 0);
+                    ctx.lineTo(bx, h);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                    
+                    ctx.fillStyle = 'rgba(56, 189, 248, 0.8)';
+                    ctx.font = '10px monospace';
+                    ctx.fillText(`k=${b.k}`, bx + 4, 16);
+                });
+
+                // Dibujar Puntos y Mínimos (Divisores)
+                data.forEach(d => {
+                    const cx = (d.x / n) * w;
+                    const cy = h - (d.r / maxR) * h;
+
+                    ctx.beginPath();
+                    if (d.isDivisor) {
+                        ctx.arc(cx, cy, 4, 0, Math.PI * 2);
+                        ctx.fillStyle = '#f43f5e'; // rose-500
+                        ctx.shadowColor = '#f43f5e';
+                        ctx.shadowBlur = 8;
+                    } else {
+                        ctx.arc(cx, cy, 1.5, 0, Math.PI * 2);
+                        ctx.fillStyle = '#10b981'; // emerald-500
+                        ctx.shadowBlur = 0;
+                    }
+                    ctx.fill();
+                });
+            }, [data, maxR, n, boundaries]);
+
+            return (
+                <div className="space-y-6 w-full">
+                    <div className={STYLES.inputRow}><span>Valor N:</span><span className={STYLES.badge}>{n}</span></div>
+                    <input type="range" min="50" max="2000" value={n} disabled={isGlobal} onChange={e => setLocalN(Number(e.target.value))} />
+
+                    <div className={`${STYLES.canvasWrapper} h-64 bg-slate-800`}>
+                        <canvas ref={canvasRef} className="w-full h-full" />
+                        <div className="absolute bottom-2 right-4 text-[10px] font-bold text-slate-400 tracking-widest">DIVISORES (x)</div>
+                        <div className="absolute top-4 right-4 bg-white/10 backdrop-blur px-4 py-2 rounded-xl border border-white/20 text-xs font-bold flex flex-col gap-2 shadow-sm">
+                            <div className="flex items-center gap-2 text-slate-300">
+                                <span className="w-2 h-2 bg-sky-400 rounded-full"></span> Límite Pendiente (n/k)
+                            </div>
+                            <div className="flex items-center gap-2 text-white">
+                                <span className="w-2 h-2 bg-rose-500 rounded-full shadow-[0_0_5px_#f43f5e]"></span> Divisor Exacto (Mínimo)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        });
+
+        const ModuloFiltroCanvas = memo(() => {
+            const { globalN, isGlobal } = useContext(MathContext);
+            const [localN, setLocalN] = useState(300);
+            const n = isGlobal ? globalN : localN;
+            const canvasRef = useRef(null);
+
+            const data = useMemo(() => VMA_Math.getFilterData(n), [n]);
+
+            useEffect(() => {
+                const canvas = canvasRef.current;
+                const ctx = canvas.getContext('2d');
+                const dpr = window.devicePixelRatio || 1;
+                canvas.width = canvas.offsetWidth * dpr;
+                canvas.height = canvas.offsetHeight * dpr;
+                ctx.scale(dpr, dpr);
+
+                const width = canvas.offsetWidth;
+                const cols = Math.max(10, Math.floor(width / 16));
+                
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                data.forEach((d, i) => {
+                    const col = i % cols;
+                    const row = Math.floor(i / cols);
+                    const x = col * 16 + 8;
+                    const y = row * 16 + 8;
+                    
+                    ctx.beginPath();
+                    ctx.arc(x, y, d.active ? 4 : 2, 0, Math.PI * 2);
+                    ctx.fillStyle = d.active ? '#10b981' : '#e2e8f0';
+                    if (d.active) {
+                        ctx.shadowColor = '#10b981';
+                        ctx.shadowBlur = 6;
+                    } else {
+                        ctx.shadowBlur = 0;
+                    }
+                    ctx.fill();
+                });
+            }, [data]);
+
+            return (
+                <div className="space-y-6 w-full">
+                    <div className={STYLES.inputRow}>
+                        <span>Límite de expansión (N):</span><span className={STYLES.badge}>{n}</span>
+                    </div>
+                    <input type="range" min="100" max="2000" value={n} disabled={isGlobal} onChange={e => setLocalN(Number(e.target.value))} />
+                    <div className={`${STYLES.canvasWrapper} h-64 bg-white`}>
+                        <canvas ref={canvasRef} className="w-full h-full p-4" />
+                    </div>
+                </div>
+            );
+        });
+
+        const ModuloInterseccionesCanvas = memo(() => {
+            const { globalN, isGlobal } = useContext(MathContext);
+            const [localN, setLocalN] = useState(500);
+            const n = isGlobal ? globalN : localN;
+            const [pIndex, setPIndex] = useState(0);
+            const primes = [5, 7, 11, 13, 17, 19, 23];
+            const p = primes[pIndex];
+            
+            const data = useMemo(() => VMA_Math.getIntersections(n, p), [n, p]);
+            const canvasRef = useRef(null);
+
+            useEffect(() => {
+                const canvas = canvasRef.current;
+                const ctx = canvas.getContext('2d');
+                const dpr = window.devicePixelRatio || 1;
+                canvas.width = canvas.offsetWidth * dpr;
+                canvas.height = canvas.offsetHeight * dpr;
+                ctx.scale(dpr, dpr);
+
+                const width = canvas.offsetWidth;
+                const cols = Math.max(10, Math.floor(width / 20));
+                
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                data.forEach((d, i) => {
+                    const col = i % cols;
+                    const row = Math.floor(i / cols);
+                    const x = col * 20 + 10;
+                    const y = row * 20 + 10;
+                    
+                    ctx.beginPath();
+                    ctx.shadowBlur = 0;
+                    
+                    if (d.type === 2) { 
+                        ctx.arc(x, y, 6, 0, Math.PI * 2);
+                        ctx.fillStyle = '#fbbf24';
+                        ctx.shadowColor = '#fbbf24';
+                        ctx.shadowBlur = 10;
+                    } else if (d.type === 1) { 
+                        ctx.arc(x, y, 4, 0, Math.PI * 2);
+                        ctx.fillStyle = '#f43f5e';
+                    } else { 
+                        ctx.rect(x-2, y-2, 4, 4);
+                        ctx.fillStyle = 'rgba(52, 211, 153, 0.3)';
+                    }
+                    ctx.fill();
+                });
+            }, [data]);
+
+            return (
+                <div className="space-y-6 w-full">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <div className={STYLES.inputRow}><span>Rango de búsqueda (N):</span><span className={STYLES.badge}>{n}</span></div>
+                            <input type="range" min="100" max="5000" value={n} disabled={isGlobal} onChange={e => setLocalN(Number(e.target.value))} />
+                        </div>
+                        <div>
+                            <div className={STYLES.inputRow}><span>Frecuencia prima (p):</span><span className={STYLES.badge}>{p}</span></div>
+                            <input type="range" min="0" max={primes.length-1} value={pIndex} onChange={e => setPIndex(Number(e.target.value))} />
+                        </div>
+                    </div>
+                    <div className={`${STYLES.canvasWrapper} h-64`}>
+                        <canvas ref={canvasRef} className="w-full h-full p-4" />
+                        <div className="absolute bottom-0 w-full bg-slate-900/80 backdrop-blur-md p-2 flex justify-center gap-4 text-[10px] font-mono text-slate-400 border-t border-slate-700">
+                            <span className="flex items-center gap-1"><span className="w-2 h-2 bg-emerald-400/30"></span> Base</span>
+                            <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-rose-500"></span> x mod p = 0</span>
+                            <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_5px_#fbbf24]"></span> x mod 6p = p</span>
+                        </div>
+                    </div>
+                </div>
+            );
+        });
+
+        const ModuloRestosCanvas = memo(() => {
+            const { globalN, isGlobal } = useContext(MathContext);
+            const [localN, setLocalN] = useState(70);
+            const n = isGlobal ? globalN : localN;
+            
+            const { data, maxR } = useMemo(() => VMA_Math.getRemainders(n), [n]);
+            const canvasRef = useRef(null);
+
+            useEffect(() => {
+                const canvas = canvasRef.current;
+                const ctx = canvas.getContext('2d');
+                const dpr = window.devicePixelRatio || 1;
+                const w = canvas.offsetWidth;
+                const h = canvas.offsetHeight;
+                canvas.width = w * dpr;
+                canvas.height = h * dpr;
+                ctx.scale(dpr, dpr);
+
+                ctx.clearRect(0, 0, w, h);
+                
+                ctx.beginPath();
+                ctx.strokeStyle = 'rgba(251, 191, 36, 0.4)'; 
+                ctx.lineWidth = 1;
+                ctx.setLineDash([4, 4]);
+                let first = true;
+                
+                data.filter(d => d.r === 1).forEach(d => {
+                    const cx = (d.x / n) * w;
+                    const cy = h - (d.r / maxR) * h;
+                    if(first) { ctx.moveTo(cx, cy); first = false; }
+                    else { ctx.lineTo(cx, cy); }
+                });
+                ctx.stroke();
+                ctx.setLineDash([]); 
+
+                data.forEach(d => {
+                    const cx = (d.x / n) * w;
+                    const cy = h - (d.r / maxR) * h;
+                    const isOne = d.r === 1;
+                    
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, isOne ? 3 : 1.5, 0, Math.PI * 2);
+                    ctx.fillStyle = isOne ? '#fbbf24' : 'rgba(52, 211, 153, 0.5)';
+                    if(isOne) {
+                        ctx.shadowColor = '#fbbf24';
+                        ctx.shadowBlur = 8;
+                    } else {
+                        ctx.shadowBlur = 0;
+                    }
+                    ctx.fill();
+                });
+            }, [data, maxR, n]);
+
+            return (
+                <div className="space-y-6 w-full">
+                    <div className={STYLES.inputRow}><span>Iteraciones (N):</span><span className={STYLES.badge}>{n}</span></div>
+                    <input type="range" min="10" max="1000" value={n} disabled={isGlobal} onChange={e => setLocalN(Number(e.target.value))} />
+                    
+                    <div className={`${STYLES.canvasWrapper} h-64 border-l-2 border-b-2 border-slate-300 rounded-tr-2xl bg-slate-800`}>
+                        <canvas ref={canvasRef} className="w-full h-full" />
+                        <div className="absolute bottom-2 right-4 text-[10px] font-bold text-slate-400 tracking-widest">DIVISORES</div>
+                        <div className="absolute top-4 left-4 text-[10px] font-bold text-slate-400 tracking-widest -rotate-90 origin-left">RESTO</div>
+                        <div className="absolute top-4 right-4 bg-white/10 backdrop-blur px-3 py-1.5 rounded-lg border border-white/20 text-xs font-bold text-emerald-100 flex items-center gap-2 shadow-sm">
+                            <span className="w-3 h-0.5 bg-amber-400 shadow-[0_0_5px_#fbbf24]"></span>
+                            r(x) = 1
+                        </div>
+                    </div>
+                </div>
+            );
+        });
+
+        const ModuloAcumulacion = memo(() => {
+            const [terms, setTerms] = useState(3);
+            const limitE = 0.7182818; 
+            
+            let sum = 0;
+            let currentFact = 1;
+            const termValues = [];
+            
+            for(let i=2; i<=terms+1; i++) {
+                currentFact *= i;
+                const val = 1 / currentFact;
+                sum += val;
+                termValues.push({ i, val });
+            }
+
+            return (
+                <div className="space-y-6 w-full">
+                    <div className={STYLES.inputRow}><span>Términos acumulados (k):</span><span className={STYLES.badge}>{terms}</span></div>
+                    <input type="range" min="1" max="8" value={terms} onChange={e => setTerms(Number(e.target.value))} />
+                    
+                    <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 shadow-inner">
+                        <div className="flex justify-between text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
+                            <span>Suma Actual: {sum.toFixed(6)}</span>
+                            <span>Límite Convergencia: ~0.71828</span>
+                        </div>
+                        
+                        <div className="h-12 bg-slate-200 rounded-xl overflow-hidden flex relative w-full shadow-inner mb-6">
+                            {termValues.map((t, idx) => {
+                                const wPercent = (t.val / limitE) * 100;
+                                const hue = 160 + (idx * 20); 
+                                return (
+                                    <div key={idx} 
+                                         className="h-full transition-all duration-700 flex items-center justify-center border-r border-black/10"
+                                         style={{ width: `${wPercent}%`, backgroundColor: `hsl(${hue}, 80%, 45%)` }}
+                                         title={`1 / ${t.i}! = ${t.val.toFixed(5)}`}
+                                    >
+                                        {wPercent > 5 && <span className="text-[10px] font-bold text-white mix-blend-overlay">1/{t.i}!</span>}
+                                    </div>
+                                )
+                            })}
+                        </div>
+                        
+                        <div className="text-center font-mono text-sm text-slate-700 bg-white p-4 rounded-xl border border-slate-100 shadow-sm overflow-x-auto">
+                            <span className="font-bold text-emerald-600">S_{terms} = </span>
+                            {termValues.map((t, idx) => (
+                                <span key={idx}>1/{t.i}! {idx < termValues.length - 1 ? ' + ' : ''}</span>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+        });
+
+        // ==========================================
+        // COMPONENTE PRINCIPAL (LA PÁGINA)
+        // ==========================================
+        function Error404Web() {
+            const [isGlobal, setIsGlobal] = useState(false);
+            const [globalN, setGlobalN] = useState(250);
+            
+            const [activeSlide, setActiveSlide] = useState(0);
+            const [isHovered, setIsHovered] = useState(false);
+
+            // REGISTRO DE MÓDULOS EN EL PIPELINE
+            const MÓDULOS = [
+                {
+                    title: "Módulo 1: Criba de Densidad (Algoritmo Casio)",
+                    equation: <>D = &prod; (1 - 1/p)</>,
+                    info: "Simulación iterativa de cálculo de densidad. Al encender el 'Modo Composición', el bucle BÁSICO responde instantáneamente al estado del bus matemático.",
+                    Component: ModuloCasio
+                },
+                {
+                    title: "Módulo 2: Mínimos Locales y Pendientes",
+                    equation: <>&Delta; = &lfloor;n/k&rfloor; - &lfloor;n/(k+1)&rfloor;</>,
+                    info: "Nuevo módulo integrador (Canvas). Detecta los mínimos locales de n mod x y marca los cambios de pendiente armónica, relacionándolo con los divisores exactos. Unifica geometría y teoría de números.",
+                    Component: ModuloMinimosLocales
+                },
+                {
+                    title: "Módulo 3: Filtro Estructural (Canvas)",
+                    equation: <>n &rarr; 2n+3 : n = 3v&plusmn;1</>,
+                    info: "Renderizado de alto rendimiento. Muestra la distribución de la señal útil filtrando el 'ruido' numérico con la estructura base del modelo VMA.",
+                    Component: ModuloFiltroCanvas
+                },
+                {
+                    title: "Módulo 4: Intersecciones Modulares",
+                    equation: <>n mod (6p) = p</>,
+                    info: "Detector matemático puro extraído a funciones memoizadas. Identifica mínimos e intersecciones orbitales sin sobrecarga de cómputo en React.",
+                    Component: ModuloInterseccionesCanvas
+                },
+                {
+                    title: "Módulo 5: Patrón Geométrico de Restos",
+                    equation: <>r(x) = n mod x</>,
+                    info: "Sustitución de DOM por renderizado vectorial 2D. Genera líneas de fuerza paramétricas proyectadas directamente en la GPU.",
+                    Component: ModuloRestosCanvas
+                },
+                {
+                    title: "Módulo 6: Acumulación Consecutiva (Serie)",
+                    equation: <>S_k = &sum; 1/i!</>,
+                    info: "Componente puro. Representa cómo la acumulación progresiva de términos converge numéricamente hacia una constante límite estricta.",
+                    Component: ModuloAcumulacion
+                }
+            ];
+
+            const nextSlide = () => setActiveSlide((p) => (p + 1) % MÓDULOS.length);
+            const prevSlide = () => setActiveSlide((p) => (p - 1 + MÓDULOS.length) % MÓDULOS.length);
+
+            useEffect(() => {
+                if (isHovered) return;
+                const timer = setInterval(() => { nextSlide(); }, 8000); 
+                return () => clearInterval(timer);
+            }, [isHovered]);
+
+            return (
+                <MathContext.Provider value={{ globalN, isGlobal }}>
+                    <div className="min-h-screen font-sans selection:bg-emerald-200 selection:text-emerald-900 flex flex-col relative pb-10">
+                        <div className="fixed top-[-10%] left-[-10%] w-[80%] md:w-[40%] h-[40%] bg-emerald-300/20 rounded-full blur-[100px] pointer-events-none -z-10 animate-float"></div>
+                        <div className="fixed bottom-[-10%] right-[-10%] w-[80%] md:w-[40%] h-[40%] bg-teal-300/20 rounded-full blur-[100px] pointer-events-none -z-10 animate-float" style={{ animationDelay: '-3s' }}></div>
+                        
+                        <nav className="glass-panel sticky top-0 z-50 border-b border-white/40 shadow-sm shadow-slate-200/50">
+                            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                                <div className="flex items-center justify-between h-16 md:h-20">
+                                    <div className="flex items-center gap-3 cursor-pointer shrink-0 group" onClick={() => window.location.href='/'}>
+                                        <div className="w-10 h-10 bg-gradient-to-br from-emerald-400 to-teal-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-emerald-500/30 group-hover:-translate-x-1 transition-transform">
+                                            <Icons.ArrowLeft />
+                                        </div>
+                                        <span className="text-lg md:text-xl font-black tracking-tighter text-slate-900 hidden sm:block">Volver a la <span className="text-emerald-600">Home</span></span>
+                                    </div>
+                                    <div className="flex items-center gap-4 bg-white/60 backdrop-blur px-4 py-2 rounded-2xl border border-slate-200 shadow-sm">
+                                        <div className="flex items-center gap-2">
+                                            <Icons.Layers c={isGlobal ? 'text-emerald-500' : 'text-slate-400'} />
+                                            <span className="text-xs font-bold uppercase tracking-widest text-slate-700 hidden sm:block">Modo Composición</span>
+                                        </div>
+                                        <div className="relative inline-block w-12 mr-2 align-middle select-none">
+                                            <input type="checkbox" id="toggle" checked={isGlobal} onChange={()=>setIsGlobal(!isGlobal)} className="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 border-slate-300 appearance-none cursor-pointer z-10 transition-all duration-300" />
+                                            <label htmlFor="toggle" className="toggle-label block overflow-hidden h-6 rounded-full bg-slate-300 cursor-pointer transition-all duration-300"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </nav>
+
+                        <div className={`w-full bg-emerald-900 text-white transition-all duration-500 overflow-hidden ${isGlobal ? 'max-h-32 py-4 shadow-xl border-b border-emerald-700' : 'max-h-0 py-0'}`}>
+                            <div className="max-w-4xl mx-auto px-4 flex flex-col md:flex-row items-center gap-6">
+                                <div className="shrink-0 text-center md:text-left">
+                                    <div className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">Bus Matemático Sincronizado</div>
+                                    <div className="text-2xl font-mono font-black">N = {globalN}</div>
+                                </div>
+                                <input type="range" min="100" max="1000" value={globalN} onChange={e => setGlobalN(Number(e.target.value))} className="w-full" />
+                            </div>
+                        </div>
+
+                        <header className="max-w-5xl mx-auto w-full pt-10 pb-6 px-4 text-center animate-fade-in-up">
+                            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100/80 backdrop-blur-sm text-slate-800 font-bold text-[10px] md:text-xs uppercase tracking-widest border border-slate-200 shadow-sm mb-4">
+                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> Data Room In-Silico (Optimizado)
+                            </div>
+                            <h1 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight mb-2">
+                                Laboratorio <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-teal-600">Aritmético</span>
+                            </h1>
+                            <p className="text-sm md:text-base text-slate-600 font-medium max-w-2xl mx-auto">
+                                Interactúa con el sistema de ecuaciones renderizado en tiempo real. Algoritmos desacoplados de la UI.
+                            </p>
+                        </header>
+
+                        <main 
+                            className="w-full max-w-6xl mx-auto px-4 relative z-10 flex-1 flex flex-col animate-fade-in-up" 
+                            style={{animationDelay: '0.2s'}}
+                            onMouseEnter={() => setIsHovered(true)}
+                            onMouseLeave={() => setIsHovered(false)}
+                            onTouchStart={() => setIsHovered(true)}
+                            onTouchEnd={() => setIsHovered(false)}
+                        >
+                            <div className="relative w-full flex items-center justify-center">
+                                <button onClick={prevSlide} className="absolute left-0 lg:-left-6 z-20 w-10 h-10 md:w-12 md:h-12 bg-white/80 hover:bg-emerald-500 text-slate-600 hover:text-white rounded-full flex items-center justify-center shadow-lg border border-slate-200 transition-all hover:scale-110">
+                                    <Icons.ChevronLeft />
+                                </button>
+
+                                <div className="overflow-hidden w-full px-6 lg:px-10 py-4">
+                                    <div className="flex transition-transform duration-700 ease-in-out" style={{ transform: `translateX(-${activeSlide * 100}%)` }}>
+                                        {MÓDULOS.map((mod, idx) => {
+                                            const ModComponent = mod.Component;
+                                            return (
+                                                <div key={idx} className="w-full shrink-0 px-2">
+                                                    <CarouselCard title={mod.title} equationNode={mod.equation} infoText={mod.info}>
+                                                        <ModComponent />
+                                                    </CarouselCard>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+
+                                <button onClick={nextSlide} className="absolute right-0 lg:-right-6 z-20 w-10 h-10 md:w-12 md:h-12 bg-white/80 hover:bg-emerald-500 text-slate-600 hover:text-white rounded-full flex items-center justify-center shadow-lg border border-slate-200 transition-all hover:scale-110">
+                                    <Icons.ChevronRight />
+                                </button>
+                            </div>
+
+                            <div className="flex justify-center gap-3 mt-6">
+                                {MÓDULOS.map((_, idx) => (
+                                    <button 
+                                        key={idx} 
+                                        onClick={() => setActiveSlide(idx)} 
+                                        className={`transition-all duration-300 rounded-full h-2.5 ${activeSlide === idx ? 'w-10 bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'w-2.5 bg-slate-300 hover:bg-slate-400'}`} 
+                                    />
+                                ))}
+                            </div>
+                        </main>
+
+                        <div className="max-w-4xl mx-auto w-full px-4 mt-12 text-center animate-fade-in-up" style={{animationDelay: '0.4s'}}>
+                            <div className="inline-flex items-center gap-3 bg-white/50 backdrop-blur-sm px-6 py-3 rounded-full border border-slate-200 shadow-sm text-sm font-bold text-slate-500 uppercase tracking-widest">
+                                <span>VMA</span><span className="w-1 h-1 rounded-full bg-slate-300"></span><span>The Math is the Moat</span>
+                            </div>
+                        </div>
+                    </div>
+                </MathContext.Provider>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<Error404Web />);
+    </script>
+</body>
+</html>

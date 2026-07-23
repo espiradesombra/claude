@@ -1,0 +1,165 @@
+<?php
+header('Content-Type: application/json');
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST");
+
+// ================================
+// INPUT
+// ================================
+$data = json_decode(file_get_contents('php://input'), true);
+$n_str = isset($data['n']) ? trim($data['n']) : '';
+
+if (empty($n_str) || !ctype_digit($n_str)) {
+    echo json_encode(['status' => 'error', 'message' => 'Número inválido']);
+    exit;
+}
+
+$n = (int)$n_str;
+if ((string)$n !== $n_str) {
+    echo json_encode(['status' => 'error', 'message' => 'Excede 64 bits']);
+    exit;
+}
+
+// ================================
+// PARÁMETROS
+// ================================
+define('MAX_ITER', 6000);
+define('LIM_CRIBA', 200000);
+
+// ================================
+// FUNCIONES BASE
+// ================================
+
+function check_factor($m, $N) {
+    $D = 2 * $m + 3;
+    return ($D > 1 && $D < $N && $N % $D === 0);
+}
+
+function desfase_abs($m, $N) {
+    $B = 2 * $m + 3;
+    if ($B <= 1 || $B >= $N) return PHP_INT_MAX;
+
+    $D_B = 2 * $B;
+    $R_B = $N % $D_B;
+
+    $A = intdiv($N, $B);
+    if ($A < 3) return PHP_INT_MAX;
+
+    $m_e = intdiv($A - 3, 2);
+    if ($m_e < 1) return PHP_INT_MAX;
+
+    $D_A = 2 * (2 * $m_e + 3);
+    $R_A = $N % $D_A;
+
+    return abs($R_B * $D_A - $R_A * $D_B);
+}
+
+// ================================
+// CRIBA INICIAL
+// ================================
+function criba($N) {
+    if ($N % 2 === 0) return 2;
+
+    for ($m = 1; $m <= LIM_CRIBA; $m++) {
+        $D = 2 * $m + 3;
+        if ($D * $D > $N) break;
+        if ($N % $D === 0) return $D;
+    }
+    return null;
+}
+
+// ================================
+// BÚSQUEDA POR MÍNIMO |ΔΦ| (5 PUNTOS)
+// ================================
+function fase_minima($N) {
+
+    $m_ini = 1;
+    $m_fin = intdiv((int)sqrt($N) - 3, 2);
+
+    for ($iter = 0; $iter < MAX_ITER; $iter++) {
+
+        $rang = $m_fin - $m_ini;
+        if ($rang < 10) break;
+
+        // 5 puntos distribuidos
+        $m1 = $m_ini;
+        $m2 = $m_ini + intdiv($rang, 4);
+        $m3 = $m_ini + intdiv($rang, 2);
+        $m4 = $m_ini + intdiv(3 * $rang, 4);
+        $m5 = $m_fin;
+
+        $points = [$m1, $m2, $m3, $m4, $m5];
+
+        // comprobación directa
+        foreach ($points as $m) {
+            if (check_factor($m, $N)) {
+                return 2 * $m + 3;
+            }
+        }
+
+        // calcular |ΔΦ|
+        $vals = [];
+        foreach ($points as $m) {
+            $vals[] = desfase_abs($m, $N);
+        }
+
+        // índice mínimo
+        $min_index = array_keys($vals, min($vals))[0];
+
+        // reducir ventana alrededor del mínimo
+        if ($min_index === 0) {
+            $m_fin = $m2;
+        } elseif ($min_index === 1) {
+            $m_ini = $m1;
+            $m_fin = $m3;
+        } elseif ($min_index === 2) {
+            $m_ini = $m2;
+            $m_fin = $m4;
+        } elseif ($min_index === 3) {
+            $m_ini = $m3;
+            $m_fin = $m5;
+        } else {
+            $m_ini = $m4;
+        }
+    }
+
+    // fallback final lineal corto
+    for ($m = $m_ini; $m <= $m_fin; $m++) {
+        if (check_factor($m, $N)) {
+            return 2 * $m + 3;
+        }
+    }
+
+    return null;
+}
+
+// ================================
+// EJECUCIÓN
+// ================================
+$start = microtime(true);
+
+// F0
+$f = criba($n);
+
+// FASE
+if (!$f) {
+    $f = fase_minima($n);
+}
+
+$time = (microtime(true) - $start) * 1000;
+
+if ($f) {
+    echo json_encode([
+        'status' => 'success',
+        'p' => (string)$f,
+        'q' => (string)intdiv($n, $f),
+        'time_ms' => round($time, 2),
+        'method' => 'MDC_Fase_Min_5p'
+    ]);
+} else {
+    echo json_encode([
+        'status' => 'prime',
+        'time_ms' => round($time, 2)
+    ]);
+}
+?>
