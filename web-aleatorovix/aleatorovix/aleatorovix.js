@@ -69,11 +69,31 @@
     return us;
   }
 
+  /** Señal de red si el navegador la expone (opcional). No bloquea si no hay red. */
+  function senalRedOpcional() {
+    try {
+      var c = typeof navigator !== 'undefined' && (navigator.connection || navigator.mozConnection || navigator.webkitConnection);
+      if (!c) return 0;
+      var h = 0;
+      if (typeof c.downlink === 'number') h ^= (c.downlink * 1000) | 0;
+      if (typeof c.rtt === 'number') h ^= (c.rtt * 17) | 0;
+      if (c.effectiveType) {
+        var s = String(c.effectiveType);
+        for (var i = 0; i < s.length; i++) h = ((h << 5) - h + s.charCodeAt(i)) | 0;
+      }
+      if (typeof navigator.onLine === 'boolean') h ^= navigator.onLine ? 0x5a5a : 0xa5a5;
+      return h >>> 0;
+    } catch (e) {
+      return 0;
+    }
+  }
+
   function muestrear() {
     var nanos = getNanos();
     var inerciaA = nanos % 1000;
     var pingUs = jitterLocal(inerciaA);
-    var redX = pingUs % 1000;
+    // red_x = jitter local + (si hay) huella de Network Information API / online
+    var redX = ((pingUs % 1000) ^ (senalRedOpcional() % 997)) % 1000;
     return {
       nanos: nanos,
       inercia_a: inerciaA,
