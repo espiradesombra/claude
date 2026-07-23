@@ -1,44 +1,35 @@
-# docs
+# docs — física VMA (ZypyZape · Quijote · Kilómetro)
 
-Documentación general del monorepo.
+## Lectura principal
 
-**Tema:** Docs.
+| Archivo | Qué es |
+|---------|--------|
+| [EXPLICACION_FISICA_ZYPYZAPE_QUIJOTE_KILOMETRO.md](./EXPLICACION_FISICA_ZYPYZAPE_QUIJOTE_KILOMETRO.md) | Texto unificado (+ 1477) |
+| [diagrama_fisica_ZZ_Quijote_Kilometro.png](./diagrama_fisica_ZZ_Quijote_Kilometro.png) | **Diagrama 1 página** |
+| [gemelo_kilometro_minimo.py](./gemelo_kilometro_minimo.py) | **Gemelo Kilómetro** balance 1ª ley |
+| [kilometro_minimo_balance.png](./kilometro_minimo_balance.png) | Gráfica del gemelo |
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `docs/`
+## Generar / ejecutar
 
-## Contenido
+```bat
+cd docs
+python generate_diagrama_fisica_1pagina.py
+python gemelo_kilometro_minimo.py --mode drain --T 25
+python gemelo_kilometro_minimo.py --mode maintain --T 25 --omega0 2
+```
 
-- **Archivos (aprox.):** 34
-- **Subcarpetas:** 2
+### Gemelo Kilómetro — modos
 
-### Extensiones
-- `.txt`: 19
-- `.c`: 9
-- `.md`: 2
-- `.bat`: 1
-- `.h`: 1
-- `.json`: 1
-- `.py`: 1
+| mode | Comportamiento |
+|------|----------------|
+| `drain` | Arranca con ω alta y **vacía** la batería cinética → E_útil ≈ η_reg · dissipación |
+| `maintain` | Actuador mantiene ω → hace falta **E_ext** continua |
 
-### Subcarpetas
-- `aleatorovix-firma-geometrica`
-- `integracion-antipc`
+**Resultado típico (drain):** η_paid = E_util/(E_ext+drain) ≈ η_reg ≤ 1.  
+No hay motor perpetuo: se gasta Emec inicial.
 
-### Archivos en la raíz de esta carpeta
-_ver subcarpetas_
+## Enlaces
 
-## Notas
-
-- Parte del ecosistema **VMA / 33×1 / AntiPC / Aleatorovix / ZypyZape / K3**.
-- Si esta carpeta está poco clasificada, se reordenará con prioridad **33×1**.
-- No subir secretos (claves FTP, tokens, datos personales) a commits futuros.
-
-## Enlaces relacionados
-
-- Índice del monorepo: [FOLDERS.md](../FOLDERS.md) (raíz del repo)
-- Web Aleatorovix: [web-aleatorovix/](../web-aleatorovix/)
-- Deploy techamv: [techamv-aleatorovix-DEPLOY/](../techamv-aleatorovix-DEPLOY/)
-- Sync PC: [PC_SYNC_2026-07-23.md](../PC_SYNC_2026-07-23.md)
-
----
-*README generado para navegación del monorepo. Editar libremente.*
+- [XFI](../XFI.md)
+- [33×1 qué es](../33x1/00_QUE_ES_33x1.md)
+- Pack rescat: [VMA_mates_rescat_2026/](../VMA_mates_rescat_2026/)

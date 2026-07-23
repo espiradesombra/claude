@@ -380,6 +380,35 @@ W_{\mathrm{externo}} = W_{\mathrm{util}} + W_{\mathrm{perdidas\ no\ recuperadas}
 
 ---
 
+## 8b. Gemelo mínimo Kilómetro + diagrama (2026-07-23)
+
+| Recurso | Ruta |
+|---------|------|
+| Diagrama 1 página | `docs/diagrama_fisica_ZZ_Quijote_Kilometro.png` |
+| Script diagrama | `docs/generate_diagrama_fisica_1pagina.py` |
+| Gemelo balance cerrado | `docs/gemelo_kilometro_minimo.py` |
+| Gráfica balance | `docs/kilometro_minimo_balance.png` |
+
+```bat
+cd docs
+python generate_diagrama_fisica_1pagina.py
+python gemelo_kilometro_minimo.py --mode drain --T 25
+```
+
+Identidad usada en el gemelo:
+
+\[
+\Delta E_{\mathrm{mec}} = W_{\mathrm{fric}} + W_{\mathrm{ext}}
+\qquad
+(\,W_g \text{ solo intercambia } E_{\mathrm{cin}}\leftrightarrow E_{\mathrm{pot}}\,)
+\]
+
+\[
+\eta_{\mathrm{paid}} = \frac{E_{\mathrm{util}}}{E_{\mathrm{ext}}^+ + \max(0,-\Delta E_{\mathrm{mec}})} \le \eta_{\mathrm{reg}} < 1
+\]
+
+---
+
 ## 9. Dónde está el código y los papeles
 
 | Tema | Dónde |
