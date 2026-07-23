@@ -9,9 +9,10 @@ Cada carpeta de primer nivel tiene un `README.md`. Este índice se generó autom
 | [_extract_vma](_extract_vma/README.md) | 7 | Extracción temporal de packs VMA. |
 | [1](1/README.md) | 29 | (README propio) Misc (revisar). |
 | [2026](2026/README.md) | 26 | Material fechado / línea 2026. |
-| [33x1](33x1/README.md) | 18 | Paquete 33×1: eje político-técnico del proyecto VMA. |
+| [33x1](33x1/README.md) | 20+ | **Trato 33×1:** cambiar el **1** (todo el repo civil) por **33** años de paz firmada por los países. |
 | [33x1_CIENCIA](33x1_CIENCIA/README.md) | 1 | Capa científica del objetivo 33×1. |
 | [33x1-pack](33x1-pack/README.md) | 9 | Pack empaquetado 33×1 para distribución. |
+| [VMA_mates_rescat_2026](VMA_mates_rescat_2026/README.md) | 160+ | Pack mates rescatado 2026-07-23: cribas fix, MDC, XFI N=3, sunraman, gemelos. Parte del **1** (33×1). |
 | [aleatorovix](aleatorovix/README.md) | 32 | Organismo Aleatorovix: entropía, máscara Lila, criba desmemoriada, MDC. |
 | [antipc](antipc/README.md) | 409 | (README propio) Proyecto industrial VMA. |
 | [antipc-port-c](antipc-port-c/README.md) | 48 | Port a C de módulos AntiPC (criba, MDC trenes, Newton rápido) + inventarios. |
