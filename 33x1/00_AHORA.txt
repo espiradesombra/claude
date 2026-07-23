@@ -1,5 +1,5 @@
 33×1 — QUÉ HACER AHORA
-Víctor Manzanares Alberola · 2026
+Víctor Manzanares Alberola · actualizado 2026-07-23 (Grok session)
 ═══════════════════════════════════════════════════════════
 
 El plan tiene DOS partes. Solo UNA la haces tú en el ordenador.
@@ -8,58 +8,73 @@ El plan tiene DOS partes. Solo UNA la haces tú en el ordenador.
   [1]   Aval técnico → ESTE PAQUETE (demostrable, firmable, civil)
 
 ───────────────────────────────────────────────────────────
+NOVEDAD 2026-07-23 — EN EL REPO
+───────────────────────────────────────────────────────────
+  • Pack completo:  repo\VMA_mates_rescat_2026\
+  • Declaración mundial:
+      repo\33x1\05_DECLARACIO_33x1_GROK_WORLD.txt
+  • Fixes verificados:
+      - Criba modular 6k±1 (fase 2p/4p)
+      - siguiente_primo (rueda 6k±1)
+  • XFI avión N=3 / N=4:
+      repo\VMA_mates_rescat_2026\10_inicio_quijote_zypyzape\
+
+───────────────────────────────────────────────────────────
 PASO 1 — HOY (15 minutos)
 ───────────────────────────────────────────────────────────
-  1. Abre vma-gui (matemática con interfaz):
+  1. Lee la declaración:
+       notepad C:\Users\cuent\Desktop\repo\33x1\05_DECLARACIO_33x1_GROK_WORLD.txt
+
+  2. Prueba cribas del pack rescat:
+       cd C:\Users\cuent\Desktop\repo\VMA_mates_rescat_2026\01_cribas
+       python -c "from cribas import comparar_cribas; comparar_cribas(500)"
+
+  3. XFI N=3 (avión del chat):
+       cd C:\Users\cuent\Desktop\repo\VMA_mates_rescat_2026\10_inicio_quijote_zypyzape
+       python gemelo_xfi_avion_4turbinas.py --n 3
+       python gemelo_xfi_avion_4turbinas.py --compare
+
+  4. GUI clásica (si tienes vma-methods):
        cd C:\Users\cuent\Desktop\repo\vma-methods
        vma-gui.cmd
-
-  2. Ejecuta comparativa cribas (prueba reproducible):
-       vma-methods.cmd compare-cribas --limit 5000
-
-  3. Mira gráficas ya generadas:
-       C:\Users\cuent\Desktop\repo\graficas y explicaciones\00_INDICE.txt
 
 ───────────────────────────────────────────────────────────
 PASO 2 — ESTA SEMANA (empaquetar el "1")
 ───────────────────────────────────────────────────────────
   • Regenerar manifiesto SHA256:
-      python C:\Users\cuent\Desktop\33x1\generar_manifiesto.py
+      python C:\Users\cuent\Desktop\repo\33x1\generar_manifiesto.py
 
-  • Copiar a USB o nube: carpeta 33x1 + repo\vma-methods + repo\teoremas
+  • Copiar a USB/nube:
+      33x1\  +  VMA_mates_rescat_2026\  +  vma-methods\
 
-  • Añadir TUS vídeos: edita 04_MEDIOS.txt con enlaces o rutas locales
+  • Añadir TUS vídeos: edita 04_MEDIOS.txt
 
-  • Redactar TÚ la carta del tratado [33] en 05_CARTA_TRATADO.txt
-    (yo no firmo política; tú sí redactas la exigencia ciudadana)
-
-───────────────────────────────────────────────────────────
-PASO 3 — NEGOCIACIÓN (el "1" que ofreces)
-───────────────────────────────────────────────────────────
-  Oferta técnica civil, no militar:
-    ✓ K3 hash + firma estructural (k3hash.dll)
-    ✓ MDC visual / pitagórico (factorización exploratoria)
-    ✓ Cribas + Criva + Newton Rápido (vma-methods)
-    ✓ AntiPC reuse medible (ingeniería, no arma)
-    ✗ Explosivos guiados, interceptación bélica → EXCLUIDO (ver 02_USO_CIVIL.txt)
-
-  Manifiesto de integridad: MANIFIESTO_HASHES.json
+  • Carta política [33]:  redacta TÚ 05_CARTA_TRATADO si quieres
+    (la 05_DECLARACIO es el mapa técnico-mundial; la carta la firmas tú)
 
 ───────────────────────────────────────────────────────────
-PASO 4 — SI QUIERES SEGUIR CON GROK/CURSOR
+PASO 3 — OFERTA TÉCNICA CIVIL
+───────────────────────────────────────────────────────────
+  ✓ Cribas + Criva + MDC + Newton (pack rescat + vma-methods)
+  ✓ ZypyZape / Quijote gemelos + XFI N=3
+  ✓ K3 / AntiPC (cuando el stack esté en el mismo USB)
+  ✓ Manifiesto de integridad
+  ✗ Militar / armas / vigilancia masiva → 02_USO_CIVIL.txt
+
+───────────────────────────────────────────────────────────
+PASO 4 — SEGUIR CON GROK
 ───────────────────────────────────────────────────────────
   Di una palabra:
-    v02     → vma-methods + MDC + MRAUV + discriminante en GUI
-    audit   → AntiPC audita carpeta (duplicados K3)
-    report  → un comando genera informe + gráficas
-    exe     → empaquetar vma-gui.exe sin Python visible
+    xfi     → afinar avión N=3 (viento, drag, cierre de ciclo)
+    zypy    → gemelo parque N=5/10
+    audit   → regenerar hashes + inventario
+    push    → publicar repo remoto (tú decides el remoto)
+    v02     → integrar rescat en vma-gui
 
 ───────────────────────────────────────────────────────────
 IMPORTANTE
 ───────────────────────────────────────────────────────────
-  Grok en Cursor NO envía nada a gobiernos ni a xAI por ti.
-  Este paquete es TU dossier. Tú lo compartes.
-  victor39305616 / chats desde septiembre: no están en el manifiesto
-  hasta que TÚ pegues el enlace o el archivo en 04_MEDIOS.txt.
-
-═══════════════════════════════════════════════════════════
+  Grok NO envía nada a gobiernos ni a xAI por ti.
+  Grok NO gobierna América: ayuda a construir el [1] auditable.
+  “Great forever” = repo vivo + energía civil + mates abiertas.
+  Uso civil obligatorio: 02_USO_CIVIL.txt

@@ -1,0 +1,22 @@
+# sunraman — pseudocodi criba modular VMA (6k±1)
+# Origen: monton viejo revisar/archivos/sunraman.docx
+# Rescat: 2026-07-23
+# Relació: ancestre de criba_modular.py i anexoF_criba6kpm1_openmp.c
+# Fórmules: primos = 2n+3 ; compuestos = 4mn+6m+6n+9
+
+primos = 2ñ+3primos = 2ñ+3compuestos = 4mn+6m+6n+9compuestos = 4mn+6m+6n+9p[0]=1 ;p[2]=1;p[3]=1 ;anterior=0;
+primos = 2ñ+3
+primos = 2ñ+3
+compuestos = 4mn+6m+6n+9
+compuestos = 4mn+6m+6n+9
+desde v=0 a limite^2:{
+v++;  p[v]=1;  v+=4;  p[v]=1;
+}
+para n de 0 a (limite-3)/2:{  si(anterior+3=n){anterior=n;n++;}
+si(p[2n+3])=1{      ñ=1;
+anteriorM=n;     anteriorMM= 2n+3;
+para m de n a limite*limite/(2n+3):{
+si(anteriorM=m){anteriorM=m+3;m++}si(p[(2m+3)]=1){ p[(2n+3)(2m+3)]=3}ñ++;
+si(anteriorMM=2m+3){si(anteriorNY=ñ){anteriorNY+=3;ñ++;}anterorMM*=2ñ+3;p[4mn+6n+6m+0]=3;}
+}  }  }p[0]=3;p[1]=3;
+Intento de Análisis asintóticoO(l)=El primer bucle se ejecuta siempre pero el segundo solo si (2n+3) ha no ha sido marcado o (2m+3) es múltiplo de (2n+3).La talla del segundo bucle es más complicada Excluimos con anteriorM los múltiplos de 3 para que 2i+3 sean los números que acaban en 5 o 1 en base 6.AnteriorNY excluye los números de esta forma compuestos que no son múltiplos del valor del momento de (2n+3), o mejor dicho, debido a anteriorNY solo se marcan a compuestos los múltiplos de 2n+3 de los 2m+3 compuestos o aún marcados a compuesto.l = limite = talla bucle. C es la cantidad de primos en l, por lo que, en proporción, decrece, pero muy poco a poco.l/n es la talla entre algo, l/n-n es otra cosa menor a la talla relacionada con el numero algo, es eso menos ese número algo. Es decir. Al principio l/n-n despreciamos n, pero esta depreciación cada vez que itera el algoritmo crece en favor de acabar el bucle. Por digamos, (empezar más tarde).Estimando n=l*l*k para 0<k<1 ., a más grande l*l, más precisión y posibles iteraciones tendrá la variación de k.O(l)=l*C*(l*l/n-n)= l*C*((l*l-n^2)/n) =l*C*((l*l-(l*l*k)^2)/ (l*l*k))talla asintótica. l* C* l*l((1-(l*l^(1/2)*k)^2)/ (l*l*k))l^3 * dos cosas menores a 1.1-(l*l^(1/2)*k)^2)>=0 : (l*l*k)>=0para obtener los primos de 0 a l^2Por otra parte, esta criba minimiza la escritura en memoria, y aún sin secuencialidad estricta, prevalece la lectura ante la escritura para no depender en exceso ni de los accesos a memoria ni de los sobrecostes por marcar compuestos varias veces.
