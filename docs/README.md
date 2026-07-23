@@ -24,8 +24,9 @@ python gemelo_grupo_zz3.py --T 30 --K 80
 | Script | Qué demuestra |
 |--------|----------------|
 | `gemelo_kilometro_minimo.py` | 1ª ley; η_paid ≤ η_reg (batería cinética) |
-| `gemelo_quijote_3vs7_balance.py` | 3 vs 7 palas **con coste de actuador** (ball caro si continuo) |
-| `gemelo_grupo_zz3.py` | 3 unidades roles gen/thr/buf + bus y escalón de carga |
+| `gemelo_quijote_3vs7_balance.py` | 3 vs 7: `static` / `phase` / `ball` + coste actuador |
+| `gemelo_grupo_zz3.py` | ZZ×3 calibrado; `--compare-H` ON vs OFF |
+| `RESULTADOS_TOY_2026-07-23.md` | **Tabla de números** de la última corrida |
 
 | mode (Kilómetro) | Comportamiento |
 |------|----------------|

@@ -89,18 +89,26 @@ class QState:
     hist_P_aero: List[float] = field(default_factory=list)
 
 
-def r_command(t: float, omega: float, theta_rotor: float, k: int, p: QParams) -> float:
+def r_command(t: float, omega: float, theta_rotor: float, k: int, p: QParams,
+              r_prev: float | None = None) -> float:
     r0 = 0.5 * (p.r_min + p.r_max)
     amp = p.A_frac * 0.5 * (p.r_max - p.r_min)
     if p.mode == "ball":
-        # ball en el frame del rotor: fase por pala
         phase = theta_rotor + 2 * math.pi * k / p.N
         return float(np.clip(r0 + amp * math.sin(phase), p.r_min, p.r_max))
-    # phase / "hurto": fuera cuando baja (cos>0 si θ=0 horizontal... toy)
+    if p.mode == "static":
+        return r0  # sin movimiento de masas
+    # phase / "hurto" con histéresis (evita chattering y coste falso)
     blade_angle = theta_rotor + 2 * math.pi * k / p.N
-    if math.cos(blade_angle) > 0:
-        return p.r_max
-    return p.r_min
+    c = math.cos(blade_angle)
+    if r_prev is None:
+        return p.r_max if c > 0 else p.r_min
+    # histeresis: solo cambia si cruzó con margen
+    if r_prev >= 0.5 * (p.r_min + p.r_max):
+        # estaba fuera → solo entra si cos < -0.2
+        return p.r_min if c < -0.2 else p.r_max
+    # estaba dentro → solo sale si cos > +0.2
+    return p.r_max if c > 0.2 else p.r_min
 
 
 def J_of(r: np.ndarray, p: QParams) -> float:
@@ -109,9 +117,12 @@ def J_of(r: np.ndarray, p: QParams) -> float:
 
 def step(st: QState, p: QParams) -> None:
     # target radii
-    r_new = np.array([r_command(st.t, st.omega, st.theta_rotor, k, p) for k in range(p.N)])
-    # rate limited slide
-    v_max = 8.0  # m/s
+    r_new = np.array([
+        r_command(st.t, st.omega, st.theta_rotor, k, p, float(st.r[k]))
+        for k in range(p.N)
+    ])
+    # rate limit: ball más rápido; phase más lento (maniobra 1-2 s)
+    v_max = 2.5 if p.mode == "ball" else (0.0 if p.mode == "static" else 1.2)
     dr_max = v_max * p.dt
     r_next = st.r + np.clip(r_new - st.r, -dr_max, dr_max)
 
@@ -122,20 +133,21 @@ def step(st: QState, p: QParams) -> None:
     # torques
     T_aero = p.T_drive - p.b_aero * st.omega
     if T_aero < 0:
-        T_aero = 0.1 * T_aero  # no invertir loco
+        T_aero = 0.1 * T_aero
     T_gen = p.K_gen * max(st.omega, 0.0)
-    # actuador: trabajo ideal de mover masas en campo centrífugo ~ m ω² r ṙ
-    # P_act_ideal = Σ m * ω² * r * ṙ   (signo: si ṙ>0 hay que "pagar" contra o a favor)
     r_dot = (r_next - st.r) / p.dt
-    P_cent = float(np.sum(p.m_q * (st.omega ** 2) * st.r * r_dot))
-    # coste actuador: solo pagamos cuando trabajamos en contra de la fuerza neta efectiva
-    # proxy: |P_cent| / eta si P_cent>0 (extender contra... simplified: always cost |ṙ| * F)
+    # Coste actuador: trabajo contra (o a favor de) la centrífuga, solo si hay movimiento
     P_act_cost = 0.0
     for k in range(p.N):
+        if abs(r_dot[k]) < 1e-4:
+            continue  # parado → sin gasto
         F_cent = p.m_q * st.omega ** 2 * st.r[k]  # hacia fuera
-        # fuerza de control opuesta al movimiento no deseado
-        # trabajo del actuador ≈ |F_cent * ṙ| cuando retraemos (ṙ<0) o más
-        P_act_cost += abs(F_cent * r_dot[k]) / max(p.eta_act, 0.1)
+        # extender (ṙ>0): a favor de F_cent → barato (solo fricción interna)
+        # retraer (ṙ<0): contra F_cent → caro
+        if r_dot[k] > 0:
+            P_act_cost += 0.15 * abs(F_cent * r_dot[k]) / max(p.eta_act, 0.1)
+        else:
+            P_act_cost += abs(F_cent * r_dot[k]) / max(p.eta_act, 0.1)
     # torque equivalente del actuador sobre el eje: no directo; entra como pérdida de potencia
     # en la eq de rotor usamos solo dJ/dt term; actuador se cuenta aparte en energía
     T_net = T_aero - T_gen
@@ -278,7 +290,7 @@ def plot_compare(s3: QState, s7: QState, a3: dict, a7: dict, out: str) -> None:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--T", type=float, default=30.0)
-    ap.add_argument("--mode", choices=["ball", "phase"], default="ball")
+    ap.add_argument("--mode", choices=["ball", "phase", "static"], default="phase")
     ap.add_argument("--mq", type=float, default=4.0)
     args = ap.parse_args()
 
@@ -307,9 +319,11 @@ def main() -> None:
     print(f"  ΔP_net (7-3)  = {a7['net_power'] - a3['net_power']:+.1f} W")
     print(f"  figura        = {out}")
     print()
-    print("  Lectura: más palas → ball más continuo (menos rizado J);")
-    print("  el actuador SIEMPRE cuesta. Si P_act > beneficio, no hay 'hurto' neto.")
-    print("  Escala toy (no sustituye gemell_3vs7_rigoros NREL).")
+    print("  Lectura:")
+    print("  - static: P_act≈0 (referencia sin Quijote móvil)")
+    print("  - phase:  pocas maniobras/rev → coste acotado; 7 palas = más continuo")
+    print("  - ball:   movimiento continuo → actuador caro")
+    print("  Si P_act > beneficio de control, no hay 'hurto' neto. Escala toy.")
 
 
 if __name__ == "__main__":
