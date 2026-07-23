@@ -15,18 +15,24 @@
 cd docs
 python generate_diagrama_fisica_1pagina.py
 python gemelo_kilometro_minimo.py --mode drain --T 25
-python gemelo_kilometro_minimo.py --mode maintain --T 25 --omega0 2
+python gemelo_quijote_3vs7_balance.py --T 25 --mode ball
+python gemelo_grupo_zz3.py --T 30 --K 80
 ```
 
-### Gemelo Kilómetro — modos
+### Gemelos
 
-| mode | Comportamiento |
+| Script | Qué demuestra |
+|--------|----------------|
+| `gemelo_kilometro_minimo.py` | 1ª ley; η_paid ≤ η_reg (batería cinética) |
+| `gemelo_quijote_3vs7_balance.py` | 3 vs 7 palas **con coste de actuador** (ball caro si continuo) |
+| `gemelo_grupo_zz3.py` | 3 unidades roles gen/thr/buf + bus y escalón de carga |
+
+| mode (Kilómetro) | Comportamiento |
 |------|----------------|
-| `drain` | Arranca con ω alta y **vacía** la batería cinética → E_útil ≈ η_reg · dissipación |
-| `maintain` | Actuador mantiene ω → hace falta **E_ext** continua |
+| `drain` | Vacía batería cinética → E_útil ≈ η_reg · disipación |
+| `maintain` | Actuador mantiene ω → E_ext continua |
 
-**Resultado típico (drain):** η_paid = E_util/(E_ext+drain) ≈ η_reg ≤ 1.  
-No hay motor perpetuo: se gasta Emec inicial.
+**Mensaje común:** no hay motor perpetuo; actuador y fricción cuentan.
 
 ## Enlaces
 

@@ -393,19 +393,25 @@ W_{\mathrm{externo}} = W_{\mathrm{util}} + W_{\mathrm{perdidas\ no\ recuperadas}
 cd docs
 python generate_diagrama_fisica_1pagina.py
 python gemelo_kilometro_minimo.py --mode drain --T 25
+python gemelo_quijote_3vs7_balance.py --T 25 --mode ball
+python gemelo_grupo_zz3.py --T 30
 ```
 
-Identidad usada en el gemelo:
+| Gemelo | PNG | Idea |
+|--------|-----|------|
+| Kilómetro mínimo | `kilometro_minimo_balance.png` | ΔE_mec = W_fric + W_ext |
+| Quijote 3 vs 7 | `quijote_3vs7_balance.png` | coste actuador vs P_gen |
+| Grupo ZZ ×3 | `grupo_zz3_balance.png` | roles + nadir tras escalón |
+
+Identidad Kilómetro:
 
 \[
 \Delta E_{\mathrm{mec}} = W_{\mathrm{fric}} + W_{\mathrm{ext}}
 \qquad
-(\,W_g \text{ solo intercambia } E_{\mathrm{cin}}\leftrightarrow E_{\mathrm{pot}}\,)
-\]
-
-\[
 \eta_{\mathrm{paid}} = \frac{E_{\mathrm{util}}}{E_{\mathrm{ext}}^+ + \max(0,-\Delta E_{\mathrm{mec}})} \le \eta_{\mathrm{reg}} < 1
 \]
+
+Quijote (didáctico): si el **ball continuo** mueve masas sin parar, \(P_{\mathrm{act}}\) puede superar \(P_{\mathrm{gen}}\) → no hay hurto neto (el actuador come el margen). El valor de 7 palas es **continuidad / menos rizado**, no magia.
 
 ---
 
