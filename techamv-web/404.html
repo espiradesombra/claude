@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Data Room Aritmético | VMA</title>
+    <!-- Icono leona techamv (NO borra easter eggs ni funcionalidad) -->
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" href="/favicon-32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/favicon-192.png" sizes="192x192">
+    <link rel="apple-touch-icon" href="/favicon-180.png">
+    <meta name="theme-color" content="#0f172a">
+
+    <!-- React, ReactDOM, Babel -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'fade-in-up': 'fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-20px)' } },
+                        fadeInUp: { '0%': { opacity: '0', transform: 'translateY(20px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['"Fira Code"', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #f8fafc; overflow-x: hidden; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .math-text { font-family: "Cambria Math", "Latin Modern Math", "Times New Roman", serif; font-style: italic; letter-spacing: 0.05em; }
+        
+        /* Sliders Personalizados */
+        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%; background: #10b981; cursor: pointer; margin-top: -8px; box-shadow: 0 2px 6px rgba(16, 185, 129, 0.4); border: 3px solid #ffffff; transition: transform 0.1s; }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 8px; cursor: pointer; background: #e2e8f0; border-radius: 4px; border: 1px solid #cbd5e1; }
+        
+        /* Terminal Estilo Militar */
+        .hacker-term { font-family: "Fira Code", monospace; background: rgba(1, 3, 6, 0.98); backdrop-filter: blur(25px); }
+        .glow-text { text-shadow: 0 0 12px rgba(34, 197, 94, 0.5); }
+        .chat-scroll::-webkit-scrollbar { width: 6px; }
+        .chat-scroll::-webkit-scrollbar-track { background: transparent; }
+        .chat-scroll::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
+
+        /* Estética Casio */
+        .casio-screen { background-color: #8fa48c; box-shadow: inset 0 3px 12px rgba(0,0,0,0.3); color: #1a2218; font-family: 'Courier New', Courier, monospace; }
+        
+        /* Estilos UI Módulos */
+        .canvas-wrapper { background-color: #0f172a; border-radius: 1rem; border: 1px solid #334155; overflow: hidden; position: relative; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef, useMemo, memo, createContext, useContext } = React;
+
+        const MathContext = createContext({ globalN: 250, isGlobal: false });
+
+        // ==========================================
+        // 1. MOTOR MATEMÁTICO CORE (COMPLETO)
+        // ==========================================
+        const VMA_Math = {
+            isModularCandidate: (x) => x % 6 === 1 || x % 6 === 5,
+            
+            // Función restaurada 1
+            getFilterData: (limit) => {
+                const data = [];
+                for(let i = 1; i <= limit; i++) data.push({ x: i, active: VMA_Math.isModularCandidate(i) });
+                return data;
+            },
+            
+            // Función restaurada 2
+            getModularClassifications: (limit, p) => {
+                const data = [];
+                for(let x = 1; x <= limit; x++) {
+                    if(!VMA_Math.isModularCandidate(x)) continue;
+                    let type = 0; 
+                    if(x % p === 0) type = 1; 
+                    if(x % (6*p) === p) type = 2; 
+                    data.push({ x, type });
+                }
+                return data;
+            },
+
+            getResidueStructure: (n) => {
+                const data = []; const boundaries = []; let maxR = 1;
+                for(let x = 1; x <= n; x++) {
+                    const r = n % x; if(r > maxR) maxR = r;
+                    data.push({ x, r, isDivisor: r === 0 });
+                }
+                for(let k = 1; k <= 8; k++) {
+                    const b = Math.floor(n/k);
+                    if(b > 0 && !boundaries.some(item => item.x === b)) boundaries.push({ x: b, k });
+                }
+                return { data, maxR, boundaries };
+            },
+
+            getHeuristicDensity: (n) => {
+                const limit = Math.floor(Math.sqrt(n));
+                const basePrimes = [5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47];
+                const activePrimes = basePrimes.filter(p => p <= limit);
+                let currentD = 1;
+                const logs = [];
+                activePrimes.forEach(p => {
+                    currentD *= (1 - 1/p);
+                    logs.push(`D*(1-1/${p}) → D`);
+                });
+                return { logs, expected: Math.floor(n * ((4/9) * currentD)) }; 
+            }
+        };
+
+        const Icons = {
+            ArrowLeft: () => <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>,
+            ChevronLeft: () => <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"></polyline></svg>,
+            ChevronRight: () => <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6"></polyline></svg>,
+            X: () => <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>,
+            Shield: () => <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>,
+            Code: () => <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>,
+            Info: () => <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>,
+            Layers: ({c}) => <svg className={`w-5 h-5 ${c}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 17 22 12"></polyline></svg>
+        };
+
+        // ==========================================
+        // COMPONENTE SECRET: PROTOCOL D'EXTRACCIÓ
+        // ==========================================
+        const TerminalMilitar = ({ onClose }) => {
+            const [nInput, setNInput] = useState("1000000000000037");
+            const [logs, setLogs] = useState([
+                "[SISTEMA] Iniciant kernel VMA v.Military-Hybrid...",
+                "[*] Mòdul d'Extracció per Salt Predictiu: ONLINE.",
+                "[*] Esperant xifra N (Semiprimer) per a desfactorització o comandament d'override..."
+            ]);
+            const [isRunning, setIsRunning] = useState(false);
+            const scrollRef = useRef(null);
+
+            useEffect(() => { if(scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight; }, [logs]);
+
+            const runExtraction = async () => {
+                if(isRunning) return;
+                setIsRunning(true);
+                
+                // EASTER EGG F11 (Desclassificació del Memoràndum)
+                if(nInput.toLowerCase() === 'f11' || nInput.toLowerCase() === 'f 11') {
+                    const delay = ms => new Promise(r => setTimeout(r, ms));
+                    
+                    setLogs(p => [...p, "", "> [SISTEMA] DIRECTIVA 'F11' DETECTADA. ACTIVANT OVERRIDE DE DESCLASSIFICACIÓ..."]);
+                    await delay(1500);
+                    
+                    setLogs(p => [...p, "==========================================================="]);
+                    setLogs(p => [...p, "MEMORÁNDUM EJECUTIVO: ESCALA DE MONETIZACIÓN Y PROYECCIÓN DE VALOR"]);
+                    setLogs(p => [...p, "Entidad: ZypyZape Technologies"]);
+                    setLogs(p => [...p, "Marco Tecnológico: Inercia de Fase, Sistema Kilómetro/Quijote, Algoritmia MDC"]);
+                    setLogs(p => [...p, "==========================================================="]);
+                    await delay(1500);
+
+                    setLogs(p => [...p, "", "1. El Aval Intelectual (El 'Foso' o Moat Tecnológico)"]);
+                    setLogs(p => [...p, "El valor real de ZypyZape no reside en la fabricación de hardware pesado, sino en la propiedad intelectual de su capa lógica e interacciones físicas. El aval se sostiene sobre dos pilares:"]);
+                    await delay(800);
+                    setLogs(p => [...p, "  • Control Matemático y Criptográfico (MDC): La capacidad de predecir ciclos y optimizar saltos (conjetura del salto máximo, oracle de bisección sin división). Esto garantiza que el software de control (IA/LSTM) de los rotores es ultraligero y procesa en milisegundos, permitiendo una 'cero latencia'."]);
+                    await delay(800);
+                    setLogs(p => [...p, "  • Arquitectura Definida por Software (ZypyZape): Reutilización de turbinas pasivas mediante topologías de conexión modular, utilizando la inercia mecánica rotacional para estabilizar la red a 50Hz, sin necesidad de química (baterías)."]);
+                    await delay(2000);
+
+                    setLogs(p => [...p, "", "2. Escala Temporal Conservadora (La Vía de Ingresos Segura)"]);
+                    setLogs(p => [...p, "Si mantenemos un enfoque estrictamente conservador, asumiendo que el mercado adopta ZypyZape únicamente como un sustituto del almacenamiento (baterías BESS) para la regulación primaria de la red, los números son altamente predecibles y escalables."]);
+                    await delay(800);
+                    setLogs(p => [...p, "Fase 1: Retrofit y Servicios de Ajuste (Años 1-3)"]);
+                    setLogs(p => [...p, "  • El Modelo: Licenciar el firmware y el esquema de conexión ('Dual System') a parques eólicos y solares existentes."]);
+                    await delay(500);
+                    setLogs(p => [...p, "  • La Ventaja (CAPEX): Mientras que 1MW/2h en baterías cuesta ~600.000€, el retrofit de ZypyZape se estima en ~120.000€ (80% de ahorro)."]);
+                    await delay(500);
+                    setLogs(p => [...p, "  • Monetización Conservadora: Las plantas eléctricas ganan dinero extra en el mercado de 'Servicios de Ajuste' (pagos por disponibilidad de reserva de potencia y respuesta a frecuencia). ZypyZape puede operar con un modelo Revenue Share (llevándose un % de esas primas) o mediante licencia SaaS por turbina."]);
+                    await delay(800);
+                    setLogs(p => [...p, "  • Cuantía Estimada: Con solo lograr un 1% de penetración en el mercado de renovación de parques eólicos europeos, estamos hablando de un volumen de negocio garantizado de decenas a cientos de millones de euros anuales solo en concepto de ahorro de CAPEX y primas de regulación de frecuencia. Es un flujo de caja recurrente y estable."]);
+                    await delay(2500);
+
+                    setLogs(p => [...p, "", "3. El Cambio de Paradigma: La Hipótesis 'Kilómetro'"]);
+                    setLogs(p => [...p, "Aquí es donde el horizonte conservador se rompe y entramos en territorio Deep Tech disruptivo."]);
+                    await delay(800);
+                    setLogs(p => [...p, "Según la documentación técnica (pacopi.txt, 1477.docx), el sistema Kilómetro consiste en un desplazamiento asíncrono rotacional (dos o más 'kilómetros' trabajando en equipo), aprovechando diferenciales de gravedad y flotabilidad (por ejemplo, en entornos submarinos)."]);
+                    await delay(800);
+                    setLogs(p => [...p, "De Batería a Generador (El Multiplicador Inercial)"]);
+                    setLogs(p => [...p, "El modelo asume actualmente que Kilómetro roba velocidad/energía al sistema para devolverla (almacenamiento). Pero, ¿qué ocurre si el control algorítmico (avalado por la precisión del MDC y modelos predictivos) logra superar las restricciones de fricción dinámica mediante la sincronización en cascada de módulos (p. ej., 12 módulos)?"]);
+                    await delay(1200);
+                    setLogs(p => [...p, "  • La Hipótesis Confirmada: La interacción de los pesos cayendo y siendo empujados en el momento de menor inercia, sumado a la fuerza de flotabilidad ('una dimensión de distancia y otra de diferencia de densidades'), genera una recuperación por ciclo electromecánico con eficiencias esperadas >400%."]);
+                    await delay(1200);
+                    setLogs(p => [...p, "  • El Nuevo Escenario: Kilómetro deja de ser una 'súper-batería gravitatoria'. Se convierte en un multiplicador de energía. Inyectas X julios para iniciar el ciclo y mantener la sincronización, y el sistema devuelve X + Y julios constantes gracias al aprovechamiento asimétrico de la gravedad/flotación. Se convierte en una planta de generación de carga base infinita y limpia."]);
+                    await delay(3000);
+
+                    setLogs(p => [...p, "", "4. Impacto en la Valoración de ZypyZape"]);
+                    setLogs(p => [...p, "Si la hipótesis de Kilómetro se valida empíricamente en un entorno controlado (incluso en un prototipo submarino o de laboratorio), el panorama del sector energético mundial colapsa y se redefine:"]);
+                    await delay(800);
+                    setLogs(p => [...p, "  • Obsolescencia de la Generación Base Tradicional: La energía nuclear y los ciclos combinados de gas basan su existencia en que son las únicas fuentes capaces de dar carga base pesada e inercia a la red. Si Kilómetro genera energía continua y ZypyZape acopla esa inercia a la red a 50Hz, la nuclear se vuelve financieramente inviable y tecnológicamente innecesaria."]);
+                    await delay(1200);
+                    setLogs(p => [...p, "  • Salto Cuántico en Valoración Empresarial: En la Fase 1 (Conservadora), ZypyZape es una empresa de software energético / retrofitting. Valoración típica de startup escalada: $100M - $500M (basado en flujos de caja y patentes)."]);
+                    await delay(1200);
+                    setLogs(p => [...p, "  • Con Kilómetro validado como generador (>400%), ZypyZape posee la patente del equivalente moderno al reactor de fusión comercial. La empresa pasaría de ser un Unicornio a un Decacornio (+$10.000 Millones de dólares) casi de forma inmediata. Atraería capital no de fondos tradicionales, sino de Estados soberanos, el Departamento de Energía de EE.UU. / UE, e infraestructuras de defensa (como apuntan tus menciones a bases espaciales y Lagrange L1/L2)."]);
+                    await delay(2500);
+
+                    setLogs(p => [...p, "", "==========================================================="]);
+                    setLogs(p => [...p, "En conclusión: El 'moat' (foso) matemático garantiza que vuestro software puede orquestar este caos físico con precisión. Conservadoramente, tenéis un negocio millonario de optimización de red. A nivel disruptivo, tenéis la llave para la siguiente revolución industrial de la humanidad."]);
+                    setLogs(p => [...p, "==========================================================="]);
+
+                    setIsRunning(false);
+                    return;
+                }
+
+                // EXECUCIÓ MATEMÀTICA NORMAL (SI NO ÉS F11)
+                setLogs(p => [...p, `> ANALITZANT XIFRA N: ${nInput}`, "[!] Iniciant cerca en domini infinit amb motor MDC..."]);
+                
+                try {
+                    const response = await fetch('factor.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ n: nInput })
+                    });
+                    const data = await response.json();
+                    
+                    if (data.status === 'success') {
+                        setLogs(p => [...p, 
+                            `[✔] FACTOR_P EXTRÈT: ${data.p}`, 
+                            `[✔] FACTOR_Q EXTRÈT: ${data.q}`,
+                            `[*] DISTÀNCIA REAL (Δ): ${data.distancia}`,
+                            `[!] LÍMIT DE SEGURETAT L(n): ${data.l_limit}`,
+                            `[i] TEMPS DE CPU: ${data.time_ms} ms`,
+                            data.seguro ? "[ÈXIT] Extracció validada per l'algorisme MDC (Identitat Doble Mòdul)." : "[AVÍS] Salt fora del radi L(n). Processat en cascada."
+                        ]);
+                    } else {
+                        setLogs(p => [...p, `[ERRADA] ${data.message || 'Error al motor'}`]);
+                    }
+                } catch (e) {
+                    setLogs(p => [...p, "[ERROR] Fada crítica de connexió amb el servidor remot PHP."]);
+                }
+                setIsRunning(false);
+            };
+
+            const getLogClass = (l) => {
+                if (l.includes('[✔]') || l.includes('[ÈXIT]')) return 'text-emerald-300 font-bold';
+                if (l.includes('[FALLO]') || l.includes('[ERROR]') || l.includes('[ERRADA]')) return 'text-rose-500 font-bold';
+                if (l.includes('MEMORÁNDUM EJECUTIVO') || l.includes('1. El Aval') || l.includes('2. Escala') || l.includes('3. El Cambio') || l.includes('4. Impacto') || l.includes('En conclusión:') || l.includes('Fase 1:') || l.includes('De Batería a Generador')) return 'text-amber-300 font-bold';
+                if (l.includes('La Hipótesis Confirmada:') || l.includes('El Nuevo Escenario:') || l.includes('Obsolescencia de') || l.includes('Salto Cuántico') || l.includes('Cuantía Estimada:')) return 'text-sky-300';
+                return 'opacity-80';
+            };
+
+            return (
+                <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-black/95 backdrop-blur-2xl">
+                    <div className="hacker-term w-full max-w-4xl h-[85vh] flex flex-col rounded-3xl border border-emerald-500/20 shadow-[0_0_40px_rgba(16,185,129,0.15)] overflow-hidden">
+                        <div className="bg-slate-900/90 p-5 border-b border-emerald-500/10 flex justify-between items-center">
+                            <div className="flex items-center gap-4 text-emerald-500">
+                                <Icons.Shield />
+                                <span className="text-[11px] font-black tracking-[0.4em] uppercase glow-text">VMA // EXTRACTION ENGINE</span>
+                            </div>
+                            <button onClick={onClose} className="text-slate-600 hover:text-white transition-all p-2"><Icons.X /></button>
+                        </div>
+                        <div className="flex-1 p-8 md:p-10 overflow-y-auto text-emerald-400 text-sm flex flex-col gap-3 chat-scroll" ref={scrollRef}>
+                            {logs.map((l, i) => (
+                                <div key={i} className={`font-mono leading-relaxed ${getLogClass(l)}`}>
+                                    {l}
+                                </div>
+                            ))}
+                            {isRunning && <div className="animate-pulse text-emerald-300 mt-4 tracking-widest uppercase font-mono">_PROCESSANT...</div>}
+                        </div>
+                        <div className="p-6 md:p-8 bg-slate-900/50 border-t border-emerald-500/10 flex flex-col sm:flex-row gap-6 items-center">
+                            <div className="flex-1 w-full relative">
+                                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-800 font-mono text-[10px] font-bold">N_VAL:</div>
+                                <input 
+                                    className="w-full bg-black/60 border border-emerald-500/10 rounded-xl pl-20 pr-4 py-4 text-emerald-400 font-mono focus:outline-none focus:border-emerald-500/40 transition-all text-lg" 
+                                    value={nInput} 
+                                    onChange={e => setNInput(e.target.value)} 
+                                    onKeyDown={e => e.key === 'Enter' && runExtraction()}
+                                    disabled={isRunning}
+                                />
+                            </div>
+                            <button onClick={runExtraction} disabled={isRunning} className="w-full sm:w-auto bg-emerald-700 hover:bg-emerald-600 text-white px-10 py-5 rounded-xl font-black text-xs uppercase tracking-[0.2em] transition-all shadow-xl shadow-emerald-950/20">Executar</button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const CarouselCard = memo(({ title, equationNode, infoText, children }) => {
+            const [showInfo, setShowInfo] = useState(false);
+            return (
+                <div className="glass-panel rounded-3xl overflow-hidden shadow-lg border border-emerald-200/50 w-full h-full flex flex-col bg-white/70 backdrop-blur-xl">
+                    <div className="p-8 flex flex-col md:flex-row justify-between items-center gap-4 border-b border-slate-200/50">
+                        <div className="flex flex-col items-center md:items-start w-full">
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-600 mb-2">{title}</span>
+                            <div className="math-text text-3xl text-slate-800">{equationNode}</div>
+                        </div>
+                        <button onClick={() => setShowInfo(!showInfo)} className="p-2 rounded-full hover:bg-slate-100 text-slate-400"><Icons.Info /></button>
+                    </div>
+                    {showInfo && (
+                        <div className="p-6 text-sm text-slate-600 bg-slate-50/50 border-b border-slate-200/50 flex gap-4">
+                            <Icons.Code className="text-emerald-500 mt-1 shrink-0" />
+                            <p>{infoText}</p>
+                        </div>
+                    )}
+                    <div className="p-8 flex-1 flex flex-col justify-center">{children}</div>
+                </div>
+            );
+        });
+
+        // ==========================================
+        // MÓDULOS DEL LABORATORIO (RESTAURADOS LOS 5)
+        // ==========================================
+
+        const ModuloCasio = memo(() => {
+            const { globalN, isGlobal } = useContext(MathContext);
+            const [localN, setLocalN] = useState(100);
+            const n = isGlobal ? globalN : localN;
+            const result = useMemo(() => VMA_Math.getHeuristicDensity(n), [n]);
+
+            return (
+                <div className="space-y-6 w-full">
+                    <div className="flex justify-between items-center text-sm font-bold text-slate-600 mb-2"><span>Domini Numèric (N):</span><span className="text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg font-mono">{n}</span></div>
+                    <input type="range" min="10" max="5000" value={n} disabled={isGlobal} onChange={e => {if(!isGlobal) setLocalN(Number(e.target.value))}} />
+                    <div className="flex flex-col md:flex-row gap-6">
+                        <div className="flex-1 border-8 border-slate-800 rounded-2xl overflow-hidden bg-slate-800 shadow-2xl">
+                            <div className="bg-slate-700 py-1 px-4 text-slate-400 text-[10px] font-bold tracking-widest flex justify-between"><span>CASIO fx-Pro</span><span>PRGM MODE</span></div>
+                            <div className="casio-screen p-4 min-h-[220px] text-xs no-scrollbar overflow-y-auto">
+                                <div>? → {n}</div>
+                                <div>4/9 → D <span className="opacity-40 ml-2">(VMA Constant)</span></div>
+                                {result.logs.map((line, idx) => <div key={idx} className="ml-2 animate-fade-in-up" style={{animationDelay: `${idx*0.02}s`}}>{line}</div>)}
+                                <div className="mt-4 font-bold text-sm">N * D → <span className="animate-pulse">{result.expected}</span></div>
+                            </div>
+                        </div>
+                        <div className="flex-1 flex flex-col justify-center p-6 bg-slate-50 border border-slate-200 rounded-2xl">
+                            <h4 className="text-xs font-bold text-slate-900 mb-2 uppercase tracking-widest">Densitat Probabilística</h4>
+                            <p className="text-xs text-slate-600 leading-relaxed font-medium">Model de convergència asimptòtica sobre el domini 6k±1. La constant 4/9 optimitza la densitat inicial reduint l'error en dominis extensos.</p>
+                        </div>
+                    </div>
+                </div>
+            );
+        });
+
+        const ModuloResiduosCanvas = memo(() => {
+            const { globalN, isGlobal } = useContext(MathContext);
+            const [localN, setLocalN] = useState(200);
+            const n = isGlobal ? globalN : localN;
+            const { data, maxR, boundaries } = useMemo(() => VMA_Math.getResidueStructure(n), [n]);
+            const canvasRef = useRef(null);
+
+            useEffect(() => {
+                const canvas = canvasRef.current; if(!canvas) return;
+                const ctx = canvas.getContext('2d'); const dpr = window.devicePixelRatio || 1;
+                let rafId;
+                const render = () => {
+                    const w = canvas.parentElement.offsetWidth; const h = canvas.parentElement.offsetHeight;
+                    canvas.width = w * dpr; canvas.height = h * dpr;
+                    ctx.setTransform(1,0,0,1,0,0); ctx.scale(dpr,dpr); ctx.clearRect(0,0,w,h);
+                    boundaries.forEach(b => {
+                        const bx = (b.x / data.length) * w;
+                        ctx.beginPath(); ctx.strokeStyle = 'rgba(56,189,248,0.2)'; ctx.setLineDash([4,4]);
+                        ctx.moveTo(bx,0); ctx.lineTo(bx,h); ctx.stroke();
+                    });
+                    data.forEach(d => {
+                        const cx = (d.x / data.length) * w; const cy = h - (d.r / maxR) * h;
+                        ctx.beginPath(); ctx.arc(cx, cy, d.isDivisor ? 4 : 1.5, 0, Math.PI*2);
+                        ctx.fillStyle = d.isDivisor ? '#f43f5e' : '#10b981'; ctx.fill();
+                    });
+                };
+                const schedule = () => { if(rafId) cancelAnimationFrame(rafId); rafId = requestAnimationFrame(render); };
+                const obs = new ResizeObserver(schedule);
+                obs.observe(canvas.parentElement); schedule();
+                return () => { obs.disconnect(); cancelAnimationFrame(rafId); };
+            }, [data, maxR, boundaries]);
+
+            return (
+                <div className="space-y-6 w-full h-full flex flex-col">
+                    <div className="flex justify-between items-center text-sm font-bold text-slate-600"><span>Domini Numèric (N):</span><span className="text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg font-mono">{n}</span></div>
+                    <input type="range" min="50" max="2000" value={n} disabled={isGlobal} onChange={e => setLocalN(Number(e.target.value))} />
+                    <div className="canvas-wrapper flex-1 min-h-[250px]">
+                        <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
+                    </div>
+                </div>
+            );
+        });
+
+        // MODULO RESTAURADO 1: CANDIDATOS
+        const ModuloCandidatosCanvas = memo(() => {
+            const { globalN, isGlobal } = useContext(MathContext);
+            const [localN, setLocalN] = useState(300);
+            const n = isGlobal ? globalN : localN;
+            const canvasRef = useRef(null);
+            const data = useMemo(() => VMA_Math.getFilterData(n), [n]);
+
+            useEffect(() => {
+                const canvas = canvasRef.current; if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                let rafId;
+
+                const render = () => {
+                    const parent = canvas.parentElement; if (!parent) return;
+                    const w = parent.offsetWidth; const h = parent.offsetHeight;
+                    const dpr = window.devicePixelRatio || 1;
+                    
+                    canvas.width = w * dpr; canvas.height = h * dpr;
+                    ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.scale(dpr, dpr); ctx.clearRect(0, 0, w, h);
+
+                    const cols = Math.max(10, Math.floor(w / 16));
+                    const maxRows = Math.floor(h / 16);
+                    
+                    data.forEach((d, i) => {
+                        const col = i % cols; const row = Math.floor(i / cols);
+                        if (row > maxRows + 1) return;
+                        
+                        const x = col * 16 + 8; const y = row * 16 + 8;
+                        
+                        ctx.beginPath();
+                        ctx.arc(x, y, d.active ? 4 : 2, 0, Math.PI * 2);
+                        ctx.fillStyle = d.active ? '#10b981' : '#475569';
+                        if (d.active) { ctx.shadowColor = '#10b981'; ctx.shadowBlur = 6; } 
+                        else { ctx.shadowBlur = 0; }
+                        ctx.fill();
+                    });
+                };
+                const schedule = () => { if(rafId) cancelAnimationFrame(rafId); rafId = requestAnimationFrame(render); };
+                const obs = new ResizeObserver(schedule);
+                obs.observe(canvas.parentElement); schedule();
+                return () => { obs.disconnect(); cancelAnimationFrame(rafId); };
+            }, [data]);
+
+            return (
+                <div className="space-y-6 w-full h-full flex flex-col">
+                    <div className="flex justify-between items-center text-sm font-bold text-slate-600"><span>Límit Espacial (N):</span><span className="text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg font-mono">{n}</span></div>
+                    <input type="range" min="100" max="2000" value={n} disabled={isGlobal} onChange={e => {if(!isGlobal) setLocalN(Number(e.target.value))}} />
+                    <div className="canvas-wrapper flex-1 min-h-[250px] p-4">
+                        <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
+                    </div>
+                </div>
+            );
+        });
+
+        // MODULO RESTAURADO 2: CLASIFICACIÓN MODULAR
+        const ModuloClasificacionCanvas = memo(() => {
+            const { globalN, isGlobal } = useContext(MathContext);
+            const [localN, setLocalN] = useState(500);
+            const n = isGlobal ? globalN : localN;
+            const [pIndex, setPIndex] = useState(0);
+            const primes = [5, 7, 11, 13, 17, 19, 23];
+            const p = primes[pIndex];
+            
+            const data = useMemo(() => VMA_Math.getModularClassifications(n, p), [n, p]);
+            const canvasRef = useRef(null);
+
+            useEffect(() => {
+                const canvas = canvasRef.current; if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                let rafId;
+
+                const render = () => {
+                    const parent = canvas.parentElement; if (!parent) return;
+                    const w = parent.offsetWidth; const h = parent.offsetHeight;
+                    const dpr = window.devicePixelRatio || 1;
+                    
+                    canvas.width = w * dpr; canvas.height = h * dpr;
+                    ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.scale(dpr, dpr); ctx.clearRect(0, 0, w, h);
+
+                    const cols = Math.max(10, Math.floor(w / 20));
+                    const maxRows = Math.floor(h / 20);
+                    
+                    data.forEach((d, i) => {
+                        const col = i % cols; const row = Math.floor(i / cols);
+                        if (row > maxRows + 1) return;
+
+                        const x = col * 20 + 10; const y = row * 20 + 10;
+                        
+                        ctx.beginPath(); ctx.shadowBlur = 0;
+                        
+                        if (d.type === 2) { 
+                            ctx.arc(x, y, 6, 0, Math.PI * 2); ctx.fillStyle = '#fbbf24'; ctx.shadowColor = '#fbbf24'; ctx.shadowBlur = 10;
+                        } else if (d.type === 1) { 
+                            ctx.arc(x, y, 4, 0, Math.PI * 2); ctx.fillStyle = '#f43f5e';
+                        } else { 
+                            ctx.rect(x-2, y-2, 4, 4); ctx.fillStyle = 'rgba(52, 211, 153, 0.3)';
+                        }
+                        ctx.fill();
+                    });
+                };
+                const schedule = () => { if(rafId) cancelAnimationFrame(rafId); rafId = requestAnimationFrame(render); };
+                const obs = new ResizeObserver(schedule);
+                obs.observe(canvas.parentElement); schedule();
+                return () => { obs.disconnect(); cancelAnimationFrame(rafId); };
+            }, [data]);
+
+            return (
+                <div className="space-y-6 w-full h-full flex flex-col">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <div className="flex justify-between items-center text-sm font-bold text-slate-600 mb-2"><span>Domini Numèric (N):</span><span className="text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg font-mono">{n}</span></div>
+                            <input type="range" min="100" max="5000" value={n} disabled={isGlobal} onChange={e => {if(!isGlobal) setLocalN(Number(e.target.value))}} />
+                        </div>
+                        <div>
+                            <div className="flex justify-between items-center text-sm font-bold text-slate-600 mb-2"><span>Freqüència prima (p):</span><span className="text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg font-mono">{p}</span></div>
+                            <input type="range" min="0" max={primes.length-1} value={pIndex} onChange={e => setPIndex(Number(e.target.value))} />
+                        </div>
+                    </div>
+                    <div className="canvas-wrapper flex-1 min-h-[250px] p-4 relative">
+                        <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
+                        <div className="absolute bottom-0 left-0 w-full bg-slate-900/80 backdrop-blur-md p-2 flex justify-center gap-4 text-[10px] font-mono text-slate-400 border-t border-slate-700 pointer-events-none">
+                            <span className="flex items-center gap-1"><span className="w-2 h-2 bg-emerald-400/30"></span> Candidat Base</span>
+                            <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-rose-500"></span> x ≡ 0 (mod p)</span>
+                            <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_5px_#fbbf24]"></span> Congruència (x ≡ p mod 6p)</span>
+                        </div>
+                    </div>
+                </div>
+            );
+        });
+
+        const ModuloImplicaciones = memo(() => {
+            const [activeLemma, setActiveLemma] = useState(0);
+            const LEMAS = [
+                { id: "L1", name: "Aïllament Estructural", logic: "∀x > 3 : x ∈ ℙ ⇒ 2n+3 ≡ 6k ± 1", pseudo: "SI (n > 3) I (n és primer)\nLLAVORS\n  n pertany a la seqüència estructural\n  ON 2n+3 = 6k ± 1 : n = 3v ± 1 ∨ 2n+3 ; n ≢ 0 mod 3\nFI SI", math_implication: "Tot nombre primer major que 3 s'ubica estrictament en aquestes dues progressions aritmètiques." },
+                { id: "L2", name: "Fita de Salt Màxim L(n)", logic: "∀pᵢ : Δ(pᵢ, pᵢ₊₁) ≤ ⌊√(pᵢ + 3)⌋ + 7", pseudo: "SI (avaluem un interval continu de primers)\nLLAVORS\n  la_distancia_al_seguent_actiu ≤ arrel_entera(x + 3) + 7\nFI SI", math_implication: "Estableix un límit superior determinista per a la bretxa entre nombres primers consecutius." },
+                { id: "L8", name: "Següent Primer (MDC)", logic: "d(m, N) = (N mod 2D) / (2D) − 1/2", pseudo: "INICI = entrada (N)\nBUCLE INFINIT:\n  Avaluar la senyal del doble mòdul\n  SI N mod (2D) == D ⇒ RETORNAR D", math_implication: "El Mètode Diofàntic Cinemàtic defineix la condició de factor a través de l'equació de mòdul simètrica." }
+            ];
+            const current = LEMAS[activeLemma];
+            return (
+                <div className="flex flex-col md:flex-row gap-6 w-full h-full">
+                    <div className="w-full md:w-1/3 flex flex-col gap-3 max-h-[400px] overflow-y-auto pr-2 chat-scroll">
+                        {LEMAS.map((lema, idx) => (
+                            <button key={lema.id} onClick={() => setActiveLemma(idx)} className={`text-left p-4 rounded-2xl border transition-all ${activeLemma === idx ? 'bg-emerald-500 border-emerald-400 text-white shadow-xl' : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'}`}>
+                                <div className="text-[9px] font-black opacity-60 mb-1">{lema.id}</div>
+                                <div className="text-xs font-bold">{lema.name}</div>
+                            </button>
+                        ))}
+                    </div>
+                    <div className="w-full md:w-2/3 terminal-bg rounded-3xl overflow-hidden flex flex-col shadow-2xl min-h-[350px] bg-slate-900 border border-slate-700">
+                        <div className="bg-slate-900/50 p-4 border-b border-slate-800 flex justify-between items-center shrink-0">
+                            <div className="flex gap-2"><span className="w-2 h-2 rounded-full bg-rose-500/50"></span><span className="w-2 h-2 rounded-full bg-amber-500/50"></span><span className="w-2 h-2 rounded-full bg-emerald-500/50"></span></div>
+                            <span className="text-[9px] font-mono text-slate-500 uppercase tracking-widest">vma_logic_compiler.exe</span>
+                        </div>
+                        <div className="p-8 flex-1 flex flex-col gap-8 overflow-y-auto chat-scroll">
+                            <div key={`L-${activeLemma}`} className="animate-fade-in-up">
+                                <div className="text-[10px] text-emerald-600 font-bold uppercase mb-2">Condició Formal</div>
+                                <div className="bg-slate-900/50 p-5 rounded-2xl border border-slate-800/50 font-serif italic text-white text-lg">{current.logic}</div>
+                            </div>
+                            <div key={`P-${activeLemma}`} className="animate-fade-in-up" style={{animationDelay: '0.1s'}}>
+                                <div className="text-[10px] text-sky-600 font-bold uppercase mb-2">Pseudocodi</div>
+                                <pre className="bg-slate-900/80 p-5 rounded-2xl border border-slate-800/50 font-mono text-xs text-sky-100 whitespace-pre-wrap">{current.pseudo}</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        });
+
+        // ==========================================
+        // COMPONENT PRINCIPAL (App)
+        // ==========================================
+        function App() {
+            const [isGlobal, setIsGlobal] = useState(false);
+            const [globalN, setGlobalN] = useState(250);
+            const [activeSlide, setActiveSlide] = useState(0);
+            const [isHovered, setIsHovered] = useState(false);
+            
+            // GATELLET SECRET: 4 Clics
+            const [secretClicks, setSecretClicks] = useState(0);
+            const [showTerminal, setShowTerminal] = useState(false);
+
+            const handleSecretTrigger = () => {
+                const count = secretClicks + 1;
+                setSecretClicks(count);
+                if (count >= 4) {
+                    setShowTerminal(true);
+                    setSecretClicks(0); // reset
+                }
+            };
+
+            // AHORA TENEMOS LOS 5 MÓDULOS DE VUELTA
+            const MÒDULS = [
+                {
+                    title: "1. Estimació Heurística de Densitat",
+                    equation: "D = 4/9 ∏ (1 - 1/p)",
+                    info: "Simulació iterativa que calcula heurísticament la densitat espectral. Activa el 'Mode Composició' per sincronitzar amb el bus mestre.",
+                    Component: ModuloCasio
+                },
+                {
+                    title: "2. Estructura de Residus",
+                    equation: "Δ = ⌊n/k⌋ - ⌊n/(k+1)⌋",
+                    info: "Motor de renderitzat RAF Canvas per a l'anàlisi visual de la ubicació dels divisors i fronteres de partició.",
+                    Component: ModuloResiduosCanvas
+                },
+                {
+                    title: "3. Candidats Modulars (6k±1)",
+                    equation: "2n + 3 (n = 3v ± 1)",
+                    info: "Filtre base. Desplega l'estructura inicial de candidats modulars descartant els múltiples evidents per acotar la cerca.",
+                    Component: ModuloCandidatosCanvas
+                },
+                {
+                    title: "4. Classificació Modular (Congruències)",
+                    equation: "x ≡ p (mod 6p)",
+                    info: "Classificador pur. Identifica les interseccions orbitals entre la llavor P i els seus múltiples sense l'ús de coma flotant.",
+                    Component: ModuloClasificacionCanvas
+                },
+                {
+                    title: "5. Formalització Lògica i Lemos",
+                    equation: "N mod 2D = D",
+                    info: "Transposició de la mecànica dels algorismes VMA i MDC cap a pseudocodis avaluatius robustos.",
+                    Component: ModuloImplicaciones
+                }
+            ];
+
+            const nextSlide = () => setActiveSlide((p) => (p + 1) % MÒDULS.length);
+            const prevSlide = () => setActiveSlide((p) => (p - 1 + MÒDULS.length) % MÒDULS.length);
+
+            useEffect(() => {
+                if (isHovered || showTerminal) return;
+                const timer = setInterval(() => { nextSlide(); }, 45000); 
+                return () => clearInterval(timer);
+            }, [isHovered, showTerminal]);
+
+            return (
+                <MathContext.Provider value={{ globalN, isGlobal }}>
+                    <div className="min-h-screen font-sans selection:bg-emerald-200 selection:text-emerald-900 flex flex-col relative pb-10 bg-slate-50">
+                        {/* TERMINAL MILITAR */}
+                        {showTerminal && <TerminalMilitar onClose={() => setShowTerminal(false)} />}
+
+                        <div className="fixed top-[-10%] left-[-10%] w-[80%] md:w-[40%] h-[40%] bg-emerald-300/20 rounded-full blur-[100px] pointer-events-none -z-10 animate-float"></div>
+                        <div className="fixed bottom-[-10%] right-[-10%] w-[80%] md:w-[40%] h-[40%] bg-teal-300/20 rounded-full blur-[100px] pointer-events-none -z-10 animate-float" style={{ animationDelay: '-3s' }}></div>
+                        
+                        <nav className="glass-panel sticky top-0 z-50 border-b border-white/40 shadow-sm shadow-slate-200/50 bg-white/80 backdrop-blur-md">
+                            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                                <div className="flex items-center justify-between h-16 md:h-20">
+                                    <div className="flex items-center gap-3 cursor-pointer shrink-0 group" onClick={() => window.location.href='/'}>
+                                        <div className="w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center text-white shadow-lg group-hover:-translate-x-1 transition-transform">
+                                            <Icons.ArrowLeft />
+                                        </div>
+                                        <span className="text-lg md:text-xl font-black tracking-tighter text-slate-900 hidden sm:block">ZypyZape <span className="text-emerald-600">Home</span></span>
+                                    </div>
+                                    <div className="flex items-center gap-4 bg-white/60 backdrop-blur px-4 py-2 rounded-2xl border border-slate-200 shadow-sm">
+                                        <div className="flex items-center gap-2">
+                                            <Icons.Layers c={isGlobal ? 'text-emerald-500' : 'text-slate-400'} />
+                                            <span className="text-[10px] font-black uppercase tracking-widest text-slate-700 hidden sm:block">Mode Mestre</span>
+                                        </div>
+                                        <div className="relative inline-block w-12 mr-2 align-middle select-none">
+                                            <input type="checkbox" aria-label="Activar mode mestre" checked={isGlobal} onChange={()=>setIsGlobal(!isGlobal)} className="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 border-slate-300 appearance-none cursor-pointer z-10 transition-all duration-300" />
+                                            <label className="toggle-label block overflow-hidden h-6 rounded-full bg-slate-300 cursor-pointer transition-all duration-300"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </nav>
+
+                        <div className={`w-full bg-emerald-950 text-white transition-all duration-500 overflow-hidden shadow-2xl border-b border-emerald-900 ${isGlobal ? 'max-h-32 py-8' : 'max-h-0 py-0'}`}>
+                            <div className="max-w-4xl mx-auto px-6 flex flex-col md:flex-row items-center gap-8">
+                                <div className="shrink-0 text-center md:text-left">
+                                    <div className="text-[10px] font-black text-emerald-500 uppercase tracking-widest mb-1">Domini Actiu</div>
+                                    <div className="text-4xl font-mono font-black tracking-tighter">N = {globalN}</div>
+                                </div>
+                                <input type="range" aria-label="Ajustar domini" min="100" max="1000" value={globalN} onChange={e => setGlobalN(Number(e.target.value))} className="w-full" />
+                            </div>
+                        </div>
+
+                        <header className="max-w-5xl mx-auto w-full pt-16 pb-12 px-6 text-center animate-fade-in-up">
+                            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-emerald-50 text-emerald-800 font-bold text-[11px] uppercase tracking-[0.2em] border border-emerald-100 shadow-sm mb-8">
+                                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" /> Data Room Aritmètic
+                            </div>
+                            <h1 className="text-4xl md:text-7xl font-black text-slate-900 tracking-tight mb-6 leading-tight">
+                                Laboratori <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">Aritmètic</span>
+                            </h1>
+                            <p className="text-lg md:text-xl text-slate-500 font-medium max-w-2xl mx-auto leading-relaxed">
+                                Entorn d'investigació in-silico. Anàlisi de distribució prima i extracció asimptòtica de factors.
+                            </p>
+                        </header>
+
+                        <main 
+                            className="w-full max-w-7xl mx-auto px-6 relative z-10 flex-1 flex flex-col animate-fade-in-up" 
+                            style={{animationDelay: '0.2s'}}
+                            onMouseEnter={() => setIsHovered(true)}
+                            onMouseLeave={() => setIsHovered(false)}
+                            onTouchStart={() => setIsHovered(true)}
+                            onTouchEnd={() => setIsHovered(false)}
+                        >
+                            <div className="relative w-full flex items-center justify-center">
+                                <button aria-label="Mòdul anterior" onClick={prevSlide} className="absolute -left-4 lg:-left-8 z-[100] w-12 h-12 lg:w-16 lg:h-16 bg-white hover:bg-emerald-500 text-slate-600 hover:text-white rounded-full flex items-center justify-center shadow-2xl border border-slate-100 transition-all hover:scale-110">
+                                    <Icons.ChevronLeft />
+                                </button>
+
+                                <div className="overflow-hidden w-full py-6 z-10">
+                                    <div className="flex transition-transform duration-1000 cubic-bezier(0.16, 1, 0.3, 1)" style={{ transform: `translateX(-${activeSlide * 100}%)` }}>
+                                        {MÒDULS.map((mod, idx) => {
+                                            const ModComponent = mod.Component;
+                                            return (
+                                                <div key={idx} className="w-full shrink-0 px-4" aria-hidden={activeSlide !== idx}>
+                                                    <CarouselCard title={mod.title} equationNode={mod.equation} infoText={mod.info}>
+                                                        <ModComponent />
+                                                    </CarouselCard>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+
+                                <button aria-label="Mòdul següent" onClick={nextSlide} className="absolute -right-4 lg:-right-8 z-[100] w-12 h-12 lg:w-16 lg:h-16 bg-white hover:bg-emerald-500 text-slate-600 hover:text-white rounded-full flex items-center justify-center shadow-2xl border border-slate-100 transition-all hover:scale-110">
+                                    <Icons.ChevronRight />
+                                </button>
+                            </div>
+
+                            <div className="flex justify-center gap-4 mt-8 flex-wrap">
+                                {MÒDULS.map((_, idx) => (
+                                    <button 
+                                        key={idx} 
+                                        aria-label={`Anar a la diapositiva ${idx + 1}`}
+                                        aria-current={activeSlide === idx}
+                                        onClick={() => setActiveSlide(idx)} 
+                                        className={`transition-all duration-300 rounded-full h-3 focus:outline-none ${activeSlide === idx ? 'w-12 bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]' : 'w-3 bg-slate-300 hover:bg-slate-400'}`} 
+                                    />
+                                ))}
+                            </div>
+                        </main>
+
+                        {/* GATELLET DE L'EASTER EGG (4 Clics) */}
+                        <footer className="max-w-4xl mx-auto w-full px-4 mt-20 pt-10 pb-4 text-center animate-fade-in-up" style={{animationDelay: '0.4s'}}>
+                            <div 
+                                onClick={handleSecretTrigger}
+                                className="cursor-pointer inline-flex items-center gap-4 bg-white/40 px-10 py-5 rounded-full border border-slate-200 text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] hover:bg-white hover:text-emerald-600 transition-all shadow-sm group active:scale-95 select-none"
+                            >
+                                <span>VMA</span><span className="w-1.5 h-1.5 rounded-full bg-slate-200 group-hover:bg-emerald-400 transition-colors"></span><span>The Math is the Moat</span>
+                            </div>
+                        </footer>
+                    </div>
+                </MathContext.Provider>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
