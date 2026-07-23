@@ -40,3 +40,8 @@ python gemelo_grupo_zz3.py --T 30 --K 80
 - [XFI](../XFI.md)
 - [33×1 qué es](../33x1/00_QUE_ES_33x1.md)
 - Pack rescat: [VMA_mates_rescat_2026/](../VMA_mates_rescat_2026/)
+
+## Meta
+
+- [DE_ON_VE_TOT_AIXO.md](./DE_ON_VE_TOT_AIXO.md) — d'on surt tot, què deien les IAs, criteris d'honestedat
+
