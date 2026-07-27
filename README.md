@@ -58,15 +58,33 @@ ELLOS  ──firman 33 años de paz──►  a cambio de  ◄── VMA ofrece 
 | Métodos | `vma-methods/`, `Metodo Newton Rápido/`, `teoremas/`, `VMA_mates_rescat_2026/` |
 | Libros | `Libro1…` … `Libro6…` |
 
-## Convención de commits
+## Convención de commits (regla A — un commit por carpeta)
 
-Los mensajes de commit deben **nombrar la carpeta** y **resumir su contenido**, por ejemplo:
+**Un commit = una carpeta de primer nivel.** El mensaje nombra la carpeta y describe su contenido o el cambio.
+
+| Campo | Regla |
+|-------|--------|
+| **Ámbito** | Solo archivos de **una** carpeta (p. ej. `web-aleatorovix/`) |
+| **Asunto** | `tipo(carpeta): resumen corto` |
+| **Cuerpo** | Qué es la carpeta / qué contiene / qué cambió |
+| **Excepción** | Raíz (`README.md`, `MAPA.md`, `FOLDERS.md`) → ámbito `raiz` o el nombre del archivo |
+
+**Tipos:** `feat` · `fix` · `docs` · `chore` · `refactor`
+
+**Ejemplos:**
 
 ```
-docs(MAPA): mapa temático + README por carpeta (qué es y qué hay dentro)
-feat(web-aleatorovix): motor JS sin Math.random + UI del ramo para techamv
-fix(01_cribas): fase modular 6k±1 en pack VMA_mates_rescat_2026
+docs(33x1): trato 1=repo civil por 33 años de paz firmada por países
+feat(web-aleatorovix): motor JS sin Math.random + UI del ramo + favicons leona
+fix(VMA_mates_rescat_2026/01_cribas): fase modular 6k±1 (2p/4p)
+chore(techamv-aleatorovix-DEPLOY): pack FTP index + js + iconos para techamv.com
+docs(raiz): MAPA temático + FOLDERS alfabético
 ```
+
+**No hacer:** un commit que mezcle `antipc/` + `Quijote/` + `33x1/` sin necesidad.  
+Si tocas varias carpetas → **varios commits** (uno por carpeta).
+
+Detalle y checklist para el autor / agentes: **[COMMITS.md](COMMITS.md)**
 
 Regenerar mapa e índices:
 

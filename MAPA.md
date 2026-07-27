@@ -190,13 +190,15 @@ Este mapa agrupa las carpetas de **primer nivel** por tema. Cada carpeta tiene u
 
 ---
 
-## Convención de commits
+## Convención de commits (regla A)
 
-Cuando se añade o reordena una carpeta, el mensaje de commit debe decir **qué carpeta es** y **qué contiene**, por ejemplo:
+**Un commit = una carpeta.** El mensaje nombra la carpeta y describe contenido o cambio.  
+Detalle y checklist: **[COMMITS.md](COMMITS.md)**.
 
 ```
 docs(VMA_mates_rescat_2026): pack mates — cribas fix, MDC, XFI N=3
 feat(web-aleatorovix): motor JS sin Math.random + UI del ramo
+docs(raiz): MAPA + FOLDERS + COMMITS
 ```
 
 Regenerar este mapa:
