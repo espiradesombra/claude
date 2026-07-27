@@ -48,6 +48,14 @@ RUN_COMPARADOR.bat
 REM o: python benchmark_cribas.py --quick
 ```
 
+**Demo como sale-it (1 página + guion 2 min):**
+
+| Archivo | Contenido |
+|---------|-----------|
+| [`01_cribas/LEEME_DEMO_1_PAGINA.txt`](../VMA_mates_rescat_2026/01_cribas/LEEME_DEMO_1_PAGINA.txt) | Hoja de demo |
+| [`01_cribas/GUION_DEMO_2_MINUTOS.txt`](../VMA_mates_rescat_2026/01_cribas/GUION_DEMO_2_MINUTOS.txt) | Texto hablado |
+| Página wiki | [Demo-oficial-Cribas](Demo-oficial-Cribas) |
+
 - Teoría: `01_cribas/TEORIA_CRIBAS.md`  
 - Métodos: desmemoriada, modular6k, híbrida, segmentada, Eratóstenes, rueda 6k±1, trial  
 

@@ -38,10 +38,11 @@ Monorepo civil de matemáticas (cribas, MDC, Newton, Goldbach…), AntiPC, Aleat
 | Prioridad | Carpeta / página | Por qué |
 |:---------:|------------------|---------|
 | **1** | **[Demo oficial Sale-It](Demo-oficial-Sale-It)** → `sale-it/` | Producto con bats, K3 y benchmark A–E medido |
-| **2** | `techamv-aleatorovix-DEPLOY/` | Pack FTP mínimo para techamv.com |
-| **3** | `vma-methods/` | Mates por CLI en un minuto |
-| **4** | `VMA_mates_rescat_2026/` | Pack mates limpio con tests |
-| **5** | Resto del monorepo | Corpus / histórico — no es la demo |
+| **2** | **[Demo oficial Cribas](Demo-oficial-Cribas)** → `…/01_cribas/` | Comparador VMA vs Eratóstenes + teoría + guion |
+| **3** | `techamv-aleatorovix-DEPLOY/` | Pack FTP mínimo para techamv.com |
+| **4** | `vma-methods/` | Mates por CLI en un minuto |
+| **5** | `VMA_mates_rescat_2026/` | Pack mates limpio (resto de subcarpetas) |
+| **6** | Resto del monorepo | Corpus / histórico — no es la demo |
 
 **No** priorizar rescatar “monton viejo” ni duplicados de `subir/`: casi todo lo usable **ya está** en GitHub; el ROI está en **demostrar y empaquetar**, no en re-subir zips.
 
