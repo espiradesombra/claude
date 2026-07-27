@@ -1,44 +1,25 @@
 # desktop-snapshot
 
-Instantánea de archivos clave del Escritorio (HTML Aleatorovix, mapas, guías).
+**Instantánea** de archivos sueltos del Escritorio que conviene tener en el monorepo sin mezclarlos con el pack web canónico.
 
-**Tema:** Archivo
+Autor: VMA · referencia de trabajo, no siempre la versión “de producción”.
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `desktop-snapshot/`
+## Qué contiene esta carpeta
 
-## Contenido
+| Archivo | Contenido |
+|---------|-----------|
+| `index-aleatorovix-techamv.html` | Copia HTML del ramo (referencia) |
+| `aleatorovix.js` | Copia del motor (puede ir **detrás** de `web-aleatorovix/`) |
+| `COMO_SUBIR_TECHAMV.txt` | Guía FTP / Nominalia para techamv.com |
+| `MAPA_VIEJO_Y_V.txt` | Mapa viejo del PC / notas de organización |
+| `Nuevo Documento de texto (32).txt` | Notas de sesión / borrador |
 
-- **Archivos totales (aprox., recursivo):** 5
-- **En la raíz de la carpeta:** 5
-- **Subcarpetas (primer nivel):** 0
+## Canónico (usar esto para publicar)
 
-### Extensiones (recursivo, top)
-- `.txt`: 3
-- `.js`: 1
-- `.html`: 1
+| Uso | Carpeta |
+|-----|---------|
+| Web completa + demos | [`../web-aleatorovix/`](../web-aleatorovix/) |
+| Pack FTP mínimo | [`../techamv-aleatorovix-DEPLOY/`](../techamv-aleatorovix-DEPLOY/) |
+| Mapa monorepo | [`../MAPA.md`](../MAPA.md) |
 
-### Subcarpetas
-_ninguna_
-
-### Archivos en la raíz de esta carpeta
-- `aleatorovix.js`
-- `COMO_SUBIR_TECHAMV.txt`
-- `index-aleatorovix-techamv.html`
-- `MAPA_VIEJO_Y_V.txt`
-- `Nuevo Documento de texto (32).txt`
-
-## Notas
-
-- Parte del ecosistema **VMA / 33×1 / AntiPC / Aleatorovix / ZypyZape / K3**.
-- Prioridad del monorepo: **33×1** (el **1** = todo el repo civil).
-- No subir secretos (claves FTP, tokens, datos personales) a commits futuros.
-
-## Enlaces relacionados
-
-- Mapa temático: [MAPA.md](../MAPA.md)
-- Índice alfabético: [FOLDERS.md](../FOLDERS.md)
-- README raíz: [README.md](../README.md)
-- 33×1: [33x1/](../33x1/)
-
----
-*README generado para navegación del monorepo. Editar libremente.*
+Si `aleatorovix.js` aquí y en `web-aleatorovix/` no coinciden, **gana** `web-aleatorovix/`.
