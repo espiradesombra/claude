@@ -1,39 +1,31 @@
-# techamv-aleatorovix-DEPLOY — pack FTP mínimo
+# techamv-aleatorovix-DEPLOY
 
-Copia mínima para subir por FTP a techamv.com: index.html + aleatorovix/aleatorovix.js (+ iconos).
+**Pack mínimo para publicar el ramo Aleatorovix en [techamv.com](https://techamv.com)** (FTP / panel del hosting).
 
-**Tema:** Web / deploy
+Autor: Víctor Manzanares Alberola · espiradesombra · VMA / 33×1
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `techamv-aleatorovix-DEPLOY/`
+## Qué contiene esta carpeta
 
-## Contenido
+| Ruta | Contenido |
+|------|-----------|
+| `index.html` | Página del ramo ❤️🌹 (UI, modos, número del destino) |
+| `aleatorovix/aleatorovix.js` | Motor en el navegador **sin `Math.random`** (máscara Lila + entropía) |
+| `favicon-*.png` / `favicon.ico` | Iconos del sitio (leona) 16–512 px |
+| `leona-icon-512.png` | Icono grande / WordPress site icon |
+| `COMO_SUBIR_TECHAMV.txt` | Pasos Nominalia/FTP para subir este pack |
+| `README.md` | Este archivo |
 
-- **Archivos totales (aprox., recursivo):** 2
-- **En la raíz de la carpeta:** 1
-- **Subcarpetas (primer nivel):** 1
+## Cómo se usa
 
-### Extensiones (recursivo, top)
-- `.html`: 1
-- `.js`: 1
+1. Copia de seguridad del `index.html` actual en el hosting.
+2. Sube **todo el contenido** de esta carpeta a la raíz pública (`public_html` / `www` / `httpdocs`).
+3. Debe quedar: `…/index.html` y `…/aleatorovix/aleatorovix.js`.
+4. Abre https://techamv.com y comprueba en F12 que no hay 404 del `.js`.
 
-### Subcarpetas
-- `aleatorovix`
+## Relación con el monorepo
 
-### Archivos en la raíz de esta carpeta
-- `index.html`
+- Código completo y demos: [`../web-aleatorovix/`](../web-aleatorovix/)
+- Organismo Python/C: [`../aleatorovix/`](../aleatorovix/)
+- Mapa del monorepo: [`../MAPA.md`](../MAPA.md)
 
-## Notas
-
-- Parte del ecosistema **VMA / 33×1 / AntiPC / Aleatorovix / ZypyZape / K3**.
-- Prioridad del monorepo: **33×1** (el **1** = todo el repo civil).
-- No subir secretos (claves FTP, tokens, datos personales) a commits futuros.
-
-## Enlaces relacionados
-
-- Mapa temático: [MAPA.md](../MAPA.md)
-- Índice alfabético: [FOLDERS.md](../FOLDERS.md)
-- README raíz: [README.md](../README.md)
-- 33×1: [33x1/](../33x1/)
-
----
-*README generado para navegación del monorepo. Editar libremente.*
+**No** subas secretos FTP al Git. Este pack es solo estáticos públicos.
