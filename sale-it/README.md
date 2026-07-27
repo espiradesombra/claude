@@ -1,52 +1,19 @@
-# sale-it — go-to-market
+# sale-it — go-to-market AntiPC / VMA
 
-Material de venta / go-to-market (scripts, bat, textos).
-
-**Tema:** VMA / industrial
+Material de **venta y producto**: ficha, licencia, scripts de demo y runtime de referencia.
 
 **Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `sale-it/`
 
-## Contenido
+## Qué contiene esta carpeta
 
-- **Archivos totales (aprox., recursivo):** 79
-- **En la raíz de la carpeta:** 7
-- **Subcarpetas (primer nivel):** 4
+| Pieza | Contenido |
+|-------|-----------|
+| `FICHA_PRODUCTO.txt, PRODUCT_SHEET_EN.txt, LICENCIA.txt` | Producto y licencia |
+| `INICIO.bat, LEEME.txt, MANIFEST.txt` | Arranque e inventario |
+| `src/, scripts/, docs/, referencia/` | Código, scripts, docs y k3hash de referencia |
 
-### Extensiones (recursivo, top)
-- `.py`: 45
-- `.txt`: 13
-- `.bat`: 13
-- `.hpp`: 4
-- `.h`: 2
-- `.md`: 1
-- `.c`: 1
+## Enlaces
 
-### Subcarpetas
-- `docs`
-- `referencia`
-- `scripts`
-- `src`
-
-### Archivos en la raíz de esta carpeta
-- `FICHA_PRODUCTO.txt`
-- `INICIO.bat`
-- `LEEME.txt`
-- `LICENCIA.txt`
-- `PRODUCT_SHEET_EN.txt`
-- `README_EN.txt`
-
-## Notas
-
-- Parte del ecosistema **VMA / 33×1 / AntiPC / Aleatorovix / ZypyZape / K3**.
-- Prioridad del monorepo: **33×1** (el **1** = todo el repo civil).
-- No subir secretos (claves FTP, tokens, datos personales) a commits futuros.
-
-## Enlaces relacionados
-
-- Mapa temático: [MAPA.md](../MAPA.md)
-- Índice alfabético: [FOLDERS.md](../FOLDERS.md)
-- README raíz: [README.md](../README.md)
-- 33×1: [33x1/](../33x1/)
-
----
-*README generado para navegación del monorepo. Editar libremente.*
+- Mapa monorepo: [`../MAPA.md`](../MAPA.md)
+- 33×1: [`../33x1/`](../33x1/)
+- Índice: [`../FOLDERS.md`](../FOLDERS.md)
