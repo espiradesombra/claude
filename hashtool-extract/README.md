@@ -1,44 +1,17 @@
-# hashtool-extract — extractos hash/K3
+# hashtool-extract — extractos HASHCODETOOLS
 
-Extracción y material de referencia de herramientas hash / K3.
-
-**Tema:** K3 / cifrado
+Extracción del pack HASHCODETOOLS (fuentes, zips, READMEs) para auditoría o reempaquetado.
 
 **Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `hashtool-extract/`
 
-## Contenido
+## Qué contiene esta carpeta
 
-- **Archivos totales (aprox., recursivo):** 34
-- **En la raíz de la carpeta:** 0
-- **Subcarpetas (primer nivel):** 1
+| Pieza | Contenido |
+|-------|-----------|
+| `HASHCODETOOLS(L)(l)L(L)()/` | Árbol extraído del pack |
 
-### Extensiones (recursivo, top)
-- `.txt`: 9
-- `.c`: 9
-- `.zip`: 5
-- `.md`: 5
-- `.h`: 4
-- `(sin ext)`: 1
-- `.a`: 1
+## Enlaces
 
-### Subcarpetas
-- `HASHCODETOOLS(L)(l)L(L)()`
-
-### Archivos en la raíz de esta carpeta
-_ninguno listable_ o solo subcarpetas
-
-## Notas
-
-- Parte del ecosistema **VMA / 33×1 / AntiPC / Aleatorovix / ZypyZape / K3**.
-- Prioridad del monorepo: **33×1** (el **1** = todo el repo civil).
-- No subir secretos (claves FTP, tokens, datos personales) a commits futuros.
-
-## Enlaces relacionados
-
-- Mapa temático: [MAPA.md](../MAPA.md)
-- Índice alfabético: [FOLDERS.md](../FOLDERS.md)
-- README raíz: [README.md](../README.md)
-- 33×1: [33x1/](../33x1/)
-
----
-*README generado para navegación del monorepo. Editar libremente.*
+- Mapa monorepo: [`../MAPA.md`](../MAPA.md)
+- 33×1: [`../33x1/`](../33x1/)
+- Índice: [`../FOLDERS.md`](../FOLDERS.md)
