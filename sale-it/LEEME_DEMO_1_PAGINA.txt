@@ -1,0 +1,68 @@
+================================================================================
+  AntiPC Sale-It v0.1 — DEMO OFICIAL EN 1 PÁGINA
+  Víctor Manzanares Alberola · monorepo claude · carpeta sale-it/
+  Lema: "Transforming communication into computation."
+================================================================================
+
+QUÉ ES (30 segundos)
+  Paquete demostrable de AntiPC: la red no solo mueve bytes; puede reducir
+  trabajo de ALU reutilizando conocimiento K(N) y coordinando hubs.
+  Fórmula:  P_util(N) = N · E(N) + K(N)
+
+QUÉ HAY EN ESTA CARPETA
+  scripts\     one-click Windows (instalar, bench A-D, bench A-E UDP, K3…)
+  src\antipc\  motor Python (benchmark, UDP, Grafcet, K3)
+  docs\        marco científico
+  referencia\  k3hash de referencia
+  FICHA_PRODUCTO.txt / PRODUCT_SHEET_EN.txt / LICENCIA.txt
+  RESULTADOS_DEMO_PC_2026-07-27.txt   ← números de la última demo en este PC
+  LEEME.txt    guía completa
+
+REQUISITOS
+  Windows 10/11 · Python 3.10+ (probado 3.12) · sin pip extra
+
+DEMO EN 3 PASOS (doble clic o terminal)
+  1) scripts\01_instalar.bat          → comprueba Python
+  2) scripts\05_verificar_k3.bat      → 5 digests K3 [OK]
+  3) scripts\03_benchmark_udp.bat     → arquitecturas A…E (el bueno es E)
+
+  Manual equivalente:
+    cd sale-it\src\antipc
+    python verify_k3.py
+    python benchmark.py --udp --packets 1000 --payload 64 --hubs 4
+
+RESULTADOS DE REFERENCIA (este PC, 2026-07-27)
+  K3:           5/5 OK (port Python del k3hash.c)
+  Bench A–E:    ganador E (UDP real, 4 hubs)
+                thr 1591 pkt/s vs A 843 pkt/s
+                ALU relativa E = 53% de A  →  ~47% menos tiempo ALU
+  Demo v0.1.0:  26.6% ALU ahorrada (500 ops, knowledge hits 133)
+
+  Detalle completo: RESULTADOS_DEMO_PC_2026-07-27.txt
+
+QUÉ DECIRLE A UN TERCERO
+  - “Corre el bat 03 y mira la fila E: más pkt/s y menos ALU relativa.”
+  - “K3 se verifica bit a bit con verify_k3.py.”
+  - “Es prototipo Python reproducible; el roadmap industrial es C++/DPDK
+     (nivel 3 de la ficha de producto), no este zip solo.”
+
+QUÉ NO PROMETER
+  - Números absolutos de datacenter / DPDK
+  - Que C/D siempre ganen a A en thr (en un solo proceso Python a veces no)
+  - Que sin firewall/localhost el UDP falle: si falla PING, reintentar;
+    en esta rama ya hay wait más largo al arrancar hubs
+
+OTRAS DEMOS DEL MONOREPO (si sobra tiempo)
+  vma-methods\          cribas / Criva / Newton por CLI
+  web-aleatorovix\      ramo sin Math.random (local)
+  techamv-aleatorovix-DEPLOY\   pack FTP techamv.com
+  VMA_mates_rescat_2026\        pack mates limpio
+
+33×1
+  Este pack es parte del “1” civil del monorepo. Uso civil/educativo.
+  Ver ../33x1/02_USO_CIVIL.txt
+
+================================================================================
+  Arranque preferido:  scripts\03_benchmark_udp.bat
+  Números de esta máquina:  RESULTADOS_DEMO_PC_2026-07-27.txt
+================================================================================

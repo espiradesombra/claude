@@ -1,0 +1,73 @@
+================================================================================
+  AntiPC Sale-It — RESULTADOS DE DEMO EN ESTE PC
+  Fecha: 2026-07-27
+  PC: Windows · Python 3.12.0 · monorepo claude / sale-it
+  Carpeta: sale-it/src/antipc
+================================================================================
+
+1) ENTORNO
+--------------------------------------------------------------------------------
+  Python              : 3.12.0  [OK >= 3.10]
+  verify_k3.py        : 5/5 digests [OK] (backend Python, sin DLL nativa)
+  Nota K3             : paridad engine=python en todos los vectores de prueba
+
+
+2) BENCHMARK A–D  (sin UDP)
+   comando: python benchmark.py --packets 2000 --payload 128 --hubs 4
+--------------------------------------------------------------------------------
+  Arquitectura                         pkt     tiempo    thr     ALU rel.  K hits
+  A  Convencional (memcpy+cola)     2000/2000  3.47 s   576/s   100.0%      —
+  B  Lock-free ring buffer          1194/2000  2.01 s   595/s    57.7%      —
+  C  Distribuido 4 hubs             2000/2000  6.62 s   302/s   190.6%    170
+  D  Grafcet+existencia+redund.     2000/2000  6.21 s   322/s   178.9%    170
+
+  Mejor (A–D en esta corrida): B — 42.3% menos tiempo ALU vs A
+  Nota: C/D aquí salen peores en thr/ALU (overhead de simulación en un solo
+  proceso Python). No confundir con E (UDP real). B no procesó todos los
+  paquetes (1194/2000) por diseño del ring en esta implementación.
+
+
+3) BENCHMARK A–E  (con UDP real)
+   comando: python benchmark.py --udp --packets 1000 --payload 64 --hubs 4
+--------------------------------------------------------------------------------
+  Arquitectura                         pkt     tiempo    thr     ALU rel.  K hits
+  A  Convencional                   1000/1000  1.19 s   843/s   100.0%      —
+  B  Lock-free ring                 1000/1000  1.08 s   922/s    91.4%      —
+  C  Distribuido 4 hubs             1000/1000  1.90 s   526/s   160.2%     88
+  D  Grafcet+existencia             1000/1000  1.79 s   558/s   150.9%     88
+  E  UDP real 4 hubs                1000/1000  0.63 s  1591/s    53.0%      —
+
+  Mejor (A–E): E — UDP real
+  Mejora vs A: 47.0% menos tiempo ALU
+  Throughput E / A ≈ 1.9×  (1591 vs 843 pkt/s)
+
+
+4) DEMO v0.1.0 Flow Kernel (demo_v010.py)
+--------------------------------------------------------------------------------
+  Modo BATTERY · 500 operaciones
+  Ejecutadas ALU     : 367
+  Knowledge hits     : 133 / 500
+  Event coalescing   : 133
+  Tiempo             : 0.14 s
+  ALU ahorrada       : 26.6%
+
+
+5) INCIDENCIA CORREGIDA EN ESTA SESIÓN
+--------------------------------------------------------------------------------
+  Fallo: hub on port 19701 did not respond to PING (arranque UDP en Windows)
+  Fix:   sale-it/src/antipc/udp_benchmark.py
+         - sleep 0.3 → 1.0 s al spawnear hubs
+         - reintento PING hasta 5 s
+  Tras el fix, arquitectura E completa OK.
+
+
+6) MENSAJE HONESTO PARA TERCEROS
+--------------------------------------------------------------------------------
+  - Lo demostrable en 2 minutos: K3 OK + benchmark A–E con E ganando ~47% ALU.
+  - Es prototipo Python en localhost: números relativos, no DPDK/C++ en producción.
+  - Fórmula: P_util(N) = N · E(N) + K(N)
+  - Pack de venta: esta carpeta sale-it/ (ficha + scripts + licencia).
+
+================================================================================
+  Fin del informe
+================================================================================
