@@ -1,38 +1,19 @@
 # siguiente_primo
 
-Búsqueda / validación del siguiente primo (fixes de paridad y fase).
-
-**Tema:** Métodos / mates
+Notas LEEME de la búsqueda del **siguiente primo** (wheel / fase); implementación canónica en el pack mates y AntiPC CLI.
 
 **Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `siguiente_primo/`
 
-## Contenido
+## Qué contiene esta carpeta
 
-- **Archivos totales (aprox., recursivo):** 1
-- **En la raíz de la carpeta:** 1
-- **Subcarpetas (primer nivel):** 0
+| Pieza | Contenido |
+|-------|-----------|
+| `LEEME.txt` | Descripción y uso |
 
-### Extensiones (recursivo, top)
-- `.txt`: 1
+Ver también `VMA_mates_rescat_2026/05_sofi_fermat_goldbach/`.
 
-### Subcarpetas
-_ninguna_
+## Enlaces
 
-### Archivos en la raíz de esta carpeta
-- `LEEME.txt`
-
-## Notas
-
-- Parte del ecosistema **VMA / 33×1 / AntiPC / Aleatorovix / ZypyZape / K3**.
-- Prioridad del monorepo: **33×1** (el **1** = todo el repo civil).
-- No subir secretos (claves FTP, tokens, datos personales) a commits futuros.
-
-## Enlaces relacionados
-
-- Mapa temático: [MAPA.md](../MAPA.md)
-- Índice alfabético: [FOLDERS.md](../FOLDERS.md)
-- README raíz: [README.md](../README.md)
-- 33×1: [33x1/](../33x1/)
-
----
-*README generado para navegación del monorepo. Editar libremente.*
+- Mapa monorepo: [`../MAPA.md`](../MAPA.md)
+- 33×1: [`../33x1/`](../33x1/)
+- Índice: [`../FOLDERS.md`](../FOLDERS.md)
