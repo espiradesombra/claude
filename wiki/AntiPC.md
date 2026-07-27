@@ -24,11 +24,20 @@
 | `sale-it/` | Ficha producto, licencia, demos go-to-market |
 | `ideas-para-gpt-antipc/` | Roadmaps históricos y pack ejecutable grande |
 
-## Entrada práctica
+## Entrada práctica (recomendado)
+
+**Demo de producto:** carpeta [`sale-it/`](../sale-it/) — ver wiki [Demo-oficial-Sale-It](Demo-oficial-Sale-It).
+
+```bat
+cd sale-it\scripts
+03_benchmark_udp.bat
+```
+
+Motor completo (más grande):
 
 ```bat
 cd antipc
-REM ver LEEME.txt e INICIO.bat / antipc.cmd
+REM LEEME.txt · INICIO.bat · antipc.cmd
 ```
 
 README industrial largo: `antipc/README.md`.

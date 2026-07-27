@@ -33,10 +33,25 @@ Monorepo civil de matemáticas (cribas, MDC, Newton, Goldbach…), AntiPC, Aleat
 
 ---
 
+## Qué usar YA (criterio del monorepo)
+
+| Prioridad | Carpeta / página | Por qué |
+|:---------:|------------------|---------|
+| **1** | **[Demo oficial Sale-It](Demo-oficial-Sale-It)** → `sale-it/` | Producto con bats, K3 y benchmark A–E medido |
+| **2** | `techamv-aleatorovix-DEPLOY/` | Pack FTP mínimo para techamv.com |
+| **3** | `vma-methods/` | Mates por CLI en un minuto |
+| **4** | `VMA_mates_rescat_2026/` | Pack mates limpio con tests |
+| **5** | Resto del monorepo | Corpus / histórico — no es la demo |
+
+**No** priorizar rescatar “monton viejo” ni duplicados de `subir/`: casi todo lo usable **ya está** en GitHub; el ROI está en **demostrar y empaquetar**, no en re-subir zips.
+
+---
+
 ## Por dónde empezar (ruta de 5 minutos)
 
 | Orden | Ir a | Para qué |
 |------:|------|----------|
+| 0 | [Demo oficial Sale-It](Demo-oficial-Sale-It) | Correr algo con números |
 | 1 | [33x1](33x1) | Entender el trato |
 | 2 | [Mapa-del-monorepo](Mapa-del-monorepo) | Ver ejes y carpetas |
 | 3 | [Como-navegar](Como-navegar) | README por carpeta, FOLDERS, commits |

@@ -3,6 +3,7 @@
 **[Home](Home)**
 
 ### Empezar
+- [**Demo oficial Sale-It**](Demo-oficial-Sale-It)
 - [33×1](33x1)
 - [Mapa del monorepo](Mapa-del-monorepo)
 - [Cómo navegar](Como-navegar)
@@ -18,6 +19,7 @@
 - [Paquetes y ejecución](Paquetes-y-ejecucion)
 
 ### Meta
+- [Criterio de trabajo](Criterio-de-trabajo)
 - [Glosario](Glosario)
 - [Publicar en GitHub Wiki](Publicar-en-GitHub-Wiki)
 - [Qué no subir](Que-no-subir)
