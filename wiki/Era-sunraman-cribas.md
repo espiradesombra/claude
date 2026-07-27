@@ -40,6 +40,17 @@ cd VMA_mates_rescat_2026\01_cribas
 python -c "from cribas import comparar_cribas; comparar_cribas(500)"
 ```
 
+**Comparador completo (benchmark + teoría + CSV):**
+
+```bat
+cd VMA_mates_rescat_2026\01_cribas
+RUN_COMPARADOR.bat
+REM o: python benchmark_cribas.py --quick
+```
+
+- Teoría: `01_cribas/TEORIA_CRIBAS.md`  
+- Métodos: desmemoriada, modular6k, híbrida, segmentada, Eratóstenes, rueda 6k±1, trial  
+
 Pseudocodi legible:
 
 ```bat
