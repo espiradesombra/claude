@@ -1,62 +1,40 @@
-# 33×1 — el trato
+# 33×1 — el trato (léelo primero)
 
-Definición del trato: el **1** es TODO este monorepo civil; el **33** son 33 años de paz firmada por los países. Uso civil, comandos, manifiesto de hashes.
+> **33×1 = cambiar el “1” (TODO este repositorio técnico civil)  
+> por “33” (treinta y tres años de paz FIRMADA por los países — ellos).**
 
-**Tema:** 33×1 (prioridad)
+| | |
+|--|--|
+| **[1]** | Este monorepo entero: código, demos, mates, energía, K3, docs — aval **civil** y auditable |
+| **[33]** | 33 años de **paz firmada por los Estados / potencias / países** que acepten el marco |
 
-**Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `33x1/`
+- Quién ofrece el **1**: VMA (conocimiento civil).  
+- Quién firma el **33**: **ellos** (países). No lo firma un chat ni una IA.  
+- Uso: **civil / educativo. No militar.**
 
-## Contenido
+## Qué contiene esta carpeta
 
-- **Archivos totales (aprox., recursivo):** 21
-- **En la raíz de la carpeta:** 21
-- **Subcarpetas (primer nivel):** 0
+| Archivo | Contenido |
+|---------|-----------|
+| `00_QUE_ES_33x1.md` | Definición del trato |
+| `00_AHORA.txt` | Estado / ahora |
+| `00_PROMPT_DEFINITIVO_33x1.md` | Prompt y marco del plan |
+| `01_INDICE_TECNICO.txt` | Índice técnico del **1** |
+| `02_USO_CIVIL.txt` | Uso civil obligatorio |
+| `03_COMANDOS.txt` | Comandos / operativa |
+| `04_MEDIOS.txt` | Medios y canales |
+| `05_DECLARACIO_33x1_GROK_WORLD.txt` | Declaración mundial + rol Grok |
+| `06_FOR_THE_WORLD_33x1.md` | America/world, Tesla·xAI, nuclear → inercia civil |
+| `MANIFIESTO_HASHES.json` + `generar_manifiesto.py` | Integridad del pack |
+| `El_Que_Ja_Tenim_VMA_2026.docx`, `Inercia_…`, `Kuramoto_…`, `ZypyZape_…` | Docs canónicos |
+| `ABRIR_GUI.bat`, `gemini-code-*.html` | Utilidades / anexos |
+| `1477.md` | Hilo 1477 |
 
-### Extensiones (recursivo, top)
-- `.txt`: 9
-- `.md`: 4
-- `.docx`: 4
-- `.bat`: 1
-- `.html`: 1
-- `.py`: 1
-- `.json`: 1
+## Empieza por
 
-### Subcarpetas
-_ninguna_
+1. [`00_QUE_ES_33x1.md`](00_QUE_ES_33x1.md)  
+2. [`02_USO_CIVIL.txt`](02_USO_CIVIL.txt)  
+3. [`06_FOR_THE_WORLD_33x1.md`](06_FOR_THE_WORLD_33x1.md)  
+4. Mapa del monorepo: [`../MAPA.md`](../MAPA.md)
 
-### Archivos en la raíz de esta carpeta
-- `00_AHORA.txt`
-- `00_PROMPT_DEFINITIVO_33x1.md`
-- `00_QUE_ES_33x1.md`
-- `01_INDICE_TECNICO.txt`
-- `02_USO_CIVIL.txt`
-- `03_COMANDOS.txt`
-- `04_MEDIOS.txt`
-- `05_DECLARACIO_33x1_GROK_WORLD.txt`
-- `06_FOR_THE_WORLD_33x1.md`
-- `1477.md`
-- `ABRIR_GUI.bat`
-- `El_Que_Ja_Tenim_VMA_2026.docx`
-- `gemini-code-1784049033991.html`
-- `Inercia_Gravetat_Girs_VMA_2026.docx`
-- `INVENTARIO_grok_y_zip.txt`
-- `INVENTARIO_monton_viejo_revisar.txt`
-- `Kuramoto_ZypyZape_VMA_2026.docx`
-- `PAPER_33x1_IRONIA.txt`
-- `ZypyZape_Quijote_1_3Angular_2026.docx`
-
-## Notas
-
-- Parte del ecosistema **VMA / 33×1 / AntiPC / Aleatorovix / ZypyZape / K3**.
-- Prioridad del monorepo: **33×1** (el **1** = todo el repo civil).
-- No subir secretos (claves FTP, tokens, datos personales) a commits futuros.
-
-## Enlaces relacionados
-
-- Mapa temático: [MAPA.md](../MAPA.md)
-- Índice alfabético: [FOLDERS.md](../FOLDERS.md)
-- README raíz: [README.md](../README.md)
-- 33×1: [33x1/](../33x1/)
-
----
-*README generado para navegación del monorepo. Editar libremente.*
+El **1** no es solo esta carpeta: es **todo** [espiradesombra/claude](https://github.com/espiradesombra/claude).
