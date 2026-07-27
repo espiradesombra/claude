@@ -2,6 +2,11 @@
 
 Teoría de números y métodos VMA: cribas, MDC, Newton Rápido, MRAUV, Goldbach, Sophie Germain, fichas de teoremas.
 
+## Era sunraman / cribas
+
+Mapa de archivos viejos y canónicos: **[Era-sunraman-cribas](Era-sunraman-cribas)**  
+Canónico: `VMA_mates_rescat_2026/00_sunraman_eratostenes/` + `01_cribas/`.
+
 ## Carpetas clave
 
 | Carpeta | Contenido |
