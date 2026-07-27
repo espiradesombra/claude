@@ -1,0 +1,142 @@
+================================================================================
+  GUION DE DEMO — 2 MINUTOS (Cribas VMA)
+  Autor: Víctor Manzanares Alberola · pack 01_cribas
+  Uso: leer en voz alta o memorizar por bloques · reloj en mano
+================================================================================
+
+ANTES DE ENTRAR (30 s, solo tú)
+  - Carpeta:  VMA_mates_rescat_2026\01_cribas\
+  - Python 3.10+
+  - Ten abiertos (o a un clic):
+        RUN_COMPARADOR.bat
+        TEORIA_CRIBAS.md   (por si preguntan)
+        LEEME_DEMO_1_PAGINA.txt
+  - No abras 119 carpetas. Solo 01_cribas (+ opcional 00_sunraman).
+
+PANTALLA
+  Ventana 1: explorador en 01_cribas
+  Ventana 2: terminal con la salida del comparador
+
+
+--------------------------------------------------------------------------------
+  MINUTO 0:00 – 0:25   ·   ENGANCHE
+--------------------------------------------------------------------------------
+
+  «Esto es el pack de cribas VMA: tres maneras propias de generar primos,
+   más Eratóstenes como referencia de verdad.
+
+   No es solo “otro sieve”. Trabajamos la estructura 6k±1 — todo primo
+   mayor que 3 es de la forma 6k menos 1 o 6k más 1 — y una fase de
+   saltos 2p y 4p que, si se pone mal, se comen compuestos.
+
+   Hay un ancestro en pseudocódigo que llamamos sunraman; está en la
+   carpeta de al lado, el 00.»
+
+
+--------------------------------------------------------------------------------
+  MINUTO 0:25 – 0:50   ·   QUÉ HAY / TEORÍA MÍNIMA
+--------------------------------------------------------------------------------
+
+  «Tres cribas VMA:
+   - Desmemoriada: patrones de periodo 6p, menos remarcado ciego.
+   - Modular 6k±1: solo la rejilla interesante; saltos 2p/4p con fase.
+   - Híbrida: sube hasta la mitad y baja con residuos; también hay
+     versión por segmentos.
+
+   Fórmulas sunraman en una frase:
+   candidatos tipo 2n+3, compuestos producto de dos de esos.
+   Eso es la misma geometría que la modular.»
+
+
+--------------------------------------------------------------------------------
+  MINUTO 0:50 – 1:25   ·   ACCIÓN
+--------------------------------------------------------------------------------
+
+  (Ejecuta:)
+    RUN_COMPARADOR.bat
+  o:
+    python benchmark_cribas.py --quick
+
+  Mientras corre:
+
+  «El comparador hace dos cosas.
+   Primera: corrección. Cada método debe devolver exactamente los mismos
+   primos que Eratóstenes. Si sale una cruz, hay bug — no se discute
+   de velocidad.
+   Segunda: tiempo en milisegundos, mejor de varias corridas, y un CSV
+   para que lo reejecutéis en vuestra máquina.»
+
+
+--------------------------------------------------------------------------------
+  MINUTO 1:25 – 1:50   ·   NÚMEROS (este PC, 2026-07-27)
+--------------------------------------------------------------------------------
+
+  «En esta máquina, modo quick:
+
+   Hasta 500: las tres VMA y Eratóstenes dan 95 primos, todas correctas.
+   La Modular VMA ronda 0,04 ms; Eratóstenes 0,03.
+
+   Hasta 10.000: 1229 primos; Modular VMA unos 0,8 ms; Eratóstenes 0,45.
+   La desmemoriada es más lenta en Python puro: es didáctica.
+
+   Mensaje honesto: en CPython Eratóstenes suele ganar el reloj.
+   El valor de la Modular es la estructura y la fase 2p/4p correcta —
+   el port OpenMP en C es el camino de velocidad, no vender magia en py.»
+
+
+--------------------------------------------------------------------------------
+  MINUTO 1:50 – 2:00   ·   CIERRE
+--------------------------------------------------------------------------------
+
+  «Podéis repetir el bat sin instalar nada más que Python.
+   Teoría en TEORIA_CRIBAS.md; guion y hoja de una página en la misma
+   carpeta. Forma parte del monorepo civil 33×1 — uso civil.
+
+   Si queréis el siguiente nivel: compilar el anexo OpenMP o el port C
+   en antipc-port-c, y comparar otra vez.»
+
+
+================================================================================
+  CHEAT SHEET
+================================================================================
+
+  1 frase   Cribas VMA 6k±1 + validación exacta vs Eratóstenes
+  1 acción  RUN_COMPARADOR.bat  /  python benchmark_cribas.py --quick
+  1 fila    Todas ✓ · mejor VMA = Modular 6k±1
+  1 verdad  Eratóstenes suele ser más rápido en Python; VMA = estructura
+  1 ancestro  00_sunraman_eratostenes\sunraman_pseudocodi.txt
+
+
+================================================================================
+  FAQ CORTAS
+================================================================================
+
+  «¿Por qué desmemoriada va lenta?»
+  → Implementación didáctica en Python; el punto es el modelo de patrones.
+
+  «¿Qué es la fase 2p/4p?»
+  → Al marcar múltiplos de p≡±1 mod 6, el primer salto no es siempre 2p;
+    si fallas la fase, te dejas compuestos (ej. 77 con p=7).
+
+  «¿Dónde está sunraman?»
+  → Carpeta hermana 00_sunraman_eratostenes (docx + txt).
+
+  «¿Sirve para criptografía / RSA?»
+  → Es generación y estructura de primos / cribas; no es un kit RSA.
+    Uso civil del monorepo 33×1.
+
+  «¿Cómo lo reproduzco?»
+  → git clone monorepo · cd …/01_cribas · RUN_COMPARADOR.bat
+
+
+================================================================================
+  ORDEN SI TE PIDEN “MÁNDAMELO”
+================================================================================
+
+  1. LEEME_DEMO_1_PAGINA.txt
+  2. GUION_DEMO_2_MINUTOS.txt   (este)
+  3. TEORIA_CRIBAS.md
+  4. (opcional) un CSV de results/ generado en su PC
+  5. Carpeta 01_cribas completa del monorepo
+
+================================================================================

@@ -18,7 +18,16 @@
 
 Ancestro sunraman: [`../00_sunraman_eratostenes/`](../00_sunraman_eratostenes/)
 
-## Comparador (recomendado)
+## Demo oficial (empieza aquí)
+
+| Archivo | Uso |
+|---------|-----|
+| **[LEEME_DEMO_1_PAGINA.txt](LEEME_DEMO_1_PAGINA.txt)** | Demo en 1 página + mensaje a terceros |
+| **[GUION_DEMO_2_MINUTOS.txt](GUION_DEMO_2_MINUTOS.txt)** | Guion hablado minuto a minuto |
+| **[TEORIA_CRIBAS.md](TEORIA_CRIBAS.md)** | Teoría sunraman → modular / fase / híbrida |
+| `RUN_COMPARADOR.bat` | One-click benchmark |
+
+## Comparador (comandos)
 
 ```bat
 RUN_COMPARADOR.bat

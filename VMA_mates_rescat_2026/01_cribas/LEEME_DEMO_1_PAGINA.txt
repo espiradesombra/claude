@@ -1,0 +1,77 @@
+================================================================================
+  CRIBAS VMA — DEMO OFICIAL EN 1 PÁGINA
+  Víctor Manzanares Alberola · pack VMA_mates_rescat_2026/01_cribas
+  Lema: tres cribas propias + referencia Eratóstenes, correctez y tiempos.
+================================================================================
+
+QUÉ ES (30 segundos)
+  Comparador de cribas de generación de primos:
+    · Tres métodos VMA: Desmemoriada, Modular 6k±1, Híbrida (+ segmentada)
+    · Referencias: Eratóstenes clásico, rueda 6k±1, trial (L pequeños)
+  Cada método se valida: la lista de primos debe coincidir EXACTA con
+  Eratóstenes. Luego se miden milisegundos y se exporta CSV.
+
+  Cadena teórica:
+    sunraman → modular 6k±1 → OpenMP C → cribas.py / este comparador
+
+FÓRMULAS CLAVE (sunraman / modular)
+  Primos en rejilla:     2n+3  (cubre 6k±1)
+  Compuestos:            (2n+3)(2m+3) = 4mn+6m+6n+9
+  Fase de saltos:        p≡5(mod 6) arranca +2p; p≡1(mod 6) arranca +4p
+                         (si la fase falla, se saltan compuestos — fix 2026-07-23)
+
+QUÉ HAY EN ESTA CARPETA
+  cribas.py                 Las 3 cribas + comparar_cribas()
+  benchmark_cribas.py       Comparador full (tabla + CSV + TXT)
+  TEORIA_CRIBAS.md          Teoría legible
+  RUN_COMPARADOR.bat        Un clic
+  LEEME_DEMO_1_PAGINA.txt   Esta hoja
+  GUION_DEMO_2_MINUTOS.txt  Texto hablado
+  anexoF_criba6kpm1_openmp.c   Port C paralelo
+  ../00_sunraman_eratostenes/  Word + pseudocodi ancestro
+
+REQUISITOS
+  Python 3.10+ (probado 3.12) · sin pip extra · Windows/Linux/macOS
+
+DEMO EN 2 PASOS
+  1) RUN_COMPARADOR.bat
+     o:  python benchmark_cribas.py --quick
+  2) Abrir TEORIA_CRIBAS.md si preguntan el “por qué”
+
+  API corta:
+    python -c "from cribas import comparar_cribas; comparar_cribas(5000)"
+
+RESULTADOS DE REFERENCIA (este PC, 2026-07-27, --quick)
+  Todas las cribas VMA: ✓ (mismos primos que Eratóstenes)
+
+  L=500     π=95     mejor global: Eratóstenes ~0.03 ms
+                     mejor VMA:    Modular 6k±1 ~0.04 ms
+  L=2_000   π=303    Eratóstenes ~0.10 ms · Modular VMA ~0.14 ms
+  L=10_000  π=1229   Eratóstenes ~0.45 ms · Modular VMA ~0.76 ms
+
+  Lectura honesta:
+    En Python puro Eratóstenes suele ganar en wall-clock.
+    El valor VMA es ESTRUCTURA (6k±1, fase, desmemoria, híbrido) y base
+    para C/OpenMP — no vender “más rápido que Eratóstenes en CPython”
+    sin el port nativo.
+
+QUÉ DECIRLE A UN TERCERO
+  - “Corre RUN_COMPARADOR: todas las filas deben salir con tilde de ok.”
+  - “La Modular 6k±1 es la VMA más rápida aquí; la fase 2p/4p es crítica.”
+  - “Sunraman es el pseudocodi ancestro; el pack 00_sunraman lo tiene.”
+  - “Velocidad industrial: mirad anexoF …openmp.c / antipc-port-c, no solo py.”
+
+QUÉ NO PROMETER
+  - Que desmemoriada gane a Eratóstenes en Python (suele ser la más lenta aquí)
+  - Complejidad mágica O(log n) sin matizar
+  - Que el CSV de un PC sea el de todos (re-ejecutar en su máquina)
+
+33×1
+  Parte del “1” civil del monorepo. Uso civil/educativo.
+  Ver ../../33x1/02_USO_CIVIL.txt
+
+================================================================================
+  Arranque:  RUN_COMPARADOR.bat
+  Teoría:    TEORIA_CRIBAS.md
+  Guion:     GUION_DEMO_2_MINUTOS.txt
+================================================================================
