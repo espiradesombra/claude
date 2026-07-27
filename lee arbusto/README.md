@@ -1,55 +1,20 @@
-# lee arbusto
+# lee arbusto — chats y PDFs 33×1 / mates
 
-Material Lee Arbusto: Libro 4 convergencias, zips y textos.
-
-**Tema:** Sesiones IA / archivo
+Material **Lee Arbusto**: chats largos, PDFs de estrategia 33×1 y notas de factor/Goldbach/hash.
 
 **Monorepo:** [espiradesombra/claude](https://github.com/espiradesombra/claude) · ruta: `lee arbusto/`
 
-## Contenido
+## Qué contiene esta carpeta
 
-- **Archivos totales (aprox., recursivo):** 30
-- **En la raíz de la carpeta:** 16
-- **Subcarpetas (primer nivel):** 1
+| Pieza | Contenido |
+|-------|-----------|
+| `(L).txt, (l)(L).txt, (L)(L)(L).txt, 5-7.txt` | Chats / corpus grandes |
+| `33x1-*.pdf` | Estrategia, validación y comunicación 33×1 |
+| `lee arbusto/` | Subcarpeta con más exports |
+| `gptcomputing*.txt, grok hascode .txt, …` | Sesiones hash/computing |
 
-### Extensiones (recursivo, top)
-- `.txt`: 22
-- `.pdf`: 6
-- `.py`: 2
+## Enlaces
 
-### Subcarpetas
-- `lee arbusto`
-
-### Archivos en la raíz de esta carpeta
-- `(L)(L)(L).txt`
-- `(l)(L).txt`
-- `(L).txt`
-- `33x1-análisis-completo-de-tu-repositorio-+-plan-de-acción-definitivo.pdf`
-- `33x1-estrategia-máxima-de-comunicación-y-ejecución.pdf`
-- `33x1-investigación-de-validación-científica-y-técnica.pdf`
-- `5-7.txt`
-- `cpu cigarrillos i magnetismo .txt`
-- `factor goldback.txt`
-- `gemini-code-1783491934205.txt`
-- `golbach pp0.txt`
-- `gptcomputing (2).txt`
-- `gptcomputing.txt`
-- `grok hascode .txt`
-- `libro4_encriptacion_convergencias.py`
-- `Nuevo Documento de texto.txt`
-
-## Notas
-
-- Parte del ecosistema **VMA / 33×1 / AntiPC / Aleatorovix / ZypyZape / K3**.
-- Prioridad del monorepo: **33×1** (el **1** = todo el repo civil).
-- No subir secretos (claves FTP, tokens, datos personales) a commits futuros.
-
-## Enlaces relacionados
-
-- Mapa temático: [MAPA.md](../MAPA.md)
-- Índice alfabético: [FOLDERS.md](../FOLDERS.md)
-- README raíz: [README.md](../README.md)
-- 33×1: [33x1/](../33x1/)
-
----
-*README generado para navegación del monorepo. Editar libremente.*
+- Mapa monorepo: [`../MAPA.md`](../MAPA.md)
+- 33×1: [`../33x1/`](../33x1/)
+- Índice: [`../FOLDERS.md`](../FOLDERS.md)
