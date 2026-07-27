@@ -6,6 +6,7 @@ Material de **venta y producto**: ficha, licencia, scripts de demo y runtime de 
 
 | Archivo | Uso |
 |---------|-----|
+| **[GUION_DEMO_2_MINUTOS.txt](GUION_DEMO_2_MINUTOS.txt)** | Guion hablado minuto a minuto |
 | **[LEEME_DEMO_1_PAGINA.txt](LEEME_DEMO_1_PAGINA.txt)** | Demo en 1 página + mensaje a terceros |
 | **[RESULTADOS_DEMO_PC_2026-07-27.txt](RESULTADOS_DEMO_PC_2026-07-27.txt)** | Números medidos en este PC |
 | `scripts/03_benchmark_udp.bat` | Benchmark A–E (ganador típico: E UDP) |

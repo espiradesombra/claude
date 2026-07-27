@@ -1,0 +1,147 @@
+================================================================================
+  GUION DE DEMO — 2 MINUTOS (AntiPC Sale-It)
+  Autor: Víctor Manzanares Alberola · carpeta sale-it/
+  Uso: leer en voz alta o memorizar por bloques · reloj en mano
+================================================================================
+
+ANTES DE ENTRAR (30 s, solo tú)
+  - Abre la carpeta:  sale-it\scripts\
+  - Python instalado (si dudas: 01_instalar.bat)
+  - Ten a mano (segunda ventana o papel):
+      RESULTADOS_DEMO_PC_2026-07-27.txt
+  - No abras 119 carpetas del monorepo. Solo sale-it.
+
+PANTALLA RECOMENDADA
+  Ventana 1: explorador en sale-it\scripts
+  Ventana 2: terminal o la salida del bat 03 (cuando termine)
+
+
+--------------------------------------------------------------------------------
+  MINUTO 0:00 – 0:25   ·   ENGANCHE (qué es)
+--------------------------------------------------------------------------------
+
+  «Esto es AntiPC Sale-It, un prototipo que se puede ejecutar en dos minutos.
+
+   La idea no es “más CPUs por magia”. Es esta frase:
+   la red no solo transporta datos: puede reducir trabajo de cálculo
+   reutilizando conocimiento y coordinando nodos.
+
+   La fórmula que usamos es:
+        P_util = N × E(N) + K(N)
+   N es capacidad, E es eficiencia de coordinación, K es conocimiento
+   reutilizable — cache, no recalcular lo mismo.»
+
+
+--------------------------------------------------------------------------------
+  MINUTO 0:25 – 0:45   ·   QUÉ HAY EN EL PACK
+--------------------------------------------------------------------------------
+
+  «En la carpeta sale-it tenéis:
+   - scripts de un clic para Windows,
+   - el motor en Python,
+   - ficha de producto y licencia,
+   - y un informe de números de este mismo PC.
+
+   No hace falta instalar dependencias raras: Python 3.10 o superior.»
+
+
+--------------------------------------------------------------------------------
+  MINUTO 0:45 – 1:20   ·   ACCIÓN (enseñar que corre)
+--------------------------------------------------------------------------------
+
+  (Doble clic o ejecutar en orden:)
+
+    1) 05_verificar_k3.bat     ← si solo hay 90 s, salta al 03
+    2) 03_benchmark_udp.bat    ← el importante
+
+  Mientras corre, dices:
+
+  «Primero verificamos el motor K3: es un hash determinista, port del
+   k3hash original. Tiene que dar cinco digests OK — paridad bit a bit.
+
+   Después el benchmark compara arquitecturas A, B, C, D y E.
+   A es la convencional. E es UDP real con varios hubs en localhost.
+   Mirad la tabla cuando acabe: la fila que importa es la E.»
+
+
+--------------------------------------------------------------------------------
+  MINUTO 1:20 – 1:50   ·   NÚMEROS (este PC, 2026-07-27)
+--------------------------------------------------------------------------------
+
+  «En esta máquina, con mil paquetes y cuatro hubs:
+
+   - Arquitectura A (convencional): unos 840 paquetes por segundo,
+     carga ALU de referencia al 100 %.
+   - Arquitectura E (UDP real): unos 1590 paquetes por segundo,
+     carga ALU relativa al 53 % de A.
+
+   Eso es del orden de un 47 % menos de tiempo de ALU y casi el doble
+   de throughput, en un prototipo Python reproducible.
+
+   El K3 salió 5 de 5. Hay otra microdemo del kernel que ahorró
+   unos 27 % de ALU con reutilización de conocimiento.»
+
+  (Si no da tiempo a re-ejecutar: enseña RESULTADOS_DEMO_PC_2026-07-27.txt)
+
+
+--------------------------------------------------------------------------------
+  MINUTO 1:50 – 2:00   ·   CIERRE HONESTO + SIGUIENTE PASO
+--------------------------------------------------------------------------------
+
+  «Esto es un prototipo en Python en localhost: sirve para demostrar
+   la idea y medir de forma reproducible. No es todavía un stack DPDK
+   ni un producto embebido en C++.
+
+   El pack está pensado para due diligence técnica: corredlo vosotros,
+   no hace falta creerme de palabra.
+
+   Siguiente nivel de la ficha de producto: industrializar en C++/red
+   real; este Sale-It es el nivel de código ejecutable y benchmark.»
+
+  (Opcional una frase 33×1, solo si el interlocutor lo pide:)
+  «Todo esto forma parte del monorepo civil del marco 33×1 — uso civil.»
+
+
+================================================================================
+  CHEAT SHEET (si se te olvida el texto)
+================================================================================
+
+  1 frase   Red + conocimiento reutilizable → menos ALU inútil
+  1 fórmula P_util = N·E + K
+  1 acción  scripts\03_benchmark_udp.bat
+  1 fila    E  ·  ~1590 pkt/s  ·  ALU ~53% de A  ·  ~47% menos
+  1 verdad  Prototipo Python; números relativos; reproducible
+
+================================================================================
+  PREGUNTAS FRECUENTES (respuestas cortas)
+================================================================================
+
+  «¿Por qué C o D a veces van peor que A?»
+  → En un solo proceso Python el reparto simulado tiene overhead.
+    La prueba fuerte de red es E (UDP real).
+
+  «¿Funciona sin internet?»
+  → Sí. Todo en 127.0.0.1.
+
+  «¿Dónde está el código?»
+  → monorepo github.com/espiradesombra/claude  carpeta sale-it/
+
+  «¿Qué compro / qué firmo?»
+  → Ficha y licencia en el pack; el marco amplio es 33×1 (otro documento).
+    No improvisar cifras de valoración en la demo de 2 minutos.
+
+  «¿Y si falla el PING del hub?»
+  → Reintentar 03; en esta versión el arranque UDP en Windows ya espera más.
+    Firewall local raro: permitir Python en loopback.
+
+================================================================================
+  ORDEN DE ARCHIVOS SI TE PIDEN “MÁNDAMELO”
+================================================================================
+
+  1. LEEME_DEMO_1_PAGINA.txt
+  2. GUION_DEMO_2_MINUTOS.txt   (este)
+  3. RESULTADOS_DEMO_PC_2026-07-27.txt
+  4. FICHA_PRODUCTO.txt
+  5. (zip o clone) carpeta sale-it completa
+
+================================================================================
