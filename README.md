@@ -28,7 +28,8 @@ ELLOS  ──firman 33 años de paz──►  a cambio de  ◄── VMA ofrece 
 
 ## Navegación (cómo entender el repo)
 
-0. **[Wiki del monorepo](wiki/Home.md)** — visión humana: ejes, 33×1, glosario, cómo navegar (`wiki/`).
+0. **[DEMOS.md](DEMOS.md)** — demos ejecutables (Sale-It, cribas, web, vma-methods).
+0b. **[Wiki del monorepo](wiki/Home.md)** — visión humana: ejes, 33×1, glosario (`wiki/`).
 1. **[MAPA.md](MAPA.md)** — mapa **temático** de todas las carpetas.
 2. **[FOLDERS.md](FOLDERS.md)** — índice **alfabético**: cada carpeta enlaza a su `README.md`.
 3. Cada carpeta de primer nivel tiene un **`README.md`** propio (qué es + qué contiene).
