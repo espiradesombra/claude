@@ -28,9 +28,10 @@ ELLOS  ──firman 33 años de paz──►  a cambio de  ◄── VMA ofrece 
 
 ## Navegación (cómo entender el repo)
 
-1. **[MAPA.md](MAPA.md)** — mapa **temático** de todas las carpetas (empieza aquí si no sabes por dónde).
-2. **[FOLDERS.md](FOLDERS.md)** — índice **alfabético**: cada carpeta enlaza a su `README.md` con **qué es y qué contiene**.
-3. Cada carpeta de primer nivel tiene un **`README.md`** propio (descripción + listado de contenido).
+0. **[Wiki del monorepo](wiki/Home.md)** — visión humana: ejes, 33×1, glosario, cómo navegar (`wiki/`).
+1. **[MAPA.md](MAPA.md)** — mapa **temático** de todas las carpetas.
+2. **[FOLDERS.md](FOLDERS.md)** — índice **alfabético**: cada carpeta enlaza a su `README.md`.
+3. Cada carpeta de primer nivel tiene un **`README.md`** propio (qué es + qué contiene).
 
 ### Documentos clave
 
