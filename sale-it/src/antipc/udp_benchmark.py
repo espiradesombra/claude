@@ -48,7 +48,8 @@ def _spawn_hubs(count: int, script_dir: str) -> list[HubProc]:
             creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
         )
         hubs.append(HubProc(port, proc))
-    time.sleep(0.3)
+    # Windows needs a bit longer for child UDP sockets to bind before PING
+    time.sleep(1.0)
     return hubs
 
 
@@ -67,16 +68,20 @@ def _stop_hubs(hubs: list[HubProc], sock: socket.socket) -> None:
             hub.process.kill()
 
 
-def _wait_pong(sock: socket.socket, hub_port: int, timeout: float = 2.0) -> bool:
+def _wait_pong(sock: socket.socket, hub_port: int, timeout: float = 5.0) -> bool:
     deadline = time.perf_counter() + timeout
-    sock.sendto(pack_ping(), ("127.0.0.1", hub_port))
     while time.perf_counter() < deadline:
+        try:
+            sock.sendto(pack_ping(), ("127.0.0.1", hub_port))
+        except OSError:
+            pass
         try:
             data, _ = sock.recvfrom(1024)
             if data and data[0] == MsgType.PONG:
                 return True
         except (TimeoutError, BlockingIOError, OSError):
             pass
+        time.sleep(0.05)
     return False
 
 
