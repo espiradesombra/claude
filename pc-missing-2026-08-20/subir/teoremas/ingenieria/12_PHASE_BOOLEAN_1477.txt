@@ -1,0 +1,28 @@
+================================================================================
+E12 — PHASE-BOOLEAN 1477 (bandera de coherencia cuántica simulada)
+================================================================================
+
+QUÉ PROBLEMA RESUELVE
+  - Detectar si un sistema con fase (qubit simulado) diverge de comportamiento clásico.
+  - Protocolo discreto: bits (v,f) por qubit, desfase Karnaugh, feedback XOR/OR.
+  - Flag Hamming tras 6 ciclos entre trayectorias con f1 invertida.
+
+MECANISMO
+  - feedback_1477_quantum() en quantum_1477_*.py
+  - Relacionado con teorema PhaseAmplifier K3 (formal F19) — capa distinta.
+
+ESTADO TEÓRICO
+  [HEUR]   Demos reproducibles; no hardware cuántico ni ventaja criptográfica probada.
+  [OK]     Definición operativa clara en 1477.md / THEOREM_PhaseAmplifier_K3_XOR.md.
+  TRL 3: nota técnica / educación / nicho simulación.
+
+RUTAS EN EL PC
+  C:\Users\cuent\Desktop\claude-main-extract\claude-main\1\1477.md
+  C:\Users\cuent\Desktop\claude-main-extract\claude-main\1\quantum_1477_*.py
+  C:\Users\cuent\Desktop\claude-main-extract\claude-main\1\boolean_feedback_demo.py
+  C:\Users\cuent\Desktop\teoremas\19_teorema_phaseamplifier_k3.txt
+
+REFERENCIAS
+  porque_no_33x1\MERCADOS_GANABLES.txt (nicho N₂/N₅)
+
+================================================================================

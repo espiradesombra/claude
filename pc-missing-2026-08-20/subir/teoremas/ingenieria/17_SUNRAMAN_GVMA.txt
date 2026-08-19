@@ -1,0 +1,26 @@
+================================================================================
+E17 — SUNRAMAN / GVMA (criba segmentada — implementación C)
+================================================================================
+
+QUÉ PROBLEMA RESUELVE
+  - Criba diofántica por bloques 1MB con bit-packing.
+  - Ecuación: v = 2nm + 3n + 3m + 3  ⟺  (2n+3)(2m+3) = 2v+3
+  - Factorizador “Flash” (pinza) sobre candidatos de criba.
+
+ESTADO TEÓRICO
+  [HEUR]   Algoritmo operativo; ver CRIBA_SUNRAMAN_ERATOSTENES.txt.
+  [OK]     Definición ecuación y estructura en cribas\.
+  Demo C no compilada en Windows del usuario (sin gcc/MinGW).
+
+TRL estimado: 3 (código + demo; build pendiente)
+
+RUTAS EN EL PC
+  C:\Users\cuent\Desktop\teoremas\cribas\gvma\Gvma.h, sunraman_demo.c
+  C:\Users\cuent\Desktop\teoremas\cribas\CRIBA_SUNRAMAN_ERATOSTENES.txt
+  repo\coses velles\sunraman.docx
+
+REFERENCIAS
+  teoremas\cribas\INDICE (C6 SunRaman)
+  ingenieria\18_REGLA_MECANICA.txt (misma familia 2v+3)
+
+================================================================================

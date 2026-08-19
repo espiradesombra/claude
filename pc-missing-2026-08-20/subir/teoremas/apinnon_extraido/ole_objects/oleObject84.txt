@@ -1,0 +1,15 @@
+            'error_prom': error_prom,
+---
+            'iter_prom': iter_prom
+---
+            'parametros': params,
+---
+            'tiempo_prom': tiempo_prom,
+---
+            d3, d2, d1 = d2, d1, j - j1
+---
+            error = abs(res - real)
+---
+            errores.append(error)
+---
+            factor = (factor3 + factor4 * (d3 - d2) / (d3 - d1))

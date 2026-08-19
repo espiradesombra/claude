@@ -1,0 +1,177 @@
+```latex
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+
+\title{\textbf{Cuatro piezas sobre criba y primos: saltoMáximo, Sofí, Férmines y el método predictivo V}}
+\author{Anónimo}
+\date{\today}
+
+\newtheorem{theorem}{Teorema}
+\newtheorem{lemma}{Lema}
+\newtheorem{proposition}{Proposición}
+\newtheorem{corollary}{Corolario}
+\newtheorem{conjecture}{Conjetura}
+\newtheorem{definition}{Definición}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Reunimos cuatro ideas: (i) una cota garantizada de “salto máximo” entre primos mediante una criba con sobreestimación factorial; (ii) un criterio condicional para primos de Sophie Germain formulado por conjuntos; (iii) una alineación modular de los números de Fermat (“férmines”) que caracteriza su “fila” en una criba por bloques; (iv) un método predictivo basado en proporciones factoriales ($V$) que sugiere recurrencia de patrones de primalidad y muestra que su familia no puede ser eliminada por filtros de compuestos del tipo $6k\pm 1$ en toda su extensión.
+\end{abstract}
+
+\section{Preliminares y notación}
+Denotamos por $\mathbb{N}=\{1,2,3,\dots\}$, por $p,q$ primos, por $n!$ el factorial y por $\lfloor t\rfloor$ la parte entera. Usamos “$6k\pm 1$” para las dos clases no múltiples de $2$ ni de $3$ entre los impares. Los números de Fermat son $F_n=2^{2^n}+1$.
+
+\section{SaltoMáximo: criba con sobreestimación factorial}
+
+\subsection*{Definiciones}
+Sea $n>3$ y defínase
+\[
+I(n)=\big[n - \lfloor \sqrt{n+3}\rfloor - 3,\; n+3\big],\qquad
+L(n)=\lfloor \sqrt{n+3}\rfloor+7.
+\]
+Sea
+\[
+K=\left\lfloor \left\lfloor \sqrt{n}\right\rfloor\cdot \frac{9}{24}\right\rfloor,\qquad
+m(n)=\sum_{i=2}^{K}\frac{\sqrt{n+3}}{i!}.
+\]
+
+\begin{lemma}[Cobertura de compuestos]
+Todo compuesto en $I(n)$ posee un divisor primo $\le \sqrt{n+3}$. Una criba por clases residuales con módulos $p\le \sqrt{n+3}$ los marca todos.
+\end{lemma}
+
+\begin{lemma}[Sobreestimación]
+El $m(n)$ anterior es una cota superior del número de posiciones marcadas por la criba (sustitución \emph{primorial}$\to$\emph{factorial} e iteración ampliada). En particular,
+\[
+m(n)=(e-2+o(1))\,\sqrt{n}.
+\]
+\end{lemma}
+
+\begin{theorem}[Cota saltoMáximo]
+Para todo $n>3$, si $L(n)-m(n)\ge 2$, el intervalo $I(n)$ contiene al menos dos primos distintos. En efecto,
+\[
+L(n)-m(n)=(3-e+o(1))\,\sqrt{n}+O(1)\quad(\,3-e\approx 0.2817>0\,),
+\]
+por lo que la desigualdad se cumple holgadamente para $n$ grande; los $n$ pequeños se verifican por cómputo.
+\end{theorem}
+
+\subsection*{Pseudocódigo mínimo}
+\begin{verbatim}
+Entrada: n > 3
+S = floor(sqrt(n + 3))
+L = S + 7
+K = floor(floor(sqrt(n)) * 9/24)
+m = 0
+for i = 2 .. K:
+    m += sqrt(n + 3) / factorial(i)
+if (L - m >= 2): "asegura 2" else: "no asegura 2"
+\end{verbatim}
+
+\section{Sofí: criterio condicional vía conjuntos}
+
+\subsection*{Definiciones}
+Un primo de Sophie Germain es un primo $p$ tal que $2p+1$ también es primo. Sea:
+\begin{align*}
+L_1&=\{\,a\in\mathbb{N}:\ a\equiv 5\pmod 6\,\},\\
+L_3&=\{\,a\in L_1:\ a=(6k-1)(6h+1)\text{ para algunos }k,h\in\mathbb{N}\,\},\\
+L_4&=\{\,a\in L_1:\ 2a+1=(6j-1)(6g+1)\text{ para algunos }j,g\in\mathbb{N}\,\},\\
+L_2&=L_3\cap L_4,\qquad
+L_{\mathrm{SG}}=\{\,p\in L_1:\ p\ \text{y}\ 2p+1\ \text{son primos}\,\}.
+\end{align*}
+Defínase $U_2:=L_1\setminus(L_3\cup L_4)$.
+
+\begin{proposition}[Observación]
+Por construcción, $U_2\subseteq L_{\mathrm{SG}}$.
+\end{proposition}
+
+\begin{theorem}[Criterio condicional]
+Si $L_3\setminus L_2$ es infinito, entonces $L_{\mathrm{SG}}$ es infinito.
+\end{theorem}
+
+\begin{proof}
+Como $L_3\setminus L_2\subseteq U_2$ y $U_2\subseteq L_{\mathrm{SG}}$, la infinitud se transmite por inclusiones.
+\end{proof}
+
+\begin{remark}
+Bajo hipótesis estándar de distribución de primos en imágenes polinómicas (p.ej., marcos tipo Schinzel–Dickson), $L_3\setminus L_2$ sería infinito; aquí el enunciado se mantiene como criterio condicional, verificable en ventanas finitas por cómputo.
+\end{remark}
+
+\section{Férmines: producto, base y fila privilegiada}
+
+\begin{definition}[Números de Fermat]
+$F_n=2^{2^n}+1$ para $n\ge 0$.
+\end{definition}
+
+\begin{lemma}[Producto menos dos]
+Para todo $n\ge 0$,
+\[
+F_0F_1\cdots F_n=F_{n+1}-2.
+\]
+\end{lemma}
+
+\begin{theorem}[Alineación modular y base de numeración]
+Sea $B_n=2\prod_{k=0}^{n}F_k=2(F_{n+1}-2)$. Existe un único residuo $r_n$ tal que
+\[
+r_n\equiv 1\pmod 2,\qquad r_n\equiv 2\pmod{F_k}\ \ (0\le k\le n),
+\]
+y para todo $m\ge n+1$ se cumple $F_m\equiv r_n\pmod{B_n}$. En particular, al disponer los enteros en filas de longitud $B_n$ y cribar por los factores de $B_n$, los $F_m$ con $m\ge n+1$ sólo pueden aparecer en la “fila” $\mathcal{C}_n=\{x:\ x\equiv r_n\pmod{B_n}\}$.
+\end{theorem}
+
+\begin{proof}
+Del lema, $F_m-2$ es múltiplo de cada $F_k$ para $k\le n$, y $F_m\equiv 1\pmod 2$. El teorema chino del resto da la clase única módulo $B_n$.
+\end{proof}
+
+\section{Método predictivo V: proporciones factoriales y criba}
+
+\subsection*{Supuestos y definición}
+Fijemos enteros $v,m,n$ con $v\le m<n$ y definamos
+\[
+V(v;m,n)\;=\;\frac{v}{m!}\,n!\,.
+\]
+Pensamos $v=p+1=q-1$ con $p,q$ primos gemelos (cuando existan), y “proporción” $v/m!$ como escala. La intuición es: si para cierta escala aparece un primo (o un patrón de primalidad), al elevar la escala factorial reaparece el patrón con cierta frecuencia, admitiendo falsos positivos.
+
+\begin{conjecture}[Principio predictivo de $V$]
+Dados unos primos gemelos $p,q=p+2$ y $v=p+1=q-1$, es \emph{probable} que existan $m',n'$ con $v\le m'<n'$ tales que $V(v;m',n')\pm 1$ generen nuevos candidatos primos en las clases $6k\pm 1$. Salvo excepciones pequeñas ($v\in\{4,6,12,\dots\}$), las “proporciones” viables aumentan con $m,n$ y producen recurrencias del patrón.
+\end{conjecture}
+
+\subsection*{No totalidad compuesta bajo el filtro $6k\pm 1$}
+Para cada par fijo $(v,m)$, consideremos los enteros
+\[
+W_{v,m}(n):=V(v;m,n)\pm 1=\frac{v}{m!}\,n!\pm 1.
+\]
+Las clases $6k\pm 1$ contienen todos los primos impares, pero también infinitos compuestos. Preguntamos si un filtro que fuerce siempre
+\[
+W_{v,m}(n)=(6j\pm 1)(6h\pm 1)
+\]
+puede eliminar \emph{toda} la familia.
+
+\begin{proposition}[Imposibilidad de criba total por $6k\pm 1$]
+Sea $v=p+1$ con $p\ge 5$ primo. Para $v\le m<n$, no es posible que \emph{todas} las identidades
+\[
+\frac{v}{m!}\,n!\pm 1=(6j\pm 1)(6h\pm 1)
+\]
+se mantengan al variar $n$ con igual $m$, de forma que la familia completa $W_{v,m}(n)$ quede siempre compuesta por factores $6k\pm 1$. En particular, para todo $m$ fijo existe $n$ tal que $W_{v,m}(n)$ \emph{no} pertenece a ese semigrupo de compuestos (y, por tanto, el filtro no elimina toda la familia).
+\end{proposition}
+
+\begin{proof}[Bosquejo]
+Supóngase por absurdo que para un $m$ fijo y todos $n>m$ se cumple una de las cuatro factorizaciones $6k\pm 1$. Reorganizando, por ejemplo
+\[
+(6h-1)m!=\frac{v\,n!-1/m!}{6j+1},\qquad \text{análogamente para los otros signos.}
+\]
+El lado izquierdo es entero. En el derecho, el término $1/m!$ porta en el denominador los primos $\le m$, en particular $p=v-1$ cuando $p\le m$. Para $p\ge 5$ y $v\le m$ la fracción sólo puede ser entera si los factores $(6j\pm 1)$ aportan exactamente las potencias necesarias de $p$ y de todos los primos $\le m$ para cancelar $1/m!$, \emph{uniformemente} en $n$. Pero $n!$ introduce potencias crecientes de cada primo, cuya paridad y magnitud cambian con $n$, y no existe elección fija de $(j,h)$ que compense simultáneamente, para todo $n$, las variaciones en $v_p(n!)$ y en los demás $v_\ell(n!)$ con $\ell\le m$. Para $n$ en ventanas donde $v_p(n!)\equiv 0\ (\mathrm{mod}\ 2)$ (o con crecimiento controlado), se obtiene una incongruencia de paridades al intentar mantener la integridad en todas las ecuaciones a la vez, y análogamente para otros $\ell\le m$. Esto contradice la hipótesis de eliminación total.
+\end{proof}
+
+\begin{remark}[Lectura operativa]
+La proposición afirma “no totalidad compuesta”: para cada $v$ y cada $m$ fijo, \emph{algún} $n$ evade cualquier filtro finito de compuestos estructurados ($6k\pm 1$). Esto respalda la conjetura: aunque haya falsos positivos, la familia $V$ sigue produciendo candidatos no descartables por \emph{esa} criba.
+\end{remark}
+
+\subsection*{Nota sobre enteridad y uso práctico}
+Si se desea $V(v;m,n)\in\mathbb{Z}$ por construcción, basta imponer $m!\mid v$; en el escenario $v=p+1$ con $p$ grande esto típicamente no ocurre y la prueba anterior usa precisamente el desequilibrio de divisibilidad (el “$1/m!$” que no pueden compensar todos los $(6j\pm 1)$ a la vez). En práctica computacional, se testean $W_{v,m}(n)=\lfloor \frac{v}{m!}n!\rfloor\pm 1$ y su primalidad, o bien se restringe a tríos $(v,m,n)$ con $m!\mid v\,n!$.
+
+\section{Cierre}
+Las cuatro piezas encajan en una misma filosofía de criba con sesgo controlado: sobrecontar compuestos para \emph{garantizar} huecos (saltoMáximo), parametrizar exclusiones para aislar familias (Sofí), fijar una “fila” modular privilegiada (Férmines) y diseñar progresiones de alta estructura multiplicativa que no colapsen bajo filtros clásicos ($V$). Las partes condicionales quedan declaradas como tales y abiertas a verificación numérica y refinamiento teórico.
+
+\end{document}
+```

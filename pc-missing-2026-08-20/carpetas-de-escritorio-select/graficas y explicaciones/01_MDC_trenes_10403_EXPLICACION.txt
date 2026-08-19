@@ -1,0 +1,15 @@
+GRÁFICA 01 — MDC DOS TRENES (n=10403)
+═══════════════════════════════════════
+Qué no enseña la academia:
+  La factorización no se plantea como "probar divisores hasta √n",
+  sino como DOS TRENES con velocidad constante en ejes distintos.
+
+Ecuación VMA:  (2x+3)(2y+3) = 10403
+  • Tren X: x entero, paso 1 → calcula y = (n-6x-9)/(4x+6)
+  • Tren Y: y entero, paso 1 → calcula x simétrico
+  • Colisión: x e y enteros simultáneos → S=2x+3, T=2y+3, S×T=10403
+
+En esta imagen las estrellas rojas son colisiones CONFIRMADAS (unión X∩Y).
+Factores propios: 101×103.
+
+Comando local: antipc mdc analyze 10403 --proper

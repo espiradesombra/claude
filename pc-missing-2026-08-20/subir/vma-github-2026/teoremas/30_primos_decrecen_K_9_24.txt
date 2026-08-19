@@ -1,0 +1,51 @@
+================================================================================
+PRIMOS DECRECEN — COTA K=⌊√n⌋·9/24 Y FALLA A FAVOR
+================================================================================
+ID: 30_primos_decrecen
+ESTADO: [HEUR] — justificación de m(n); enlazado a teorema operativo 01
+AUTOR: Víctor Manzanares Alberola
+FUENTES:
+  repo\nuevo libro3\Nuevo Documento de texto.txt L1626–1665
+  archivos\Cribas_cotas_y_estructuras_de_primos_VMA (1).txt L37–39
+  lee arbusto\golbach pp0.txt (contexto densidad asimétrica)
+
+--------------------------------------------------------------------------------
+IDEA CENTRAL
+--------------------------------------------------------------------------------
+Hay 9 primos en [0,24] → cota máxima de primos hasta √n:
+
+  máx primos ≈ √(n+3) · 9/24
+
+“Los primos decrecen en proporción” → aceptar cota conservadora (siempre ≥ real).
+
+--------------------------------------------------------------------------------
+K Y m(n) (método por conteo y fallo a favor)
+--------------------------------------------------------------------------------
+  K = ⌊⌊√n⌋ · 9/24⌋
+
+Versión exhaustiva (requiere test primo):
+  m += √(n+3) / i!   para i primo, 2 ≤ i ≤ K
+
+Versión operativa (dos fallos a favor):
+  m += √(n+3) / i!   para i = 2..K (sin filtrar primos)
+  → iteraciones extra + divisor i! más pequeño → m crece más rápido
+
+--------------------------------------------------------------------------------
+IMPLICACIÓN
+--------------------------------------------------------------------------------
+  Si m < L(n) siempre para n grande → hueco L(n)−m(n) ≥ 2 → ≥2 primos en I(n).
+  Los “fallos a favor” hacen la cota más exhaustiva (conservadora).
+
+--------------------------------------------------------------------------------
+BERTRAND
+--------------------------------------------------------------------------------
+  No demostración VMA de Bertrand. Mención en repo\txt25 (ChatGPT) como herramienta
+  clásica (entre n y 2n hay primo). SaltoMáximo ≈ √n es cota VMA propia (ficha 03).
+
+--------------------------------------------------------------------------------
+RELACIÓN
+--------------------------------------------------------------------------------
+  01 teorema operativo dos primos — usa misma K y m(n)
+  27 goldbach pp0 — asimetría densidad primos entre mitades
+
+================================================================================

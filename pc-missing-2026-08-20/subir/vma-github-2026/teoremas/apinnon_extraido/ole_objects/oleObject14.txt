@@ -1,0 +1,15 @@
+                Ajuste progresivo
+---
+                Arquitectura modular
+---
+                Cribas personalizadas
+---
+                Densidad estructurada
+---
+                if(P[j]==1) P[j]=0; // marcar compuesto (de candidato a no-candidato)
+---
+                j += toggle ? salto1 : salto2;
+---
+                toggle = !toggle;
+---
+            ax.plot([x[i], corte_x], [y[i], corte_y], 'b-', label=f'Decremento desde ({x[i]},{y[i]})')

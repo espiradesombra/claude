@@ -1,0 +1,40 @@
+================================================================================
+  AntiPC — Resultados de benchmark de referencia
+  Entorno: Windows, Python 3.12, localhost UDP
+  Fecha de captura: julio 2026
+================================================================================
+
+CONFIGURACIÓN
+  Paquetes   : 1000
+  Payload    : 64 bytes
+  Hubs       : 4
+  Duplicados : ~15% (simula K(N))
+
+RESULTADOS
+--------------------------------------------------------------------------------
+  Arquitectura                              Tiempo    Throughput   ALU rel.
+  -------------------------------------------------------------------------
+  A — Convencional (memcpy + cola)          0.6047 s    1654 pkt/s   100.0%
+  B — Lock-free ring buffer                 0.5793 s    1726 pkt/s    95.8%
+  C — Distribuido (4 hubs, hilos)           0.5594 s    1788 pkt/s    92.5%
+  D — Grafcet + existencia + redundancia    0.9076 s    1102 pkt/s   150.1%
+  E — UDP real (4 hubs)                     0.2293 s    4361 pkt/s    37.9%
+  -------------------------------------------------------------------------
+
+CONCLUSIÓN
+  Mejor arquitectura: E — UDP real (4 hubs)
+  Mejora vs convencional: 62.1% menos tiempo ALU
+
+INTERPRETACIÓN
+  - B y C mejoran ligeramente sobre A en Python (menos copia / partición)
+  - D penaliza latencia de lote pero acumula K(N)=88 cache hits
+  - E descarga el maestro: el cómputo HASH ocurre en hubs de red
+
+REPRODUCIR
+  scripts\03_benchmark_udp.bat
+
+NOTA
+  Los valores absolutos varían por CPU. Las proporciones entre arquitecturas
+  en el mismo equipo son el indicador válido para comparación.
+
+================================================================================

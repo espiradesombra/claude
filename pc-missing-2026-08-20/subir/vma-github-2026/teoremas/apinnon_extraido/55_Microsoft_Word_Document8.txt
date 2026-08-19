@@ -1,0 +1,158 @@
+Números i numeritos
+Números i numeritos por VMA
+Agradecimientos
+A quienes me aguantan; les debo mucho. Nadie puede acordarse de todo y en todo momento.
+Prefacio
+Jo sols sé per dos i entre dos. Però magra sumar. Per cinc és afegir 0 i entre dos. Per sis és per cinc més el que era. Per set és apuntar el doble, per cinc i sumar. Per vuit és el doble del doble del doble. Per nou és afegir 0 i restar el que era. Per tres és per dos més el que era. Per quatre és per dos i per dos. Per sis és per dos, o guardes per dos i sumes valors. Vols més? 13x = 10x + 3x 17 = 3 * 5x + 2x = 8x + 9x = 13x + 4x... 121 = 100x + 10x + 10x + x
+La adivinanza de los gemelos que dicen "o salta o baila conmigo"
+Cada día esas expresiones refieren a sí o no. Un hermano toma azúcar en el té, otro no toma azúcar en el té. Además, cada día al levantarse, los hermanos acuerdan qué: Uno dirá la verdad ese día, codificada con las dos únicas expresiones que usan los hermanos, y el otro mentirá con la misma codificación. Y el camarero siempre pregunta: ¿Tu hermano me diría "baila conmigo" si le pregunto: "¿si tú me dirás 'baila conmigo', al preguntarte si quieres azúcar en el té?"
+Índice
+0. Las bases de numeración Pág 7: Relato sobre cómo hallar números primos. Aproximación a 3.141592
+1. Los números primos y Andrica Pág 19: SaltoMáximo(n) es raíz de n si: todos los 6k ± 1 menores a raíz de n fueran primos.
+2. Otro punto de los números primos: La conjetura de Goldbach relacionada con la simetría de estos Pág 25: Sin la función π(n) que proporciona la cantidad de primos. Pero conociendo su decrecimiento en cantidad, se deduce comparando a tramos la posibilidad de no haber descomposiciones con un algoritmo de asimetría.
+3. Pensando en mi amigo Eratóstenes Pág 29: Algoritmo Desmemoriado.
+4. Ecuaciones que generan primos
+Pág 37: Suponiendo un primo inalcanzable y una serie de restos, se deducen unos números casi primos. Algunas de las secuencias, como la de 29, me encantan.
+5. Descripción de la forma de posiblemente algunos primos
+Pág 41: Relación entre x, a y b, siendo b el resto de x entre x - a.
+6. Optimizaciones para Eratóstenes
+Pág 55:
+Explicación de Eratóstenes sin optimizaciones, tanto tradicional como invertida.
+Explicación de optimizaciones para ambas cribas, segmentación del problema.
+Ejemplo didáctico de código con optimizaciones.
+Explicación para la criba tradicional de límite a límite, ambos mayores a un natural dado.
+7. Primera aproximación a la conjetura fuerte de Goldbach
+Pág 75: Concepto de asimetría en el algoritmo y explicación. Enlace a trabajo con presentación y comentarios de diapositiva. No se incluye el contraejemplo a Gödel, solo las operaciones del algoritmo propuesto.
+Las bases de numeración
+Este texto es una forma diferente de ver las cosas, una vez se entiende, entender cómo dibujar una tabla de restos de n entre números menores es fácil si lo haces para todo n. El algoritmo para generar números con infinitos decimales obviamente debido al IEEE que usamos pierde precisión, pero no importa. El dibujo del patrón de primo no primo es poco común.
+Me molan los números
+Me molan los números y voy a intentar describirlos. Creedme, es una tarea difícil. Resulta que tenemos el número uno. Es la unidad y sumando unidad en unidad se consigue representar todos los positivos. Es el número más importante. Después de la unidad aparecen otros números, las bases. Hay muchas formas de encontrar las bases.
+Sistemas de numeración secuenciales
+Antes, los sistemas de numeración secuenciales, que tienen otro nombre:
+Código: diez símbolos, cada uno representa una cantidad.
+Posición: representa una potencia de la base. Ejemplos:
+Valores de las unidades
+Tiene el valor de la unidad.
+Tiene el valor de 1 unidad multiplicada por la cantidad de símbolos en el código elevada a la posición en este caso 1. Como veis, esta norma cumple también para el 11.
+Uno por diez elevado a 1 más 1.
+Las bases
+Cuando has descubierto la unidad, puedes sumar una unidad al valor más alto conocido. En este caso 1. 1+1 = 2 Y creamos la base 2 Y la consideramos base fundamental. Resulta que este proceso lo podemos volver a hacer. 1+1=2 2+1=3 Otra base fundamental. Después veréis que estas bases fundamentales obligan a las demás bases a tener un valor específico. Realmente todas las bases menores a una fracción de una base mayor obligan a estas a tener un valor determinado.
+Secuencia para encontrar las bases
+Después de descubrir las bases fundamentales, podemos saber que si represento un valor en su base, y en las bases fundamentales y hay más de un número que acaba en el primer símbolo que representa cero, ese valor no es base. Y si no pasa esto, como solo estamos analizando las bases fundamentales, no podemos asegurar que es base, pero a más pequeño sea el valor, más probable de que sea base. Empecemos la descripción de la secuencia para encontrar las bases. Uno, sumo la unidad. Represento el valor en las bases considerando lo desconocido como base. Sí acaba en cero en más de una base, ese valor no es base.
+Ejemplos de bases
+Partimos de las bases fundamentales. 3+1 = 4 4 en base 4 acaba en 0 4 en base 3 acaba en 1 4 en base 2 acaba en 0 4 no es base. 4+1=5 5 en base 5 acaba en 0 5 en base 3 acaba en 2 5 en base 2 acaba en 1 5 es base. 5+1 = 6 6 en base 6 acaba en 0 6 en base 5 acaba en 1 6 en base 3 acaba en 0 6 no es base. 6+1 = 7 7 en base 7 acaba en 0 7 en base 5 acaba en 2 7 en base 3 acaba en 1 7 en base 2 acaba en 1 7 es base.
+Primer conjunto de bases
+Si seguimos este camino, encontramos el primer conjunto de bases. Llega hasta la primera base de este conjunto excluyendo los múltiplos de las bases fundamentales. 5, 7, 11, 13, 17, 19, 23. De estas bases, unas son positivas y otras negativas. Las positivas: 5, 11, 17, 23. Las negativas: 7, 13, 19. Hasta este momento las únicas bases que han influido en los números son las fundamentales.
+Reglas de las nuevas bases
+A partir de este momento, las reglas cambian. Todas las bases nuevas son de forma producto de bases fundamentales más menos una unidad. Por eso unas son positivas y otras negativas. A partir de este momento, debido a que: 0 base de todos. 1 unidad. 2 base fundamental. 3 base fundamental. 4 cero en base fundamental.
+Patrón de secuencia
+Siempre la secuencia uno sí, uno no será cero en la primera base fundamental. 5 base. 6 cero en las dos bases fundamentales. 7 base. 8 cero en base fundamental. 9 cero en base fundamental. 10 cero en base fundamental. 11 base. 12 cero en dos bases fundamentales. 13 base. Este patrón es obligado, pero cambiando base por posible base.
+Identificación de bases
+De forma que se observa la secuencia de los múltiplos de las bases que podrían ser base: Más dos por base y al resultado más cuatro por base y repetir, empezando de la forma pertinente dependiendo de si la base elegida es positiva o negativa. Los números que no acaban en 0 en base fundamental, pero sí en otras bases: Base por base.
+Ejemplo de cálculo de bases
+Esto acaba en un número que no es base, pero si fuera base sería positiva. Se le suma dos por base. Se apunta el resultado, no acaba en 0 en las bases fundamentales, pero sí en la base escogida. Si fuera base sería negativa. Se le suma cuatro por base. Se apunta el resultado, no acaba en 0 en las bases fundamentales, pero sí en la base escogida. Si fuera base sería positiva. Después se selecciona otra base para hacer lo mismo.
+Cualidades de las bases
+Si encuentras todos los números que no acaban en cero en las bases fundamentales, pero sí en otras bases, también tienes las bases calculadas. Además, las bases tienen una cualidad que permite identificarlas, e identificando bases puedes descubrirlas todas. Las bases, si se dividen por cualquier número entre el uno y ella sin escogerlos, los resultados no son enteros. Hay otros números que no son enteros.
+Método de identificar bases
+Al usar el método de identificar bases con divisiones, podemos descubrir los números no enteros y algunos de ellos son infinitos con patrones o sin ellos. Pero hay números curiosos. Del teorema de Pitágoras conseguimos los números como el valor de la hipotenusa con los catetos de lado unidad. Como estos muchos otros valores infinitos. Un valor infinito es la de la relación del perímetro y el radio del círculo. Con Pitágoras.
+Aproximación de figuras
+Desde un cuadrado inscrito en un círculo de radio 1. Puedes deducir el lado de un octógono inscrito en ese círculo de radio 1. Y de ahí de una figura de 16 lados. O 32, o 64. A más lados tenga la figura, más aproximación. Después calculas el perímetro de la figura que te dará el valor que deseas.
+Combinatoria de bases
+Multiplicando entre ellas las bases con todas las posibles combinaciones se encuentran todos los números que no son base. Sumando una y otra vez la unidad se encuentran todos los positivos. Sumando entre sí las bases se encuentran todos los números que acaban en cero en la primera base fundamental. Sumando tres bases entre sí se encuentran todos los números que acaban en cero en la segunda base fundamental.
+Secuencia de números
+Esta última afirmación proviene de la anterior. Y la anterior es cierta debido a la condición de que la aparición de las bases depende de más de una ecuación. A partir del valor primera base no fundamental por ella misma se crea una secuencia de números que no son cero en las bases fundamentales, pero sí en esta base. Y así, para cada base.
+Índices y bases
+Si estas afirmaciones no fueran ciertas, las bases se podrían calcular de una forma mucho más simple como una secuencia con un solo índice, pero depende del valor, se necesitan más índices, tantos como bases inferiores a la raíz del valor escogido.
+{23n+-1} -
+{30m +- 5, 67l +- 7, 611k +- 11,
+6primo[i]j +- primo[i] , … ,
+6primo[máx.]*q+- primo[máx.]}
+1. Los números primos y Andrica
+Si se estableciera un salto máximo entre primos consecutivos, podríamos intentar resolver la conjetura. Es una pena que no se haya establecido antes. Considerando todos los números de la forma 6k ± 1 menores a la raíz de n como primos, el salto máximo sería raíz de n. Sin embargo, no todos esos números son primos y, en realidad, el salto máximo es menor a lo calculado. ¿Aceptamos entonces que, como mínimo, antes de SaltoMaximo(n)=raíz n, al menos desde un primo encuentro otro?
+Características de los números primos
+Los números primos son como cualquier otro número, representan cantidades. Sin embargo, al comparar la suma y la multiplicación, aparecen peculiaridades, y entre ellas, los números primos. Como le dijeron a Gödel, sin tener en cuenta la multiplicación, no tiene sentido hablar de valores representados por números con la propiedad de primalidad.
+Explicación de la primalidad
+Pido disculpas por el formalismo, pero 11 en base 3 es 4, en base 4 es 5 y en base 10 es 11. Por lo que acordamos que un número es en una base determinada o es solo algo que podría representar muchas cosas. Los números primos son aquellos que no tienen divisores. Hay ramas de las matemáticas que hacen preguntas que parecen no tener respuesta inmediata. Por ejemplo, está la conjetura de Andrica: La raíz cuadrada de un primo, menos la raíz cuadrada del primo anterior es menor a uno.
+Concepto de SaltoMaximo(n)
+Esta frase, establecida hace tiempo, marca un punto de cantidad mínima de primos. Excepto el 2 y el 3, todos los números primos tienen la forma 6k ± 1. Los números de la forma 6k ± 1 que no son primos son productos de otros números de la misma forma. Los múltiplos de un primo de la forma 6k ± 1 cumplen con la relación:
+primo^2;
+{+=2primo; +=4primo}
+Con el ajuste pertinente. Dividiendo estos valores [2primo, 4primo] entre 6, multiplicando el resultado por 2 y sumando 1 si el resto es 2 o 4, podemos determinar cada cuántos 6k ± 1 hay un múltiplo de un primo. De aquí se deduce el concepto de SaltoMaximo(n). Para la raíz de n, hay X primos de la forma 6k ± 1. Iterando {+4, +2} tantas veces como estos primos, se obtiene el Salto Máximo entre primos para un valor dado, suponiendo que solo una vez un múltiplo de cada primo seleccionado aparece de forma consecutiva.
+Aproximación de SaltoMaximo(n)
+Aproximación considerando todos los 6k ± 1 como primos:
+SaltoMaximo(n) {
+m = raíz(n)
+k = m / 3
+} retorna (2 + 4) * (k / 2)
+O directamente:
+retorna raíz(n)
+Después, aplicando este concepto al problema y dibujando un gráfico:
+n^(1/2) - (n - n^(1/2))^(1/2) < 1
+n^1/2 contra n crece muy lentamente. Es decir, algo pequeño contra algo un poco más pequeño, cada vez en menor proporción en cantidad, es n^1/2 contra n. Por tanto:
+n^1/2 menos casi lo mismo si aumentamos mucho n.
+(raíz(n - raíz(n)))
+n^1/2 menos casi lo mismo si aumentamos mucho n.
+(raíz(n - raíz(n)))
+Si al principio o llegado un punto se cumple la desigualdad, siempre se cumplirá. Es decir:
+lim n → ∞ (raíz(n) - raíz(n – raíz(n)) < 1) --> 0 < 1
+De forma que si aceptamos: SaltoMaximo(n) como máximo teórico entre valores que representan números primos consecutivos, la conjetura de Dorin Andrica parece coherente desde 1 sin incluirlo hasta infinito incluyéndolo. Obviamente esto no es real, es un límite que puede ayudar, entre otras cosas, a demostrar esta conjetura.
+Para más detalles, puedes consultar WolframAlpha.
+2. Otro punto de los números primos es la conjetura de Goldbach relacionada con la simetría de estos.
+A Gödel le dieron un contraejemplo. ¿Con la matemática que únicamente incluye la asimetría de booleanos se puede establecer la existencia de la propiedad de primalidad? La asimetría se puede generar con ramas de las matemáticas que no pueden generar números primos de forma exhaustiva.
+Algoritmo de asimetría
+El algoritmo de asimetría no tiene bucle interno. Por cantidad, es inviable si cuentas por tramos y no de golpe. ¿Será falsa?
+Propuesta de algoritmo
+Supongamos el siguiente algoritmo: Tenemos la función de densidad de primos f(n), que representa la cantidad de primos en n, y el algoritmo para generar asimetría en listas de booleanos.
+En salida, copiar entrada.
+Añadir 0.
+Añadir entrada invertida y negada.
+Implicaciones del algoritmo
+De forma que, si la salida del algoritmo comprende todos los primos, los primos al menos una vez podrían calcularse generando una asimetría. Es decir, la conjetura de Goldbach establece que todo par no primo es compuesto por la suma de dos primos, que no son asimétricos en pocas palabras.
+plaintext
+f(x) * 2 <= f(2x)
+Análisis del algoritmo
+Hasta aquí bien, analizando el algoritmo. Suponiendo que no se encuentran descomposiciones, si no en tal caso primos mal marcados.
+como de 0 a i hay más primos que de 2x a 2x-i se acumula fallo al suponer que no hay descomposiciones.
+Para i = 10 a 2x, i *= i
+acumularFALLOporDistribucion += f(i) – (f(2x) - f(2x - i))
+FuncionAlarma si f(x) * 2 <= f(2x) - acumularFALLOporDistribucion
+Es decir, si se entiende que con esto siempre saltaría la alarma, la conjetura es cierta debido a la distribución como decrece, y por cantidades al ir acumulando el fallo se entiende la imposibilidad de la asimetría total.
+Conclusión
+Con un lenguaje formal puedo generar asimetría, pero no listas exhaustivas de números primos. Y el error relativo del algoritmo tiende a 0. Es decir, si funcionara el algoritmo para este propósito de “generar primos”, demostraría la conjetura de Goldbach como falsa y alguna vez un lenguaje formal podría generar todos los números primos sin coste lógico y de forma exhaustiva, con un error relativo inferior a 0.00%.
+Impresionante, como dijo Cristian, todo esto con una simple afirmación: Todo par no primo es la suma de dos primos. A Gödel le dijeron que con matemáticas de asignación y suma no hay primos. Espero que, al añadir la operación de negación que genera la asimetría, se entienda que tampoco hay primos.
+Mero y el valor de su propiedad de primalidad
+Los números de la forma 30k ± 5 son 6k ± 1 no primos. Lo mismo ocurre con 6 * primo * k ± primo. Este algoritmo está diseñado para memoria distribuida. Dentro de él, se pueden aplicar técnicas con memoria compartida. Sin embargo, antes de nada, necesitarías un método para almacenar listas tremendamente grandes.
+Ventajas y Desventajas del Algoritmo
+Ventajas:
+Solo mantiene el primo en memoria por un corto periodo de tiempo, después encuentra su "patrón simétrico".
+Reduce la talla del bucle interno.
+Utiliza otro tipo de operaciones (lógica booleana).
+Desventajas:
+Complicación de implementación respecto a lo establecido.
+Necesita generar una lista de casi-primos.
+No está optimizado y no está documentado en Wikipedia.
+Criba de Eratóstenes
+Eratóstenes creó la criba susceptible de implementaciones. Y yo dejaré un trozo de mí en él.
+Implementación del Algoritmo
+Entradas (A=(010001), B=(011101), Pb=6, P=5, limite ) 
+mientras P<limite { 
+C= P veces A 
+C[P]=0 
+C[6P-P]=0 
+C= P veces C 
+C[P]=1 B = P
+P veces B 
+B=B and C, desde P a 6P*P 
+// B contiene una lista de primos con fallos a partir de P al cuadrado. mientras(B[P+2]==0 && P<limite) { P+2 } } return B
+Aunque así el algoritmo os parezca absurdo, es idóneo para aplicación en memoria distribuida, según mi opinión. Un proceso puede ir creando C y juntando C con otros C replicándolos P veces ambos y con un AND mantener los 0 calculados.
+Explicación del Algoritmo
+Partimos de un patrón de 6k ± 1 en binario. Lo alargamos hasta 6 * 5 * 5 tachando primero 5 y 25 y duplicando. Es decir, todos los 6k ± 1 múltiplos de 5 tachados hasta 6 * 5 * 5. Se marca 5 como primo al acabar.
+Proceso de Replicación
+Se coge otro primo y se hace lo mismo.
+Con dos listas, replicas ambas tantas veces como primo “de la otra lista” y las multiplicas booleanamente.
+Por último, las añades a la lista que contiene los demás múltiplos eliminados.
+Igual que en el pseudocódigo se juntan B con C, se puede juntar una C con otra C y se pueden ejecutar tantas veces como sea necesario, alargando la lista y generando varias listas que luego se pueden unir. El paso de unir C a B se puede ejecutar varias veces, uniendo listas a la original, aunque sea en desorden. Si se hace en orden (primero las de menor longitud), la replicación de listas es más eficiente.
+Incorporación de Patrones Simétricos
+Cuanto antes se unan las listas de múltiplos de un primo a la lista de primos, antes quedan incorporados los "patrones simétricos" y antes se olvida ese primo para el cálculo. Las listas de primos se pueden unir entre ellas como las listas de múltiplos se unen a las de primos.
+Generación de Varias Listas
+Se pueden generar varias listas de primos con varias listas de múltiplos cada una de ellas, y al final o al medio o donde se considere unir las listas de primos para que todas de forma automática criben múltiplos de primos menores a cierto porcentaje de la talla del problema. Este porcentaje depende de la talla del problema y de cuan avanzado en el sentido de ejecución y en qué orden lo haya hecho (qué primos sí y cuáles no) este algoritmo. Para unir las listas, hay que multiplicarlas booleanamente, pero antes se replican para ajustar el tamaño.

@@ -1,0 +1,52 @@
+================================================================================
+SOFÍ — VARIANTE L1 (p=6k−1, 2p+1=6k−1) + PIE DENSIDADES
+================================================================================
+ID: 28_sofi_variante_L1
+ESTADO: [PARCIAL] — misma estructura que Cribas; notación distinta a ficha 04
+AUTOR: Víctor Manzanares Alberola
+FUENTE: lee arbusto\golbach pp0.txt (bloque LENGUAJES L1–L4)
+
+--------------------------------------------------------------------------------
+DEFINICIONES (variante del post)
+--------------------------------------------------------------------------------
+L1:  p = 6k − 1  y  2p + 1 = 6k − 1   [pares Sophie-type en esta forma]
+
+L3:  p compuesto, p = (6k−1)(6v+1) o (6k+1)(6v−1), con 2p+1 = 6k−1
+
+L4:  p = 6k−1 pero 2p+1 = (6k−1)(6v+1) o (6k+1)(6v−1)
+
+L2:  L3 ∩ L4
+
+Lsg: L1 \ (L3 ∪ L4)    [supervivientes / Sophie Germain en esta notación]
+
+--------------------------------------------------------------------------------
+PIE
+--------------------------------------------------------------------------------
+  |Lsg| = |L1| + |L2| − |L3| − |L4|
+
+--------------------------------------------------------------------------------
+HIPÓTESIS |Lsg| = 0 CON |L1| → ∞
+--------------------------------------------------------------------------------
+  |Lsg| − |L2| = |L1| − |L3| − |L4|
+
+Como |L3| = ∞ (infinitos primos) y |L4| se espera ∞ (2p+1 sin restricción modular extra),
+estudiar relación de densidades como fracciones de L1.
+
+--------------------------------------------------------------------------------
+JERARQUÍA PROPUESTA (densidades en L1)
+--------------------------------------------------------------------------------
+  |L2| < |Lsg| < |L3| < |L4| < |L1|
+
+--------------------------------------------------------------------------------
+RELACIÓN CON FICHA 04
+--------------------------------------------------------------------------------
+  Cribas VMA usa L1 = {n ≡ 5 (mod 6)} ≡ {6k−1 para k par...} — equivalente modular.
+  Misma estructura L3/L4/U2; este post enfatiza densidades y |Lsg|=0 imposible.
+
+--------------------------------------------------------------------------------
+GAPS
+--------------------------------------------------------------------------------
+  - Condición 2p+1=6k−1 en L1 restringe más que L1={≡5 mod 6} estándar.
+  - Jerarquía de densidades no demostrada en el post.
+
+================================================================================

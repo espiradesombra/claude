@@ -1,0 +1,67 @@
+================================================================================
+GOLDBACH POR SEGMENTACIÓN + ARGUMENTO HUECO L(n)−m(n)
+================================================================================
+Fuente: Libro 6, Nuevo Documento de texto.txt (líneas ~514–600, ~2633–2657)
+Estado: [CONJ] — heurística MRAUV + cota √n; no demostración Goldbach
+Relación: complementa 06_conjetura_goldbach_vma.txt, 01 (dos primos), 03 (salto)
+
+--------------------------------------------------------------------------------
+NOTACIÓN
+--------------------------------------------------------------------------------
+  2n     par objetivo
+  Δ      := ⌊c·√n⌋
+  A_j    := [(j−1)Δ+2, jΔ+1]
+  B_j    := [2n−jΔ−1, 2n−(j−1)Δ−2]
+  D_pred tramo := MRAUV en cada extremo
+
+--------------------------------------------------------------------------------
+PSEUDOCÓDIGO GOLDBACH_SEGMENTAR(2n, Δ)
+--------------------------------------------------------------------------------
+  J := ⌊n/Δ⌋
+  total_esperado := 0
+  PARA j = 1..J:
+      D_low  := D_pred((j−1)Δ+2, Δ)
+      D_high := D_pred(2n−jΔ−1, Δ)
+      E_j    := D_low · D_high · Δ
+      total_esperado += E_j
+  SI total_esperado ≥ 1 ⇒ esperar representación p+q=2n
+  RETORNAR total_esperado
+
+--------------------------------------------------------------------------------
+IMPLICACIONES LÓGICAS
+--------------------------------------------------------------------------------
+  1. SI E_j ≈ D_low·D_high·Δ ⇒ total = Σ_j E_j
+  2. SI Σ_j E_j → ∞ (o >0 ampliamente) ⇒ existe representación
+  3. SI E_j oscilan ⇒ redistribuyen masa; Σ_j E_j mantiene tendencia
+
+--------------------------------------------------------------------------------
+ARGUMENTO HUECO (L−m crece aunque oscile)
+--------------------------------------------------------------------------------
+  L(n) := ⌊√(n+3)⌋ + 7
+  m(n) ≈ (e−2)·√n
+
+  Cálculo:
+    e − 2 ≈ 0.7182818284590451
+    1 − (e−2) ≈ 0.2817181715409549
+    L(n) − m(n) ≈ 0.28171817·√n + 7 + o(1)
+
+  IMPLICACIONES:
+    SI L(n)−m(n) ≥ 2 ⇒ I(n) contiene ≥ 2 primos
+    SI L(n)−m(n) ≈ 0.28·√n + 7 ⇒ para n grande, hueco ≫ 2
+    SI oscilaciones locales acumulan O(√n^α), α<1
+       ⇒ componente c·√n domina; hueco sigue creciendo
+
+--------------------------------------------------------------------------------
+TEOREMA 3 LIBRO 6 (enunciado heurístico)
+--------------------------------------------------------------------------------
+  Si Σ_j D(A_j)·D(B_j)·Δ ≥ 1 ⇒ existe p+q=2n en tramos simétricos.
+  Idea: L(n)−m(n) crece; oscilaciones locales < tendencia global.
+
+--------------------------------------------------------------------------------
+LIMITACIONES
+--------------------------------------------------------------------------------
+  - No demuestra Goldbach; asume independencia y densidad MRAUV.
+  - Σ E_j ≥ 1 es condición probabilística/heurística, no certeza.
+  - Relación hueco I(n) ↔ representaciones Goldbach es indirecta.
+
+================================================================================

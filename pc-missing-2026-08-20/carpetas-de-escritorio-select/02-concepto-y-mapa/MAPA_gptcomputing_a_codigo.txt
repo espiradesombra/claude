@@ -1,0 +1,76 @@
+================================================================================
+  MAPA: gptcomputing.txt → código AntiPC v0.1.0
+  Archivo origen: lee arbusto/gptcomputing.txt
+================================================================================
+
+PEDIDO ORIGINAL (línea 1-2)
+  "mejorar el código infiriendo el contexto, funcional, aliviar la ALU,
+   explicación científica digna de chatgpt"
+
+HASH: HASHTOOLCODE(l)L()(L ) (L).zip → k3hash/k3hash/src/k3hash.c
+       Motor unificado: src/antipc/hash_engine.py (DLL o Python)
+
+ESTADO: ENTREGADO + KOP binario v0.1.1-parcial (2026-07-11)
+         + C++ del txt extraido a from_gptcomputing/cpp/ (76 archivos)
+
+C++ DEL TXT (referencia Sprint 2+)
+  Origen lineas              Destino
+  L468-L9758 clases/structs antipc/from_gptcomputing/cpp/
+  Indice completo            antipc/from_gptcomputing/INDICE_CODIGO_TXT.txt
+  Regenerar                  python antipc/scripts/extract_gptcomputing_code.py
+
+KOP / K3 MicroKernel (txt ~9728)
+  KOP 001-008 definiciones     runtime/kop.py + kop_registry.py
+  Directorio offsets           K3MicroKernel.pack/unpack
+  Ahorro tiempo vs JSON        demo_kop_binary.py, docs/KOP_BINARIO.txt
+  Knowledge blob               knowledge.publish_with_kop_blob()
+
+
+ROADMAP DEL TXT                    IMPLEMENTACIÓN
+--------------------------------------------------------------------------------
+v0.0.01  Flow Kernel               runtime/kernel.py (FlowKernel)
+v0.0.02  Knowledge Buffer          runtime/knowledge.py
+v0.0.03  Reference Graph           runtime/reference.py + kernel.references
+v0.0.04  Modelo Matemático         runtime/signature.py + docs/explicacion_cientifica.txt
+v0.0.05  Formal Specification      docs/explicacion_cientifica.txt
+v0.0.06  Runtime Modes             runtime/modes.py (Local/Battery/Network/Research/Benchmark)
+v0.0.065 Plugin System (UPS)       runtime/plugin.py + plugins/k3_plugin.py
+v0.0.07  Runtime Prototype         demo_v010.py
+v0.0.08  Network Prototype         udp_benchmark.py + hub_node.py
+v0.1.0   Primer entregable         sale-it/ (paquete completo)
+
+
+AXIOMAS DEL TXT                    CÓDIGO
+--------------------------------------------------------------------------------
+Ley de Inmutabilidad               Reference @dataclass(frozen=True)
+Ley de Determinismo                Capability.deterministic + K3 plugin
+Ley de Consulta                    kernel.submit_operation → knowledge.lookup primero
+Ley de Activación                  EventBus (sin polling)
+Event Coalescing                   EventBus.emit(merge_equal=True)
+¿Qué está listo?                   Scheduler.pop_ready()
+P_util(N)=N·E(N)+K(N)              benchmark.py + demo_v010.py stats
+
+ARQUITECTURAS EXPERIMENTALES (txt líneas 77-157)
+  A convencional                   architectures.run_conventional
+  B lock-free                      architectures.run_lockfree
+  C hubs                           architectures.run_distributed
+  D Grafcet                        architectures.run_grafcet
+  E UDP real                       udp_benchmark.run_udp_network
+
+
+EJECUCIÓN RÁPIDA
+--------------------------------------------------------------------------------
+  v0.1.0 Flow Kernel:
+    cd src\antipc
+    python demo_v010.py --mode battery --count 500 --repeat 0.35
+
+  Benchmark UDP (62% mejora ALU medida):
+    scripts\03_benchmark_udp.bat
+
+
+RESULTADO v0.1.0 (battery, 500 ops, 35% duplicados)
+  ALU ahorrada: 31.4%
+  Knowledge hits: 157/500
+  Event coalescing: 157
+
+================================================================================

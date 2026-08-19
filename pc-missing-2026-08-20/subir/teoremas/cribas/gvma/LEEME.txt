@@ -1,0 +1,18 @@
+================================================================================
+GVMA — SunRaman Jet (C portable)
+================================================================================
+Autor: Víctor Manzanares Alberola
+
+Archivos:
+  Gvma.h           — motor segmentado + Jet + Flash
+  sunraman_demo.c  — demo pequeña
+
+Compilar (GCC / Clang):
+  gcc sunraman_demo.c -o sunraman_demo -lm
+
+Uso incremental (bloques 1MB):
+  gvma_afegir_bloc_incremental("./blocs");
+
+Documentación: ../CRIBA_SUNRAMAN_ERATOSTENES.txt
+
+================================================================================

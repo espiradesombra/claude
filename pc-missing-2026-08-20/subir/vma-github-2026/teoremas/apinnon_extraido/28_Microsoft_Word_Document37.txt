@@ -1,0 +1,69 @@
+Cuatro piezas sobre criba y primos: saltoMáximo, Sofí, Férmines y el método predictivo V
+Autor: Víctor Manzanares Alberola
+Fecha: 29/08/2025
+Resumen
+Presentamos cuatro resultados y conjeturas en teoría de números, unidos por una misma filosofía de criba:
+Una cota garantizada de “salto máximo” entre primos mediante sobreestimación factorial.
+Un criterio fuerte para infinitud de primos de Sophie Germain y la demostración de que L4\L2 es infinito.
+Una alineación modular de los números de Fermat (“férmines”) que caracteriza su “fila” en una criba por bloques.
+Un método predictivo basado en proporciones factoriales (V) que no puede ser eliminado por filtros de compuestos del tipo 6k±1.
+1. Introducción
+Las cuatro piezas que siguen son independientes pero comparten un enfoque: usar cribas y propiedades modulares para aislar familias de enteros con alta densidad de primos o con estructura especial. Cada sección incluye definiciones, enunciados y ejemplos ilustrativos.
+2. SaltoMáximo: criba con sobreestimación factorial
+Definiciones: 
+Sea n > 3:
+I(n) = [n − parte_entera(√(n+3)) − 3, n+3]
+L(n) = parte_entera(√(n+3)) + 7
+K = parte_entera(parte_entera(√n) × 9/24)
+m(n) = suma desde i=2 hasta K de (√(n+3) / i!)
+Lema (Cobertura de compuestos): 
+Todo compuesto en I(n) posee un divisor primo ≤ √(n+3).
+Lema (Sobreestimación): 
+m(n) sobreestima el número de posiciones marcadas por la criba. En particular:
+m(n) ≈ (e − 2) × √n.
+Teorema (Cota saltoMáximo): 
+Si L(n) − m(n) ≥ 2, el intervalo I(n) contiene al menos dos primos distintos.
+Ejemplo: 
+Para n = 1000, L(n) = 38, m(n) ≈ 33,1, por lo que L(n) − m(n) ≈ 4,9 > 2: el intervalo I(1000) contiene al menos dos primos.
+3. Sofí: criterio fuerte y L4\L2 infinito
+Definiciones:
+L1 = {a b ∈ N : a ≡ 5 (mod 6), b=2*a+1}
+L3 = {a ∈ L1 : a = (6k − 1)(6h + 1) }
+L4 = {a ∈ L1 : 2a+1 = (6j−1)(6g+1)}
+L2 = L3 ∩ L4
+LSG = {p ∈ L1 : p y 2p + 1 son primos}
+Teorema (Criterio fuerte): 
+Como hay infinitos primos 6k − 1 y ninguno de ellos pertenece a L4, L3\L2 es infinito y está formado por primos. Por tanto, LSG es infinito.
+Teorema: 
+L4\L2 es infinito.
+Prueba: 
+Sea q ≥ 5 primo. Consideremos p ≡ 5 (mod 6) y 2p + 1 ≡ 0 (mod q). Esto equivale a p ≡ (q − 1)/2 (mod q). Por el teorema chino del resto, hay una clase r (mod 6q) con mcd(r, 6q) = 1 que satisface ambas. Por Dirichlet, hay infinitos primos p ≡ r (mod 6q). Tales p están en L4 y no en L3, luego en L4\L2.
+Ejemplo: 
+Con q = 5, resolver p ≡ 5 (mod 6) y 2p + 1 ≡ 0 (mod 5) da p ≡ 17 (mod 30). Hay infinitos primos así; para todos ellos 2p + 1 es múltiplo de 5 y compuesto.
+4. Férmines: producto, base y fila privilegiada
+Definición: 
+Fn = 2^(2^n) + 1
+Lema: 
+F0 × F1 × … × Fn = F(n+1) − 2
+Teorema (Alineación modular): 
+Sea Bn = 2 × producto desde k=0 hasta n de Fk.
+Existe un único residuo rn tal que:
+rn ≡ 1 (mod 2)
+rn ≡ 2 (mod Fk) para 0 ≤ k ≤ n
+y para todo m ≥ n+1 se cumple Fm ≡ rn (mod Bn).
+Ejemplo: 
+Para n = 3, B3 = 131070 y F4 = 65537 es la clase privilegiada.
+5. Método predictivo V
+Definición: 
+Para v ≤ m < n:
+V(v; m, n) = (v / m!) × n!
+con v = p + 1 = q − 1 para primos gemelos p, q.
+Conjetura: 
+Dados primos gemelos p, q = p + 2 y v = p + 1, es probable que existan m', n' con v ≤ m' < n' tales que V(v; m', n') ± 1 generen nuevos candidatos primos en 6k ± 1.
+Proposición (No totalidad compuesta): 
+Sea v = p + 1 con p ≥ 5 primo.
+Para v ≤ m < n, no es posible que todas las identidades:
+(v / m!) × n! ± 1 = (6j ± 1)(6h ± 1)
+se mantengan para todo n con m fijo.
+6. Conclusiones
+Las secciones 2, 3 y 4 contienen teoremas probados; la sección 1 presenta una conjetura respaldada por un resultado de “no totalidad compuesta”. La filosofía común es usar cribas y congruencias para aislar familias con alta densidad de primos o estructura especial.

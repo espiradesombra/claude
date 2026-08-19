@@ -1,0 +1,26 @@
+ID: 17_eq12_raiz_cuarta
+ESTADO: [MAL] — Notación ambigua en documentos Libro 4
+AUTOR: VMA
+FUENTE: Escuela de Raspall.txt; libro4_encriptacion (EQ12)
+
+--------------------------------------------------------------------------------
+FÓRMULA EN DOCUMENTOS
+--------------------------------------------------------------------------------
+  ( Π_a / (Π_A + Π_a) )^{-1}  ≥  (talla/4)^{1/4}
+
+Aparece como “Criterio de Convergencia (Raíz Cuarta)” en sistema Kilómetro/MDC.
+
+--------------------------------------------------------------------------------
+PROBLEMAS
+--------------------------------------------------------------------------------
+- Π_a, Π_A no definidos de forma única (producto de qué conjuntos).
+- “talla” es parámetro dinámico del array incremental, no variable estándar.
+- Usado como compuerta en script de cifrado; sentido criptográfico ≠ teorema.
+- Misma ecuación repetida en chats sin demostración.
+
+--------------------------------------------------------------------------------
+ACCIÓN RECOMENDADA
+--------------------------------------------------------------------------------
+Formalizar: definir dominio, variables, desigualdad en ℤ o ℝ, y lemma previo.
+
+================================================================================

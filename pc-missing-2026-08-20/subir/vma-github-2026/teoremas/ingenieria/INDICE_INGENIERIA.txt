@@ -1,0 +1,110 @@
+================================================================================
+ÍNDICE INGENIERÍA — IDEAS VMA EN EL ORDENADOR
+================================================================================
+Autor: Víctor Manzanares Alberola
+Carpeta: C:\Users\cuent\Desktop\teoremas\ingenieria\
+Fecha catálogo: 2026-07-10
+Cruce honesto: segunda_vuelta\LIMITES_HONESTOS.txt
+
+Separación de capas:
+  - teoremas\formal\     → matemática demostrada o conjeturada
+  - teoremas\ingenieria\ → productos, prototipos, simulaciones, software
+  - segunda_vuelta\      → qué está vendido vs qué está probado
+
+Leyenda de estado teórico:
+  [OK]       Física/conservación correcta; métrica estructural clara
+  [HEUR]     Simulación o algoritmo útil; sin prueba de mercado ni teorema
+  [REFUTADO] Afirmación central contradicha por conservación o escala
+  [CONJ]     Propuesta sin validación experimental suficiente
+  [NARR]     Solo en marketing 33×1; sin código ni paper reproducible
+  TRL n      Technology Readiness Level estimado (1=concepto … 9=despliegue)
+
+--------------------------------------------------------------------------------
+A. ENERGÍA Y PARQUES EÓLICOS
+--------------------------------------------------------------------------------
+  ID   | Idea              | Ficha                        | Estado      | TRL
+  -----|-------------------|------------------------------|-------------|----
+  E01  | ZypyZape          | 01_ZYPYZAPE.txt              | Estructural | 4–5
+  E02  | Quijote           | 02_QUIJOTE.txt               | [REFUTADO]* | 3–4
+  E03  | Gemelo virtual    | 03_GEMELO_VIRTUAL.txt        | [OK] sim    | 4
+  E04  | Solar Gemell escala| 04_SOLAR_GEMELL_ESCALA.txt  | [HEUR]      | 2–3
+
+  * RoCoF/energía neta: ver segunda_vuelta. Sincronismo parc: valor real.
+
+--------------------------------------------------------------------------------
+B. ALMACENAMIENTO / CINÉTICA / GRAVEDAD
+--------------------------------------------------------------------------------
+  ID   | Idea              | Ficha                        | Estado      | TRL
+  -----|-------------------|------------------------------|-------------|----
+  E05  | Kilómetro         | 05_KILOMETRO.txt             | [REFUTADO]* | 3
+  E06  | Pacopi            | 06_PACOPI.txt                | [REFUTADO]  | 2
+  E07  | Apiñon            | 07_APINON.txt                | [CONJ]      | 1–2
+
+  * Almacenamiento con energía externa: posible. Extracción neta gravedad: no.
+
+--------------------------------------------------------------------------------
+C. COMPUTACIÓN, RED Y HASH
+--------------------------------------------------------------------------------
+  ID   | Idea              | Ficha                        | Estado      | TRL
+  -----|-------------------|------------------------------|-------------|----
+  E08  | AntiPC / Sale-It  | 08_ANTIPC.txt                | [OK] bench  | 4–5
+  E09  | k3hash / HASHTOOL | 09_K3HASH.txt                | [HEUR]      | 5–6
+  E10  | k3 Software Hub   | 10_K3_SOFTWARE_HUB.txt       | [NARR/UI]   | 2
+
+--------------------------------------------------------------------------------
+D. BENCHMARK Y NUMÉRICO
+--------------------------------------------------------------------------------
+  ID   | Idea              | Ficha                        | Estado      | TRL
+  -----|-------------------|------------------------------|-------------|----
+  E11  | UNION (logbench)  | 11_UNION.txt                 | [OK] infra  | 5
+
+--------------------------------------------------------------------------------
+E. CRIPTO / FASE / CUÁNTICO SIMULADO
+--------------------------------------------------------------------------------
+  ID   | Idea              | Ficha                        | Estado      | TRL
+  -----|-------------------|------------------------------|-------------|----
+  E12  | Phase-Boolean 1477| 12_PHASE_BOOLEAN_1477.txt    | [HEUR]      | 3
+  E13  | Encriptación L4   | 13_ENCRIPTACION_GEOMETRICA.txt| [HEUR]     | 3–4
+  E14  | 0heat             | 14_0HEAT.txt                 | [NARR]      | ?
+
+--------------------------------------------------------------------------------
+F. TRANSPORTE
+--------------------------------------------------------------------------------
+  ID   | Idea              | Ficha                        | Estado      | TRL
+  -----|-------------------|------------------------------|-------------|----
+  E15  | Servoruedas       | 15_SERVORUEDAS.txt           | [NARR/CONJ] | 1–2
+
+--------------------------------------------------------------------------------
+G. MATEMÁTICA APLICADA CON CÓDIGO (límite ingeniería)
+--------------------------------------------------------------------------------
+  ID   | Idea              | Ficha                        | Estado      | TRL
+  -----|-------------------|------------------------------|-------------|----
+  E16  | MDC / PY L5       | 16_MDC_PYL5.txt              | [HEUR]      | 4
+  E17  | SunRaman / Gvma   | 17_SUNRAMAN_GVMA.txt         | [HEUR]      | 3
+  E18  | Regla mecánica    | 18_REGLA_MECANICA.txt        | [HEUR]      | 3
+
+  Nota: demostraciones formales en teoremas\formal\; aquí solo implementación.
+
+--------------------------------------------------------------------------------
+H. COMERCIAL / DOSSIER (no es producto técnico)
+--------------------------------------------------------------------------------
+  Elewit dossier     → subir\VMA-Dossier-Elewit\
+  33×1 pack          → subir\33x1-pack\, porque_no_33x1\
+  repo\biblio\README → narrativa global PI
+
+--------------------------------------------------------------------------------
+RUTAS RAÍZ EN EL PC (resumen)
+--------------------------------------------------------------------------------
+  Desktop\gemelo_v*.py              Gemelos Quijote+ZypyZape (v3–v10, v94)
+  Desktop\repo\ZYPYZAPE Bateria...  Twins v2–v4, docs Elewit
+  Desktop\repo\kilometre;(soles...) Simulaciones Kilómetro v2–v15
+  Desktop\teoremas\lee arbusto\sale-it\   AntiPC ejecutable
+  Desktop\subir\VMA-Hash-Pack-v1-staging\ k3hash empaquetado
+  Desktop\claude-main-extract\...\UNION\   Benchmark log/raíz
+  Desktop\repo\PY L5\               mdc_v15–v23, híbridos
+  Desktop\teoremas\cribas\gvma\     SunRaman C
+  Desktop\teoremas\cribas\regla_mecanica\  Regla pendiente Python/C++
+
+TOTAL FICHAS: 18 ideas + este índice + FUENTES_RUTAS.txt
+
+================================================================================

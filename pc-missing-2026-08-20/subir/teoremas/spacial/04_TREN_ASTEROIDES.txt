@@ -1,0 +1,40 @@
+================================================================================
+S04 — TREN DE ASTEROIDES / CUBITOS (33×1 espacial)
+================================================================================
+
+QUÉ PROBLEMA RESUELVE (pretensión)
+  - Minería / logística en cinturón principal sin un solo cohete monolítico.
+  - Red modular: fallo de 1 cubito → otros 32 mantienen estabilidad (narrativa 33×1).
+  - Δv acumulado por unir/separar eslabones + propulsión láser (no solo empuje continuo).
+
+ARQUITECTURA (mati L, gemini3)
+  - Cubito estándar: ~1 m arista, ~917 kg hielo (densidad 917 kg/m³).
+  - Eslabón inteligente: PCB nRF52, cápsula Zero Hit, sensores en "panza/cabeza".
+  - Secuencia: Esculpir → Disparar sensor → Soldar al tren (cadena en serie).
+  - Formeta compatible (macho/hembra): inserción en rotación espiral → traba al congelar.
+
+ALGORITMO DE VUELO (tabla mati L ~7036)
+  Paso                  | Función                          | Tecnología
+  ----------------------|----------------------------------|---------------------------
+  Detección de fase     | Posición en espiral              | LiDAR láser
+  Cálculo de tensión    | Evitar rotura por marea          | Elasticidad sintética (sw)
+  Mando desenganche     | Separar para ganar impulso       | Reloj atómico + válvula térmica
+
+PROPULSIÓN NARRATIVA
+  - Sublimación láser en "espalda" del muñeco → chorro H₂O.
+  - Tren en estela de plasma del líder (canal de menor resistencia).
+  - Kuramoto sincroniza fase de láseres en los 33 emisores.
+
+ESTADO TEÓRICO
+  [CONJ]   Sin .py de integrador orbital ni CAD de eslabón en repo.
+  [HEUR]   Tabla de subsistemas coherente como lista de requisitos.
+  [NARR]   "Autopista estelar" / tren Tesla-Kuiper: origen en chat Gemini.
+
+RUTAS
+  repo\CLAUDE TXT\mati (L).txt — 7036–7050, 3848–3855, 8014–8057
+  repo\gemini\gemini3.txt — 719–727 (tren Tesla, ZypyZapeo espacial)
+
+REFERENCIAS
+  spacial\03_LASER_CHINO.txt, 05_COMPUTO_ZERO_HIT.txt
+
+================================================================================

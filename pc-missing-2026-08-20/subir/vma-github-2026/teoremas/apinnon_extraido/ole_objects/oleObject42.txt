@@ -1,0 +1,15 @@
+            double factor_exp1 = factor3 + factor4 * (d3 - d2) / (d3 - d1);
+---
+            double factor_exp2 = factor5 + factor6 * (d3 - d2) / (d3 - d1);
+---
+            j = std::pow(std::abs(j), std::abs(factor_exp1));
+---
+            j = std::pow(std::abs(j), std::abs(factor_exp2));
+---
+            x = std::pow(std::abs(x), std::abs(factor_exp1));
+---
+            x = std::pow(std::abs(x), std::abs(factor_exp2));
+---
+        // --- PRIMER AJUSTE (Multiplicativo) ---
+---
+        // --- SEGUNDO AJUSTE (Exponencial, condicional) ---

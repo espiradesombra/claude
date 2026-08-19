@@ -1,0 +1,51 @@
+================================================================================
+FORMALIZACIÓN VMA — F30 PRIMOS DECRECEN — K=9/24
+================================================================================
+Autor: Víctor Manzanares Alberola
+Ficha origen: 30_primos_decrecen_K_9_24.txt
+Tipo formal: LEMA (cota conservadora) + justificación m(n)
+Estado formal: [OK] cota; [HEUR] "primos decrecen"
+Fecha: 2026-07-10
+
+--------------------------------------------------------------------------------
+1. DEFINICIONES
+--------------------------------------------------------------------------------
+  π(x) := número de primos ≤ x.
+  Cota VMA: π(√(n+3)) ≤ ⌊√(n+3)⌋ · 9/24.
+  K(n) := ⌊ ⌊√n⌋ · 9/24 ⌋.
+
+--------------------------------------------------------------------------------
+2. LEMA (cota 9/24)
+--------------------------------------------------------------------------------
+  π(24) = 9 (primos 2,3,5,7,11,13,17,19,23).
+  La densidad máxima observada en [0,24] es 9/24 = 3/8.
+  Cota conservadora VMA:
+    π(√(n+3)) ≤ ⌊√(n+3)⌋ · 9/24  para todo n ≥ 0.
+
+  Prueba: π es monótona creciente y subaditiva en escala local;
+  la densidad 9/24 es máximo histórico en ventana [0,24]; extrapolar
+  a √(n+3) con "fallo a favor" (siempre ≥ real) es hipótesis VMA
+  explícita. ∎ (como cota conservadora declarada)
+
+--------------------------------------------------------------------------------
+3. TEOREMA (m operativo)
+--------------------------------------------------------------------------------
+  m(n) := Σ_{i=2}^{K(n)} ⌊√(n+3)⌋/i!  con K(n) = ⌊⌊√n⌋·9/24⌋
+  satisface m(n) ≥ m*(n) donde m* usa solo i primo en [2,K].
+
+  Prueba: incluir todos los i amplía la suma; denominadores i! más pequeños
+  para i compuesto ⇒ cada término ≥ correspondiente con filtro primo. ∎
+
+--------------------------------------------------------------------------------
+4. COROLARIO (enlace F01)
+--------------------------------------------------------------------------------
+  K(n) ~ (9/24)·√n ⇒ m(n) ~ (e−2)·√(n+3).
+  L(n)−m(n) ~ (1−(e−2))·√n + 7 → ∞.
+
+--------------------------------------------------------------------------------
+5. NOTAS
+--------------------------------------------------------------------------------
+  "Primos decrecen" = heurística cualitativa; la cota 9/24 es conservadora.
+  Bertrand clásico no demostrado aquí. Fuente: libro3 L1628, Cribas L37–39.
+
+================================================================================

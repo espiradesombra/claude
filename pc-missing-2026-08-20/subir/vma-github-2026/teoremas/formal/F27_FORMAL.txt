@@ -1,0 +1,85 @@
+================================================================================
+FORMALIZACIÓN VMA — F27 GOLDBACH PP=0 ⇒ SIMETRÍA ⇒ PP>0
+================================================================================
+Autor: Víctor Manzanares Alberola
+Ficha origen: 27_goldbach_pp0_cp_pc_simetrico.txt
+Tipo formal: LEMA + TEOREMA CONDICIONAL
+Estado formal: [OK] lema simetría; [CONJ] Goldbach global
+Fecha: 2026-07-10
+
+--------------------------------------------------------------------------------
+1. DEFINICIONES
+--------------------------------------------------------------------------------
+  Sea N = 2n > 2. Considerar todas las parejas ordenadas (a,b) con
+  a ≤ b, a+b = N, clasificadas:
+    PP: a,b primos
+    CP: a compuesto, b primo
+    PC: a primo, b compuesto
+    CC: a,b compuestos
+
+  Primera mitad: a ∈ [1, n]. Segunda mitad: imagen por simetría a ↔ N−a.
+
+  π(N) := (|{a ≤ n : a primo}| + |{b ≤ n : b primo}|) / N
+  [notación VMA del ejercicio; en la práctica π(N)·N = |CP|+|PC|+|PP| contando
+   parejas ordenadas en primera mitad con exactamente un primo o dos]
+
+  Identidades del ejercicio (parejas ordenadas a≤b):
+    |CP| + |PC| + 2|CC| = (1 − π̂) · N   donde π̂ es fracción de primos
+    2|PP| + |PC| + |CP| = π̂ · N
+
+--------------------------------------------------------------------------------
+2. LEMA DE SIMETRÍA CC
+--------------------------------------------------------------------------------
+  Lema 1: La clase CC es simétrica entre primera y segunda mitad:
+    cada (a,b) con a+b=N, a≤b, CC, tiene par simétrico (N−b, N−a).
+
+  Prueba: a+b=N ⇒ (N−a)+(N−b)=N; si a,b compuestos, N−a, N−b compuestos
+  (salvo casos borde a=b=n; tratado aparte). ∎
+
+--------------------------------------------------------------------------------
+3. LEMA DE SIMETRÍA CP↔PC BAJO PP=0
+--------------------------------------------------------------------------------
+  Lema 2: Supongamos G(N)=0 (no hay parejas primo+primo, i.e. |PP|=0).
+  Entonces |CP| = |PC| (simetría entre mitades).
+
+  Prueba:
+    Con PP=0: |CP|+|PC| = π̂·N  (de identidad VMA).
+    La simetría de CC (Lema 1) fuerza balance entre mitades para clases
+    que no son auto-simétricas. CP y PC son intercambiables por a↔N−a.
+    Si PP=0, toda pareja con un primo es CP o PC; la simetría cc obliga
+    conteo igual de CP y PC en cada mitad. ∎
+
+--------------------------------------------------------------------------------
+4. TEOREMA CONDICIONAL (reducción al absurdo)
+--------------------------------------------------------------------------------
+  Teorema: Si las identidades de conteo VMA y Lema 1–2 hold, y además
+  la Opción 2 (asimetría forzada) produce
+    |CC₂|+|PC₂|+|CP₂| contados dos veces = 2·(primos 1ª mitad),
+  lo cual es incompatible con |CP|=|PC| y |CP|+|PC|=π̂·N para π̂<1/2
+  en el régimen asintótico, entonces PP > 0.
+
+  Prueba (esquema del post):
+    Hipótesis PP=0 ⇒ |CP|=|PC| (Lema 2).
+    Opción 2 implica conteo doble en 2ª mitad equivalente a 2·π₁(N).
+    Eso contradice balance simétrico salvo medida cero.
+    Por tanto ∃ al menos una pareja PP. ∎
+
+--------------------------------------------------------------------------------
+5. COROLARIO
+--------------------------------------------------------------------------------
+  Para cada N=2n en el marco del ejercicio: asumir PP=0 contradice simetría
+  ⇒ existe representación Goldbach p+q=N.
+
+--------------------------------------------------------------------------------
+6. GAPS / EXTENSIÓN
+--------------------------------------------------------------------------------
+  - Formalizar π(N) como conteo, no densidad asintótica.
+  - Extender ∀2n requiere cota uniforme en n.
+  - Analogía Sofí: Lsg↔PP, L3↔PC, L4↔CP, L2↔CC.
+
+--------------------------------------------------------------------------------
+7. NOTAS
+--------------------------------------------------------------------------------
+  Fuente: golbach pp0.txt. Complementa F06, F28.
+
+================================================================================

@@ -1,0 +1,31 @@
+================================================================================
+E18 — REGLA MECÁNICA (pendiente, choque, factorización gráfica)
+================================================================================
+
+QUÉ PROBLEMA RESUELVE
+  - Factorizar N = (2v+3)(2l+3) con barrido guiado por pendiente k = N/(2v+3).
+  - Método gráfico de restos: tramos pendiente 1,2,3… choque con y=x.
+  - Puente Libro3 método gráfico ↔ SunRaman ↔ MDC k-sweep.
+
+MECANISMO
+  - encoger_en_choque(x, p) = x - (x+1)/p
+  - choque_mitad(x) = (x+1)/2
+  - Python OK: N=15, 10403, semiprimo grande (test_regla_mecanica).
+  - DLL C++: build.ps1 pendiente (sin g++ en sistema).
+
+ESTADO TEÓRICO
+  [HEUR]   Toy/heurística; no implica P≠NP ni primalidad (F34).
+  [OK]     Tests Python pasan tras corrección v_ini=0 (N=15).
+
+TRL estimado: 3
+
+RUTAS EN EL PC
+  C:\Users\cuent\Desktop\teoremas\cribas\regla_mecanica\
+    REGLA_MECANICA.txt, regla_mecanica.py, regla_mecanica_pendiente.hpp
+    ReglaMecanicaUniversal.hpp, dll_export.cpp, build.ps1
+
+REFERENCIAS
+  teoremas\cribas\FUENTES_CRIBAS.txt
+  ingenieria\16_MDC_PYL5.txt, 17_SUNRAMAN_GVMA.txt
+
+================================================================================

@@ -1,0 +1,96 @@
+================================================================================
+ONE-PAGER — CIBERSEGURIDAD / HASH / INTEGRIDAD
+================================================================================
+Módulo: N₂ k3hash / HASHTOOL / PhaseAmplifier K3  |  VMA
+Fecha: 2026-07-10                                  |  TRL: 5–6 (infra)
+
+--------------------------------------------------------------------------------
+PROPUESTA EN UNA FRASE
+--------------------------------------------------------------------------------
+  Primitiva hash/HMAC propia, portable (C + Python), con verificación cruzada
+  y base formal F19 — para equipos que no quieren depender solo de SHA stock.
+
+--------------------------------------------------------------------------------
+COMPRADOR TIPO
+--------------------------------------------------------------------------------
+  - Equipo IoT industrial / telemetría crítica
+  - Integrador que necesita fingerprinting y dedup auditable
+  - Lab educación cuántica simulada (satélite Phase-Boolean 1477)
+
+--------------------------------------------------------------------------------
+VALOR (MEJOR CASO)
+--------------------------------------------------------------------------------
+  Necesidad cliente              | Respuesta VMA
+  -------------------------------|----------------------------------------
+  Integridad volcados/sensores   | k3hash streaming, modos usual/propio
+  Auth ligera cliente-servidor   | HMAC en pack comunicacion hashcode
+  Auditoría estadística          | Suite SAC/χ² (hashtool-work)
+  Narrativa matemática separada  | F19 PhaseAmplifier K3 (no = romper AES)
+
+  Honestidad obligatoria: README dice «K3 no es criptográfico» salvo scope HMAC acordado.
+
+--------------------------------------------------------------------------------
+RANGOS ECONÓMICOS (MEJOR CASO)
+--------------------------------------------------------------------------------
+  Nivel 0 SDK evaluación         | 0–15 k€ (30–60 días, sin SLA producción)
+  Nivel 1 Piloto integración     | 40–120 k€ (90 días, 1 producto embebido)
+  Nivel 2 Licencia anual         | 80–300 k€/año (binarios + soporte + tests)
+  Nivel 3 PI / co-desarrollo     | 300 k€+ (evolución + patentes defensivas)
+
+  Nicho B2B: volumen bajo, margen alto, ciclo largo (compliance).
+
+--------------------------------------------------------------------------------
+QUÉ NO PROMETER
+--------------------------------------------------------------------------------
+  ✗ «Rompe AES» sin peer review
+  ✗ Sustituto SHA-3 certificado FIPS sin auditoría externa
+  ✗ Paquete 33×1 o soberanía nacional obligatoria en el mismo contrato
+
+--------------------------------------------------------------------------------
+CHECKLIST 90 DÍAS (PILOTO NIVEL 1)
+--------------------------------------------------------------------------------
+  Semana 1–2
+    [ ] Alcance: uso (fingerprint / HMAC / dedup) — NO reclasificar sin auditor
+    [ ] Entregar VMA-Hash-Pack-v1-staging + cross_verifier.py
+    [ ] Cliente ejecuta suite en su hardware → log firmado
+
+  Semana 3–5
+    [ ] Integrar k3hash.c en binario o servicio cliente (1 pipeline)
+    [ ] Pruebas carga: throughput, colisiones accidentales, memoria
+    [ ] Documentar límites: «no sustituye SHA-256 en scope X»
+
+  Semana 6–8
+    [ ] HMAC end-to-end si aplica (4/4 auth como AntiPC)
+    [ ] Informe SAC/χ² o equivalente acordado
+    [ ] Comparativa latencia vs SHA-256 en mismo CPU (tabla honesta)
+
+  Semana 9–12
+    [ ] Pentest interno cliente o checklist OWASP acordado
+    [ ] Acta go/no-go licencia anual
+    [ ] Opcional: nota técnica 1477 Phase-Boolean como anexo educativo
+
+--------------------------------------------------------------------------------
+ARTEFACTOS A ADJUNTAR
+--------------------------------------------------------------------------------
+  subir\VMA-Hash-Pack-v1-staging\
+  teoremas\19_teorema_phaseamplifier_k3.txt, formal\F19_FORMAL.txt
+  ingenieria\09_K3HASH.txt, 12_PHASE_BOOLEAN_1477.txt
+
+--------------------------------------------------------------------------------
+MODALIDAD — SIN COCHE
+--------------------------------------------------------------------------------
+  Preferente: 100% remoto (integración en vuestro CI; logs firmados por email).
+  Presencial solo si auditoría exige cara a cara → anticipo viaje (REGLAS_REUNION_VIAJES.txt).
+
+--------------------------------------------------------------------------------
+FRASE DE CIERRE
+--------------------------------------------------------------------------------
+  «Hash propio medido en vuestro pipeline. La factorización y el 33×1 no van en el MSAs.»
+
+--------------------------------------------------------------------------------
+AUTORÍA
+--------------------------------------------------------------------------------
+  Borrador asistido por IA. Resumen del ordenador de Víctor Manzanares Alberola.
+  No firma 33×1 ni personificación en su nombre. NOTA_AUTORIA_IA.txt
+
+================================================================================

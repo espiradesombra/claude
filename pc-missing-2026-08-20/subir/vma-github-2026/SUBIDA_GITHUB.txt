@@ -1,0 +1,31 @@
+================================================================================
+SUBIDA A GITHUB — vma-github-2026
+================================================================================
+Fecha preparación: 2026-07-10
+Cuenta git configurada: espiradesombra (36055406+espiradesombra@users.noreply.github.com)
+
+CONTENIDO
+  Lee-Chat/   ← repo\Lee Chat (9 archivos)
+  teoremas/   ← Desktop\teoremas (índices, formal, ingeniería, spacial, 33×N)
+
+PASOS SI EL PUSH FALLA (sin gh CLI / sin token)
+--------------------------------------------------------------------------------
+  1. Crear repo vacío en https://github.com/new
+     Nombre sugerido: teoremas  o  vma-lee-teoremas
+     Sin README (ya está en local)
+
+  2. En PowerShell:
+     cd C:\Users\cuent\Desktop\vma-github-2026
+     git remote add origin https://github.com/espiradesombra/NOMBRE_REPO.git
+     git branch -M main
+     git push -u origin main
+
+  3. Autenticación: GitHub Personal Access Token como contraseña
+     (Settings → Developer settings → Fine-grained o classic token)
+
+ALTERNATIVA: subir a rama/carpeta dentro de espiradesombra/claude
+  git remote add origin https://github.com/espiradesombra/claude.git
+  git checkout -b teoremas-2026-07
+  git push -u origin teoremas-2026-07
+
+================================================================================

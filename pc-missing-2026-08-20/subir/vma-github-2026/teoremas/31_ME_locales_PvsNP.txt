@@ -1,0 +1,140 @@
+================================================================================
+31 — ME LOCALES, NO-UNIFICACIÓN Y CADENA P≠NP (MARCO VMA)
+================================================================================
+Autor: Víctor Manzanares Alberola (VMA)
+Estado: [HEUR] — evidencia estructural reproducible; implicación P≠NP condicional
+Fecha archivado: 2026-07-10
+Nota: borrador asistido por IA; no firma 33×1. Ver porque_no_33x1\NOTA_AUTORIA_IA.txt
+
+FUENTES CANÓNICAS (extracción):
+  repo\Libro6 NewtonRapido en busqueda con oraculo\Pseudocódigo de implicaciones.eml
+  repo\Libro6 NewtonRapido en busqueda con oraculo\chat dot .html
+  repo\Libro6 NewtonRapido en busqueda con oraculo\Nuevo Documento de texto2.txt
+
+CÓDIGO LIMPIO (este repo):
+  teoremas\metodos\me_connection_null.py   — bootstrap ±ε + SVD, búsqueda iterativa
+  teoremas\metodos\me_local_test.py        — ventanas p² / p³, test no-unificación
+
+--------------------------------------------------------------------------------
+1. DEFINICIONES (modelo ME / MEcuation)
+--------------------------------------------------------------------------------
+
+  Φ(E) = vector de features sobre instancia E (logs, distancias a potencias, etc.)
+
+  ME LOCAL en ventana W:
+    ∃ colapso de rango: en ≥ consensus% réplicas bootstrap,
+    κ = σ_min(Y_c) / σ_max(Y_c) < τ
+    donde Y_c = matriz de features centrada, con ruido ±ε por observación.
+
+  ME GLOBAL:
+    El mismo colapso sobre W₁ ∪ W₂ ∪ … (todas las ventanas mezcladas).
+
+  NO-UNIFICACIÓN (certificada en el modelo):
+    ∃ ventanas con ME local = Sí  Y  ME global = No
+
+--------------------------------------------------------------------------------
+2. MATEMÁTICA ÚTIL (no tautológica)
+--------------------------------------------------------------------------------
+
+  Features básicas (cuadrados perfectos E = p²):
+    f₁(E) = log E
+    f₂(E) = log √E = ½ log E
+    f₃(E) = f₁ − 2f₂ ≡ 0   (tautología algebraica)
+
+  Observación clave: para E = p²,
+    (f₁, f₂, f₃) = (2 ln p, ln p, 0) = ln p · (2, 1, 0)
+    ⇒ subespacio efectivo dimensión 1 (colinealidad).
+
+  Features extendidas (me_local_test.py) para separar régimen cuadrático vs cúbico:
+    f₁ = log E
+    f₂ = log(1 + |E^(1/2) − round(E^(1/2))|)
+    f₃ = log(1 + |E^(1/3) − round(E^(1/3))|)
+    f₄ = log(1 + |E^(1/5) − round(E^(1/5))|)
+    f₅ = log(max(d₂,d₃) / min(d₂,d₃))
+
+  Criterio colapso: κ_rel = σ_min / σ_max < τ  (τ ≈ 1e-6 … 5e-3 según script)
+
+  Bootstrap con incertidumbre:
+    Para cada réplica s = 1..N:
+      y_i^(s) ~ Uniform(y_i − ε_i, y_i + ε_i)
+      E_i^(s) = exp(y_i^(s))
+      fila_i = Φ(E_i^(s))
+
+--------------------------------------------------------------------------------
+3. PSEUDOCÓDIGO DE IMPLICACIONES (bloque P vs NP)
+--------------------------------------------------------------------------------
+
+  IMPLICACIÓN Forma:
+    SI Forma(n) = Cuadrado  ⇒  Algoritmo_A (log lineal en p)
+    SI Forma(n) ≠ Cuadrado  ⇒  régimen distinto (no misma ME)
+
+  IMPLICACIÓN No-unificación:
+    SI Unificar(W_cuad, W_cub) = Error_X alto
+    Y  ∀ aumento dim(Φ) o iteraciones oráculo sin colapso global
+    ⇒  Incompatibilidad estructural (piecewise, no ME única)
+
+  IMPLICACIÓN Tiempo mínimo (heurística Libro 6):
+    SI Talla = n!  ⇒  No_Existe_Magic_Equation_en_Lista_finita
+
+  CADENA VMA (condicional, no TCS estándar):
+    (A) ME_local(W_k) = Sí  para k = 1..K  (ventanas incompatibles)
+    (B) ME_global(∪ W_k) = No
+    (C) HIPÓTESIS VMA: P = NP ⇒ ∃ ME global unificadora
+    (D) CONTRAPOSITIVA EN EL MODELO: ¬ME_global ⇒ tendencia P ≠ NP
+
+  El propio chat GPT advierte:
+    esto NO demuestra P≠NP en teoría de complejidad clásica;
+    certifica consistencia/inconsistencia del modelo geométrico.
+
+--------------------------------------------------------------------------------
+4. EXPERIMENTO CANÓNICO (reproducible)
+--------------------------------------------------------------------------------
+
+  Ventana cuadrática: E ∈ {5², 7², 11²} = {25, 49, 121}
+  Ventana cúbica:     E ∈ {5³, 7³, 11³} = {125, 343, 1331}
+
+  Resultado esperado (me_local_test.py, bootstrap_N=900):
+    ME local SQ: deg_frac ≈ 1.0  → Sí
+    ME local CB: deg_frac ≈ 1.0  → Sí
+    ME global:   deg_frac ≈ 0.25 → No
+    NO-UNIFICACIÓN: True
+
+  Caso me_connection_null.py (solo cuadrados {25,49,121}):
+    deg_frac alto → colapso local robusto con ε por feature
+
+  Al añadir observaciones que rompen colinealidad (33, 55, 98, 16…):
+    colapso global falla → refuta ME universal en familia ampliada
+
+--------------------------------------------------------------------------------
+5. ORÁCULO + NEWTON RÁPIDO (enlace operativo)
+--------------------------------------------------------------------------------
+
+  Oráculo estructural (me_detector.py en repo\filesclaude 6-5\):
+    Si E = p², guess j_inicial = log(E)/2  → √E en 1 iteración
+
+  Oráculo numérico (mismo hilo Libro 6):
+    MPFR / alta precisión para validar log con doble ajuste (*= / ^=)
+
+  Newton rápido: ME local da semilla; bootstrap certifica si la familia colapsa
+
+--------------------------------------------------------------------------------
+6. LÍMITE HONESTO (lower bound SDPRF, del mismo export)
+--------------------------------------------------------------------------------
+
+  Familia con k parámetros + m slots/iteración × d profundidad.
+  Para decidir g sobre |X_n| = 2^n instancias:
+    k + m·d ≥ 2^n  (cota por dimensión efectiva)
+  ⇒ no reducción asintótica NP sin recursos exponenciales en el modelo SDPRF.
+
+  Redacción paper sugerida en el chat:
+    «Buscamos mostrar p diff np — como mucho mi asintoticidad no la reduce np»
+
+--------------------------------------------------------------------------------
+7. RELACIÓN CON FICHAS EXISTENTES
+--------------------------------------------------------------------------------
+
+  Complementa: 21_libro6_indice, 22–26 (Sofí, MRAUV, Goldbach, Método-V)
+  Pendiente formal: reducción P=NP ⇒ ME global (puente explícito a NP-completo)
+  Cruce: Apiñon / Newton doble ajuste (factores 1.2, 3.4, 1.9 en OLE)
+
+================================================================================

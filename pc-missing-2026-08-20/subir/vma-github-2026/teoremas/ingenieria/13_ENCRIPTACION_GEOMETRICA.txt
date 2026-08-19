@@ -1,0 +1,31 @@
+================================================================================
+E13 — ENCRIPTACIÓN GEOMÉTRICA (Libro 4 — convergencias)
+================================================================================
+
+QUÉ PROBLEMA RESUELVE (pretensión)
+  - Cifrado no basado solo en factorización RSA (post-RSA narrativo).
+  - Método gráfico de restos + semillas + secuencias de figuras (π, apotemas).
+  - Contraseña guía elección de referencias geométricas para cifrar/recuperar.
+
+MECANISMO (libro4_encriptacion_convergencias.py)
+  - Figuras: cuadrado → octógono → 16 → 32 → 64 lados inscritas.
+  - hashlib + hmac + base64; pipeline ejecutable en Python.
+  - Relación con Libro 4 / Apiñon.docx (formato documento).
+
+ESTADO TEÓRICO
+  [HEUR]   Implementación toy reproducible; sin auditoría criptográfica externa.
+  [CONJ]   “Imposible de hackear” en 5-7.txt = marketing; no demostración.
+  [NO]     P≠NP no archivado → no sustenta rotura RSA global.
+
+TRL estimado: 3–4 (software demo + documentos Word)
+
+RUTAS EN EL PC
+  C:\Users\cuent\Desktop\teoremas\lee arbusto\libro4_encriptacion_convergencias.py
+  Chats: repo\1\gemini cfv.txt, Lee Chat\Analyzing file research needs.txt
+  Libro 4 carpetas en repo\Libro4 Semillas y Energia Verde\
+
+REFERENCIAS
+  teoremas\17_eq12_convergencia_raiz_cuarta.txt [MAL] (notación EQ12)
+  segunda_vuelta\LIMITES_HONESTOS.txt (P≠NP no archivado)
+
+================================================================================

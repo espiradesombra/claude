@@ -1,0 +1,38 @@
+================================================================================
+FORMALIZACIÓN VMA — F12 MDC CAMBIO DE SIGNO ΔΦ
+================================================================================
+Autor: Víctor Manzanares Alberola
+Ficha origen: 12_mdc_proposicion_cambio_signo.txt
+Tipo formal: PROPOSICIÓN
+Estado formal: [OK] — criterio topológico en malla discreta
+Fecha: 2026-07-10
+
+--------------------------------------------------------------------------------
+1. DEFINICIONES
+--------------------------------------------------------------------------------
+  d(m)   := señal de resto normalizada en parámetro m.
+  d_A(m) := señal espejo (simetría MDC).
+  ΔΦ(m)  := d(m) − d_A(m).
+  Singularidad entre m_i, m_{i+1}: punto donde factor cruza (resto → 0).
+
+--------------------------------------------------------------------------------
+2. PROPOSICIÓN
+--------------------------------------------------------------------------------
+  Si existe singularidad (factor) entre m_i y m_{i+1}, entonces:
+    ΔΦ(m_i) · ΔΦ(m_{i+1}) ≤ 0.
+  Si ΔΦ es estrictamente continuo en pasos y cambia de signo, producto < 0.
+
+--------------------------------------------------------------------------------
+3. DEMOSTRACIÓN
+--------------------------------------------------------------------------------
+  En singularidad, d(m) y d_A(m) se desalinean: uno tiende a mínimo local
+  (resto 0 mod D) mientras el espejo no. ΔΦ cruza cero.
+  Por teorema del valor intermedio discreto en malla {m_i}, signo cambia
+  ⇒ producto de valores en extremos opuestos es ≤ 0. ∎
+
+--------------------------------------------------------------------------------
+4. NOTAS
+--------------------------------------------------------------------------------
+  Criterio de implementación MDC. Singularidad = m con N ≡ 0 (mod 2m+3).
+
+================================================================================

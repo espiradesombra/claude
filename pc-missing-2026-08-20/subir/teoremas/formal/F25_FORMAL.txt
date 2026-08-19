@@ -1,0 +1,49 @@
+================================================================================
+FORMALIZACIÓN VMA — F25 MÉTODO-V IMPLICACIONES
+================================================================================
+Autor: Víctor Manzanares Alberola
+Ficha origen: 25_metodo_V_implicaciones.txt
+Tipo formal: ESQUEMA OPERATIVO (teoremas 4–8)
+Estado formal: [HEUR] — certificación por testigos, no infinitud
+Fecha: 2026-07-10
+
+--------------------------------------------------------------------------------
+1. DEFINICIONES
+--------------------------------------------------------------------------------
+  n > 2v−2 > m > v−1, v ≥ 3.
+  V := v · (n!/m!) ∈ ℕ.
+  v(n): pasa cribas modulares P.
+  V(n): pasa Test-V (9-restos, acumuladores).
+  v'(n): V(n) ∧ (2n+1) coprimo con prohibidos Q.
+
+--------------------------------------------------------------------------------
+2. TEOREMA 4 (testigo)
+--------------------------------------------------------------------------------
+  Si ∃ primo p: p|V, p|E, y p no divide factor permitido de E
+  ⇒ factorización buscada imposible.
+
+--------------------------------------------------------------------------------
+3. TEOREMAS 5–7 (gemelos, Mersenne, Haus)
+--------------------------------------------------------------------------------
+  Casos especiales de Teorema 4 con restricciones modulares:
+    Gemelos: p=v±1 primos.
+    Mersenne: r|M_p ⇒ r≡1(mod 2p).
+    Haus: factores ≡±1(mod 6).
+
+--------------------------------------------------------------------------------
+4. TEOREMA 8 (empírico)
+--------------------------------------------------------------------------------
+  M_11=2047: testigos {2,3,11,31} contradicen Haus universal v≤60,n≤300.
+
+--------------------------------------------------------------------------------
+5. FAMILIAS INFINITAS
+--------------------------------------------------------------------------------
+  F_{M,r} = {n : n≡r(mod M)}, gcd(r,M)=1 infinita por Dirichlet.
+  Supervivencia cribas ≠ primalidad.
+
+--------------------------------------------------------------------------------
+6. NOTAS
+--------------------------------------------------------------------------------
+  No demuestra infinitud de gemelos.
+
+================================================================================

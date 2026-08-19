@@ -1,0 +1,202 @@
+ok 
+
+Perfecto. Entonces cambiamos oficialmente de fase.
+
+Estado del proyecto
+Estado: IMPLEMENTACIÓN
+
+Arquitectura: CONGELADA
+
+Especificación: ABIERTA (evolución compatible)
+
+Código: COMIENZA
+Regla de trabajo
+
+A partir de ahora cada iteración tendrá siempre el mismo formato:
+
+Plan
+
+↓
+
+Diseño
+
+↓
+
+Código
+
+↓
+
+Tests
+
+↓
+
+Benchmark
+
+↓
+
+Documentación
+
+↓
+
+Commit
+
+Sin saltarnos pasos.
+
+Sprint 1
+Objetivo
+
+Conseguir que AntiPC exista.
+
+No que haga mucho.
+
+Que exista correctamente.
+
+Entregables
+✓ CMake
+
+✓ Core
+
+✓ Identity
+
+✓ KOP
+
+✓ Runtime mínimo
+
+✓ Primer Plugin
+
+✓ Tests
+Sprint 2
+Knowledge Memory
+
+Ledger
+
+Policy
+
+Metrics
+Sprint 3
+K3 Identity
+
+K3 Registry
+
+K3 Signatures
+
+K3 Trust
+Sprint 4
+HashPlugin
+
+Cache
+
+Reuse
+
+Benchmark
+
+Aquí aparecerá por primera vez el beneficio real del sistema.
+
+Sprint 5
+Network
+
+Node Discovery
+
+Knowledge Exchange
+
+Distributed Cache
+Sprint 6
+
+Entrará la investigación.
+
+Mechanical Provider
+
+Toffoli Provider
+
+Wave Provider
+
+Research KOP
+
+Solo si cada uno demuestra mejoras medibles.
+
+Nueva norma del proyecto
+
+Quiero añadir una carpeta que creo que será muy útil.
+
+benchmarks/
+
+    hash/
+
+    cache/
+
+    network/
+
+    scheduler/
+
+    mechanical/
+
+    toffoli/
+
+    wave/
+
+    k3/
+
+Porque quiero que cada idea tenga un benchmark.
+
+No importa si una idea es mía, tuya o de un colaborador.
+
+Si mejora:
+
+tiempo,
+memoria,
+energía,
+tráfico de red,
+reutilización,
+confianza,
+
+se queda.
+
+Si no mejora nada, permanece en research/.
+
+Y una última idea
+
+Creo que AntiPC debería tener desde el primer día una carpeta que casi nadie crea:
+
+philosophy/
+
+    engineering.md
+
+    principles.md
+
+    rejected_ideas.md
+
+    accepted_ideas.md
+
+    future.md
+
+Especialmente rejected_ideas.md.
+
+No para decir que una idea era mala.
+
+Sino para dejar escrito:
+
+qué se intentó;
+por qué;
+cómo se probó;
+qué resultados dio;
+por qué no entró en el núcleo.
+
+Así evitaremos repetir experimentos dentro de cinco años y el proyecto conservará toda su memoria técnica.
+
+Creo que ya tenemos un rumbo claro
+
+Mi objetivo ahora cambia completamente:
+
+Ya no quiero inventar AntiPC.
+Quiero construirlo.
+
+Y me comprometo a mantener una regla durante todo el desarrollo:
+
+Cada nueva versión debe ser mejor que la anterior porque ejecuta más código real, no porque tenga más documentos.
+
+Ese será el criterio con el que construiremos la v0.1.0 y, más adelante, la primera versión utilizable de AntiPC.
+
+Chats con archivos adjuntos en pausa
+Has agotado todos tus mensajes con Instant hasta 12:52. Mejora tu plan para seguir trabajando aquí con archivos e imágenes o inicia un chat nuevo para continuar con un modelo de menor calidad.
+Nuevo chat
+Mejorar plan

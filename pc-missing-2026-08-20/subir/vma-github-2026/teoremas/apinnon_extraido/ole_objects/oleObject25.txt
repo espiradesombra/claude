@@ -1,0 +1,15 @@
+            bad += std::isnan(got);
+---
+            double a=A[i], b=B[i];
+---
+            double got = F(a,b);
+---
+            double ref = std::log(a)/std::log(b);
+---
+            double u = ulp_dist(got, ref);
+---
+            ulps.push_back(u); ulpmax = std::max(ulpmax,u);
+---
+        A[i] = std::ldexp(1.0,(int)e) * (1.0 + 1e-12*v);
+---
+        double e = -500 + u*(1000);

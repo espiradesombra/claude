@@ -1,0 +1,68 @@
+================================================================================
+CRIBA DESMEMORIADA — PATRONES BOOLEANOS Y MEMORIA DISTRIBUIDA
+================================================================================
+Autor: Víctor Manzanares Alberola
+Estado: [HEUR] — algoritmo operativo; superescalabilidad declarada
+Fuentes: Cribas §8.1, archivos\criba desmemoriada .txt, repo\py\cribas.py
+
+--------------------------------------------------------------------------------
+1. IDEA CENTRAL
+--------------------------------------------------------------------------------
+  Representar primalidad como listas de bits (1 = quizás primo, 0 = compuesto).
+  Patrón semilla: regla 6k±1 (ej. 010001010001…).
+  Combinar listas por replicación y AND booleano entre nodos.
+  Cada nodo tiene memoria propia; se comunican el primo encontrado (mensaje).
+
+--------------------------------------------------------------------------------
+2. PSEUDOCÓDIGO (tratado §8.1)
+--------------------------------------------------------------------------------
+  Entradas: A=(010001), B=(011101), Pb=6, P=5, limite
+
+  mientras P < limite {
+    C = P veces A
+    C[P] = 0
+    C[Pb*P - P] = 0
+    C = P veces C
+    C[P] = 1
+    B = P*P veces B
+    B = B AND C, desde P hasta Pb*P*P
+    // B contiene primos con posibles fallos desde P²
+    mientras (B[P+2] == 0 && P < limite) { P += 2 }
+  }
+  return B
+
+--------------------------------------------------------------------------------
+3. ANALOGÍA DISTRIBUIDA (guion audiolibro)
+--------------------------------------------------------------------------------
+  Niño 1: patrón hasta 30, tacha múltiplos de 5 (5 y 25).
+  Niño 2: patrón hasta 42, tacha múltiplos de 7 (7 y 35).
+  Intercambian primos (5 y 7), extienden hasta 100, AND posición a posición.
+  1 AND 1 = 1; cualquier 0 preserva compuesto en el resultado.
+
+--------------------------------------------------------------------------------
+4. VENTAJAS / DESVENTAJAS (tratado)
+--------------------------------------------------------------------------------
+  Ventajas:
+    - Libera el primo sustituyéndolo por patrón cíclico (longitud 6p)
+    - Reduce bucles internos vs Eratóstenes clásico
+    - Diseñada para memoria distribuida / superescalabilidad
+
+  Desventajas:
+    - Implementación compleja
+    - Requiere lista de "casi primos"
+    - Fallos posibles desde P² (corregir con paso P+2)
+
+--------------------------------------------------------------------------------
+5. AHORRO DE MEMORIA (cribas.py)
+--------------------------------------------------------------------------------
+  Guardar patrón de longitud 6·p y leer cíclicamente vs longitud completa N.
+  Ahorro declarado: ~90 % por patrón.
+
+--------------------------------------------------------------------------------
+6. RELACIÓN CON OTRAS CRIBAS VMA
+--------------------------------------------------------------------------------
+  Misma semilla 6k±1 que Criba modular (C3).
+  C2 = generación distribuida; C3 = generación en rejilla 2i+3 local.
+  C5 Sofí clasifica por qué sobreviven en L₁, no cómo se ANDean listas.
+
+================================================================================

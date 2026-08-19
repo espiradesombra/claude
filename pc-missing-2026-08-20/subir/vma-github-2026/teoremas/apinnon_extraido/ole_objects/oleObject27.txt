@@ -1,0 +1,15 @@
+    build-essential cmake git python3 python3-pip \
+---
+    libmpfr-dev libgmp-dev && \
+---
+    rm -rf /var/lib/apt/lists/*
+---
+# Descargar fuentes (SLEEF, CRlibm)
+---
+# Herramientas de build y libs
+---
+C:\Users\Usuario\AppData\Local\Microsoft\Windows\INetCache\Content.Word\Dockerfile
+---
+C:\Users\Usuario\AppData\Local\Temp\{AC27CEBB-B486-4B11-AF7C-E6BFC8C31DBA}\{BA8CC8F6-F364-4A08-A78F-23BCA7EDC83E}\Dockerfile
+---
+CMD ["/bin/bash","-lc","./build/bench_log && ./build/bench_root && python3 gen_report.py && mkdir -p /out && cp -a report.html results/*.csv /out/"]

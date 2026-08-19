@@ -1,0 +1,54 @@
+================================================================================
+  CÓMO SUBIR ALEATOROVIX a techamv.com
+  Víctor · 2026
+================================================================================
+
+EN EL ESCRITORIO TIENES:
+
+  1) techamv-aleatorovix-DEPLOY\     ← LO QUE HAY QUE SUBIR AL HOSTING
+        index.html
+        aleatorovix\aleatorovix.js
+
+  2) index-aleatorovix-techamv.html  ← copia del HTML (referencia; sola no basta)
+  3) aleatorovix.js                  ← copia del motor (referencia)
+
+================================================================================
+PASOS EN NOMINALIA / FTP (techamv.com)
+================================================================================
+
+A) Entra en el panel de Nominalia (o el hosting que uses para techamv.com)
+   → FTP / Archivos / File Manager / Gestor de archivos.
+
+B) Abre la carpeta pública del dominio:
+   - suele llamarse: public_html  o  www  o  httpdocs  o  techamv.com
+
+C) HAZ COPIA DE SEGURIDAD del index.html actual (renómbralo a index-backup.html).
+
+D) Sube desde techamv-aleatorovix-DEPLOY:
+   - index.html          → raíz del sitio
+   - carpeta aleatorovix → con aleatorovix.js dentro
+     (debe quedar:  public_html/aleatorovix/aleatorovix.js)
+
+E) Abre https://techamv.com  y pulsa el botón de suerte.
+   F12 → Consola: no debe decir "failed to load aleatorovix.js".
+
+F) Si usas FileZilla / WinSCP:
+   - Host: el que te dio Nominalia (ftp.techamv.com o similar)
+   - Usuario / contraseña del FTP
+   - Arrastra la carpeta DEPLOY al public_html
+
+================================================================================
+GITHUB (YA SUBIDO)
+================================================================================
+
+Repo:  https://github.com/espiradesombra/claude
+Carpeta: web-aleatorovix/
+
+  HTML:  https://github.com/espiradesombra/claude/tree/main/web-aleatorovix
+  Motor: https://github.com/espiradesombra/claude/blob/main/web-aleatorovix/aleatorovix/aleatorovix.js
+  README:https://github.com/espiradesombra/claude/blob/main/web-aleatorovix/README.md
+
+Eso NO publica techamv.com solo: GitHub es el archivo del código.
+El hosting de techamv.com se actualiza por FTP / panel como arriba (carpeta DEPLOY).
+
+================================================================================

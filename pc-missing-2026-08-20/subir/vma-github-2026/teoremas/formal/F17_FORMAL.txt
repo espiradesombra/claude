@@ -1,0 +1,38 @@
+================================================================================
+FORMALIZACIÓN VMA — F17 EQ12 CONVERGENCIA RAÍZ CUARTA
+================================================================================
+Autor: Víctor Manzanares Alberola
+Ficha origen: 17_eq12_convergencia_raiz_cuarta.txt
+Tipo formal: CRITERIO CRIPTOGRÁFICO (pendiente)
+Estado formal: [MAL→PEND] — variables no unificadas
+Fecha: 2026-07-10
+
+--------------------------------------------------------------------------------
+1. DEFINICIONES (propuesta de formalización)
+--------------------------------------------------------------------------------
+  Sea A, a conjuntos de índices en array incremental Kilómetro/MDC.
+  Π_A := ∏_{i∈A} w_i,  Π_a := ∏_{i∈a} w_i  (pesos dinámicos).
+  talla := parámetro de escala del array.
+
+--------------------------------------------------------------------------------
+2. CRITERIO EQ12 (documentos VMA)
+--------------------------------------------------------------------------------
+  ( Π_a / (Π_A + Π_a) )^{-1} ≥ (talla/4)^{1/4}
+
+--------------------------------------------------------------------------------
+3. ESTADO
+--------------------------------------------------------------------------------
+  Π_a, Π_A, talla no definidos de forma única en fuentes.
+  Usado como compuerta en script de cifrado; sentido criptográfico ≠ teorema.
+
+--------------------------------------------------------------------------------
+4. ACCIÓN
+--------------------------------------------------------------------------------
+  Formalizar dominio (ℤ o ℝ), monotonía y lemma previo de convergencia.
+
+--------------------------------------------------------------------------------
+5. NOTAS
+--------------------------------------------------------------------------------
+  Fuente: Escuela de Raspall, Libro 4.
+
+================================================================================

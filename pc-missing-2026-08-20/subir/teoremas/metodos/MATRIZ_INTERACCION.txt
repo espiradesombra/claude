@@ -1,0 +1,113 @@
+================================================================================
+MATRIZ DE INTERACCIÓN ENTRE MÉTODOS VMA
+================================================================================
+Autor: Víctor Manzanares Alberola
+Fecha: 2026-07-10
+Leyenda: A→B  |  ATACA = A limita B | COMPLETA = encadenar | ANALOGO = plantilla común
+
+--------------------------------------------------------------------------------
+TABLA RESUMEN (fila ataca columna cuando hay ✗; complementa con ✓)
+--------------------------------------------------------------------------------
+
+              Sofí  Criva  M-V   MDC   MRAUV  Pita  GB-PP  K3   L    F34
+  Sofí         —     ✓     ✓     ✗     ✓      ✓     ANAL  ✗    ✓    ✗
+  Criva        ✓     —     ✓     ✗     ✓      ✓     ✓     ✗    ✓    ✗
+  Método-V     ✓     ✓     —     ✓     ✗      ✓     ✗     ✗    ✓    ATACA
+  MDC          ✗     ✗     ✓     —     ✗      ✓     ✗     ✗    ✓    ✗
+  MRAUV        ✓     ✓     ✗     ✗     —      ✗     ✓     ✗    ✗    ✗
+  Pitagórico   ✓     ✓     ✓     ✓     ✗      —     ✓     ✗    ✓    ✗
+  Goldbach     ANAL  ✓     ✗     ✗     ✓      ✓     —     ✗    ✓    ATACA
+  K3           ✗     ✗     ✗     ✗     ✗      ✗     ✗     —    ✗    ✗
+  Teorema L    ✓     ✓     ✓     ✓     ✗      ✓     ✓     ✗    —    ✓
+  F34 (límite) ATACA ATACA ATACA ✗     ✗      ✗     ATACA ✗    ✓    —
+
+--------------------------------------------------------------------------------
+BLOQUES POR OBJETIVO
+--------------------------------------------------------------------------------
+
+1. NO COLAPSO DEL UNIVERSO (¿queda algo vivo tras cribas?)
+   Cadena: Sofí → Criva/PIE → Teorema L → (opcional) Método-V en F_{M,r}
+   Sofí marca L₃, L₄; Criva reparte (1−criva)/2; PIE da |Lsg| = |L₁|+|L₂|−|L₃|−|L₄|
+   Teorema L: subfamilias 2v+2, 3v+2 no colapsan aunque Φ₁, Φ₂ colapsen parcialmente
+   F34 ATACA: V certifica un solo n, no pareja PP ni rama compuesta
+
+2. GOLDBACH / REPRESENTACIONES p+q=2n
+   Cadena: Goldbach PP0 (F27) + analogía Sofí↔(PP,PC,CP,CC) + MRAUV (heurística)
+   Método-V NO sustituye Goldbach: F34 demuestra que v'(n) no examina N−n
+   MRAUV predice densidad de representaciones; no demuestra existencia
+   Pitagórico (F29): busca factores (2x+3)(2y+3)=n — otro universo, misma plantilla 6k±1
+
+3. FACTORIZACIÓN / VENTANAS LOCALES
+   Cadena: MDC (ΔS, finestra, cambio signo) + Pitagórico + Método-V testigo
+   MDC ATACA heurísticas sin ΔS medible (MRAUV en zonas sin datos)
+   Método-V: testigo factorial V impide factorizaciones Haus/Mersenne (F25 T4–T8)
+   Sofí ATACA factorizaciones que caen en L₃/L₄ en la rama impares
+
+4. PRIMOS / INFINITUD ESTRUCTURAL
+   Cadena: Sofí U₂ → F05 (|L₄\L₂|=∞) → Dirichlet/TCR
+   Dos primos (F01): operativo en rango finito
+   Primos decrecen K (F30): cota empírica 9/24, no teorema asintótico
+
+5. GENERACIÓN DE PRIMOS (mapa / lista)
+   Cadena: SunRaman Jet (Gvma) ↔ Criba modular C3 ↔ Criba híbrida C4
+   Misma plantilla (2n+3)(2m+3); Jet añade bloques 1MB y Flash pinza
+   Sofí después: L₃/L₄ sobre candidatos N=2v+3 supervivientes
+
+6. CRIPTO / FASE (dominio distinto)
+   K3 (F19): XOR de fase, independiente de aritmética modular Sofí
+   No ATACA ni COMPLETA cribas; comparte solo retórica 33×1 (energía/fase)
+
+--------------------------------------------------------------------------------
+ATAQUES CRÍTICOS (los más importantes)
+--------------------------------------------------------------------------------
+
+  F34 → Método-V + Goldbach:
+    v'(n) supervivencia ≠ PP. Una rama 6k−1 compuesta da CP/PC aunque V pase.
+
+  MDC → MRAUV:
+    MDC exige ΔS local medible; MRAUV extrapola densidad sin estructura 6k±1.
+
+  Criva → Método-V (parcial):
+    Criva da cota global; V puede certificar miembros de F_{M,r} que Criva
+    no distingue individualmente — pero V no añade primalidad.
+
+  Sofí → Pitagórico:
+    Misma forma (6a±1)(6b±1); Pitagórico en (2x+3)(2y+3) es variante C de F29.
+    Colapso L₃ en un lado no implica colapso en el otro sin Teorema L.
+
+  Teorema L → narrativa de "todo colapsa":
+    Refuta lecturas que confunden intersección finita con agotamiento de L.
+
+--------------------------------------------------------------------------------
+COMPLEMENTOS PRODUCTIVOS
+--------------------------------------------------------------------------------
+
+  Sofí + Criva + PIE (F28):
+    Único pipeline con demostración |Lsg| ≠ 0 en clases modulares.
+
+  Método-V + Sofí (construcción F_{M,r}):
+    build_family evita residuos L₃/L₄; V filtra testigos factoriales.
+
+  Goldbach PP0 + analogía Sofí:
+    Lsg↔PP, L₃↔PC, L₄↔CP, L₂↔CC — guía heurística, no bijectión formal.
+
+  MDC + Pitagórico:
+    Ventana local + búsqueda visual de divisores en rejilla (2x+3)(2y+3).
+
+  Teorema L + F34:
+    L dice "el universo no muere"; F34 dice "V no certifica la pareja".
+
+--------------------------------------------------------------------------------
+MÉTODOS QUE NO DEBEN MEZCLARSE SIN ETIQUETA
+--------------------------------------------------------------------------------
+
+  MRAUV + Teorema L:
+    MRAUV es cinemático/probabilístico; L es combinatorio exacto.
+
+  K3 + cualquier criba:
+    Dominios distintos (hash/fase vs teoría de números).
+
+  Goldbach VMA (F06) + F27 sin nota:
+    F06 es conjetura MRAUV; F27 es argumento simétrico PP=0 — niveles distintos.
+
+================================================================================

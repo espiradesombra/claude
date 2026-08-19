@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aleatorovix 33×1 · Un reino para todas, y tod@s por un reino</title>
+    <meta name="description" content="Ramo de corazones y girasoles. Azar con rastro. Relatos y filosofía de la vida.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #fce4ec 0%, #ffcdd2 45%, #f8bbd0 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .font-romantic { font-family: 'Dancing Script', cursive; }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            15% { transform: scale(1.05); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.05); }
+            60% { transform: scale(1); }
+        }
+        .animate-heartbeat { animation: heartbeat 2s infinite; }
+
+        .floating-bg {
+            position: fixed; inset: 0;
+            pointer-events: none; z-index: 0; overflow: hidden;
+        }
+        .bubble {
+            position: absolute; bottom: -20px;
+            animation: floatUp 15s infinite ease-in;
+            opacity: 0.3;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #fce4ec; border-radius: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #f06292; border-radius: 8px; }
+
+        #books-panel {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.55s ease, opacity 0.35s ease, margin 0.35s ease;
+            margin-top: 0;
+        }
+        #books-panel.open {
+            max-height: 5000px;
+            opacity: 1;
+            margin-top: 1.5rem;
+        }
+
+        .book-card {
+            background: #fff;
+            border: 1px solid #fbcfe8;
+            border-radius: 1rem;
+            box-shadow: 0 4px 20px rgba(233, 30, 99, 0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .book-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(233, 30, 99, 0.14);
+        }
+        .book-body {
+            color: #4b5563;
+            line-height: 1.7;
+            white-space: pre-wrap;
+        }
+
+        /* Comando secreto Leonor */
+        #leonor-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: rgba(20, 5, 15, 0.72);
+            backdrop-filter: blur(6px);
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        #leonor-modal.open {
+            display: flex;
+            animation: leonorIn 0.35s ease;
+        }
+        @keyframes leonorIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        #leonor-panel {
+            max-width: 42rem;
+            max-height: 88vh;
+            overflow-y: auto;
+            background: linear-gradient(165deg, #1a0a14 0%, #2d1224 40%, #1a1020 100%);
+            border: 1px solid #f472b6;
+            border-radius: 1.25rem;
+            box-shadow: 0 0 60px rgba(244, 114, 182, 0.35);
+            color: #fce7f3;
+            padding: 1.5rem 1.75rem;
+        }
+        #leonor-panel h3 {
+            font-family: 'Dancing Script', cursive;
+            color: #f9a8d4;
+            font-size: 1.75rem;
+            margin-bottom: 0.25rem;
+        }
+        #leonor-panel .lang {
+            margin-top: 1.1rem;
+            padding-top: 0.9rem;
+            border-top: 1px solid rgba(244, 114, 182, 0.25);
+        }
+        #leonor-panel .lang-tag {
+            display: inline-block;
+            font-size: 0.65rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #fb7185;
+            margin-bottom: 0.35rem;
+        }
+        #leonor-panel p {
+            font-size: 0.9rem;
+            line-height: 1.65;
+            color: #fce7f3;
+        }
+        #leonor-panel .desafio {
+            margin-top: 1.25rem;
+            text-align: center;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.45rem;
+            color: #fda4af;
+            text-shadow: 0 0 20px rgba(251, 113, 133, 0.5);
+        }
+    </style>
+</head>
+<body class="relative text-gray-800 flex flex-col items-center">
+
+    <div class="floating-bg" id="bg-layer" aria-hidden="true"></div>
+
+    <!-- Franja superior (tu estilo) -->
+    <div class="w-full bg-gradient-to-r from-red-600 via-pink-600 to-red-600 text-white text-center py-2.5 px-4 shadow-md relative z-10 font-bold text-sm sm:text-base">
+        <span class="inline-block animate-bounce mr-2">💝</span>
+        PUBLICIDAD: ¡Promoción dentro del pack 33×1 en mi diseñador de ramos de girasoles silvestres!
+        Llévate 33 paga solo si puedes. ¡Oferta espezial!
+        <span class="inline-block animate-bounce ml-2">💝</span>
+    </div>
+
+    <main class="w-full max-w-4xl px-4 py-8 relative z-10 flex-grow flex flex-col items-center">
+
+        <div class="bg-white/85 backdrop-blur-md border border-pink-200 rounded-3xl shadow-2xl shadow-pink-500/20 w-full overflow-hidden">
+
+            <div class="bg-gradient-to-b from-pink-50 to-white py-6 px-6 md:px-8 text-center border-b border-pink-100">
+                <h1 class="font-romantic text-4xl md:text-6xl text-pink-600 mb-2 drop-shadow-sm">
+                    Aleatorovix 33×1 <span class="text-red-500">❤️🌹</span>
+                </h1>
+                <p class="text-pink-500 font-medium tracking-wide text-sm md:text-base">
+                    El motor del amor cuerdo y la fuerza bruta · 33×1
+                </p>
+                <p class="text-pink-300 text-xs mt-2">espiradesombra · VMA</p>
+            </div>
+
+            <div class="p-5 md:p-8 flex flex-col gap-6">
+
+                <div id="info-banner" class="bg-pink-100 text-pink-800 rounded-xl p-4 md:p-5 text-center border border-pink-200 font-semibold leading-relaxed">
+                    ¡Bienvenido! Pulsa el botón de la suerte para diseñar un ramo de girasoles silvestres y corazones:
+                    un diseño propio, casi irrepetible. Solo se podrá hacer un poco mejor.
+                </div>
+
+                <!-- Solo el ramo: corazones y girasoles-->
+                <div class="relative group">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-pink-400 to-red-400 rounded-2xl blur opacity-25 group-hover:opacity-50 transition"></div>
+                    <div id="bouquet-display"
+                         class="relative bg-white rounded-xl p-4 md:p-6 text-xl md:text-2xl leading-loose text-center min-h-[160px] max-h-[280px] overflow-y-auto custom-scrollbar flex items-center justify-center break-words select-none shadow-inner border border-pink-50">
+                        <span class="text-gray-300 italic text-base leading-relaxed">
+                            El ramo de corazones rojos y flores silvestres aparecerá aquí…
+                            tú solo pulsa el botón y espera el diseño.
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Controles solo modo Princesa (números + mód libre + doble mód) -->
+                <div id="panel-princesa" class="hidden w-full">
+                    <div class="bg-gradient-to-r from-amber-50 via-red-50 to-yellow-50 border-2 border-amber-300 rounded-2xl p-4 md:p-5 shadow-md space-y-4">
+                        <div>
+                            <p class="text-center font-romantic text-2xl text-red-800 mb-1">👑 Modo Princesa de Asturias</p>
+                            <p class="text-center text-sm text-amber-900/90 leading-relaxed">
+                                En honor al <strong>Zurdo de Lepanto</strong> — Miguel de Cervantes Saavedra —
+                                y a <strong>España</strong>. ❤️=1 · 🌹=0 · base 10 · mód a tu gusto.
+                            </p>
+                        </div>
+
+                        <!-- Tope rápido por cifras (opcional) -->
+                        <div class="flex flex-col sm:flex-row items-center justify-center gap-2 flex-wrap">
+                            <label for="max-cifras" class="text-sm font-bold text-gray-700">Atajo cifras:</label>
+                            <select id="max-cifras"
+                                    class="rounded-full border-2 border-amber-400 bg-white px-3 py-1.5 text-sm font-semibold text-gray-800">
+                                <option value="0">Sin tope por cifras</option>
+                                <option value="4">4 cifras → mód 10⁴</option>
+                                <option value="6">6 cifras</option>
+                                <option value="8">8 cifras</option>
+                                <option value="10" selected>10 cifras</option>
+                                <option value="12">12 cifras</option>
+                                <option value="16">16 cifras</option>
+                                <option value="20">20 cifras</option>
+                                <option value="32">32 cifras</option>
+                            </select>
+                        </div>
+
+                        <!-- Textbox: módulo con CUALQUIER número -->
+                        <div class="flex flex-col items-center gap-2">
+                            <label for="mod-libre" class="text-sm font-bold text-gray-800">
+                                Módulo libre (cualquier número entero &gt; 0):
+                            </label>
+                            <div class="flex flex-wrap items-center justify-center gap-2 w-full max-w-lg">
+                                <input type="text" id="mod-libre" inputmode="numeric" placeholder="ej. 33, 121, 10403, 1000003…"
+                                       class="flex-1 min-w-[12rem] rounded-xl border-2 border-red-300 bg-white px-4 py-2 text-sm font-mono text-gray-900 focus:outline-none focus:ring-2 focus:ring-red-400"
+                                       value="33">
+                                <button type="button" id="btn-aplicar-mod"
+                                        class="rounded-full bg-red-600 hover:bg-red-500 text-white font-bold text-sm px-5 py-2 shadow">
+                                    Aplicar mód
+                                </button>
+                            </div>
+                            <p class="text-xs text-center text-amber-900/70 max-w-md">
+                                Si escribes un módulo aquí, manda sobre el atajo de cifras:
+                                resultado = número_crudo <strong>mod</strong> <em>tu número</em>.
+                                Déjalo vacío para usar solo el atajo de cifras (o nada).
+                            </p>
+                        </div>
+
+                        <!-- Doble mód: dos tiradas + suma -->
+                        <div class="border-t border-amber-200 pt-3 text-center space-y-2">
+                            <button type="button" id="btn-doble-mod"
+                                    class="rounded-full bg-gradient-to-r from-amber-600 to-red-600 hover:from-amber-500 hover:to-red-500 text-white font-bold text-sm md:text-base px-6 py-2.5 shadow-lg">
+                                ⚔️ Doble mód · dos ramos + suma
+                            </button>
+                            <p class="text-xs text-amber-900/70 max-w-md mx-auto">
+                                Genera <strong>dos</strong> resultados independientes (cada uno con el mód que tengas),
+                                los suma y aplica otra vez el mód a la suma si hay módulo.
+                            </p>
+                            <div id="doble-mod-out" class="hidden text-left bg-white/80 border border-amber-200 rounded-xl p-3 text-xs md:text-sm font-mono text-gray-800 space-y-1 max-w-xl mx-auto break-all">
+                                <p id="dm-a">A: —</p>
+                                <p id="dm-b">B: —</p>
+                                <p id="dm-sum" class="font-bold text-red-700">A+B: —</p>
+                                <p id="dm-final" class="font-bold text-green-700">Final: —</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resultados -->
+                <div id="results-container" class="hidden flex-col gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-red-50 p-4 rounded-xl border border-red-100 shadow-sm text-center">
+                            <h3 class="text-xs uppercase font-bold text-red-400 mb-2">Tu suerte</h3>
+                            <p id="res-inicio" class="text-4xl select-none">🍀</p>
+                            <p id="res-inicio-num" class="hidden text-lg font-mono font-bold text-red-600 mt-1">—</p>
+                            <p class="text-xs text-red-300 mt-2">marca de origen en el ramo</p>
+                        </div>
+                        <div class="bg-pink-50 p-4 rounded-xl border border-pink-100 shadow-sm text-center">
+                            <h3 class="text-xs uppercase font-bold text-pink-400 mb-2">La suya</h3>
+                            <p id="res-fin" class="text-4xl select-none">✨</p>
+                            <p id="res-fin-num" class="hidden text-lg font-mono font-bold text-pink-600 mt-1">—</p>
+                            <p class="text-xs text-pink-300 mt-2">marca de cierre en el ramo</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-5 md:p-6 shadow-lg border border-gray-700 text-center relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-pink-500"></div>
+                        <h3 id="res-titulo-trozo" class="text-xs uppercase font-bold text-gray-400 mb-3 tracking-wider leading-relaxed">
+                            El trozo del destino · solo corazones y girasoles · aleatorio como el autor
+                        </h3>
+                        <p id="res-trozo" class="text-xl md:text-2xl leading-relaxed break-words min-h-[3rem]">
+                            —
+                        </p>
+                        <!-- Solo modo Princesa: número en base 10 -->
+                        <div id="bloque-numero" class="hidden mt-5 pt-4 border-t border-gray-600">
+                            <h3 class="text-xs uppercase font-bold text-amber-400/90 mb-2 tracking-wider">
+                                Número del destino (❤️=1 · 🌹=0 · base 10)
+                            </h3>
+                            <p id="res-numero" class="text-lg md:text-2xl lg:text-3xl font-mono text-green-400 font-bold break-all select-all">
+                                —
+                            </p>
+                            <p id="res-numero-meta" class="text-xs text-gray-500 mt-2 font-mono"></p>
+                        </div>
+                        <p id="res-mensaje" class="mt-4 text-pink-400 font-romantic text-2xl hidden animate-pulse">
+                            ¡Nadie puede solo ¿Jugamos? Lo que importa son los seres queridos. 💘
+                        </p>
+                        <p id="res-homenaje" class="hidden mt-3 text-amber-200/90 text-sm leading-relaxed">
+                            Por el Zurdo de Lepanto, que con una mano escribió para todas las Españas.
+                            Por España. 🇪🇸 Español (España, internacional)
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex justify-center mt-2">
+                    <button id="btn-suerte" type="button" onclick="ejecutarCiclo()"
+                            class="animate-heartbeat relative inline-flex items-center justify-center px-8 py-4 font-bold text-white transition-all bg-gradient-to-r from-red-500 to-pink-500 rounded-full shadow-xl hover:from-red-600 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-400">
+                        <span class="relative flex items-center gap-2 text-xl md:text-2xl font-romantic tracking-wider">
+                            <span>🌹🍀💘</span> Botón de suerte, no tengas miedo <span>💘🍀❤️</span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════ FILOSOFÍA / RELATOS (solo enlaces a Filosofía) ═══════ -->
+        <section class="w-full mt-10 mb-6" id="filosofia" aria-labelledby="libros-heading">
+            <div class="text-center">
+                <h2 id="libros-heading" class="font-romantic text-3xl md:text-4xl text-pink-700 mb-2">
+                    Más del autor · Filosofía
+                </h2>
+                <p class="text-pink-400 text-sm mb-5 max-w-lg mx-auto">
+                    Relatos y textos. Abre el panel y lee; los enlaces van a la carpeta Filosofía.
+                </p>
+                <button id="toggleBtn" type="button"
+                        class="bg-gray-900 text-white px-8 py-3 rounded-full font-bold hover:bg-gray-700 transition-all shadow-lg"
+                        aria-expanded="false" aria-controls="books-panel">
+                    Descubrir textos 📚
+                </button>
+            </div>
+
+            <div id="books-panel" class="grid grid-cols-1 gap-5">
+
+                <!-- 1 · Filosofía del absurde -->
+                <article class="book-card p-5 md:p-6" id="filosofia-del-absurde">
+                    <div class="flex items-start gap-3 mb-3">
+                        <span class="text-3xl" aria-hidden="true">📜</span>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-gray-900">Filosofía del absurde</h3>
+                            <p class="text-sm text-pink-400 mt-1">
+                                Sobre la fuerza de la unión y la necesidad de aprender de los demás
+                            </p>
+                        </div>
+                    </div>
+                    <div class="book-body text-sm md:text-base mb-4">
+Cuando escribí <em>Filosofía del absurde</em> no sabía cuánto me iba a costar superar a los demás:
+no era ser sabio lo que hacía falta, sino ser persona.
+
+Un texto sobre las ideas y dónde viven estas, sobre las noticias y los intentos, y sobre la gente.
+                    </div>
+                    <a href="https://github.com/espiradesombra/claude/blob/main/Filosof%C3%ADa/FILOSOF%C3%8DA%20DEL%20ABSURDE%20(1).pdf"
+                       target="_blank" rel="noopener"
+                       class="inline-flex items-center gap-2 text-sm font-semibold text-pink-600 hover:text-pink-800 underline underline-offset-4">
+                        Abrir en Filosofía (PDF) →
+                    </a>
+                </article>
+
+                <!-- 2 · Manifiesto (sin vender matemáticas) -->
+                <article class="book-card p-5 md:p-6" id="manifiesto-contra-la-trinchera">
+                    <div class="flex items-start gap-3 mb-3">
+                        <span class="text-3xl" aria-hidden="true">🖋️</span>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-gray-900">Manifiesto del teorema contra la trinchera</h3>
+                            <p class="text-sm text-pink-400 mt-1">
+                                Texto nacido tras «Sigo en mis trece», con la idea de luchar contra un futuro que se avecinaba
+                            </p>
+                        </div>
+                    </div>
+                    <div class="book-body text-sm md:text-base mb-4">
+Todo comienza midiendo, callando y atacando sin matar ni maldad.
+
+(Creado con ayuda de Microsoft Copilot a partir del espíritu de ese libro;
+aquí no hay cuentas: hay trinchera, futuro y palabras.)
+                    </div>
+                    <a href="https://github.com/espiradesombra/claude/blob/main/Filosof%C3%ADa/MANIFIESTO%20DEL%20TEOREMA%20CONTRA%20LA%20TRINCHERA%201.pdf"
+                       target="_blank" rel="noopener"
+                       class="inline-flex items-center gap-2 text-sm font-semibold text-pink-600 hover:text-pink-800 underline underline-offset-4">
+                        Abrir en Filosofía (PDF) →
+                    </a>
+                </article>
+
+                <!-- 3 · Mitos y leyendas -->
+                <article class="book-card p-5 md:p-6" id="mitos-y-leyendas">
+                    <div class="flex items-start gap-3 mb-3">
+                        <span class="text-3xl" aria-hidden="true">🌌</span>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-gray-900">Mitos y leyendas</h3>
+                            <p class="text-sm text-pink-400 mt-1">
+                                Una historia no basada en hechos reales
+                            </p>
+                        </div>
+                    </div>
+                    <div class="book-body text-sm md:text-base mb-4">
+Las espinacas están fantásticas, pero no van ni congeladas ni con forma de cubito de hielo:
+van en la ensalada, bien ampapadas de aceite.
+
+<span lang="ca">Les espinacs són fantàstiques, però no van ni baix zero ni en formeta de cubs de gel:
+van a l’amanida i amb molt d’oli.</span>
+                    </div>
+                    <a href="https://github.com/espiradesombra/claude/blob/main/Filosof%C3%ADa/mitos%20y%20leyendas%201.pdf"
+                       target="_blank" rel="noopener"
+                       class="inline-flex items-center gap-2 text-sm font-semibold text-pink-600 hover:text-pink-800 underline underline-offset-4">
+                        Abrir en Filosofía (PDF) →
+                    </a>
+                </article>
+
+                <!-- Carpeta completa -->
+                <article class="book-card p-5 md:p-6 border-2 border-pink-200" id="carpeta-filosofia">
+                    <div class="flex items-start gap-3 mb-3">
+                        <span class="text-3xl" aria-hidden="true">📚</span>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-gray-900">Toda la carpeta Filosofía</h3>
+                        </div>
+                    </div>
+                    <div class="book-body text-sm md:text-base mb-4">
+Si quieres ver más textos del autor en un solo sitio, entra en la carpeta de Filosofía del repositorio.
+                    </div>
+                    <a href="https://github.com/espiradesombra/claude/tree/main/Filosof%C3%ADa"
+                       target="_blank" rel="noopener"
+                       class="inline-flex items-center gap-2 text-sm font-semibold text-pink-600 hover:text-pink-800 underline underline-offset-4">
+                        Carpeta Filosofía en GitHub →
+                    </a>
+                </article>
+
+                <!-- Hueco para que pegues otro texto (enlace siempre a Filosofía) -->
+                <article class="book-card p-5 md:p-6 border-dashed border-2 border-pink-200" id="texto-nuevo">
+                    <div class="flex items-start gap-3 mb-3">
+                        <span class="text-3xl" aria-hidden="true">➕</span>
+                        <div class="flex-1">
+                            <!-- [TOCAR: NUEVO TÍTULO] -->
+                            <h3 class="text-xl font-bold text-gray-900">carpeta donde hay secretos, sonrrisas y hacks</h3>
+                            <!-- [/TOCAR] -->
+                        </div>
+                    </div>
+                    <div class="book-body text-sm md:text-base mb-4">
+<!-- [TOCAR: NUEVO TEXTO] -->
+Más cosas sobre el autor.
+<!-- [/TOCAR] -->
+                    </div>
+                    <a href="https://drive.google.com/drive/folders/1Mj1eiX4vXmaOhpVM7R31PlVt-7a82hm6?usp=drive_link"
+                       target="_blank" rel="noopener"
+                       class="inline-flex items-center gap-2 text-sm font-semibold text-pink-600 hover:text-pink-800 underline underline-offset-4">
+                        Ir a Drive de Víctor →
+                    </a>
+                </article>
+
+            </div>
+        </section>
+    </main>
+
+    <footer class="w-full bg-gray-900 text-gray-400 py-10 px-6 relative z-10 text-sm md:text-base leading-relaxed">
+        <div class="max-w-4xl mx-auto">
+            <p class="font-bold text-white mb-4 text-center text-lg">Ad 🎯 Patrocinado por el Proyecto 33×1</p>
+            <p class="text-center mb-10 max-w-2xl mx-auto text-gray-300">
+                ¿Cansado de la rutina? Con la membresía 33×1 inviertes un minuto y te devuelven 33 motivos
+                para no fijarte solo en eso y mirar al horizonte, todos los días.
+            </p>
+
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 text-left bg-gray-800/60 p-6 md:p-8 rounded-2xl border border-gray-700/50 mb-8">
+                <li class="flex gap-3"><span class="text-pink-500 font-bold">1.</span> <span>Siempre están cuando hay fiesta y las necesitas.</span></li>
+                <li class="flex gap-3"><span class="text-pink-500 font-bold">2.</span> <span>A veces os gusta la misma persona.</span></li>
+                <li class="flex gap-3"><span class="text-pink-500 font-bold">3.</span> <span>Un día os conocisteis.</span></li>
+                <li class="flex gap-3"><span class="text-pink-500 font-bold">4.</span> <span>No sabe generar aleatoriedad sin el botón.</span></li>
+                <li class="flex gap-3"><span class="text-pink-500 font-bold">5.</span> <span>Sabe hacerte reír.</span></li>
+                <li class="flex gap-3"><span class="text-pink-500 font-bold">6.</span> <span>Te aguantó borracha ese día; y si no lo estabas, lo parecías.</span></li>
+                <li class="flex gap-3"><span class="text-pink-500 font-bold">7.</span> <span>Un día no sabrás que la echas de menos, pero lo harás.</span></li>
+                <li class="flex gap-3"><span class="text-pink-500 font-bold">8.</span> <span>Un bizcocho a medias llena más que uno entero.</span></li>
+                <li class="flex gap-3"><span class="text-pink-500 font-bold">9.</span> <span>Te llama más que tus padres.</span></li>
+                <li class="flex gap-3"><span class="text-pink-500 font-bold">10.</span> <span>Siempre te cuenta lo bien que lo hace en las citas.</span></li>
+                <li class="flex gap-3"><span class="text-pink-500 font-bold">11.</span> <span>Tiene más suerte que tú.</span></li>
+                <li class="flex gap-3"><span class="text-pink-500 font-bold">12.</span> <span>Un día irás a su boda o tendrá que hacer dos.</span></li>
+                <li class="flex gap-3 md:col-span-2"><span class="text-pink-500 font-bold">13.</span> <span>Sin ellas no vale la pena.</span></li>
+                <li class="flex gap-3 md:col-span-2"><span class="text-pink-500 font-bold">14.</span> <span>A veces se van lejosy da igual porque son con quienes no importa la distancia.</span></li>
+<li class="flex gap-3 md:col-span-2"><span class="text-pink-500 font-bold">15.</span> <span>Siempre recuerdan lo mismo de ti pero no les importa.</span></li>
+<li class="flex gap-3 md:col-span-2"><span class="text-pink-500 font-bold">16.</span> <span>Tú también eres alguien así para ellos.</span></li>
+<li class="flex gap-3 md:col-span-2"><span class="text-pink-500 font-bold">17.</span> <span>No siempre crecéis igual, aun asi siempre recordáis aquellos años si estáis juntas.</span></li>
+<li class="flex gap-3 md:col-span-2"><span class="text-pink-500 font-bold">18.</span> <span>No tiene el mismo gusto musical que una misma, pero mientras hayan risas todo va bien.</span></l>
+<li class="flex gap-3 md:col-span-2"><span class="text-pink-500 font-bold">19.</span> <span>A la edad de dieciocho se empieza a beber y siempre alguna amiga no sabe beber. Aprender juntas.</span></li>
+<li class="flex gap-3 md:col-span-2"><span class="text-pink-500 font-bold">20.</span> <span>Un amiga a vaces te pide 33 frases y piensas de mientras, era hoy o ayer cuando tocaba escribirlas :@.</span></li>
+<li class="flex gap-3 md:col-span-2"><span class="text-pink-500 font-bold">21.</span> <span>Son supercalifrastioespicospialidoso o mejor aún.</span></li>
+<li class="flex gap-3 md:col-span-2"><span class="text-pink-500 font-bold">22.</span> <span>Son por quien piensas, no soy tan inutil como me dicen que soy cuando la cago.</span></li>
+<li class="flex gap-3 md:col-span-2"><span class="text-pink-500 font-bold">23.</span> <span>Dicen que a los amigos no les dejas la moto porque es de montar. pero a veces se tiene la suerte de ser pareja de un amiga y puedes dejarle cosas, como la moto que no tiene,  o confiar en lo que quieras.</span></li>
+<li class="flex gap-3 md:col-span-2"><span class="text-pink-500 font-bold">24.</span> <span>Cuando no se puede no se puede, pero al ratito si nadie mira... puedes cogerle una patata del plato.</span></li>
+<li class="flex gap-3 md:col-span-2"><span class="text-pink-500 font-bold">25.</span> <span>Cuando toca toca y se cogen entradas del concierto para todos.</span></li>
+<li class="flex gap-3 md:col-span-2"><span class="text-pink-500 font-bold">26.</span> <span>Cuando se va una quedan más pero siempre falta algo.</span></li>
+<li class="flex gap-3 md:col-span-2"><span class="text-pink-500 font-bold">27.</span> <span>Cuando vienen de visita cambias tu forma de comportarte.</span></li>
+<li class="flex gap-3 md:col-span-2"><span class="text-pink-500 font-bold">28.</span> <span>Nunca traen tanto vino como se beben.</span></li>
+<li class="flex gap-3 md:col-span-2"><span class="text-pink-500 font-bold">29.</span> <span>Nunca aceptarias algo malo por nada para ellas.</span></li>
+<li class="flex gap-3 md:col-span-2"><span class="text-pink-500 font-bold">30.</span> <span>Nunca jamas es un sitio aburrido sin ellas.</span></li>
+<li class="flex gap-3 md:col-span-2"><span class="text-pink-500 font-bold">31.</span> <span>Lo mejor sera que bailemos y que nos miren</span></li>
+<li class="flex gap-3 md:col-span-2"><span class="text-pink-500 font-bold">32.</span> <span>Las estrellas brillan más con mis amigas.</span></li>
+<li class="flex gap-3 md:col-span-2"><span class="text-pink-500 font-bold">33.</span> <span>El verano no es nada sin ellas.</span></li>
+
+
+
+        </ul>
+
+            <div class="text-center p-5 bg-pink-900/20 rounded-xl border border-pink-500/20 max-w-2xl mx-auto">
+                <p class="text-pink-200 font-medium mb-2 text-lg">
+                    <span class="font-bold text-pink-400 mr-1">1×33</span>
+                    Las amigas hacen falta. Los amores no tanto, pero ayuda que sean amigos.
+                </p>
+                <button type="button" onclick="document.getElementById('btn-suerte').scrollIntoView({behavior:'smooth'})"
+                        class="mt-2 text-pink-400 hover:text-pink-300 font-bold underline decoration-pink-500/50 underline-offset-4">
+                    Descubre cómo con el botón de la suerte
+                </button>
+            </div>
+
+            <p class="text-center text-gray-600 text-xs mt-8">
+                © espiradesombra · uso civil / educativo · 33×1
+            </p>
+        </div>
+    </footer>
+
+    <!-- ═══ Comando secreto: escribe Leonor (sin pulsar botones) ═══ -->
+    <div id="leonor-modal" role="dialog" aria-modal="true" aria-labelledby="leonor-title" hidden>
+        <div id="leonor-panel" class="custom-scrollbar">
+            <div class="flex justify-between items-start gap-3">
+                <div>
+                    <h3 id="leonor-title">Protocolo Leonor ❤️🌹</h3>
+                    <p class="text-pink-300/80 text-xs tracking-wide">
+                        Canal oculto · aleatoriedad masiva · control del azar · 33×1
+                    </p>
+                </div>
+                <button type="button" id="leonor-cerrar"
+                        class="text-pink-300 hover:text-white text-2xl leading-none px-2"
+                        aria-label="Cerrar">×</button>
+            </div>
+
+            <p class="mt-4 text-sm text-pink-200/90 border border-pink-500/30 rounded-lg p-3 bg-pink-950/40">
+                Participación técnica: <strong>Grok / grokbash (xAI)</strong> ha colaborado en la
+                instrumentación del ramo, la interfaz y este canal. El destino se cultiva en ❤️ y 🌹,
+                se observa, se recorta… y se desafía a acercarse.
+            </p>
+
+            <!-- ════ CASTELLANO ════ -->
+            <div class="lang">
+                <span class="lang-tag">Castellano · ritual</span>
+                <p>
+                    La <strong>aleatoriedad masiva</strong> es el comportamiento de un sistema que produce
+                    secuencias de símbolos (aquí: corazón o girasol) con una frecuencia tan alta y tan
+                    sensible a micro-variaciones del entorno de ejecución que ningún observador humano
+                    puede predecir el siguiente paso a ojo. No es “magia”: es la acumulación de
+                    incertidumbre de reloj, memoria y decisiones locales del navegador.
+                    <br><br>
+                    <strong>Cómo controlarla (sin anularla):</strong> (1) fijar el tamaño del ramo
+                    (cuántas flores nacen); (2) marcar un origen y un cierre sobre el chorro ya nacido
+                    (recortar un trozo); (3) repetir el ritual a voluntad. Controlar el azar no es
+                    predecir cada flor: es <em>encuadrar</em> el chorro, elegir cuándo se abre y cuándo
+                    se cierra, y dejar que el medio haga el resto. El destino no se vence: se invita.
+                    <br><br>
+                    La aleatoriedad en <strong>base 10</strong> para nosotros es aquella que junta
+                    <strong>dos símbolos</strong>. Los mejores que hemos encontrado, con creces, para este
+                    propósito son el icono de <strong>girasol silvestre</strong> 🌹 y el del
+                    <strong>corazón rojo fuerza</strong> ❤️. Una vez tienes los símbolos, debes
+                    alternarlos rápidamente para generar el <strong>ramo de girasoles y corazones</strong>.
+                    A más grande el ramo, más “difícil de adivinar”. Cuando el ramo está terminado y
+                    preparado “para vender”, se eligen los <strong>dos acompañantes</strong> que lo
+                    llevarán ese día tan especial: según quiénes sean, una parte del ramo pesará más que
+                    otra. Incluso si se conociera el destino pero no quién participa, el ramo seguiría
+                    siendo <strong>único</strong> para la ocasión y para los participantes.
+                    <br><br>
+                    Un gran saludo a la nueva era que ojalá nos toque —no por mí de verdad, porque a
+                   a veces soy feliz :), sino porque un poco menos de crueldad en la sociedad y un poco más
+                    de parecernos a quien deberíamos parecernos es lo mejor que podríamos hacer.
+                </p>
+            </div>
+            <div class="lang">
+                <span class="lang-tag">Castellano · mates del código</span>
+                <p>
+                    En el código del navegador el ramo no es poesía suelta: es una <strong>array</strong>
+                    (lista ordenada) de longitud fija <code>TAMANO_RAMO = 331</code> flores. Cada posición
+                    <em>i</em> (de 0 a 330) se rellena con un ensayo de Bernoulli: se llama a
+                    <code>Math.random()</code>, que devuelve un real <em>u</em> en el intervalo [0, 1).
+                    Si <em>u</em> &gt; ½ se escribe ❤️; si no, 🌹. Eso es una moneda casi justa
+                    (probabilidad ≈ ½ para cada símbolo).
+                    <br><br>
+                    El ritual tiene <strong>tres fases</strong> (contador <code>clics % 3</code>):
+                    (0) nacer el array; (1) elegir al azar un índice de inicio
+                    <code>marcaInicio ∈ {0,…,330}</code>; (2) elegir
+                    <code>marcaFin</code> con <code>marcaInicio ≤ marcaFin ≤ 331</code> y extraer el
+                    subramo <code>ramo.slice(marcaInicio, marcaFin)</code> — en matemáticas, el segmento
+                    semiabierto [inicio, fin) del vector de flores.
+                    <br><br>
+                    Si se quisiera un número en base 10 “escondido”, bastaría leer el subramo como
+                    bits (❤️ = 1, 🌹 = 0) y convertir la cadena binaria a entero: eso es un natural en
+                    [0, 2<sup>L</sup>−1] donde <em>L</em> es la longitud del trozo. En la web pública
+                    <strong>no mostramos ese número</strong>: solo el trozo de flores. El control del
+                    azar es, en rigor, control de <em>parámetros</em> (n, marcas, repeticiones), no de
+                    cada bit del generador seudoaleatorio del motor JavaScript.
+                </p>
+            </div>
+
+            <!-- ════ VALENCIÀ ════ -->
+            <div class="lang">
+                <span class="lang-tag">Valencià · ritual</span>
+                <p>
+                    L’<strong>aleatorietat massiva</strong> és quan un sistema genera seqüències de
+                    símbols (ací: cor ❤️ o girasol 🌹) tan de pressa i tan sensibles a microvariacions del
+                    rellotge, la memòria i el navegador que ningú no pot endevinar el pas següent a ull.
+                    No és màgia: és incertesa acumulada.
+                    <br><br>
+                    <strong>Com controlar-la:</strong> (1) fixes quants flors nacen; (2) marques un inici
+                    i un tancament sobre el ram ja nascut; (3) repeteixes el ritual quan vulgues.
+                    Controlar no és predir cada flor: és enquadrar el raig.
+                    <br><br>
+                    En <strong>base 10</strong> per a nosaltres l’atzar és el que ajunta <strong>dos
+                    símbols</strong> —els millors que hem trobat: girasol silvestre i cor vermell força.
+                    S’alternen ràpidament per fer el ram; com més gran, més difícil d’endevinar.
+                    Quan el ram està a punt, es trien els <strong>dos acompanyants</strong> d’aquell dia:
+                    segons qui siguen, un tros del ram pesarà més. Encara que es coneguera el destí i no
+                    els participants, el ram seria únic per a l’ocasió.
+                    <br><br>
+                    Una gran salutació a l’era nova que ojalà ens toque: no per mi de debò —a voltes sóc
+                    feliç—, sinó perquè un poc menys de crueltat i un poc més d’assemblar-nos a qui
+                    hauríem d’assemblar-nos seria el millor que podríem fer.
+                </p>
+            </div>
+            <div class="lang">
+                <span class="lang-tag">Valencià · mates del codi</span>
+                <p>
+                    El ram és un <strong>array</strong> de longitud <code>331</code>. Cada posició es
+                    ompli amb <code>Math.random()</code>: si el nombre cau per damunt de 0,5 → ❤️; si no → 🌹
+                    (prova de Bernoulli ≈ ½). Tres fases amb <code>clics % 3</code>: nàixer el vector;
+                    triar <code>marcaInicio</code>; triar <code>marcaFin ≥ marcaInicio</code> i fer
+                    <code>slice(inicio, fin)</code> = segment [a, b) del vector. Si es llegira el tros com
+                    bits (❤️=1, 🌹=0) s’obtindria un enter en base 10 entre 0 i 2<sup>L</sup>−1; a la pàgina
+                    pública només mostrem les flors. El control és de paràmetres, no de cada bit del PRNG.
+                </p>
+            </div>
+
+            <!-- ════ GALEGO ════ -->
+            <div class="lang">
+                <span class="lang-tag">Galego · rito</span>
+                <p>
+                    A <strong>aleatoriedade masiva</strong> é cando un sistema produce secuencias de
+                    símbolos (corazón ❤️ ou xirasol 🌹) cunha frecuencia tan alta e tan sensible a microcambios
+                    do reloxo, da memoria e do navegador que ninguén pode predicir o seguinte paso a ollo.
+                    Non é maxia: é incerteza acumulada.
+                    <br><br>
+                    <strong>Como controlala:</strong> (1) fixar cantas flores nacen; (2) marcar orixe e
+                    peche no chorro xa nado; (3) repetir o rito. Controlar non é adiviñar cada flor: é
+                    enmarcar o fluxo.
+                    <br><br>
+                    En <strong>base 10</strong> para nós a aleatoriedade xunta <strong>dous símbolos</strong>
+                    —os mellores: gira-sol silvestre e corazón vermello forza. Alternámolos rápido para o ramo;
+                    canto máis grande, máis difícil de adiviñar. Co ramo listo elíxense os
+                    <strong>dous acompañantes</strong> dese día: segundo quen sexan, unha parte do ramo
+                    pesará máis. Aínda coñecendo o destino e non os participantes, o ramo sería único.
+                    <br><br>
+                    Un gran saúdo á nova era que oxalá nos toque: non por min de verdade —ás veces son
+                    feliz—, senón porque un pouco menos de crueldade e un pouco máis de parecerse a quen
+                    deberiamos parecer é o mellor que poderiamos facer.
+                </p>
+            </div>
+            <div class="lang">
+                <span class="lang-tag">Galego · mates do código</span>
+                <p>
+                    O ramo é un <strong>array</strong> de lonxitude <code>331</code>. Cada posición usa
+                    <code>Math.random()</code> en [0,1): se <em>u</em> &gt; ½ → ❤️, se non → 🌹. Tres fases
+                    (<code>clics % 3</code>): nacer o vector; elixir índice de inicio; elixir fin ≥ inicio e
+                    <code>slice</code> = segmento [inicio, fin). Ler o anaco como bits (❤️=1, 🌹=0) daría un
+                    natural en base 10 en [0, 2<sup>L</sup>−1]; na web só mostramos flores. O control é de
+                    parámetros do experimento, non de cada bit do xerador.
+                </p>
+            </div>
+
+            <!-- ════ EUSKARA ════ -->
+            <div class="lang">
+                <span class="lang-tag">Euskara · erritoa</span>
+                <p>
+                    <strong>Ausazkotasun masiboa</strong> da sistema batek ikurren sekuentziak (bihotza ❤️
+                    edo ekirole 🌹) hain maiztasun handiz eta exekuzio-inguruneko mikrobariatzioekiko hain
+                    sentikor sortzen dituenean, non begirale batek ezin duen hurrengo urratsa begi-bistaz
+                    aurreikusi. Ez da magia: erlojuaren, memoriaren eta nabigatzailearen ziurgabetasunaren
+                    metaketa da.
+                    <br><br>
+                    <strong>Nola kontrolatu:</strong> (1) zenbat lore jaiotzen diren finkatu; (2) jada
+                    sortutako fluxuan hasiera eta amaiera markatu; (3) erritoa nahi duzunean errepikatu.
+                    Kontrolatzea ez da lore bakoitza asmatzea: fluxua markoan sartzea da.
+                    <br><br>
+                    Guretzat <strong>10 oinarriko</strong> ausazkotasuna <strong>bi ikur</strong> batzen
+                    dituena da —aurkitu ditugun onenak: basoko ekilore eta indar-bihotz gorria. Bizkor
+                    txandakatzen dira sorta egiteko; zenbat eta handiagoa, orduan eta zailago asmatzea.
+                    Sorta prest dagoenean egun berezi horretako <strong>bi lagunak</strong> aukeratzen dira:
+                    nor diren arabera, sortaren zati batek gehiago pisatuko du. Patua ezagututa ere,
+                    parte-hartzaileak ez badira ezagutzen, sorta bakarra izango da.
+                    <br><br>
+                    Agur handi bat ojala tokatuko zaigun aro berriari: ez niregatik benetan —batzuetan
+                    zoriontsua naiz—, baizik eta gizartean ankerkeria apur bat gutxiago eta izan beharko
+                    genukeenaren antz apur bat gehiago egin genezakeen gauzarik onena delako.
+                </p>
+            </div>
+            <div class="lang">
+                <span class="lang-tag">Euskara · kodearen matematika</span>
+                <p>
+                    Sorta <code>331</code> luzerako <strong>array</strong> bat da. Posizio bakoitza
+                    <code>Math.random()</code> bidez betetzen da: <em>u</em> ∈ [0,1); <em>u</em> &gt; ½ → ❤️,
+                    bestela 🌹 (Bernoulli ≈ ½). Hiru fase (<code>clics % 3</code>): bektorea sortu;
+                    hasierako indizea aukeratu; amaiera ≥ hasiera aukeratu eta <code>slice</code> =
+                    [hasiera, amaiera) tartea. Zatia bit gisa irakurriz (❤️=1, 🌹=0) 10 oinarriko zenbaki
+                    natural bat lortuko litzateke [0, 2<sup>L</sup>−1] tartean; web publikoan loreak bakarrik
+                    erakusten ditugu. Kontrola esperimentuaren parametroena da, ez PRNG-ko bit bakoitzarena.
+                </p>
+            </div>
+
+            <p class="desafio">
+                Destino: si existes, ven hasta nosotros.<br>
+                No te escondas en la probabilidad: siéntate en el ramo.
+                <br>
+                <span class="text-base not-italic text-pink-300/90">❤️🌹 · Leonor · 33×1 · grokbash · xAI</span>
+            </p>
+
+            <p class="text-center mt-4">
+                <button type="button" id="leonor-cerrar-2"
+                        class="bg-pink-600 hover:bg-pink-500 text-white font-bold px-6 py-2 rounded-full text-sm">
+                    Cerrar el canal
+                </button>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const CORAZON = "❤️";
+        const GIRASOL = "🌹";
+        const TAMANIO_NORMAL = 331;
+        const TAMANO_PRINCESA = 330001;
+        const SUERTES = ["🍀", "💘", "💝", "✨", "🌟", "💫", "🎀", "🌸", "💮", "💞", "👑"];
+
+        let tamanoRamo = TAMANO_NORMAL;
+        let modoPrincesa = false; // un solo clic + 330001 flores
+        let clics = 0;
+        let ramo = [];
+        let marcaInicio = 0;
+        let marcaFin = 0;
+        let timer = null;
+
+        const displayRamo = document.getElementById('bouquet-display');
+        const infoBanner = document.getElementById('info-banner');
+        const resultsContainer = document.getElementById('results-container');
+        const resInicio = document.getElementById('res-inicio');
+        const resFin = document.getElementById('res-fin');
+        const resInicioNum = document.getElementById('res-inicio-num');
+        const resFinNum = document.getElementById('res-fin-num');
+        const resTrozo = document.getElementById('res-trozo');
+        const resNumero = document.getElementById('res-numero');
+        const resNumeroMeta = document.getElementById('res-numero-meta');
+        const bloqueNumero = document.getElementById('bloque-numero');
+        const panelPrincesa = document.getElementById('panel-princesa');
+        const resTituloTrozo = document.getElementById('res-titulo-trozo');
+        const resMensaje = document.getElementById('res-mensaje');
+        const resHomenaje = document.getElementById('res-homenaje');
+        const btnSuerte = document.getElementById('btn-suerte');
+        const selMaxCifras = document.getElementById('max-cifras');
+        const inputModLibre = document.getElementById('mod-libre');
+        const btnAplicarMod = document.getElementById('btn-aplicar-mod');
+        const btnDobleMod = document.getElementById('btn-doble-mod');
+        const dobleModOut = document.getElementById('doble-mod-out');
+        const dmA = document.getElementById('dm-a');
+        const dmB = document.getElementById('dm-b');
+        const dmSum = document.getElementById('dm-sum');
+        const dmFinal = document.getElementById('dm-final');
+
+        // Último número crudo (sin mód) para reaplicar módulo sin regenerar
+        let ultimoCrudo = null;
+        let ultimoBits = 0;
+
+        // Fondo flotante
+        (function () {
+            const bg = document.getElementById('bg-layer');
+            const items = ['❤️', '🌹', '💖', '✨', '💕'];
+            for (let i = 0; i < 15; i++) {
+                const el = document.createElement('div');
+                el.className = 'bubble';
+                el.textContent = items[Math.floor(Math.random() * items.length)];
+                el.style.left = (Math.random() * 100) + 'vw';
+                el.style.animationDuration = (10 + Math.random() * 15) + 's';
+                el.style.animationDelay = (Math.random() * 5) + 's';
+                el.style.fontSize = (16 + Math.random() * 24) + 'px';
+                bg.appendChild(el);
+            }
+        })();
+
+        // Panel filosofía
+        (function () {
+            const btn = document.getElementById('toggleBtn');
+            const panel = document.getElementById('books-panel');
+            if (!btn || !panel) return;
+            btn.addEventListener('click', () => {
+                const open = panel.classList.toggle('open');
+                btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+                btn.textContent = open ? 'Ocultar textos 📚' : 'Descubrir textos 📚';
+            });
+        })();
+
+        // ── Comandos secretos (teclado, sin pulsar botones) ──
+        // "Leonor" → panel científico
+        // "Princesa de Asturias su majestad de España" → ramo 330001 + un solo clic
+        (function setupSecretos() {
+            const SECRETO_LEONOR = 'leonor';
+            const SECRETO_PRINCESA = 'princesa de asturias su majestad de espana';
+            const MAX_BUF = Math.max(SECRETO_LEONOR.length, SECRETO_PRINCESA.length) + 8;
+            let buffer = '';
+
+            const modal = document.getElementById('leonor-modal');
+            const cerrar1 = document.getElementById('leonor-cerrar');
+            const cerrar2 = document.getElementById('leonor-cerrar-2');
+
+            function normalizar(s) {
+                return s
+                    .toLowerCase()
+                    .normalize('NFD')
+                    .replace(/[\u0300-\u036f]/g, '') // quita tildes / ñ→n
+                    .replace(/\s+/g, ' ');
+            }
+
+            function abrirLeonor() {
+                modal.hidden = false;
+                modal.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+            function cerrarLeonor() {
+                modal.classList.remove('open');
+                modal.hidden = true;
+                document.body.style.overflow = '';
+            }
+
+            function activarModoPrincesa() {
+                modoPrincesa = true;
+                tamanoRamo = TAMANO_PRINCESA;
+                clics = 0;
+                ramo = [];
+                resultsContainer.classList.add('hidden');
+                resMensaje.classList.add('hidden');
+                if (panelPrincesa) panelPrincesa.classList.remove('hidden');
+                if (bloqueNumero) bloqueNumero.classList.add('hidden');
+                if (resInicioNum) resInicioNum.classList.remove('hidden');
+                if (resFinNum) resFinNum.classList.remove('hidden');
+                if (resHomenaje) resHomenaje.classList.remove('hidden');
+                if (resTituloTrozo) {
+                    resTituloTrozo.textContent =
+                        'Trozo del destino · flores + número · Zurdo de Lepanto · España 🇪🇸';
+                }
+                displayRamo.innerHTML =
+                    '<span class="text-amber-800 italic text-base leading-relaxed">' +
+                    '👑 Modo Princesa de Asturias · en honor al Zurdo de Lepanto y a España · ' +
+                    'ramo de ' + TAMANO_PRINCESA + ' flores · un clic · con números 👑</span>';
+                infoBanner.innerHTML =
+                    '<strong>👑 Protocolo real:</strong> Princesa de Asturias · Su Majestad de España · ' +
+                    'homenaje al <strong>Zurdo de Lepanto</strong> (Cervantes) y a <strong>España</strong>. ' +
+                    'Ramo de <strong>' + TAMANO_PRINCESA +
+                    '</strong> · <strong>un clic</strong> · ❤️=1 🌹=0 · elige el tope de cifras abajo.';
+                infoBanner.className =
+                    'bg-amber-100 text-amber-900 rounded-xl p-4 md:p-5 text-center border border-amber-300 font-semibold leading-relaxed';
+                if (btnSuerte) {
+                    btnSuerte.innerHTML =
+                        '<span class="relative flex items-center gap-2 text-xl md:text-2xl font-romantic tracking-wider">' +
+                        '<span>👑🌹</span> Suerte real (1 clic + números) <span>🌹👑</span></span>';
+                }
+            }
+
+            function desactivarModoPrincesa() {
+                modoPrincesa = false;
+                tamanoRamo = TAMANO_NORMAL;
+                clics = 0;
+                if (panelPrincesa) panelPrincesa.classList.add('hidden');
+                if (bloqueNumero) bloqueNumero.classList.add('hidden');
+                if (resInicioNum) {
+                    resInicioNum.classList.add('hidden');
+                    resInicioNum.textContent = '—';
+                }
+                if (resFinNum) {
+                    resFinNum.classList.add('hidden');
+                    resFinNum.textContent = '—';
+                }
+                if (resHomenaje) resHomenaje.classList.add('hidden');
+                if (resTituloTrozo) {
+                    resTituloTrozo.textContent =
+                        'El trozo del destino · solo corazones y girasoless · aleatorio como el autor';
+                }
+                if (btnSuerte) {
+                    btnSuerte.innerHTML =
+                        '<span class="relative flex items-center gap-2 text-xl md:text-2xl font-romantic tracking-wider">' +
+                        '<span>🌹🍀💘</span> Botón de suerte, no tengas miedo <span>💘🍀❤️</span></span>';
+                }
+            }
+
+            // Atajo opcional: escribir "normal" vuelve al modo 331 / 3 clics
+            const SECRETO_NORMAL = 'normal';
+
+            if (cerrar1) cerrar1.addEventListener('click', cerrarLeonor);
+            if (cerrar2) cerrar2.addEventListener('click', cerrarLeonor);
+            if (modal) {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) cerrarLeonor();
+                });
+            }
+
+            document.addEventListener('keydown', (e) => {
+                const tag = (e.target && e.target.tagName) || '';
+                if (tag === 'INPUT' || tag === 'TEXTAREA' || e.target.isContentEditable) return;
+                if (e.ctrlKey || e.metaKey || e.altKey) return;
+
+                if (e.key === 'Escape' && modal && modal.classList.contains('open')) {
+                    cerrarLeonor();
+                    return;
+                }
+
+                if (e.key.length !== 1) return;
+                buffer += e.key;
+                buffer = buffer.slice(-MAX_BUF);
+                const n = normalizar(buffer);
+
+                if (n.endsWith(SECRETO_LEONOR)) {
+                    buffer = '';
+                    abrirLeonor();
+                    return;
+                }
+                if (n.endsWith(SECRETO_PRINCESA)) {
+                    buffer = '';
+                    activarModoPrincesa();
+                    return;
+                }
+                if (n.endsWith(SECRETO_NORMAL)) {
+                    buffer = '';
+                    desactivarModoPrincesa();
+                    infoBanner.innerHTML =
+                        'Modo normal: ramo de 331 · tres pasos. Pulsa el botón de la suerte.';
+                    infoBanner.className =
+                        'bg-pink-100 text-pink-800 rounded-xl p-4 md:p-5 text-center border border-pink-200 font-semibold leading-relaxed';
+                    displayRamo.innerHTML =
+                        '<span class="text-gray-300 italic text-base">Ramo normal de nuevo…</span>';
+                }
+            });
+        })();
+
+        function cultivarRamo(n) {
+            const out = [];
+            for (let i = 0; i < n; i++) {
+                out.push(Math.random() > 0.5 ? CORAZON : GIRASOLES);
+            }
+            return out;
+        }
+
+        function suerteAlAzar() {
+            return SUERTES[Math.floor(Math.random() * SUERTES.length)];
+        }
+
+        /** Agita un emoji de suerte varias veces y luego llama a alFinal */
+        function agitarSuerte(el, veces, ms, alFinal) {
+            let n = 0;
+            if (timer) clearInterval(timer);
+            timer = setInterval(() => {
+                el.textContent = suerteAlAzar();
+                n++;
+                if (n >= veces) {
+                    clearInterval(timer);
+                    timer = null;
+                    alFinal();
+                }
+            }, ms);
+        }
+
+        /** Lee el módulo del textbox; si no vale, usa 10^cifras; si no, null */
+        function obtenerModuloElegido() {
+            const raw = (inputModLibre && inputModLibre.value || '').trim().replace(/\s/g, '');
+            if (raw !== '' && /^\d+$/.test(raw)) {
+                try {
+                    const m = BigInt(raw);
+                    if (m > 0n) {
+                        return { mod: m, etiqueta: 'mód ' + m.toString(), fuente: 'libre' };
+                    }
+                } catch (e) { /* ignore */ }
+            }
+            const x = selMaxCifras ? parseInt(selMaxCifras.value, 10) : 0;
+            if (x > 0) {
+                const m = 10n ** BigInt(x);
+                return { mod: m, etiqueta: 'mód 10^' + x + ' (≤' + x + ' cifras)', fuente: 'cifras' };
+            }
+            return null;
+        }
+
+        /** ❤️=1, 🌹=0 → BigInt crudo */
+        function trozoACrudo(trozo) {
+            let bits = '';
+            for (const f of trozo) bits += (f === CORAZON) ? '1' : '0';
+            if (!bits) bits = '0';
+            try {
+                return { crudo: BigInt('0b' + bits), bits: bits.length };
+            } catch (e) {
+                return { crudo: 0n, bits: bits.length };
+            }
+        }
+
+        function aplicarModulo(crudo, modInfo) {
+            if (!modInfo) {
+                return {
+                    final: crudo,
+                    limitado: false,
+                    etiqueta: 'sin módulo'
+                };
+            }
+            const final = crudo % modInfo.mod;
+            return {
+                final: final,
+                limitado: crudo >= modInfo.mod,
+                etiqueta: modInfo.etiqueta
+            };
+        }
+
+        function mostrarNumeroEnUI(crudo, bits, modInfo) {
+            const ap = aplicarModulo(crudo, modInfo);
+            ultimoCrudo = crudo;
+            ultimoBits = bits;
+            if (bloqueNumero) bloqueNumero.classList.remove('hidden');
+            if (resNumero) resNumero.textContent = ap.final.toString();
+            if (resNumeroMeta) {
+                let meta = 'bits: ' + bits +
+                    ' · crudo: ' + crudo.toString().length + ' dígitos' +
+                    ' · ' + ap.etiqueta +
+                    ' · resultado: ' + ap.final.toString().length + ' dígitos';
+                if (ap.limitado) meta += ' · (reducido por módulo)';
+                resNumeroMeta.textContent = meta;
+            }
+            return ap;
+        }
+
+        /** Un solo clic: 3301 flores + marcas + trozo + NÚMERO (modo Princesa) */
+        function cicloPrincesaUnClic() {
+            btnSuerte.disabled = true;
+            infoBanner.innerHTML =
+                '<strong>👑 Cultivando ramo real de ' + tamanoRamo +
+                ' flores…</strong> (un momento; honor al Zurdo de Lepanto)';
+            infoBanner.className =
+                'bg-amber-100 text-amber-900 rounded-xl p-4 md:p-5 text-center border border-amber-300 font-semibold leading-relaxed';
+
+            setTimeout(() => {
+                ramo = cultivarRamo(tamanoRamo);
+                marcaInicio = Math.floor(Math.random() * tamanoRamo);
+                marcaFin = Math.floor(Math.random() * (tamanoRamo - marcaInicio + 1)) + marcaInicio;
+                if (marcaFin === marcaInicio) {
+                    marcaFin = Math.min(marcaInicio + 1, tamanoRamo);
+                }
+
+                const trozo = ramo.slice(marcaInicio, marcaFin);
+                const { crudo, bits } = trozoACrudo(trozo);
+                const modInfo = obtenerModuloElegido();
+                const ap = mostrarNumeroEnUI(crudo, bits, modInfo);
+
+                displayRamo.innerHTML =
+                    '<div class="text-sm text-amber-700 mb-2 font-semibold">👑 Ramo real · ' +
+                    tamanoRamo + ' flores · un clic · España · Zurdo de Lepanto</div>' +
+                    '<div class="text-lg leading-relaxed break-words max-h-[180px] overflow-y-auto custom-scrollbar">' +
+                    ramo.join('') +
+                    '</div>';
+
+                resultsContainer.classList.remove('hidden');
+                resultsContainer.classList.add('flex');
+                resInicio.textContent = ramo[marcaInicio] || CORAZON;
+                resFin.textContent = ramo[Math.min(marcaFin, tamanoRamo - 1)] || GIRASOLES;
+                if (resInicioNum) {
+                    resInicioNum.classList.remove('hidden');
+                    resInicioNum.textContent = 'posición ' + marcaInicio;
+                }
+                if (resFinNum) {
+                    resFinNum.classList.remove('hidden');
+                    resFinNum.textContent = 'posición ' + marcaFin;
+                }
+                resTrozo.textContent = trozo.length ? trozo.join('') : (CORAZON + GIRASOLES);
+
+                resMensaje.classList.remove('hidden');
+                resMensaje.textContent =
+                    '👑 Princesa de Asturias · Su Majestad de España · un clic · con números';
+                if (resHomenaje) resHomenaje.classList.remove('hidden');
+
+                infoBanner.innerHTML =
+                    '<strong>👑 Listo:</strong> Ramo ' + tamanoRamo +
+                    ' · pos. ' + marcaInicio + '→' + marcaFin +
+                    ' · ' + ap.etiqueta +
+                    ' · resultado = ' + ap.final.toString() +
+                    '. Zurdo de Lepanto · España. ' +
+                    'Cambia el módulo y pulsa <em>Aplicar mód</em>, o usa <em>Doble mód</em>.';
+                infoBanner.className =
+                    'bg-green-100 text-green-800 rounded-xl p-4 md:p-5 text-center border border-green-200 font-semibold leading-relaxed';
+                btnSuerte.disabled = false;
+            }, 30);
+        }
+
+        /** Reaplica el módulo al último crudo (sin regenerar ramo) */
+        function reaplicarModuloActual() {
+            if (ultimoCrudo === null) {
+                infoBanner.innerHTML = 'Primero genera un resultado con el botón de suerte real.';
+                infoBanner.className =
+                    'bg-amber-100 text-amber-900 rounded-xl p-4 md:p-5 text-center border border-amber-300 font-semibold leading-relaxed';
+                return;
+            }
+            const modInfo = obtenerModuloElegido();
+            const ap = mostrarNumeroEnUI(ultimoCrudo, ultimoBits, modInfo);
+            infoBanner.innerHTML =
+                '<strong>Módulo reaplicado:</strong> ' + ap.etiqueta +
+                ' → <strong>' + ap.final.toString() + '</strong>';
+            infoBanner.className =
+                'bg-green-100 text-green-800 rounded-xl p-4 md:p-5 text-center border border-green-200 font-semibold leading-relaxed';
+        }
+
+        /** Dos tiradas independientes + suma (+ mód de la suma) */
+        function cicloDobleMod() {
+            if (!modoPrincesa) return;
+            btnDobleMod.disabled = true;
+            infoBanner.innerHTML = '<strong>⚔️ Doble mód:</strong> cultivando dos ramos…';
+            infoBanner.className =
+                'bg-amber-100 text-amber-900 rounded-xl p-4 md:p-5 text-center border border-amber-300 font-semibold leading-relaxed';
+
+            setTimeout(() => {
+                const modInfo = obtenerModuloElegido();
+
+                function unaTirada() {
+                    const r = cultivarRamo(tamanoRamo);
+                    let a = Math.floor(Math.random() * tamanoRamo);
+                    let b = Math.floor(Math.random() * (tamanoRamo - a + 1)) + a;
+                    if (b === a) b = Math.min(a + 1, tamanoRamo);
+                    const trozo = r.slice(a, b);
+                    const { crudo, bits } = trozoACrudo(trozo);
+                    const ap = aplicarModulo(crudo, modInfo);
+                    return { crudo, bits, final: ap.final, etiqueta: ap.etiqueta, a, b };
+                }
+
+                const A = unaTirada();
+                const B = unaTirada();
+                const suma = A.final + B.final;
+                const sumaMod = aplicarModulo(suma, modInfo);
+
+                // Mostrar también la última como “resultado principal” (suma final)
+                ultimoCrudo = suma;
+                ultimoBits = A.bits + B.bits;
+                if (bloqueNumero) bloqueNumero.classList.remove('hidden');
+                resultsContainer.classList.remove('hidden');
+                resultsContainer.classList.add('flex');
+                if (resNumero) resNumero.textContent = sumaMod.final.toString();
+                if (resNumeroMeta) {
+                    resNumeroMeta.textContent =
+                        'doble mód · A.bits=' + A.bits + ' · B.bits=' + B.bits +
+                        ' · ' + (modInfo ? modInfo.etiqueta : 'sin mód') +
+                        ' · suma luego mód otra vez';
+                }
+                if (resTrozo) {
+                    resTrozo.textContent = '⚔️ A + B (ver detalle abajo)';
+                }
+                if (resInicioNum) {
+                    resInicioNum.classList.remove('hidden');
+                    resInicioNum.textContent = 'A pos ' + A.a + '→' + A.b;
+                }
+                if (resFinNum) {
+                    resFinNum.classList.remove('hidden');
+                    resFinNum.textContent = 'B pos ' + B.a + '→' + B.b;
+                }
+                resInicio.textContent = '🅰️';
+                resFin.textContent = '🅱️';
+
+                if (dobleModOut) {
+                    dobleModOut.classList.remove('hidden');
+                    if (dmA) dmA.textContent = 'A = ' + A.final.toString() + '  (crudo ' + A.crudo.toString().length + ' dig.)';
+                    if (dmB) dmB.textContent = 'B = ' + B.final.toString() + '  (crudo ' + B.crudo.toString().length + ' dig.)';
+                    if (dmSum) dmSum.textContent = 'A + B = ' + suma.toString();
+                    if (dmFinal) {
+                        dmFinal.textContent = modInfo
+                            ? '(A+B) ' + modInfo.etiqueta + ' = ' + sumaMod.final.toString()
+                            : 'Final (sin mód extra) = ' + suma.toString();
+                    }
+                }
+
+                resMensaje.classList.remove('hidden');
+                resMensaje.textContent = '⚔️ Doble mód · dos destinos sumados · España';
+                if (resHomenaje) resHomenaje.classList.remove('hidden');
+
+                infoBanner.innerHTML =
+                    '<strong>⚔️ Doble mód listo:</strong> A y B independientes, suma = ' +
+                    suma.toString() +
+                    (modInfo ? ' → ' + modInfo.etiqueta + ' = <strong>' + sumaMod.final.toString() + '</strong>' : '') +
+                    '.';
+                infoBanner.className =
+                    'bg-green-100 text-green-800 rounded-xl p-4 md:p-5 text-center border border-green-200 font-semibold leading-relaxed';
+                btnDobleMod.disabled = false;
+            }, 30);
+        }
+
+        // Botones del panel Princesa
+        if (btnAplicarMod) {
+            btnAplicarMod.addEventListener('click', reaplicarModuloActual);
+        }
+        if (btnDobleMod) {
+            btnDobleMod.addEventListener('click', cicloDobleMod);
+        }
+        // Enter en el textbox = aplicar mód
+        if (inputModLibre) {
+            inputModLibre.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    reaplicarModuloActual();
+                }
+            });
+        }
+
+        function ejecutarCiclo() {
+            btnSuerte.style.transform = 'scale(0.95)';
+            setTimeout(() => { btnSuerte.style.transform = ''; }, 150);
+
+            // Modo real: un solo clic hace todo
+            if (modoPrincesa) {
+                cicloPrincesaUnClic();
+                return;
+            }
+
+            const fase = clics % 3;
+
+            if (fase === 0) {
+                // 1) Nace el ramo
+                ramo = cultivarRamo(tamanoRamo);
+                displayRamo.innerHTML = ramo.join('');
+                infoBanner.innerHTML = '<strong>Paso 1/3:</strong> Ramo de corazones y girasoles cultivados. Pulsa otra vez: tu suerte saltará rápido y se quedará.';
+                infoBanner.className = 'bg-red-100 text-red-800 rounded-xl p-4 md:p-5 text-center border border-red-200 font-semibold leading-relaxed';
+                resultsContainer.classList.add('hidden');
+                resMensaje.classList.add('hidden');
+                resTrozo.textContent = '—';
+                clics++;
+
+            } else if (fase === 1) {
+                // 2) Tu suerte (solo marca en el ramo, sin números)
+                resultsContainer.classList.remove('hidden');
+                resultsContainer.classList.add('flex');
+                resFin.textContent = '✨';
+                resTrozo.textContent = '… eligiendo tu suerte …';
+                infoBanner.innerHTML = '<strong>Paso 2/3:</strong> Agitando tu suerte…';
+                infoBanner.className = 'bg-pink-100 text-pink-800 rounded-xl p-4 md:p-5 text-center border border-pink-200 font-semibold leading-relaxed';
+                btnSuerte.disabled = true;
+
+                agitarSuerte(resInicio, 14, 50, () => {
+                    marcaInicio = Math.floor(Math.random() * tamanoRamo);
+                    resInicio.textContent = ramo[marcaInicio];
+                    infoBanner.innerHTML = '<strong>Paso 2/3:</strong> Tu suerte quedó marcada en el ramo (brilla). Pulsa para la suya.';
+                    displayRamo.innerHTML = ramo.map((f, i) =>
+                        i === marcaInicio
+                            ? '<span class="bg-red-400 text-white rounded-full px-1 shadow-lg animate-pulse">' + f + '</span>'
+                            : f
+                    ).join('');
+                    btnSuerte.disabled = false;
+                    clics++;
+                });
+
+            } else {
+                // 3) La suya + trozo de flores entre las dos marcas (sin cifras)
+                infoBanner.innerHTML = '<strong>Paso 3/3:</strong> Agitando la suya…';
+                infoBanner.className = 'bg-amber-100 text-amber-900 rounded-xl p-4 md:p-5 text-center border border-amber-200 font-semibold leading-relaxed';
+                btnSuerte.disabled = true;
+
+                agitarSuerte(resFin, 14, 50, () => {
+                    marcaFin = Math.floor(Math.random() * (tamanoRamo - marcaInicio + 1)) + marcaInicio;
+                    if (marcaFin === marcaInicio) {
+                        marcaFin = Math.min(marcaInicio + 1, tamanoRamo);
+                    }
+                    resFin.textContent = ramo[Math.min(marcaFin, tamanoRamo - 1)] || GIRASOL;
+
+                    const trozo = ramo.slice(marcaInicio, marcaFin);
+                    resTrozo.textContent = trozo.length ? trozo.join('') : (CORAZON + GIRASOL);
+
+                    displayRamo.innerHTML = ramo.map((f, i) => {
+                        if (i >= marcaInicio && i < marcaFin) {
+                            return '<span class="bg-pink-200 border-y border-pink-400 inline-block">' + f + '</span>';
+                        }
+                        return '<span class="opacity-30">' + f + '</span>';
+                    }).join('');
+
+                    infoBanner.innerHTML = '<strong>Paso 3/3:</strong> ¡Listo! El trozo del destino son solo flores. Ojalá importen los adornos; lo que de verdad importa son los seres queridos.';
+                    infoBanner.className = 'bg-green-100 text-green-800 rounded-xl p-4 md:p-5 text-center border border-green-200 font-semibold leading-relaxed';
+                    resMensaje.classList.remove('hidden');
+                    btnSuerte.disabled = false;
+                    clics++;
+                });
+            }
+        }
+    </script>
+</body>
+</html>

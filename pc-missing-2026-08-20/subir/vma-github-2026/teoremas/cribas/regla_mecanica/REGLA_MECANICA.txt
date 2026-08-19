@@ -1,0 +1,60 @@
+================================================================================
+REGLA MECÁNICA — PENDIENTE, CHOQUE, (2v+3)(2l+3)
+================================================================================
+Autor: Víctor Manzanares Alberola
+Fuentes: Cribas §9–10, Libro3 método gráfico, factoritzacio_mdc.hpp
+
+--------------------------------------------------------------------------------
+LO QUE DICES (interpretación operativa)
+--------------------------------------------------------------------------------
+
+  1. Producto:  N = (2v+3)(2l+3)
+
+  2. Por cada +1 en v (o en l):
+       el factor (2v+3) sube 2
+       la "pendiente" k = N/(2v+3) ≈ (2l+3) BAJA
+       (decremento en k al pasar v → v+1: ver delta_pendiente_v)
+
+  3. Método gráfico de restos (hipotenusa):
+       - Empiezas con pendiente 1 hasta chocar con la diagonal y=x
+       - En el choque: te quedas con la MITAD de lo que encogiste → (x+1)/2
+       - Siguiente tramo: pendiente 2, luego 3, ...
+       - Cada choque: x := x - (x+1)/pendiente
+         (un tercio del restante, un cuarto del restante, ...)
+
+  4. En código:
+       encoger_en_choque(x, p)  =  x - (x+1)/p
+       choque_mitad(x)          =  (x+1)/2
+
+--------------------------------------------------------------------------------
+VINCULO CON SUNRAMAN / MDC
+--------------------------------------------------------------------------------
+
+  SunRaman:  v = 2nm + 3n + 3m + 3  con factores (2n+3)(2m+3)
+  Regla mecánica:  mismo (2·)(2·) pero barrido guiado por pendiente y choques
+  MDC k-sweep:  k = N/(2m+3)  — la pendiente es el complemento del factor
+
+--------------------------------------------------------------------------------
+ARCHIVOS
+--------------------------------------------------------------------------------
+  regla_mecanica_pendiente.hpp   — núcleo C++
+  ReglaMecanicaUniversal.hpp     — wrapper DLL (factorizar_mdc, primos, ...)
+  mdc_lib/                       — módulos MDC
+  dll_export.cpp                 — exports: rm_factorizar_mdc, rm_factorizar_regla_mecanica, ...
+  regla_mecanica.py              — prueba sin compilador
+  test_regla_mecanica.cpp        — banco de pruebas
+  build.ps1                      — compila DLL + test
+
+--------------------------------------------------------------------------------
+EXPORTS DLL (extern "C")
+--------------------------------------------------------------------------------
+  rm_factorizar_mdc(N)
+  rm_factorizar_regla_mecanica(N)
+  rm_es_primo(n)
+  rm_siguiente_primo(desde)
+  rm_encoger(x, pendiente)
+  rm_choque_mitad(x)
+  rm_pendiente_desde_v(N, v)
+  rm_factor_par(N, &f1, &f2)
+
+================================================================================

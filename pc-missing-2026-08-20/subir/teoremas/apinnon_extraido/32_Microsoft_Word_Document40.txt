@@ -1,0 +1,181 @@
+Cuatro teoremas, dos cribas, pero una para vosotros conjetura
+Autor: Víctor
+Fecha: A cuatro meses del 2026
+Resumen
+Presentamos cuatro resultados y una criba adicional en teoría de números, unidos por una misma filosofía de criba:
+1. Una cota garantizada de “salto máximo” entre primos mediante sobreestimación factorial.
+2. Una alineación modular de los números de Fermat (“férmines”) que caracteriza su “fila” en una criba por bloques.
+3. Un método predictivo basado en proporciones factoriales (V) que no puede ser eliminado por filtros de compuestos del tipo 6k±1.
+4. Una criba modular optimizada para 6k±1 con saltos que garantiza marcado único y coste lineal en l^2.
+Introducción
+Las piezas que siguen son independientes pero comparten un enfoque: usar cribas y propiedades modulares para aislar familias de enteros con alta densidad de primos o con estructura especial. Cada sección incluye definiciones, enunciados y ejemplos ilustrativos. Al final añadimos una criba modular optimizada sobre 6k±1 con análisis de complejidad práctico.
+SaltoMáximo: criba con sobreestimación factorial
+Definiciones (n > 3):
+• I(n) = [n − parte_entera(√(n+3)) − 3, n+3]
+• L(n) = parte_entera(√(n+3)) + 7
+• K = parte_entera(parte_entera(√n) × 9/24)
+• m(n) = suma desde i = 2 hasta K de (√(n+3) / i!)
+
+Lema (Cobertura de compuestos):
+Todo compuesto en I(n) posee un divisor primo ≤ √(n+3).
+
+Lema (Sobreestimación):
+m(n) sobreestima el número de posiciones marcadas por la criba. En particular: m(n) ≈ (e − 2) × √n.
+
+Teorema (Cota saltoMáximo):
+Si L(n) − m(n) ≥ 2, el intervalo I(n) contiene al menos dos primos distintos.
+
+Ejemplo:
+Para n = 1000, L(n) = 38, m(n) ≈ 33,1, por lo que L(n) − m(n) ≈ 4,9 > 2: el intervalo I(1000) contiene al menos dos primos.
+Férmines: producto, base y fila privilegiada
+Definición:
+Fn = 2^(2^n) + 1
+
+Lema (Producto menos dos):
+F0 × F1 × … × Fn = F(n+1) − 2
+
+Teorema (Alineación modular):
+Sea Bn = 2 × producto desde k = 0 hasta n de Fk.
+Existe un único residuo rn tal que:
+• rn ≡ 1 (mod 2)
+• rn ≡ 2 (mod Fk) para 0 ≤ k ≤ n
+y para todo m ≥ n+1 se cumple Fm ≡ rn (mod Bn).
+
+Ejemplo:
+Para n = 3, B3 = 131070 y F4 = 65537 es la clase privilegiada.
+Método predictivo V
+Definición:
+Para v ≤ m < n: V(v; m, n) = (v / m!) × n!, con v = p + 1 = q − 1 para primos gemelos p, q.
+
+Conjetura:
+Dados primos gemelos p, q = p + 2 y v = p + 1, es probable que existan m', n' con v ≤ m' < n' tales que V(v; m', n') ± 1 generen nuevos candidatos primos en 6k ± 1.
+
+Proposición (No totalidad compuesta):
+Sea v = p + 1 con p ≥ 5 primo. Para v ≤ m < n, no es posible que todas las identidades
+(v / m!) × n! ± 1 = (6j ± 1)(6h ± 1)
+se mantengan para todo n con m fijo.
+Criba modular optimizada para 6k±1 con saltos “anteriorM” y “anteriorNY”
+Idea general:
+Trabajamos sobre los enteros de la forma 2i + 3, que corresponden a las clases 6k ± 1 (candidatos a primos > 3). Usamos un array p[]:
+• p[x] = 1 indica “candidato no marcado” (posible primo).
+• p[x] = 3 indica “marcado como compuesto”.
+
+Inicialización:
+• Marcar manualmente p[0], p[2], p[3] ← 1.
+• Primer bucle sobre v para situar los candidatos en la rueda de 6 (evitar pares y múltiplos de 3):
+  o v = 0; mientras v ≤ l^2:
+     v = v + 1; p[v] = 1
+     v = v + 4; p[v] = 1
+
+Bucle principal (n de 0 a (l − 3)/2):
+1. Si anterior + 3 = n, actualizar anterior = n y avanzar n.
+2. Si p[2n + 3] = 1 (no marcado):
+  o ñ = 1
+  o anteriorM = n; anteriorMM = 2n + 3
+  o Para m desde n hasta l^2 / (2n + 3):
+     Salto anteriorM (evita múltiplos de 3): si anteriorM = m, entonces anteriorM = m + 3 y m = m + 1
+     Si p[2m + 3] = 1, marcar p[(2n + 3)(2m + 3)] = 3
+     ñ = ñ + 1
+     Salto anteriorNY (marcado único): si anteriorMM = 2m + 3 y anteriorNY = ñ, entonces:
+       anteriorNY = anteriorNY + 3
+       ñ = ñ + 1
+       anteriorMM = (2ñ + 3)(2n + 3)
+       marcar p[4mn + 6n + 6m] = 3
+
+Optimización:
+• anteriorM filtra múltiplos de 3 para que 2m + 3 siempre esté en 6k ± 1.
+• anteriorNY adelanta m para saltar múltiplos de 2n + 3 que ya son compuestos por otros factores; así se evita remarcar.
+
+Proposición (Corrección):
+La criba marca todos los compuestos de la forma 6k ± 1 hasta l^2 y deja sin marcar únicamente los primos.
+
+Complejidad:
+• Rueda 6: la criba trabaja solo sobre 6k ± 1 (factor constante < 1).
+• Marcado único con anteriorNY: cada compuesto x = (2n + 3)(2m + 3) se marca exactamente una vez, cuando 2n + 3 es su menor factor en la rejilla.
+• Bajo este invariante, el número total de marcas es proporcional al número de compuestos hasta l^2 en 6k ± 1 y el coste total es Θ(l^2) (l^2 por dos factores constantes menores que 1).
+• Si el invariante fallara y hubiera remarcas, la cota subiría como mucho a O(l^2 log log l); en la práctica, los saltos lo evitan.
+
+Ejemplo (l = 10):
+Candidatos sobre los que opera: 5, 7, 11, 13, 17, 19, 23, 25, 29, 31, 35, 37, 41, 43, 47, 49, 53, 55, 59, 61, 65, 67, 71, 73, 77, 79, 83, 85, 89, 91, 95, 97. La criba marca compuestos y deja sin marcar los primos.
+Conclusiones
+• Secciones 1, 2 y 3: teoremas y algoritmos con pruebas y análisis (resultados cerrados).
+• Sección 6: demostración de la infinitud de L4\L2 y relación estructural con primos de Sophie Germain; la infinitud de LSG permanece como problema abierto.
+• Sección 4 y 5: Cribas: Una la aceptaréis, otra ya la explicará alguien.
+
+Filosofía común: cribar con sesgo inteligente (ruedas y saltos), parametrizar exclusiones, fijar filas modulares y diseñar progresiones que resistan filtros clásicos. El resultado es un marco coherente que une intuición aritmética con pruebas y algoritmos prácticos.
+Conjetura: función del siguiente primo a partir de uno previo
+Idea: Dado un primo inicial p_0, se definen tres contadores consecutivos:
+• n = p_0
+• m = n + 1
+• ny = n - 1
+
+Y tres acumuladores iniciales:
+• t = ny^2
+• tt = n^2
+• nt = m^2
+
+En cada iteración se actualizan los contadores y acumuladores, y se calculan nueve restos modulares:
+t_1 = t mod ny, t_2 = t mod n, t_3 = t mod m
+tt_1 = tt mod ny, tt_2 = tt mod n, tt_3 = tt mod m
+nt_1 = nt mod ny, nt_2 = nt mod n, nt_3 = nt mod m
+
+Hipótesis operativa:
+• Cuando un contador es primo, sus acumuladores asociados presentan un patrón de restos nulos/no nulos característico:
+  o t tiene dos primos “adyacentes” sin elevar en el módulo.
+  o tt tiene al menos un primo al cuadrado a la izquierda y un primo a la derecha.
+  o nt contiene todos los primos a la derecha a alguna potencia y un primo a la izquierda.
+
+• Comparando las variables booleanas derivadas de estos restos (1 si >0, 0 si =0) y aplicando condiciones extraídas de mapas de Karnaugh en tres pasos, se podría detectar si ny es primo y, por tanto, predecir el siguiente primo tras p_0.
+
+Esquema de pasos lógicos:
+1. Paso 1: condición sobre t_3 y nt_2 con memorias antp1 y ant2p1.
+2. Paso 2: combina paso1 con t_2, tt_2 y t_3.
+3. Paso 3: combina antp2 con t_1 y nt_1 + nt_2.
+paso1=t3>0 & nt2=0 OR antp1 OR ant2p1 
+ant2p1=t3>0 & nt2=0 OR antp1 
+antp1=t3>0 & nt2=0 
+paso2= paso1& t2>0 & tt2>0 & t3=0 OR antp2 
+paso3=antp2& t1>0 & nt1+nt2=0 
+antp2= paso1& t2>0 & tt2>0 & t3=0
+
+Conjetura: Si las condiciones se cumplen y ny no ha sido detectado como compuesto al final del tercer paso, entonces ny es el siguiente primo tras p_0.
+
+Estado: Método heurístico basado en observaciones y patrones modulares; no se ha probado su corrección general. Se propone como conjetura para exploración futura.
+Sofí: análisis completo y visual
+Definimos los siguientes conjuntos:
+• L1 = { a ∈ N : a ≡ 5 mod 6 }
+• L3 = { a ∈ L1 : a = (6k − 1)(6h + 1) }
+• L4 = { a ∈ L1 : 2a + 1 = (6j − 1)(6g + 1) }
+• L2 = L3 ∩ L4
+• LSG = { p ∈ L1 : p y 2p + 1 son primos }
+• U2 = L1 \ (L3 ∪ L4)
+
+Observación:
+U2 ⊆ LSG. Probar que U2 es infinito equivaldría a demostrar que hay infinitos primos de Sophie Germain.
+
+Teorema:
+L4 \ L2 es infinito.
+
+Demostración:
+Sea q ≥ 5 primo. Consideramos p ≡ 5 mod 6 y 2p + 1 ≡ 0 mod q. Esto equivale a p ≡ (q − 1)/2 mod q. Por el teorema chino del resto existe una clase r mod 6q con mcd(r, 6q) = 1 que satisface ambas. Por el teorema de Dirichlet, hay infinitos primos p ≡ r mod 6q. Tales p están en L4 (porque 2p + 1 es múltiplo de q) y no en L3 (son primos), luego están en L4 \ L2.
+
+Ejemplo:
+Con q = 5, resolver p ≡ 5 mod 6 y 2p + 1 ≡ 0 mod 5 da p ≡ 17 mod 30. Hay infinitos primos así; para todos ellos 2p + 1 es múltiplo de 5 y compuesto.
+
+Discurso: 
+Como L3/L2 y L4/L2 no coinciden y |L3/L2| y |L4/L2| pueden ser infinitos.
+|L1|+ |L2| - |L3| - |L4| =|lsg|.
+O
+|L1|- |L3/L2| - |L4/L2| - |L2| = |lsg|
+Juntando.
+
+|L1| - |L3| - |L4| = |lsg| - |L2|
+|L1|- |L3/L2| - |L4/L2| = |lsg| + |L2|
+2 * |L1|- 2 * (|L3| - |L2|) – 2 * (|L4| - |L2|) = 2 * |lsg|
+Bibliografía
+Autor: Víctor Título: Números i numeritos ( divulgación/introducción)
+Autor: Víctor Título: Números otra vez (matemática/computación)
+Regalo
+Autor: Microsoft, mediante Copilot basado en GPT de Open-AI utilizado por quien pudo. Hemos diseñado unas instrucciones para crear el icono de carga Sophie para Windows.
+Link: https://copilot.microsoft.com/shares/xr7We4aNMSdMLB34U1cBS
+Textos mejores a estos

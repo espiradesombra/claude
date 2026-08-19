@@ -1,0 +1,30 @@
+ID: 20_lema_cofactor
+ESTADO: [PARCIAL]
+AUTOR: VMA
+FUENTE: Nuevo Documento de texto (3).txt — Lema 2 cofactor
+
+--------------------------------------------------------------------------------
+ENUNCIADO (código)
+--------------------------------------------------------------------------------
+  Lema 2 — Cálculo del cofactor q:
+    q ≈ round( N/D − r/(D−1) )
+  donde D = 2m+3, r = N mod D.
+
+--------------------------------------------------------------------------------
+USO
+--------------------------------------------------------------------------------
+Detectar cofactor cuando m tiene mínimo local de resto.
+Criterio de saltos balísticos en MDC v22+.
+
+--------------------------------------------------------------------------------
+IDENTIDAD RELACIONADA (mismo archivo)
+--------------------------------------------------------------------------------
+  N % D % (D−1) — mínimo local exacto para validar q_candidato.
+
+--------------------------------------------------------------------------------
+GAPS
+--------------------------------------------------------------------------------
+- Aproximación round(); condiciones de exactitud no demostradas en extracto.
+- Requiere enunciado: “Si |N/D − r/(D−1) − q| < ε y N≡0 (mod q), entonces…”
+
+================================================================================

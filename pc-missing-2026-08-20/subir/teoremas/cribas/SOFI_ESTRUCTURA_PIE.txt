@@ -1,0 +1,65 @@
+================================================================================
+SOFÍ — CRIBA ESTRUCTURAL L₁–L₄ + PIE
+================================================================================
+Autor: Víctor Manzanares Alberola
+Estado formal: [OK] PIE y no colapso — F04, F05, F28, F33
+Fuente canónica: Cribas §5, formal\
+
+--------------------------------------------------------------------------------
+1. CONJUNTOS
+--------------------------------------------------------------------------------
+  L₁ = { a ∈ ℕ : a ≡ 5 (mod 6) }     [≡ 6k−1 para impares candidatos]
+
+  L₃ = { a ∈ L₁ : a = (6k−1)(6h+1) o (6k+1)(6h−1) }   → a compuesto
+
+  L₄ = { a ∈ L₁ : 2a+1 = (6j−1)(6g+1) o (6k+1)(6g−1) } → 2a+1 compuesto
+
+  L₂ = L₃ ∩ L₄
+
+  U₂ = L₁ \ (L₃ ∪ L₄)     [evita ambas formas factoriales]
+
+  Lsg = L₁ \ (L₃ ∪ L₄)    [notación post golbach pp0 — supervivientes]
+
+  LSG = { p ∈ L₁ : p y 2p+1 primos }   [Sophie Germain]
+  Observación: U₂ ⊆ LSG (contención; igualdad no automática)
+
+--------------------------------------------------------------------------------
+2. PIE (PRINCIPIO DE INCLUSIÓN-EXCLUSIÓN)
+--------------------------------------------------------------------------------
+  |Lsg| = |L₁| − |L₃| − |L₄| + |L₂|
+
+  Forma del post LinkedIn (equivalente):
+    |Lsg| = |L₁| + |L₂| − |L₃| − |L₄|
+
+  Identidades densidad (Cribas §5, notación u):
+    |L₁| − |L₃| − |L₄| = |lsg| + |L₂|
+    (L₁ − L₂) = |L₃| + |L₄| + lsg
+
+--------------------------------------------------------------------------------
+3. TEOREMAS CLAVE
+--------------------------------------------------------------------------------
+  |L₄ \ L₂| = ∞     (F04) — TCR + Dirichlet con primo q ≥ 5
+  |U₂| = ∞          (F05) — progresiones evitantes
+  |Lsg| = ∞         (F28) — primos en L₄\L₂ ⊆ Lsg
+  Teorema L (F33)   — subfamilias 2v+2, 3v+2 no colapsan
+
+--------------------------------------------------------------------------------
+4. REPARTO CRIVA (PROPORCIÓN)
+--------------------------------------------------------------------------------
+  Al aplicar criba global con proporción (1−criva) de supervivientes:
+    reparto simétrico (1−criva)/2 entre ramas en conteos a+b=100%
+  Criva C1 estima la proporción; Sofí PIE cuenta clases exactas en L₁.
+
+--------------------------------------------------------------------------------
+5. ANALOGÍA GOLDBACH (metodos\)
+--------------------------------------------------------------------------------
+  Lsg ↔ PP    L₃ ↔ PC    L₄ ↔ CP    L₂ ↔ CC
+  Heurística, no bijectión — ver F27, F34 (V no certifica PP).
+
+--------------------------------------------------------------------------------
+6. VARIANTE POST (ficha 28)
+--------------------------------------------------------------------------------
+  L₁ restringido: p = 6k−1 y 2p+1 = 6h−1
+  Misma PIE; jerarquía densidades |L₂| < |Lsg| < |L₃| < |L₄| propuesta, no [OK]
+
+================================================================================

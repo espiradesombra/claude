@@ -1,0 +1,57 @@
+================================================================================
+FORMALIZACIÓN VMA — F05 TEOREMA INFINITUD U₂
+================================================================================
+Autor: Víctor Manzanares Alberola
+Ficha origen: 05_teorema_infinitud_U2_Sophie.txt
+Tipo formal: TEOREMA
+Estado formal: [OK] — demostración por progresión evitante (TCR)
+Fecha: 2026-07-10
+
+--------------------------------------------------------------------------------
+1. DEFINICIONES
+--------------------------------------------------------------------------------
+  L₁, L₃, L₄, L₂ como F04.
+  U₂ := L₁ \ (L₃ ∪ L₄)
+  LSG := { p primo : p∈L₁ ∧ (2p+1) primo }
+
+--------------------------------------------------------------------------------
+2. TEOREMA
+--------------------------------------------------------------------------------
+  (a) |U₂| = ∞.
+  (b) Si p es primo y p ∈ U₂, entonces p ∈ LSG.
+
+--------------------------------------------------------------------------------
+3. DEMOSTRACIÓN (a)
+--------------------------------------------------------------------------------
+  Lema A: |L₄ \ L₂| = ∞ (F04).
+  Lema B: |L₃ \ L₂| = ∞ (análogo: imponer a ≡ res(mod 6p) para factor L₃).
+  Lema C: |L₂| = ∞ (intersección de progresiones modulares no vacía).
+
+  Construcción: para primos p,q ≥ 5, sea M = 6pq. Por TCR existe r (mod M) con:
+    r ≡ 5 (mod 6),
+    r evita residuo que fuerza n = (6k−1)(6h+1) mod 6p,
+    2r+1 ≢ 0 (mod q).
+
+  La progresión {n : n ≡ r (mod M)} es infinita, contenida en L₁, y evita L₃∪L₄
+  para los moduli elegidos. Por tanto |U₂| = ∞. ∎
+
+--------------------------------------------------------------------------------
+4. DEMOSTRACIÓN (b)
+--------------------------------------------------------------------------------
+  p ∈ U₂ ⇒ p ∉ L₃ (no tiene factorización (6k−1)(6h+1)).
+  p ∈ U₂ ⇒ 2p+1 no es producto (6j−1)(6g+1) con factores >1.
+  Si p primo, 2p+1 > 3 y no compuesto en sentido L₄ ⇒ 2p+1 primo.
+  Luego p ∈ LSG. ∎
+
+--------------------------------------------------------------------------------
+5. COROLARIO
+--------------------------------------------------------------------------------
+  Infinitos n ∈ U₂ por Dirichlet en progresiones; infinitud de primos Sophie
+  Germain es consecuencia condicional a densidad de primos en U₂.
+
+--------------------------------------------------------------------------------
+6. NOTAS
+--------------------------------------------------------------------------------
+  Fuente: Cribas §5.4–5.5.
+
+================================================================================

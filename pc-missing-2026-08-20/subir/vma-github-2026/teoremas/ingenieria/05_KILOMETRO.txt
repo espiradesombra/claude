@@ -1,0 +1,35 @@
+================================================================================
+E05 — KILÓMETRO (batería submarina / recorrido + gravedad)
+================================================================================
+
+QUÉ PROBLEMA RESUELVE (pretensión)
+  - Almacenamiento cinético submarino sin química (complemento a eólica).
+  - “Kilómetro”: desplazar 1 kg 1 m para girar ruedecitas; versiones asíncronas.
+  - Flotación con fluidos densos (salmuera, Fe+aceite, mercurio+He) — v7–v15.
+
+MECANISMO
+  - Ciclos de peso en recorrido curvo: gravedad + inercia + empuje entre unidades.
+  - v15 compara fluidos por ρ, coste, toxicidad, Δρ con helio.
+  - Integración narrativa con ZypyZape en dossier Elewit / 33×1.
+
+ESTADO TEÓRICO
+  [REFUTADO] Extracción neta de energía gravitatoria en ciclo cerrado = 0.
+  [OK]       Almacenamiento/liberación SI hay energía externa de bombeo/carga.
+  [HEUR]     Modelos de flotación y competividad vs salmuera: ingeniería de materiales.
+  Paper 3vs7 Quijote_Kilometro: comparativa conceptual, no TRL de obra.
+
+TRL estimado: 3 (simulación extensa, sin prototipo submarino archivado)
+
+RUTAS EN EL PC
+  C:\Users\cuent\Desktop\repo\kilometre;(soles_bateria)\
+  C:\Users\cuent\Desktop\claude-main-extract\claude-main\kilometre;(soles_bateria)\
+    kilometre_v2.py … kilometre_v15_fluids_densos.py
+    kilometre_stirling_*.py, kilometre_dimensions.py
+  C:\Users\cuent\Desktop\subir\VMA-Dossier-Elewit\TEXTO-FORMULARIO-ELEWIT.txt
+  claude-main\1\Paper_3vs7_Quijote_Kilometro.docx
+
+REFERENCIAS
+  segunda_vuelta\LIMITES_HONESTOS.txt
+  ingenieria\06_PACOPI.txt
+
+================================================================================

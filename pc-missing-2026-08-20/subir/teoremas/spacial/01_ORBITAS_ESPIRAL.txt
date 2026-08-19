@@ -1,0 +1,39 @@
+================================================================================
+S01 — ÓRBITAS EN ESPIRAL
+================================================================================
+
+QUÉ PROBLEMA RESUELVE (en el corpus VMA)
+  - Describir trayectorias donde radio orbital varía con el tiempo (no círculo).
+  - Unificar tres sentidos de "espiral" que conviven en el repo:
+      A) Mecánica celeste: pérdida de energía → espiral hacia el centro.
+      B) Dos masas acopladas: movimiento radial + ω → evolvente/espiral.
+      C) MDC: barrido de pendientes con saltos decrecientes 1/(2·i!).
+
+MECANISMO ESPACIAL (física estándar, gemini4 / mati L)
+  - Cuerpo extendido asimétrico (dos esferas): torque de gradiente gravitatorio.
+  - Disipación (marea, Yarkovsky/YORP, sublimación): E_orbital ↓ → r ↓ en espiral.
+  - Dos "cubitos" gran+xiclet: si masa pequeña se mueve radialmente mientras giran,
+    la trayectoria vista desde fuera es espiral controlada (límite |ṙ_q| ≤ ω·r_q).
+
+MECANISMO MDC (matemático, lee arbusto)
+  - Zona baja m ∈ [1, m_conv]: espiral harmónica 1/(2·i!) para sondas.
+  - m_conv = (e−1)/2 · m_max ≈ 0.859 · m_max.
+  - Cadena de mínimos primordiales: espiral de longitudes decrecientes (transcurso).
+
+ESTADO TEÓRICO
+  [OK]       Órbitas espirales por disipación: mecánica celeste clásica.
+  [HEUR]     "Espiral convergente al centro gravitatorio" en factorización:
+             analogía geométrica, NO demostración RSA (gemini cfv, LIMITES_HONESTOS).
+  [METÁFORA] Hurto gravitatorio orbital aplicado a Quijote/Kilómetro/ZypyZape.
+
+RUTAS
+  repo\CLAUDE TXT\mati (L).txt — líneas 3708–3760 (cubitos → espiral)
+  repo\gemini\gemini4.txt — 1234–1248 (colapso espiral, marea)
+  teoremas\lee arbusto\(l)(L).txt — espiral harmónica MDC
+  repo\Archivos del doc Apiñon...\Nuevo Documento (4/5).txt — helicoidal
+
+REFERENCIAS
+  spacial\07_ESPIRAL_MDC_PUENTE.txt
+  ingenieria\02_QUIJOTE.txt (hurto orbital mecánico)
+
+================================================================================

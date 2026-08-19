@@ -1,0 +1,88 @@
+================================================================================
+MÉTODO-V — IMPLICACIONES v⇒V⇒v' (GEMELOS, MERSENNE, HAUS)
+================================================================================
+Fuente: Libro 6, Nuevo Documento de texto.txt (líneas ~1258–2754)
+Estado: [HEUR] — testigo factorial; teoremas 4–8 son esquemas operativos
+Relación: cribas modulares VMA; distinto de 19 PhaseAmplifier K3
+
+--------------------------------------------------------------------------------
+RANGO EXACTO (formalización Libro 6)
+--------------------------------------------------------------------------------
+  Hipótesis: n > 2v − 2 > m > v − 1,  v ≥ 3
+  V := v · (n! / m!)     // entero por divisibilidad factorial
+
+--------------------------------------------------------------------------------
+CADENA v ⇒ V ⇒ v'
+--------------------------------------------------------------------------------
+  v(n)  := pasa cribas básicas (módulos P), evita residuos triviales
+  V(n)  := pasa Test-V completo (9-restos, acumuladores, memorias)
+  v'(n) := V(n) ∧ (2n+1) sin factores pequeños en Q
+
+  SI v(n) ⇒ candidato razonable
+  SI v(n) ∧ condición Test-V ⇒ V(n)
+  SI V(n) ⇒ patrón descarta factorizaciones pequeñas
+  SI V(n) ∧ 2n+1 coprimo con prohibidos ⇒ v'(n)
+
+  Frase VMA interpretada:
+    SI 2(n−1) > m > v−1 ⇒ ∃ primo p que impide factorización L3/L4
+
+--------------------------------------------------------------------------------
+TEOREMA 4 — Testigo imposibilita factorización
+--------------------------------------------------------------------------------
+  Si ∃ primo p: p|V, p|E, y p no puede dividir ningún factor permitido de E
+  ⇒ factorización buscada (ej. Haus) es imposible.
+
+--------------------------------------------------------------------------------
+TEOREMA 5 — Gemelos
+--------------------------------------------------------------------------------
+  p = v+1, q = v−1 primos.
+  Si p|V o q|V y no encajan en factorización permitida de E
+  ⇒ (i) factorización imposible, (ii) Método-V certifica supervivencia gemelos.
+
+--------------------------------------------------------------------------------
+TEOREMA 6 — Mersenne M_p = 2^p − 1
+--------------------------------------------------------------------------------
+  Divisor clásico: r|M_p ⇒ r ≡ 1 (mod 2p).
+  Si r|V, r|E, r≡1(mod 2p), y r no cabe en patrón Haus ⇒ factorización imposible.
+
+--------------------------------------------------------------------------------
+TEOREMA 7 — Familia Haus (6k±1)(6j±1)
+--------------------------------------------------------------------------------
+  Si r|V, r|E, y r no divide ningún factor A,B ≡ ±1(mod 6) válido ⇒ no Haus.
+
+--------------------------------------------------------------------------------
+TEOREMA 8 — Empírico M_11=2047
+--------------------------------------------------------------------------------
+  Adyacentes 2046, 2048: testigos {2,3,11,31} contradicen Haus universal
+  para v≤60, n≤300.
+
+--------------------------------------------------------------------------------
+PSEUDOCÓDIGO RESUMIDO
+--------------------------------------------------------------------------------
+  build_family(P, avoid_residues):
+      M = 6·∏p, r ≡ 5(mod 6) [TCR evitando residuos L3/L4]
+      retornar (M, r)
+
+  predicate_v(n,P): cribas mod p, evitar patrones prohibidos
+  predicate_V(n): 9-restos, paso1∧paso2∧paso3 (Test-V)
+  predicate_vprime(n,Q): V(n) ∧ ∀p∈Q: (2n+1) mod p ≠ 0
+
+  methodV_run(limit, P, Q):
+      para n = r + k·M, k < limit:
+          SI v(n) ⇒ SI V(n) ⇒ SI v'(n) ⇒ solutions.append(n)
+
+--------------------------------------------------------------------------------
+FAMILIAS INFINITAS (esquema)
+--------------------------------------------------------------------------------
+  F_{M,r} := {n : n ≡ r (mod M)}, gcd(r,M)=1 ⇒ infinita (Dirichlet)
+  Construcción evita residuos que generan L3/L4 (esquema Sofí)
+  NO garantiza primalidad de cada miembro; garantiza supervivencia cribas.
+
+--------------------------------------------------------------------------------
+NOTAS
+--------------------------------------------------------------------------------
+  - Método-V ≠ "test de simetría mod 6" simple; incluye factorial V=v·n!/m!
+  - Infinitud de gemelos NO demostrada; solo criba/certificación local.
+  - Ver también Propuesta ZypyZape.txt en Libro 6 (no archivado).
+
+================================================================================

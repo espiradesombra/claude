@@ -1,0 +1,38 @@
+================================================================================
+FORMALIZACIÓN VMA — F10 MDC TEOREMA 2 — FINESTRA LOCAL
+================================================================================
+Autor: Víctor Manzanares Alberola
+Ficha origen: 10_mdc_teorema2_finestra_local.txt
+Tipo formal: TEOREMA (criterio de búsqueda local)
+Estado formal: [OK] — regla de control demostrable en implementación
+Fecha: 2026-07-10
+
+--------------------------------------------------------------------------------
+1. DEFINICIONES
+--------------------------------------------------------------------------------
+  Finestra local: rango de m en paso max_local del k-sweep MDC.
+  S, k parámetros de fase en ventana actual.
+
+--------------------------------------------------------------------------------
+2. TEOREMA (LOCAL)
+--------------------------------------------------------------------------------
+  Si 4S + 16 ≤ 2k + 1, entonces no existe solución (v,b) entera en la
+  finestra local actual que satisfaga Δ(S)=k² con N=(2v+3)(2b+3).
+
+  Acción: ejecutar salto parabólico (E4); NO detener búsqueda global.
+
+--------------------------------------------------------------------------------
+3. DEMOSTRACIÓN
+--------------------------------------------------------------------------------
+  De F09: solución requiere v=(S+k)/2, b=(S−k)/2 enteros y (2v+3)(2b+3)=N.
+  La desigualdad 4S+16 > 2k+1 es condición necesaria para |k| acotado
+  compatible con factores positivos en ventana.
+  Si falla, el par (S,k) no produce factor en [m_min, m_max] actual.
+  Por diseño MDC v3, E4 reubica parábola. ∎
+
+--------------------------------------------------------------------------------
+4. NOTAS
+--------------------------------------------------------------------------------
+  No es teorema de factorización universal; es regla de control.
+
+================================================================================
