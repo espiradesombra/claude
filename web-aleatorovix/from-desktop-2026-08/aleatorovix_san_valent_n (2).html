@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aleatorovix 33x1 - SummerFlow promoting espiradesombra repo</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@400;600;800&family=Space+Mono&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #fce4ec 0%, #ffcdd2 50%, #f8bbd0 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .font-romantic {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        .font-code {
+            font-family: 'Space Mono', monospace;
+        }
+
+        /* Heartbeat animation for the button */
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            15% { transform: scale(1.05); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.05); }
+            60% { transform: scale(1); }
+        }
+        .animate-heartbeat {
+            animation: heartbeat 2s infinite;
+        }
+
+        /* Floating background elements */
+        .floating-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .bubble {
+            position: absolute;
+            bottom: -20px;
+            animation: floatUp 15s infinite ease-in;
+            opacity: 0.3;
+            font-size: 24px;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Custom scrollbar for the bouquet */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #fce4ec; 
+            border-radius: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #f06292; 
+            border-radius: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #e91e63; 
+        }
+    </style>
+</head>
+<body class="relative text-gray-800 flex flex-col items-center justify-between">
+
+    <div class="floating-bg" id="bg-layer">
+        <!-- JS will populate floating hearts and roses here -->
+    </div>
+
+    <div class="w-full bg-gradient-to-r from-red-600 via-pink-600 to-red-600 text-white text-center py-2 px-4 shadow-md relative z-10 font-bold text-sm sm:text-base animate-pulse">
+        <span class="inline-block animate-bounce mr-2">💝</span> 
+        PUBLICIDAD: ¡Promoción de números dentro del pack 33x1 en mi diseñador de ramos de rosas silvestres!
+         Llévate 33 rosas y paga solo si puedes. ¡Oferta spezial! 
+        <span class="inline-block animate-bounce ml-2">💝</span>
+    </div>
+
+    <main class="w-full max-w-4xl px-4 py-8 relative z-10 flex-grow flex flex-col items-center justify-center">
+        
+        <div class="bg-white/80 backdrop-blur-md border border-pink-200 rounded-3xl shadow-2xl shadow-pink-500/20 w-full overflow-hidden">
+            
+            <!-- Header Section -->
+            <div class="bg-gradient-to-b from-pink-50 to-white py-6 px-8 text-center border-b border-pink-100">
+                <h1 class="font-romantic text-5xl md:text-6xl text-pink-600 mb-2 drop-shadow-sm">
+                    Aleatorovix 33x1 looking sponsors only because 33x1 <span class="text-red-500">❤️🌹</span>
+                </h1>
+                <p class="text-pink-400 font-medium tracking-wide">EL MOTOR DEL AMOR CUERDO Y LA FUERZA BRUTA • PROYECTO Aleatorovix dando fuerza. 33x1</p>
+            </div>
+
+            <div class="p-6 md:p-8 flex flex-col gap-6">
+                
+                <!-- Info Banner -->
+                <div id="info-banner" class="bg-pink-100 text-pink-800 rounded-xl p-4 text-center border border-pink-200 font-semibold transition-all duration-300">
+                    ¡Bienvenido! Pulsa el botón de la suerte para comenzar a diseñar el ramo de rosas silvestres y corazones para crear un diseño propio y casi irrepetible, solo se podrá un poco mejor.
+                </div>
+
+                <!-- Bouquet Display -->
+                <div class="relative group">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-pink-400 to-red-400 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+                    <div id="bouquet-display" class="relative bg-white rounded-xl p-4 md:p-6 text-xl md:text-2xl leading-relaxed text-center min-h-[160px] max-h-[250px] overflow-y-auto custom-scrollbar flex items-center justify-center break-words select-none shadow-inner border border-pink-50">
+                        <span class="text-gray-300 italic text-base">El ramo de corazones rojos y flores silvestres aparecerá aquí... tu solo pulsa el botón y espera el diseño.</span>
+                    </div>
+                </div>
+
+                <!-- Results Section -->
+                <div id="results-container" class="hidden flex-col gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-red-50 p-4 rounded-xl border border-red-100 shadow-sm">
+                            <h3 class="text-xs uppercase font-bold text-red-400 mb-1">Tu suerte.</h3>
+                            <p id="res-inicio" class="text-3xl font-code text-red-600 font-bold">-</p>
+                        </div>
+                        <div class="bg-pink-50 p-4 rounded-xl border border-pink-100 shadow-sm">
+                            <h3 class="text-xs uppercase font-bold text-pink-400 mb-1">La suya.</h3>
+                            <p id="res-fin" class="text-3xl font-code text-pink-600 font-bold">-</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 shadow-lg border border-gray-700 text-center relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-pink-500"></div>
+                        <h3 class="text-xs uppercase font-bold text-gray-400 mb-3 tracking-wider">Tu Número Decimal del Destino, solo si no hiciste trampa este número es aleatório como el autor. 
+                            ¡Solo nadie puede, jugamos ? </h3>
+                        <!-- break-all is crucial here because the number can be huge -->
+                        <p id="res-numero" class="text-xl md:text-3xl lg:text-4xl font-code text-green-400 font-bold break-all">
+                            -
+                        </p>
+                        <p id="res-mensaje" class="mt-4 text-pink-400 font-romantic text-2xl hidden animate-pulse">
+                            ¡Gástalo antes de que se acaben los megabaudios! 🔋
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex justify-center mt-4">
+                    <button id="btn-suerte" onclick="ejecutarCiclo()" class="animate-heartbeat relative inline-flex items-center justify-center px-8 py-4 font-bold text-white transition-all duration-200 bg-gradient-to-r from-red-500 to-pink-500 border border-transparent rounded-full shadow-xl hover:from-red-600 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 overflow-hidden group">
+                        <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-white rounded-full group-hover:w-56 group-hover:h-56 opacity-10"></span>
+                        <span class="relative flex items-center gap-2 text-xl md:text-2xl font-romantic tracking-wider">
+                            <span>🌹🍀💘</span> Botón de Suerte, no tengas miedo. <span>💘🍀❤️</span>
+                        </span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <div class="w-full bg-gray-900 text-gray-400 text-center py-4 px-4 relative z-10 text-sm">
+        <p class="font-bold text-white mb-1">Ad 🎯 Patrocinado por el Proyecto 33x1</p>
+        <p>¿Cansado de la rutina? Con nuestra membresía 33x1, inviertes un minuto y te devolvemos 33 motivos para no fijarte solo en eso y mirar adelante y al horizonte, todos los dias para no cansarte de mirar sea donde sea que aterricen esos ojos y esos pensamientos.            1. Siempre estan cuando hay fiesta y los necesitas. 
+            2. A veces os gusta la misma persona. 
+            3. Un dia os conocistéis. 
+            4. No sabe generar aleatoriedad sin el boton. 
+            5. Sabe hacerte reir. 
+            6. Te aguanto borracho ese dia, y si no estabas borracho parecia que si. 
+            7. Un dia no sabras que le hechas de menos pero lo harás. 
+            8. Un bizcocho a medias llena mas que uno entero. 
+            9. Te llama mas que tus padres. 
+            10. Siempre te cuenta lo bien que lo hace en las citas y siempre tiene nuevas con otras personas. 
+            11. Tiene mas suerte que tú. 12. Un dia irás a su boda o tendrá que hacer dos. 
+            13 Sin ellos no vale la pena. 
+            1x33 Los amigos hacen falta. Los amores no tanto, pero ayuda que sean amigos.   <a href="#" class="text-pink-400 hover:text-pink-300 underline decoration-pink-500/30">Descubre cómo con el botón de la suerte.</a></p>
+    </div>
+
+    <script>
+        const K_HEART = "❤️";
+        const L_ROSE = "🌹";
+        
+        let clics = 0;
+        let ramoArray = [];
+        let inicio = 0;
+        let fin = 0;
+
+        // UI Elements
+        const displayRamo = document.getElementById('bouquet-display');
+        const infoBanner = document.getElementById('info-banner');
+        const resultsContainer = document.getElementById('results-container');
+        const resInicio = document.getElementById('res-inicio');
+        const resFin = document.getElementById('res-fin');
+        const resNumero = document.getElementById('res-numero');
+        const resMensaje = document.getElementById('res-mensaje');
+        const btnSuerte = document.getElementById('btn-suerte');
+
+        // Background visual effect setup
+        function createFloatingElements() {
+            const bgLayer = document.getElementById('bg-layer');
+            const items = ['❤️', '🌹', '💖', '✨', '💕'];
+            
+            for(let i=0; i<15; i++) {
+                let el = document.createElement('div');
+                el.className = 'bubble';
+                el.innerText = items[Math.floor(Math.random() * items.length)];
+                el.style.left = `${Math.random() * 100}vw`;
+                el.style.animationDuration = `${10 + Math.random() * 15}s`;
+                el.style.animationDelay = `${Math.random() * 5}s`;
+                el.style.fontSize = `${16 + Math.random() * 24}px`;
+                bgLayer.appendChild(el);
+            }
+        }
+        createFloatingElements();
+
+        function generarRamoCaotico(cantidad) {
+            let ramo = [];
+            for(let i=0; i<cantidad; i++) {
+                // Simulación del motor Aleatorovix
+                ramo.push(Math.random() > 0.5 ? K_HEART : L_ROSE);
+            }
+            return ramo;
+        }
+
+        function ejecutarCiclo() {
+            const estado = clics % 3;
+            
+            // Add slight click effect to button
+            btnSuerte.style.transform = "scale(0.95)";
+            setTimeout(() => { btnSuerte.style.transform = ""; }, 150);
+
+            if (estado === 0) {
+                // FASE 1: Generar el ramo de 331
+                ramoArray = generarRamoCaotico(331);
+                
+                displayRamo.innerHTML = ramoArray.join('');
+                displayRamo.classList.remove('text-gray-300', 'italic');
+                
+                infoBanner.innerHTML = "<strong>Fase 1/3:</strong> Ramo de 331 flores cultivado. Pulsa de nuevo para fijar el origen.";
+                infoBanner.className = "bg-red-100 text-red-800 rounded-xl p-4 text-center border border-red-200 font-semibold transition-all duration-300";
+                
+                // Hide results from previous rounds
+                resultsContainer.classList.add('hidden');
+                resMensaje.classList.add('hidden');
+                
+            } else if (estado === 1) {
+                // FASE 2: Seleccionar Índice Inicial
+                inicio = Math.floor(Math.random() * 331); // 0 a 330
+                
+                infoBanner.innerHTML = `<strong>Fase 2/3:</strong> Índice Inicial fijado en <strong>${inicio}</strong>. Pulsa para el corte final.`;
+                infoBanner.className = "bg-pink-100 text-pink-800 rounded-xl p-4 text-center border border-pink-200 font-semibold transition-all duration-300";
+                
+                resultsContainer.classList.remove('hidden');
+                resultsContainer.classList.add('flex');
+                resInicio.innerText = inicio;
+                resFin.innerText = "...";
+                resNumero.innerText = "... calculando el destino ...";
+                
+                // Highlight start point in display (wrap the rest in spans)
+                let visualRamo = ramoArray.map((f, i) => {
+                    if(i === inicio) return `<span class="bg-red-400 text-white rounded-full px-1 shadow-lg animate-pulse">${f}</span>`;
+                    return f;
+                }).join('');
+                displayRamo.innerHTML = visualRamo;
+
+            } else if (estado === 2) {
+                // FASE 3: Seleccionar Índice Final y calcular
+                // The end index must be >= inicio, up to 331 (for slicing)
+                fin = Math.floor(Math.random() * (331 - inicio + 1)) + inicio;
+                if (fin === inicio) fin = Math.min(inicio + 1, 331); // Ensure at least 1 flower is selected if possible
+                
+                infoBanner.innerHTML = `<strong>Fase 3/3:</strong> ¡Extracción completada! Disfruta de los numeros que salieron de la suerte, ojala significáran algo los numeros, importan los seres queridos.`;
+                infoBanner.className = "bg-green-100 text-green-800 rounded-xl p-4 text-center border border-green-200 font-semibold transition-all duration-300";
+                
+                resFin.innerText = fin;
+                
+                // Extraer sub-ramo
+                const subRamo = ramoArray.slice(inicio, fin);
+                
+                // Highlight the selected slice in the display
+                let visualRamo = ramoArray.map((f, i) => {
+                    if(i >= inicio && i < fin) {
+                        return `<span class="bg-pink-200 border-y border-pink-400 inline-block">${f}</span>`;
+                    }
+                    return `<span class="opacity-30">${f}</span>`;
+                }).join('');
+                displayRamo.innerHTML = visualRamo;
+
+                // Calcular valor (❤️ = 1, 🌹 = 0)
+                let binarioStr = "";
+                for(let flor of subRamo) {
+                    binarioStr += (flor === K_HEART) ? "1" : "0";
+                }
+                
+                // Utilizar BigInt porque 331 bits excede el límite seguro de Number (53 bits)
+                let valorDecimal;
+                try {
+                    valorDecimal = binarioStr === "" ? 0n : BigInt("0b" + binarioStr);
+                    resNumero.innerText = valorDecimal.toString();
+                } catch(e) {
+                    resNumero.innerText = "0";
+                }
+                
+                resMensaje.classList.remove('hidden');
+            }
+            
+            clics++;
+        }
+    </script>
+</body>
+</html>

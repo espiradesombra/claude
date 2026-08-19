@@ -1,0 +1,31 @@
+================================================================================
+  EMPEZAR AQUÍ — copia esto como primer mensaje en ChatGPT
+================================================================================
+
+Continuamos AntiPC desde gptcomputing.txt. Reglas:
+
+1. ARQUITECTURA CONGELADA (v0.0.01–v0.1.0). No reabrir axiomas sin discutir.
+2. Sprint 1 YA EXISTE en Python (no reescribir todo en C++ salvo que yo lo pida).
+3. Cada iteración: Plan → Diseño → Código → Tests → Benchmark → Docs → Commit.
+4. Nada entra al núcleo sin benchmark medible. Resto → research/.
+5. Identidad: el conocimiento compartido es el centro; la CPU ejecuta solo si no hay respuesta mejor.
+
+Adjunto la carpeta ideas-para-gpt-antipc con:
+  - CONTINUACION_PARA_GPT.txt (instrucciones completas)
+  - MAPA_gptcomputing_a_codigo.txt
+  - RESULTADOS_BENCHMARK.txt
+  - 06-python-runtime/ (kernel, knowledge, kop, demos)
+  - SPRINTS_10520-fin.txt (roadmap Sprints 2–6)
+
+YA HECHO (v0.1.1 parcial — no rehacer):
+  [x] runtime/kop.py — K3 MicroKernel, KOP 001-008, directorio binario
+  [x] knowledge.publish_with_kop_blob() — lookup ~5-15x vs JSON
+  [x] demo_kop_binary.py + KOP_BINARIO.txt
+
+SIGUIENTE — Sprint 2:
+  Ledger interno (KOP 005 / K3MK), Policy, Metrics.
+  NO blockchain. Benchmark: demo_v010 ≥25% ALU ahorrada, ledger <5% overhead.
+
+Instrucciones completas: 03-handoff-chatgpt/CONTINUACION_PARA_GPT.txt
+
+================================================================================

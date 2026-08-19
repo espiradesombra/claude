@@ -1,0 +1,24 @@
+ID: 19_phaseamplifier_k3
+ESTADO: [OK] — Bien definido con demostración en .md
+AUTOR: Víctor Manzanares Alberola (1477 / 33x1)
+FUENTE: repo\1\THEOREM_PhaseAmplifier_K3_XOR.md
+COPIA:  teoremas\19_THEOREM_PhaseAmplifier_K3_XOR.md
+
+--------------------------------------------------------------------------------
+TEOREMA (Amplificador de Fase Persistent, K=3 XOR)
+--------------------------------------------------------------------------------
+Sistema S=(v1,f1,v2,f2) ∈ {0,1}⁴ con shift Gray, Toffoli, T₃ y S_next=S⊕T₃(S).
+
+(a) Invariante: f2(S_next)=f2(S); subespacios F⁰ y F¹ cerrados.
+(b) v1=0 transitorio → en 1 ciclo pasa a v1=1.
+(c) En Fᶠ², estados con v1=1 forman ciclo único de período 4.
+(d) Diferencia solo en f1 → diferencia persistente en v2 para todo t≥1.
+(e) K=3 es mínimo para propagación persistente (K=1 o K=4 con XOR fallan).
+
+--------------------------------------------------------------------------------
+NOTA
+--------------------------------------------------------------------------------
+Teorema formal de sistemas booleanos/fase; aplicable a K3 hash y ZypyZape.
+No confundir con factorización RSA.
+
+================================================================================

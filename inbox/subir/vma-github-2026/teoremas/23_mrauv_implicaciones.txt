@@ -1,0 +1,53 @@
+================================================================================
+MRAUV — PSEUDOCÓDIGO DE IMPLICACIONES (DENSIDAD LOCAL)
+================================================================================
+Fuente: Libro 6, Nuevo Documento de texto.txt (líneas ~481–510, ~812–929)
+Estado: [HEUR] — modelo cinemático operativo; no teorema analítico
+Relación: complementa 14_mrauv_criterio_goldbach.txt
+
+--------------------------------------------------------------------------------
+DEFINICIONES
+--------------------------------------------------------------------------------
+  D_obs(x) := π(x)/x                    // densidad observada
+  Parámetros por tramo [x, x+Δ]: D0, V0, a0, j0 (opcional)
+
+--------------------------------------------------------------------------------
+MRAUV_PRED(x, Δ, params)
+--------------------------------------------------------------------------------
+  SI j0 incluido:
+      D_pred := D0 + V0·Δ + 0.5·a0·Δ² + (1/6)·j0·Δ³
+  SINO:
+      D_pred := D0 + V0·Δ + 0.5·a0·Δ²
+
+--------------------------------------------------------------------------------
+IMPLICACIONES
+--------------------------------------------------------------------------------
+  SI D_pred ≥ 0 ⇒ esperar ≈ D_pred·Δ primos en [x, x+Δ]
+  SI calibramos (V0,a0,j0) con 3 medidas consecutivas ⇒ params estables localmente
+  SI recalibramos cada O(√n) ⇒ coste Õ(√N) y control de error
+
+  SI D_pred oscila con amplitud A_loc pero ⟨D_pred⟩ tiene tendencia suave
+     ⇒ variaciones locales no cambian tendencia acumulada en escalas O(√n)
+
+--------------------------------------------------------------------------------
+CALIBRACIÓN (3 puntos)
+--------------------------------------------------------------------------------
+  Dado x1,x2,x3 y D_obs en cada punto:
+      resolver sistema lineal para (D0, V0, a0)
+      coste O(1) por tramo
+
+--------------------------------------------------------------------------------
+USO EN GOLDBACH (ver ficha 24)
+--------------------------------------------------------------------------------
+  D_pred(A_j), D_pred(B_j) en tramos simétricos
+  E_j ≈ D_low · D_high · Δ
+  total_esperado = Σ_j E_j
+
+--------------------------------------------------------------------------------
+NOTAS
+--------------------------------------------------------------------------------
+  - "Independencia heurística" entre tramos A_j y B_j no está demostrada.
+  - MRAUV captura tendencia suave; no certifica conteos exactos de primos.
+  - En Libro 6 posterior: ME locales Sofí–V–MRAUV no se unifican (SVD test).
+
+================================================================================

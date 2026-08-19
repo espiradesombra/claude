@@ -1,0 +1,62 @@
+================================================================================
+LIBRO 6 — PSEUDOCÓDIGO DE IMPLICACIONES (ÍNDICE)
+================================================================================
+Autor: Víctor Manzanares Alberola (VMA)
+Estado global: [HEUR] — esquemas lógicos ChatGPT; no peer-reviewed
+Fecha archivado: 2026-07-10
+
+FUENTE CANÓNICA:
+  repo\Libro6 NewtonRapido en busqueda con oraculo\Pseudocódigo de implicaciones.eml (~5,7 MB)
+  repo\Libro6...\chat dot .html (~10 MB, mismo chat GPT exportado)
+  repo\Libro6...\Nuevo Documento de texto.txt (~2,8 MB, volcado paralelo)
+  repo\Libro6...\Nuevo Documento de texto2.txt (bloque ME locales / Copilot)
+
+RELACIÓN CON teoremas/ 01–20:
+  Los fichas 01–20 extraen enunciados desde Cribas VMA, MDC, (l)(L).txt, etc.
+  El Libro 6 REEXPRESA muchos de esos métodos en modo "SI A ⇒ B".
+  No sustituye las fichas 01–20; las complementa con pseudocódigo formal.
+
+--------------------------------------------------------------------------------
+BLOQUES ARCHIVADOS EN teoremas/
+--------------------------------------------------------------------------------
+  21  Este índice
+  22  Sofí — 15 implicaciones unificadas + clasificador + generador U2
+  23  MRAUV — densidad local cinemática (V0, a0, j0)
+  24  Goldbach segmentación + argumento hueco L(n)−m(n)
+  25  Método-V — v⇒V⇒v', gemelos, Mersenne, Haus (teoremas 4–8)
+  26  Plantillas 1–7 para conjeturas y teoremas
+
+--------------------------------------------------------------------------------
+BLOQUES ARCHIVADOS (continuación Libro 6)
+--------------------------------------------------------------------------------
+  31  ME locales, no-unificación, cadena P≠NP condicional + código
+
+BLOQUES EN LIBRO 6 AÚN NO ARCHIVADOS (referencia)
+--------------------------------------------------------------------------------
+  [OK]     Fermat productorio + alineación modular (ver también 15_fermat)
+  [HEUR]   ZypyZape, Forma=Cuadrado, Talla=n! (Propuesta para implementar...)
+  [FILO]   Position paper LaTeX completo (no-unificación + tripleta F+S+G)
+  Código:  teoremas\metodos\me_connection_null.py, me_local_test.py
+
+--------------------------------------------------------------------------------
+ESTRUCTURA DEL CHAT (orden cronológico aproximado)
+--------------------------------------------------------------------------------
+  1. Plantillas universales 1–7
+  2. Sofí completo (L1, L3, L4, L2, U2) + infinitud
+  3. Teorema Sofí 15 líneas + MRAUV + Goldbach hueco
+  4. Teorema formal con epsilons + pseudocódigo ejecutable
+  5. Fermat en implicaciones
+  6. Tripleta Fermat / Sofí / Goldbach
+  7. Método-V (familias modulares, v⇒V⇒v')
+  8. Rango exacto: n>2v−2>m>v−1, V = v·n!/m!
+  9. Teoremas definitivos 1–8 (Fermat, Sofí, Goldbach, V×4)
+  10. Extensiones Mersenne, Haus, gemelos, CSV empírico
+  11. P vs NP (honestidad: modelo ⟂ P vs NP)
+  12. ME locales, log-raíz, SVD, no-unificación
+
+NOTA HONESTA:
+  Muchas "demostraciones" son esquemas Dirichlet/TCR correctos en Sofí,
+  pero Goldbach y Método-V siguen siendo [CONJ]/[HEUR].
+  El chat mezcla rigor modular con heurística de densidad.
+
+================================================================================

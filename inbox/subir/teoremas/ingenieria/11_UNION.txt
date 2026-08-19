@@ -1,0 +1,25 @@
+================================================================================
+E11 — UNION / LOGBENCH (benchmark numérico)
+================================================================================
+
+QUÉ PROBLEMA RESUELVE
+  - Comparar TU_ALGO vs libm / CRlibm / SLEEF en log y raíz.
+  - Cultura de medición para kernels numéricos (satélite módulo N₁ 33×N).
+  - Validar afirmaciones de precisión/velocidad sin marketing.
+
+MECANISMO
+  - bench_log.cpp, bench_root.cpp, tu_algo.cpp/hpp.
+  - Docker + gen_report.py → report.html (tiempo + ULP@95%).
+  - mini_comparativa.py para pruebas rápidas.
+
+ESTADO TEÓRICO
+  [OK]     Infraestructura montada; README con build Docker y nativo.
+  [HEUR]   TU_ALGO es propuesta VMA; mérito depende de resultados CSV archivados.
+  TRL 5: herramienta de laboratorio reproducible.
+
+RUTAS EN EL PC
+  C:\Users\cuent\Desktop\claude-main-extract\claude-main\xd\predecir log raiz\UNION\
+  Duplicados en UNION\Nueva carpeta\nv\, logbench-pack\
+  Citado en teoremas\lee arbusto\5-7.txt, porque_no_33x1\MERCADOS_GANABLES.txt
+
+================================================================================

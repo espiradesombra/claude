@@ -1,0 +1,87 @@
+================================================================================
+PLANTILLAS 1–7 — MODO PSEUDOCÓDIGO DE IMPLICACIONES
+================================================================================
+Fuente: Libro 6, Nuevo Documento de texto.txt (líneas ~43–218)
+Estado: [HEUR] — framework metodológico VMA
+Relación: plantillas para generar fichas 01–20 y nuevas conjeturas
+
+--------------------------------------------------------------------------------
+PLANTILLA 1 — Conjetura
+--------------------------------------------------------------------------------
+CONJETURA C(x):
+    A = condición principal sobre x
+    B = estimador / cota / estructura modular
+    SI A ⇒ aplicar B
+    SI B ⇒ produce evento E
+    SI E ⇒ afirmar C(x)
+
+Ejemplo Salto Máximo: A:=n>3, B:=L(n)−m(n)≥2, E:=≥2 primos en I(n)
+
+--------------------------------------------------------------------------------
+PLANTILLA 2 — Teorema operativo (criterio cuantitativo)
+--------------------------------------------------------------------------------
+TEOREMA T(x):
+    Premisa P(x), magnitud M(x), umbral U, conclusión Q(x)
+    SI P(x) ⇒ calcular M(x)
+    SI M(x) ≥ U ⇒ Q(x)
+    SI NO ⇒ no concluyente (no falso)
+
+Ejemplo dos primos: P(n):n>3, M(n):=L(n)−m(n), U:=2, Q(n):≥2 primos en I(n)
+  → coincide con ficha 01_teorema_operativo_dos_primos.txt
+
+--------------------------------------------------------------------------------
+PLANTILLA 3 — Teorema modular
+--------------------------------------------------------------------------------
+TEOREMA_MODULAR(x):
+    A: clase base; B,C: evitar clases prohibidas
+    SI A ∧ B ∧ C ⇒ x ∈ D
+
+Ejemplo U2: A(x):x≡5(mod 6), B(x):x∉L3, C(x):x∉L4 ⇒ x∈U2
+  → coincide con fichas 04, 05
+
+--------------------------------------------------------------------------------
+PLANTILLA 4 — Conjetura desde datos
+--------------------------------------------------------------------------------
+GENERAR_CONJETURA(datos):
+    1) Patrón observado P
+    2) Magnitud estructural S
+    3) SI |P−S| < ε ⇒ regla R
+    4) Validar R en nuevos rangos
+    5) SI estable ⇒ CONJETURA
+
+Uso: justificar MRAUV, densidades por capas
+
+--------------------------------------------------------------------------------
+PLANTILLA 5 — Demostrar infinitud
+--------------------------------------------------------------------------------
+DEMO_INFINITUD(S):
+    1) Condiciones congruenciales A, B
+    2) TCR ⇒ clase R (mod M)
+    3) Dirichlet (gcd(R,M)=1) ⇒ infinitos en R
+    4) Todos en S ⇒ |S|=∞
+
+Ejemplo L4\L2: A:p≡5(mod 6), B:2p+1≡0(mod q) ⇒ |L4\L2|=∞
+
+--------------------------------------------------------------------------------
+PLANTILLA 6 — Construir salto máximo
+--------------------------------------------------------------------------------
+CONSTRUIR_COTA_SALTO(n):
+    estimar m(n), L(n)
+    SI L(n)−m(n) ≥ k ⇒ salto ≤ L(n)
+    k=1 ⇒ existe primo; k=2 ⇒ ≥2 primos
+    conjeturar L(n) ≈ √n
+
+  → coincide con ficha 03_heuristica_salto_maximo.txt
+
+--------------------------------------------------------------------------------
+PLANTILLA 7 — Siguiente primo (9 restos)
+--------------------------------------------------------------------------------
+SIGUIENTE_PRIMO(p):
+    acumuladores T = (ny², n², m²)
+    iterar restos R, booleanos B
+    SI patrón(B) = primo ⇒ candidato
+    SI patrón(B) = compuesto ⇒ descartar
+
+  → relacionado con ficha 07_conjetura_siguiente_primo_acumuladores.txt [MAL]
+
+================================================================================

@@ -1,0 +1,31 @@
+ID: 08_triangulo_factores
+ESTADO: [MAL] — Contradicciones internas en el análisis
+AUTOR: VMA
+FUENTE: lee arbusto\(l)(L).txt; lee arbusto\(L).txt
+
+--------------------------------------------------------------------------------
+ENUNCIADO PROPUESTO (chat)
+--------------------------------------------------------------------------------
+“Teorema del Triángulo de Factores”:
+  Vértices (2, √n) y (n/2, 2); hipotenusa une factores.
+  Puntos enteros (x,y) en hipotenusa ↔ p=2x+3, q=2y+3 con p·q=n.
+
+--------------------------------------------------------------------------------
+PROBLEMAS DE DEFINICIÓN
+--------------------------------------------------------------------------------
+1. Mezcla √n real con “enteros hasta √n” en ejes.
+2. Primera versión dice x·y=n; luego p=2x+3 (formas 6k±1) — no equivalentes.
+3. El mismo documento dice “SÍ funciona visualmente” pero “NO es algoritmo
+   polinomial” y luego “✅ teorema válido, caracteriza exactamente factores”.
+4. Ecuación de hipotenusa con pendiente 2√n/n no deriva limpiamente p·q=n.
+
+--------------------------------------------------------------------------------
+NÚCLEO SALVABLE (GEOMETRÍA MDC)
+--------------------------------------------------------------------------------
+Visualización de zona densa del k-sweep:
+  Eje m, eje k=N//(2m+3), factores donde resonan pendientes.
+
+RECOMENDACIÓN: Reescribir como LEMA GEOMÉTRICO de visualización, no teorema
+de caracterización completa de factores.
+
+================================================================================

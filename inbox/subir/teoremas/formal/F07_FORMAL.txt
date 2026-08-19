@@ -1,0 +1,44 @@
+================================================================================
+FORMALIZACIÓN VMA — F07 ALGORITMO SIGUIENTE PRIMO
+================================================================================
+Autor: Víctor Manzanares Alberola
+Ficha origen: 07_conjetura_siguiente_primo_acumuladores.txt
+Tipo formal: ESPECIFICACIÓN ALGORÍTMICA (no teorema)
+Estado formal: [MAL→ESPEC] — formalizado como procedimiento; corrección abierta
+Fecha: 2026-07-10
+
+--------------------------------------------------------------------------------
+1. DEFINICIONES
+--------------------------------------------------------------------------------
+  Dado primo p₀, definir estado:
+    n := p₀, m := n+1, ny := n−1
+    Acumuladores: t := ny², tt := n², nt := m²
+    Restos R := { t, tt, nt } mod { ny, n, m }
+
+--------------------------------------------------------------------------------
+2. PROCEDIMIENTO SIGUIENTE_PRIMO(p₀)
+--------------------------------------------------------------------------------
+  Repetir:
+    Calcular 9 restos por iteración.
+    Evaluar 3 pasos lógicos (tabla Karnaugh).
+    SI patrón = primo ⇒ retornar candidato.
+    SI patrón = compuesto ⇒ incrementar y continuar.
+
+--------------------------------------------------------------------------------
+3. CONJETURA DE CORRECCIÓN (no demostrada)
+--------------------------------------------------------------------------------
+  ∃ función next: ℙ → ℙ tal que next(p) = min{ q ∈ ℙ : q > p }
+  y el procedimiento VMA termina en next(p₀) para todo p₀.
+
+--------------------------------------------------------------------------------
+4. GAPS
+--------------------------------------------------------------------------------
+  - Sin prueba de terminación ni corrección.
+  - Wilson ((n−1)! mod n) mencionado sin integración formal.
+
+--------------------------------------------------------------------------------
+5. NOTAS
+--------------------------------------------------------------------------------
+  Valor: criba incremental. Fuente: Cribas §13.
+
+================================================================================

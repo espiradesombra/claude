@@ -1,0 +1,59 @@
+================================================================================
+S05 — CÓMPUTO NECESARIO / ZERO HIT (≈ 0heat en 1477.md)
+================================================================================
+
+QUÉ PROBLEMA RESUELVE
+  - Calcular trayectoria espiral del tren (GNC, tensión, fase Kuramoto).
+  - Controlar láser (esculpido, soldadura, empuje) en tiempo casi real.
+  - Forzar GHz en chip sin degradación: vacío + agua presurizada → "Zero Hit".
+  - Reutilizar calor del cómputo para láser/reactor (cierre narrativo 33×1).
+
+RELACIÓN 0heat ↔ Zero Hit
+  - ingenieria\14_0HEAT.txt: [NARR] sin archivos.
+  - mati (L).txt + 1477.md: "0heat" listado junto a ZypyZape/MDC.
+  - Identificación razonable: Zero Hit = gestión térmica del cómputo extremo.
+
+ARQUITECTURA ZERO HIT (mati L ~7554–7607)
+  1. Cámara vacío 10⁻⁷ mbar — chip sin conducción/convección al PCB.
+  2. Camisa agua 15–20 bar — absorbe IR hasta ~200°C sin ebullición.
+  3. Tuberías en espiral — vórtice, micro-turbina, precalentador reactor.
+  4. Estado estacionario — sin ciclos térmicos destructivos.
+
+COMPARATIVA DECLARADA
+  Parámetro          | Estándar        | Zero Hit 33×1
+  -------------------|-----------------|------------------
+  Refrigeración      | Ventilador/aire | Vacío + agua P
+  Límite frecuencia  | T < 90°C        | T > 150°C estable
+  Calor              | Desperdicio     | Láser / energía
+  Degradación        | Alta            | "Nula" (narrativa)
+
+CÓMPUTO NECESARIO POR SUBSISTEMA (estimación desde tabla mati L)
+  Subsistema              | Carga estimada        | Notas
+  ------------------------|----------------------|---------------------------
+  Integrador trayectoria  | Alta (CPU/GPU)       | Espiral multi-cuerpo; no hay código
+  Kuramoto 33 nodos       | Media                | Analogía ya en gemelo_v94
+  Esculpido láser 3D      | Alta                 | Malla asteroide → G-code sublimación
+  Detección fase LiDAR    | Media-alta           | Punto en espiral del tren
+  Elasticidad / tensión   | Media                | Evitar rotura marea
+  Comms nRF52 en vacío    | Baja-media           | PCB 1 cm, 500 m en chat
+  Guiado sensor "a ojo"   | Media                | Propulsión micro-gotas H₂O
+
+ORDEN DE MAGNITUD (honesto, sin benchmark propio)
+  - Simulación trayectoria 10 cuerpos + láser: laptop → cluster (horas/día).
+  - Tiempo real a bordo: MCU + posible acelerador; no dimensionado en repo.
+  - Kiouper "en móvil": narrativa comprimir superordenador (mati L ~4211).
+
+ESTADO TEÓRICO
+  [HEUR]   Requisitos de ingeniería plausibles; sin medidas propias VMA.
+  [NARR]   "Superordenador de bolsillo" no verificado.
+  [OK]     Principio: disipación limita HPC — física elemental correcta.
+
+RUTAS
+  repo\CLAUDE TXT\mati (L).txt — 4192–4235, 7554–7617, 8053–8056
+  claude-main\1\1477.md — mención 0heat
+  ingenieria\14_0HEAT.txt
+
+REFERENCIAS
+  spacial\04_TREN_ASTEROIDES.txt, 06_COMPUTO_ORBITAS.txt
+
+================================================================================

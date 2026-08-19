@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aleatorovix 33×1 · espiradesombra</title>
+    <meta name="description" content="Motor de amor cuerdo y fuerza bruta. Ramo ❤️🌹, azar con rastro, libros del autor Víctor Manzanares Alberola.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@400;600;800&family=Space+Mono&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #fce4ec 0%, #ffcdd2 45%, #f8bbd0 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .font-romantic { font-family: 'Dancing Script', cursive; }
+        .font-code { font-family: 'Space Mono', monospace; }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            15% { transform: scale(1.05); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.05); }
+            60% { transform: scale(1); }
+        }
+        .animate-heartbeat { animation: heartbeat 2s infinite; }
+
+        .floating-bg {
+            position: fixed; inset: 0;
+            pointer-events: none; z-index: 0; overflow: hidden;
+        }
+        .bubble {
+            position: absolute; bottom: -20px;
+            animation: floatUp 15s infinite ease-in;
+            opacity: 0.3; font-size: 24px;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #fce4ec; border-radius: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #f06292; border-radius: 8px; }
+
+        /* Panel de libros: abierto / cerrado */
+        #books-panel {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.55s ease, opacity 0.35s ease, margin 0.35s ease;
+            margin-top: 0;
+        }
+        #books-panel.open {
+            max-height: 4000px; /* espacio de sobra para todos los libros */
+            opacity: 1;
+            margin-top: 1.5rem;
+        }
+
+        .book-card {
+            background: #fff;
+            border: 1px solid #fbcfe8;
+            border-radius: 1rem;
+            box-shadow: 0 4px 20px rgba(233, 30, 99, 0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .book-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(233, 30, 99, 0.14);
+        }
+        .book-body {
+            color: #4b5563;
+            line-height: 1.65;
+            white-space: pre-wrap; /* respeta saltos de línea que pegues */
+        }
+        .edit-hint {
+            font-size: 0.7rem;
+            color: #c4b5c8;
+            font-family: 'Space Mono', monospace;
+            letter-spacing: 0.02em;
+        }
+    </style>
+</head>
+<body class="relative text-gray-800 flex flex-col items-center">
+
+    <div class="floating-bg" id="bg-layer" aria-hidden="true"></div>
+
+    <!-- [TOCAR] franja de publicidad superior -->
+    <div class="w-full bg-gradient-to-r from-red-600 via-pink-600 to-red-600 text-white text-center py-2.5 px-4 shadow-md relative z-10 font-bold text-sm sm:text-base">
+        <span class="inline-block animate-bounce mr-2">💝</span>
+        PUBLICIDAD: Pack 33×1 · diseñador de ramos de rosas silvestres · 33 rosas y paga solo si puedes
+        <span class="inline-block animate-bounce ml-2">💝</span>
+    </div>
+
+    <main class="w-full max-w-4xl px-4 py-8 relative z-10 flex-grow flex flex-col items-center">
+
+        <!-- Card principal motor -->
+        <div class="bg-white/85 backdrop-blur-md border border-pink-200 rounded-3xl shadow-2xl shadow-pink-500/20 w-full overflow-hidden">
+
+            <div class="bg-gradient-to-b from-pink-50 to-white py-6 px-6 md:px-8 text-center border-b border-pink-100">
+                <!-- [TOCAR] título principal -->
+                <h1 class="font-romantic text-4xl md:text-6xl text-pink-600 mb-2 drop-shadow-sm">
+                    Aleatorovix 33×1 <span class="text-red-500">❤️🌹</span>
+                </h1>
+                <!-- [TOCAR] subtítulo -->
+                <p class="text-pink-500 font-medium tracking-wide text-sm md:text-base">
+                    El motor del amor cuerdo y la fuerza bruta · Proyecto 33×1
+                </p>
+                <p class="text-pink-300 text-xs mt-2 font-code">espiradesombra · Víctor Manzanares Alberola</p>
+            </div>
+
+            <div class="p-5 md:p-8 flex flex-col gap-6">
+
+                <div id="info-banner" class="bg-pink-100 text-pink-800 rounded-xl p-4 md:p-5 text-center border border-pink-200 font-semibold leading-relaxed">
+                    <!-- [TOCAR] mensaje de bienvenida -->
+                    ¡Bienvenido! Pulsa el botón de la suerte para cultivar un ramo de rosas silvestres y corazones.
+                    Diseño propio, casi irrepetible. El azar con rastro, no solo “me lo inventé yo”.
+                </div>
+
+                <div class="relative group">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-pink-400 to-red-400 rounded-2xl blur opacity-25 group-hover:opacity-50 transition"></div>
+                    <div id="bouquet-display"
+                         class="relative bg-white rounded-xl p-4 md:p-6 text-xl md:text-2xl leading-loose text-center min-h-[140px] max-h-[260px] overflow-y-auto custom-scrollbar flex items-center justify-center break-words select-none shadow-inner border border-pink-50">
+                        <span class="text-gray-300 italic text-base leading-relaxed">
+                            El ramo aparecerá aquí… pulsa el botón y espera el diseño.
+                        </span>
+                    </div>
+                </div>
+
+                <div id="results-container" class="hidden flex-col gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-red-50 p-4 rounded-xl border border-red-100 shadow-sm">
+                            <h3 class="text-xs uppercase font-bold text-red-400 mb-1">Tu suerte (índice inicio)</h3>
+                            <p id="res-inicio" class="text-3xl font-code text-red-600 font-bold">-</p>
+                        </div>
+                        <div class="bg-pink-50 p-4 rounded-xl border border-pink-100 shadow-sm">
+                            <h3 class="text-xs uppercase font-bold text-pink-400 mb-1">La suya (índice fin)</h3>
+                            <p id="res-fin" class="text-3xl font-code text-pink-600 font-bold">-</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-5 md:p-6 shadow-lg border border-gray-700 text-center relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-pink-500"></div>
+                        <h3 class="text-xs uppercase font-bold text-gray-400 mb-3 tracking-wider leading-relaxed">
+                            Número decimal del destino · aleatorio como el autor · ¿nadie puede solo, jugamos?
+                        </h3>
+                        <p id="res-numero" class="text-lg md:text-2xl lg:text-3xl font-code text-green-400 font-bold break-all">-</p>
+                        <p id="res-mensaje" class="mt-4 text-pink-400 font-romantic text-2xl hidden animate-pulse">
+                            ¡Gástalo antes de que se acaben los megabaudios! 🔋
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex justify-center mt-2">
+                    <button id="btn-suerte" type="button" onclick="ejecutarCiclo()"
+                            class="animate-heartbeat relative inline-flex items-center justify-center px-8 py-4 font-bold text-white transition-all bg-gradient-to-r from-red-500 to-pink-500 rounded-full shadow-xl hover:from-red-600 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-400">
+                        <span class="relative flex items-center gap-2 text-xl md:text-2xl font-romantic tracking-wider">
+                            <span>🌹🍀💘</span> Botón de suerte, no tengas miedo <span>💘🍀❤️</span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════
+             LIBROS DEL AUTOR
+             Cómo editar:
+               1) Cambia el TÍTULO en <h3 class="book-title">
+               2) Cambia el EMOJI en <span class="book-emoji">
+               3) Pega tu TEXTO entre las marcas
+                    <!-- [TOCAR: LIBRO N TEXTO] --> y <!-- [/TOCAR] -->
+               4) Opcional: pon un enlace real en href del botón "Abrir enlace"
+             ═══════════════════════════════════════════════════ -->
+        <section class="w-full mt-10 mb-6" id="libros" aria-labelledby="libros-heading">
+            <div class="text-center">
+                <h2 id="libros-heading" class="font-romantic text-3xl md:text-4xl text-pink-700 mb-2">
+                    Más libros del autor
+                </h2>
+                <p class="text-pink-400 text-sm mb-5 max-w-lg mx-auto">
+                    Cada ficha tiene un hueco listo para tu texto. Abre el panel y edita el HTML donde diga
+                    <span class="font-code text-pink-500">[TOCAR: LIBRO …]</span>
+                </p>
+                <button id="toggleBtn" type="button"
+                        class="bg-gray-900 text-white px-8 py-3 rounded-full font-bold hover:bg-gray-700 transition-all shadow-lg"
+                        aria-expanded="false" aria-controls="books-panel">
+                    Ver / ocultar libros 📚
+                </button>
+            </div>
+
+            <div id="books-panel" class="grid grid-cols-1 gap-5">
+
+                <!-- ───────── LIBRO 1 ───────── -->
+                <article class="book-card p-5 md:p-6" id="libro-1">
+                    <div class="flex items-start gap-3 mb-3">
+                        <span class="book-emoji text-3xl" aria-hidden="true">📜</span>
+                        <div class="flex-1">
+                            <!-- [TOCAR: LIBRO 1 TÍTULO] -->
+                            <h3 class="book-title text-xl font-bold text-gray-900">Libro 1 — Números y numeritos</h3>
+                            <!-- [/TOCAR] -->
+                            <p class="edit-hint">id: libro-1 · pega el texto abajo</p>
+                        </div>
+                    </div>
+                    <div class="book-body text-sm md:text-base mb-4">
+<!-- [TOCAR: LIBRO 1 TEXTO] -->
+Aquí va el texto del Libro 1.
+
+Borra estas líneas y pega tu introducción, sinopsis o un párrafo del libro.
+Puedes usar varias líneas: se respetan los saltos.
+
+Ejemplo: “Este libro nace de la idea de que los números también cuentan historias…”
+<!-- [/TOCAR] -->
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <!-- [TOCAR: LIBRO 1 ENLACE] cambia el href -->
+                        <a href="https://github.com/espiradesombra/claude" target="_blank" rel="noopener"
+                           class="inline-flex items-center gap-2 text-sm font-semibold text-pink-600 hover:text-pink-800 underline underline-offset-4">
+                            Abrir enlace / repo →
+                        </a>
+                        <!-- [/TOCAR] -->
+                    </div>
+                </article>
+
+                <!-- ───────── LIBRO 2 ───────── -->
+                <article class="book-card p-5 md:p-6" id="libro-2">
+                    <div class="flex items-start gap-3 mb-3">
+                        <span class="book-emoji text-3xl" aria-hidden="true">🔢</span>
+                        <div class="flex-1">
+                            <!-- [TOCAR: LIBRO 2 TÍTULO] -->
+                            <h3 class="book-title text-xl font-bold text-gray-900">Libro 2 — Números otra vez</h3>
+                            <!-- [/TOCAR] -->
+                            <p class="edit-hint">id: libro-2 · pega el texto abajo</p>
+                        </div>
+                    </div>
+                    <div class="book-body text-sm md:text-base mb-4">
+<!-- [TOCAR: LIBRO 2 TEXTO] -->
+Aquí va el texto del Libro 2.
+
+Escribe o pega aquí la sinopsis, un extracto o lo que quieras que lea la gente.
+<!-- [/TOCAR] -->
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <!-- [TOCAR: LIBRO 2 ENLACE] -->
+                        <a href="https://github.com/espiradesombra/claude" target="_blank" rel="noopener"
+                           class="inline-flex items-center gap-2 text-sm font-semibold text-pink-600 hover:text-pink-800 underline underline-offset-4">
+                            Abrir enlace / repo →
+                        </a>
+                        <!-- [/TOCAR] -->
+                    </div>
+                </article>
+
+                <!-- ───────── LIBRO 3 ───────── -->
+                <article class="book-card p-5 md:p-6" id="libro-3">
+                    <div class="flex items-start gap-3 mb-3">
+                        <span class="book-emoji text-3xl" aria-hidden="true">🌌</span>
+                        <div class="flex-1">
+                            <!-- [TOCAR: LIBRO 3 TÍTULO] -->
+                            <h3 class="book-title text-xl font-bold text-gray-900">Libro 3 — Sigo en mis trece</h3>
+                            <!-- [/TOCAR] -->
+                            <p class="edit-hint">id: libro-3 · pega el texto abajo</p>
+                        </div>
+                    </div>
+                    <div class="book-body text-sm md:text-base mb-4">
+<!-- [TOCAR: LIBRO 3 TEXTO] -->
+Aquí va el texto del Libro 3.
+
+Pega tu texto entre las marcas TOCAR. Puedes hablar de 6k±1, trece, o lo que quieras.
+<!-- [/TOCAR] -->
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <!-- [TOCAR: LIBRO 3 ENLACE] -->
+                        <a href="https://github.com/espiradesombra/claude" target="_blank" rel="noopener"
+                           class="inline-flex items-center gap-2 text-sm font-semibold text-pink-600 hover:text-pink-800 underline underline-offset-4">
+                            Abrir enlace / repo →
+                        </a>
+                        <!-- [/TOCAR] -->
+                    </div>
+                </article>
+
+                <!-- ───────── LIBRO 4 ───────── -->
+                <article class="book-card p-5 md:p-6" id="libro-4">
+                    <div class="flex items-start gap-3 mb-3">
+                        <span class="book-emoji text-3xl" aria-hidden="true">🌱</span>
+                        <div class="flex-1">
+                            <!-- [TOCAR: LIBRO 4 TÍTULO] -->
+                            <h3 class="book-title text-xl font-bold text-gray-900">Libro 4 — Semillas y energía verde</h3>
+                            <!-- [/TOCAR] -->
+                            <p class="edit-hint">id: libro-4 · pega el texto abajo</p>
+                        </div>
+                    </div>
+                    <div class="book-body text-sm md:text-base mb-4">
+<!-- [TOCAR: LIBRO 4 TEXTO] -->
+Aquí va el texto del Libro 4.
+
+Sinopsis o fragmento. Cámbialo cuando quieras.
+<!-- [/TOCAR] -->
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <!-- [TOCAR: LIBRO 4 ENLACE] -->
+                        <a href="https://github.com/espiradesombra/claude" target="_blank" rel="noopener"
+                           class="inline-flex items-center gap-2 text-sm font-semibold text-pink-600 hover:text-pink-800 underline underline-offset-4">
+                            Abrir enlace / repo →
+                        </a>
+                        <!-- [/TOCAR] -->
+                    </div>
+                </article>
+
+                <!-- ───────── LIBRO 5 ───────── -->
+                <article class="book-card p-5 md:p-6" id="libro-5">
+                    <div class="flex items-start gap-3 mb-3">
+                        <span class="book-emoji text-3xl" aria-hidden="true">⚡</span>
+                        <div class="flex-1">
+                            <!-- [TOCAR: LIBRO 5 TÍTULO] -->
+                            <h3 class="book-title text-xl font-bold text-gray-900">Libro 5 — Factorización con 2v+3</h3>
+                            <!-- [/TOCAR] -->
+                            <p class="edit-hint">id: libro-5 · pega el texto abajo</p>
+                        </div>
+                    </div>
+                    <div class="book-body text-sm md:text-base mb-4">
+<!-- [TOCAR: LIBRO 5 TEXTO] -->
+Aquí va el texto del Libro 5.
+
+Pega aquí tu explicación del método, o un párrafo para curiosos.
+<!-- [/TOCAR] -->
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <!-- [TOCAR: LIBRO 5 ENLACE] -->
+                        <a href="https://github.com/espiradesombra/claude" target="_blank" rel="noopener"
+                           class="inline-flex items-center gap-2 text-sm font-semibold text-pink-600 hover:text-pink-800 underline underline-offset-4">
+                            Abrir enlace / repo →
+                        </a>
+                        <!-- [/TOCAR] -->
+                    </div>
+                </article>
+
+                <!-- ───────── LIBRO 6 ───────── -->
+                <article class="book-card p-5 md:p-6" id="libro-6">
+                    <div class="flex items-start gap-3 mb-3">
+                        <span class="book-emoji text-3xl" aria-hidden="true">🔭</span>
+                        <div class="flex-1">
+                            <!-- [TOCAR: LIBRO 6 TÍTULO] -->
+                            <h3 class="book-title text-xl font-bold text-gray-900">Libro 6 — Newton rápido y oráculos</h3>
+                            <!-- [/TOCAR] -->
+                            <p class="edit-hint">id: libro-6 · pega el texto abajo</p>
+                        </div>
+                    </div>
+                    <div class="book-body text-sm md:text-base mb-4">
+<!-- [TOCAR: LIBRO 6 TEXTO] -->
+Aquí va el texto del Libro 6.
+
+Descripción libre: Newton, oráculos, búsqueda…
+<!-- [/TOCAR] -->
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <!-- [TOCAR: LIBRO 6 ENLACE] -->
+                        <a href="https://github.com/espiradesombra/claude" target="_blank" rel="noopener"
+                           class="inline-flex items-center gap-2 text-sm font-semibold text-pink-600 hover:text-pink-800 underline underline-offset-4">
+                            Abrir enlace / repo →
+                        </a>
+                        <!-- [/TOCAR] -->
+                    </div>
+                </article>
+
+                <!-- ───────── FILOSOFÍA / EXTRA 1 ───────── -->
+                <article class="book-card p-5 md:p-6" id="libro-filosofia">
+                    <div class="flex items-start gap-3 mb-3">
+                        <span class="book-emoji text-3xl" aria-hidden="true">🖋️</span>
+                        <div class="flex-1">
+                            <!-- [TOCAR: FILOSOFÍA TÍTULO] -->
+                            <h3 class="book-title text-xl font-bold text-gray-900">Filosofía · ensayos</h3>
+                            <!-- [/TOCAR] -->
+                            <p class="edit-hint">id: libro-filosofia · pega el texto abajo</p>
+                        </div>
+                    </div>
+                    <div class="book-body text-sm md:text-base mb-4">
+<!-- [TOCAR: FILOSOFÍA TEXTO] -->
+Aquí va texto de Filosofía / ensayos.
+
+Puedes listar piezas, citar una frase, o enlazar al repo de Filosofía.
+<!-- [/TOCAR] -->
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <!-- [TOCAR: FILOSOFÍA ENLACE] -->
+                        <a href="https://github.com/espiradesombra/claude/tree/main/Filosof%C3%ADa" target="_blank" rel="noopener"
+                           class="inline-flex items-center gap-2 text-sm font-semibold text-pink-600 hover:text-pink-800 underline underline-offset-4">
+                            Carpeta Filosofía en GitHub →
+                        </a>
+                        <!-- [/TOCAR] -->
+                    </div>
+                </article>
+
+                <!-- ───────── HUECO LIBRE (copia este bloque para un libro nuevo) ───────── -->
+                <article class="book-card p-5 md:p-6 border-dashed border-2 border-pink-200" id="libro-nuevo">
+                    <div class="flex items-start gap-3 mb-3">
+                        <span class="book-emoji text-3xl" aria-hidden="true">➕</span>
+                        <div class="flex-1">
+                            <!-- [TOCAR: NUEVO TÍTULO] -->
+                            <h3 class="book-title text-xl font-bold text-gray-900">Nuevo título (cópialo para otro libro)</h3>
+                            <!-- [/TOCAR] -->
+                            <p class="edit-hint">id: libro-nuevo · plantilla vacía</p>
+                        </div>
+                    </div>
+                    <div class="book-body text-sm md:text-base mb-4">
+<!-- [TOCAR: NUEVO TEXTO] -->
+Plantilla vacía.
+
+1) Duplica todo el &lt;article&gt; de este bloque en el HTML.
+2) Cambia el id (libro-7, libro-8…).
+3) Pon título, emoji y pega tu texto aquí.
+4) Cambia el enlace.
+<!-- [/TOCAR] -->
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <a href="#" class="inline-flex items-center gap-2 text-sm font-semibold text-pink-600 hover:text-pink-800 underline underline-offset-4">
+                            Enlace pendiente →
+                        </a>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer 33×1 -->
+    <footer class="w-full bg-gray-900 text-gray-400 py-10 px-6 relative z-10 text-sm md:text-base leading-relaxed">
+        <div class="max-w-4xl mx-auto">
+            <p class="font-bold text-white mb-4 text-center text-lg">Ad 🎯 Patrocinado por el Proyecto 33×1</p>
+            <p class="text-center mb-10 max-w-2xl mx-auto text-gray-300">
+                ¿Cansado de la rutina? Con la membresía 33×1 inviertes un minuto y te devuelven 33 motivos
+                para mirar al horizonte.
+            </p>
+
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 text-left bg-gray-800/60 p-6 md:p-8 rounded-2xl border border-gray-700/50 mb-8">
+                <li class="flex gap-3"><span class="text-pink-500 font-bold">1.</span> <span>Siempre están cuando hay fiesta y los necesitas.</span></li>
+                <li class="flex gap-3"><span class="text-pink-500 font-bold">2.</span> <span>A veces os gusta la misma persona.</span></li>
+                <li class="flex gap-3"><span class="text-pink-500 font-bold">3.</span> <span>Un día os conocisteis.</span></li>
+                <li class="flex gap-3"><span class="text-pink-500 font-bold">4.</span> <span>No sabe generar aleatoriedad sin el botón.</span></li>
+                <li class="flex gap-3"><span class="text-pink-500 font-bold">5.</span> <span>Sabe hacerte reír.</span></li>
+                <li class="flex gap-3"><span class="text-pink-500 font-bold">6.</span> <span>Te aguantó borracho ese día.</span></li>
+                <li class="flex gap-3"><span class="text-pink-500 font-bold">7.</span> <span>Un día no sabrás que le echas de menos, pero lo harás.</span></li>
+                <li class="flex gap-3"><span class="text-pink-500 font-bold">8.</span> <span>Un bizcocho a medias llena más que uno entero.</span></li>
+                <li class="flex gap-3"><span class="text-pink-500 font-bold">9.</span> <span>Te llama más que tus padres.</span></li>
+                <li class="flex gap-3"><span class="text-pink-500 font-bold">10.</span> <span>Siempre te cuenta lo bien que lo hace en las citas.</span></li>
+                <li class="flex gap-3"><span class="text-pink-500 font-bold">11.</span> <span>Tiene más suerte que tú.</span></li>
+                <li class="flex gap-3"><span class="text-pink-500 font-bold">12.</span> <span>Un día irás a su boda o tendrá que hacer dos.</span></li>
+                <li class="flex gap-3 md:col-span-2"><span class="text-pink-500 font-bold">13.</span> <span>Sin ellos no vale la pena.</span></li>
+            </ul>
+
+            <div class="text-center p-5 bg-pink-900/20 rounded-xl border border-pink-500/20 max-w-2xl mx-auto">
+                <p class="text-pink-200 font-medium mb-2 text-lg">
+                    <span class="font-bold text-pink-400 mr-1">1×33</span>
+                    Los amigos hacen falta. Los amores no tanto, pero ayuda que sean amigos.
+                </p>
+                <button type="button" onclick="document.getElementById('btn-suerte').scrollIntoView({behavior:'smooth'})"
+                        class="mt-2 text-pink-400 hover:text-pink-300 font-bold underline decoration-pink-500/50 underline-offset-4">
+                    Descubre cómo con el botón de la suerte
+                </button>
+            </div>
+
+            <p class="text-center text-gray-600 text-xs mt-8 font-code">
+                © espiradesombra · uso civil / educativo · 33×1
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        const K_HEART = "❤️";
+        const L_ROSE = "🌹";
+        const RAMO_SIZE = 331;
+
+        let clics = 0;
+        let ramoArray = [];
+        let inicio = 0;
+        let fin = 0;
+        let genTimer = null;
+
+        const displayRamo = document.getElementById('bouquet-display');
+        const infoBanner = document.getElementById('info-banner');
+        const resultsContainer = document.getElementById('results-container');
+        const resInicio = document.getElementById('res-inicio');
+        const resFin = document.getElementById('res-fin');
+        const resNumero = document.getElementById('res-numero');
+        const resMensaje = document.getElementById('res-mensaje');
+        const btnSuerte = document.getElementById('btn-suerte');
+
+        // —— Fondo flotante ——
+        (function createFloatingElements() {
+            const bgLayer = document.getElementById('bg-layer');
+            const items = ['❤️', '🌹', '💖', '✨', '💕'];
+            for (let i = 0; i < 15; i++) {
+                const el = document.createElement('div');
+                el.className = 'bubble';
+                el.textContent = items[Math.floor(Math.random() * items.length)];
+                el.style.left = `${Math.random() * 100}vw`;
+                el.style.animationDuration = `${10 + Math.random() * 15}s`;
+                el.style.animationDelay = `${Math.random() * 5}s`;
+                el.style.fontSize = `${16 + Math.random() * 24}px`;
+                bgLayer.appendChild(el);
+            }
+        })();
+
+        // —— Panel de libros (antes no tenía JS) ——
+        (function setupBooksToggle() {
+            const btn = document.getElementById('toggleBtn');
+            const panel = document.getElementById('books-panel');
+            if (!btn || !panel) return;
+            btn.addEventListener('click', () => {
+                const open = panel.classList.toggle('open');
+                btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+                // [TOCAR] textos del botón de libros
+                btn.textContent = open ? 'Ocultar libros 📚' : 'Ver / ocultar libros 📚';
+            });
+        })();
+
+        function generarRamoCaotico(cantidad) {
+            const ramo = [];
+            for (let i = 0; i < cantidad; i++) {
+                ramo.push(Math.random() > 0.5 ? K_HEART : L_ROSE);
+            }
+            return ramo;
+        }
+
+        /** Agita un número en pantalla varias veces (índices rápidos) */
+        function agitarNumero(el, max, veces, ms, alFinal) {
+            let n = 0;
+            if (genTimer) clearInterval(genTimer);
+            genTimer = setInterval(() => {
+                el.innerText = Math.floor(Math.random() * max);
+                n++;
+                if (n >= veces) {
+                    clearInterval(genTimer);
+                    genTimer = null;
+                    alFinal();
+                }
+            }, ms);
+        }
+
+        function ejecutarCiclo() {
+            const estado = clics % 3;
+            btnSuerte.style.transform = "scale(0.95)";
+            setTimeout(() => { btnSuerte.style.transform = ""; }, 150);
+
+            if (estado === 0) {
+                // Fase 1: ramo
+                ramoArray = generarRamoCaotico(RAMO_SIZE);
+                displayRamo.innerHTML = ramoArray.join('');
+                displayRamo.classList.remove('text-gray-300', 'italic');
+                infoBanner.innerHTML = "<strong>Fase 1/3:</strong> Ramo de 331 flores cultivado. Pulsa de nuevo: el índice de inicio saltará rápido y se fijará.";
+                infoBanner.className = "bg-red-100 text-red-800 rounded-xl p-4 md:p-5 text-center border border-red-200 font-semibold leading-relaxed";
+                resultsContainer.classList.add('hidden');
+                resMensaje.classList.add('hidden');
+                clics++;
+
+            } else if (estado === 1) {
+                // Fase 2: índice inicio (parpadea rápido)
+                resultsContainer.classList.remove('hidden');
+                resultsContainer.classList.add('flex');
+                resFin.innerText = "…";
+                resNumero.innerText = "… agitando tu suerte …";
+                infoBanner.innerHTML = "<strong>Fase 2/3:</strong> Agitando índice inicial…";
+                infoBanner.className = "bg-pink-100 text-pink-800 rounded-xl p-4 md:p-5 text-center border border-pink-200 font-semibold leading-relaxed";
+                btnSuerte.disabled = true;
+
+                agitarNumero(resInicio, RAMO_SIZE, 14, 50, () => {
+                    inicio = Math.floor(Math.random() * RAMO_SIZE);
+                    resInicio.innerText = inicio;
+                    infoBanner.innerHTML = `<strong>Fase 2/3:</strong> Índice inicial fijado en <strong>${inicio}</strong>. Pulsa para el corte final.`;
+                    displayRamo.innerHTML = ramoArray.map((f, i) =>
+                        i === inicio
+                            ? `<span class="bg-red-400 text-white rounded-full px-1 shadow-lg animate-pulse">${f}</span>`
+                            : f
+                    ).join('');
+                    btnSuerte.disabled = false;
+                    clics++;
+                });
+
+            } else if (estado === 2) {
+                // Fase 3: índice fin + número destino (parpadea)
+                infoBanner.innerHTML = "<strong>Fase 3/3:</strong> Agitando índice final…";
+                infoBanner.className = "bg-amber-100 text-amber-900 rounded-xl p-4 md:p-5 text-center border border-amber-200 font-semibold leading-relaxed";
+                btnSuerte.disabled = true;
+
+                const rango = Math.max(1, RAMO_SIZE - inicio);
+                agitarNumero(resFin, rango, 14, 50, () => {
+                    fin = Math.floor(Math.random() * (RAMO_SIZE - inicio + 1)) + inicio;
+                    if (fin === inicio) fin = Math.min(inicio + 1, RAMO_SIZE);
+                    resFin.innerText = fin;
+
+                    const subRamo = ramoArray.slice(inicio, fin);
+                    displayRamo.innerHTML = ramoArray.map((f, i) => {
+                        if (i >= inicio && i < fin) {
+                            return `<span class="bg-pink-200 border-y border-pink-400 inline-block">${f}</span>`;
+                        }
+                        return `<span class="opacity-30">${f}</span>`;
+                    }).join('');
+
+                    let binarioStr = "";
+                    for (const flor of subRamo) binarioStr += (flor === K_HEART) ? "1" : "0";
+
+                    try {
+                        const valorDecimal = binarioStr === "" ? 0n : BigInt("0b" + binarioStr);
+                        resNumero.innerText = valorDecimal.toString();
+                    } catch (e) {
+                        resNumero.innerText = "0";
+                    }
+
+                    infoBanner.innerHTML = "<strong>Fase 3/3:</strong> ¡Listo! Los números salieron de la suerte. Ojalá importen; lo que de verdad importa son los seres queridos.";
+                    infoBanner.className = "bg-green-100 text-green-800 rounded-xl p-4 md:p-5 text-center border border-green-200 font-semibold leading-relaxed";
+                    resMensaje.classList.remove('hidden');
+                    btnSuerte.disabled = false;
+                    clics++;
+                });
+            }
+        }
+    </script>
+</body>
+</html>

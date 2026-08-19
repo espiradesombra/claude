@@ -1,0 +1,31 @@
+================================================================================
+E09 — K3HASH / HASHTOOL / VMA-HASH-PACK
+================================================================================
+
+QUÉ PROBLEMA RESUELVE
+  - Fingerprinting industrial, integridad de memoria, telemetría (NO criptografía).
+  - Auditoría de sensores / volcados binarios con modos “usual”, “propio-a/b”.
+  - HMAC/auth cliente-servidor en pack comunicacion hashcode.
+
+MECANISMO
+  - k3hash.c: streaming, dedup, búsqueda, similitud (CLI).
+  - Python: cross_verifier.py, toffoli_hash.py (variante con banderitas).
+  - AntiPC integra port fiel de k3hash.c en hash_engine.py.
+
+ESTADO TEÓRICO
+  [HEUR]   TRL 5–6 declarado en FICHA_PRODUCTO / README (industrial, no SHA-3 rival).
+  [OK]     Tests y verificación cruzada en VMA-Hash-Pack-v1-staging.
+  Explícito: “K3 no es criptográfico”.
+
+RUTAS EN EL PC
+  C:\Users\cuent\Desktop\subir\VMA-Hash-Pack-v1-staging\
+  C:\Users\cuent\Desktop\teoremas\lee arbusto\hashtool-work\
+  C:\Users\cuent\Desktop\teoremas\lee arbusto\hashtool-extract\
+  C:\Users\cuent\Desktop\webtechamv\promo 1\ (k3hash.zip, hashcode.zip)
+  C:\Users\cuent\Desktop\HASHTOOLCODE(l)L()(L ) (L).zip
+
+REFERENCIAS
+  porque_no_33x1\MERCADOS_GANABLES.txt (módulo N₂)
+  teoremas\19_teorema_phaseamplifier_k3.txt (capa matemática)
+
+================================================================================

@@ -1,0 +1,25 @@
+ID: 02_intervalo_dos_primos
+ESTADO: [CONJ] — Conjetura, apoyada en §2 pero sin prueba general
+AUTOR: VMA
+FUENTE: Cribas_cotas §3
+
+--------------------------------------------------------------------------------
+ENUNCIADO
+--------------------------------------------------------------------------------
+Para todo n > 3, el intervalo
+  [ n − ⌊√(n+3)⌋ − 3 ,  n + 3 ]
+contiene al menos dos primos.
+
+--------------------------------------------------------------------------------
+APOYO DECLARADO
+--------------------------------------------------------------------------------
+- Criterio operativo L(n)−m(n)≥2 del §2.
+- Estrategia “conteo y fallo a favor” con factorial vs primorial.
+
+--------------------------------------------------------------------------------
+GAPS
+--------------------------------------------------------------------------------
+- No hay demostración cerrada en los documentos.
+- Diferente del teorema operativo: aquí se afirma para TODO n>3.
+
+================================================================================

@@ -1,0 +1,132 @@
+================================================================================
+ÍNDICE MAESTRO — TEOREMAS Y CONJETURAS VMA
+================================================================================
+Autor corpus: Víctor Manzanares Alberola
+Carpeta canónica: C:\Users\cuent\Desktop\vma-github-2026\teoremas\
+Mapa PC:        C:\Users\cuent\Desktop\MAPA_ORDENADOR_VMA.txt
+Nota: índices y fichas 2026-07-10 incluyen resumen asistido por IA (Grok).
+      La IA no representa a VMA ante terceros. Ver porque_no_33x1\NOTA_AUTORIA_IA.txt
+      Copia antigua (no canónica): subir\teoremas\ — ver subir\NOTA_COPIA_TEORMAS.txt
+Formal:   vma-github-2026\teoremas\formal\  (F01–F34 + INDICE_FORMAL.txt)
+Metodos:  vma-github-2026\teoremas\metodos\
+Cribas:   vma-github-2026\teoremas\cribas\
+Ingeniería: vma-github-2026\teoremas\ingenieria\
+Spacial:  vma-github-2026\teoremas\spacial\
+2ª vuelta: vma-github-2026\teoremas\segunda_vuelta\
+33×1:     vma-github-2026\teoremas\porque_no_33x1\  (horizonte comercial: 33×1)
+Preguntas: vma-github-2026\teoremas\preguntaseria\
+Apiñon:   vma-github-2026\teoremas\INDICE_APINON.txt (+ apinnon_extraido/)
+          Fuente .docx: archivos\Apiñon.docx (~74 MB)
+Fecha recopilación: 2026-07-10
+Fecha formalización: 2026-07-10
+Fecha extensiones: 2026-07-10
+
+Leyenda de estado:
+  [OK]     Bien definido (enunciado + hipótesis claras)
+  [PARCIAL] Enunciado útil pero prueba incompleta o notación inconsistente
+  [MAL]    Mal definido, contradictorio o sin hipótesis verificables
+  [CONJ]   Conjetura explícita (sin demostración general)
+  [HEUR]   Heurística operativa / regla de cálculo (no teorema formal)
+  [FILO]   Manifiesto o marco filosófico (no teorema matemático)
+
+--------------------------------------------------------------------------------
+NÚMERO | ID                    | ESTADO   | ARCHIVO
+--------------------------------------------------------------------------------
+  01   | dos_primos            | [OK]     | 01_teorema_operativo_dos_primos.txt
+                                              | formal\F01_FORMAL.txt
+  02   | intervalo_dos_primos  | [CONJ]   | 02_conjetura_intervalo_dos_primos.txt
+  03   | salto_maximo          | [HEUR]   | 03_heuristica_salto_maximo.txt
+  04   | sofi_L4_L2            | [OK]     | 04_teorema_sofi_L4_menos_L2.txt
+                                              | formal\F04_FORMAL.txt
+  05   | sofi_U2_infinito      | [OK]     | 05_teorema_infinitud_U2_Sophie.txt
+                                              | formal\F05_FORMAL.txt
+  06   | goldbach_vma          | [CONJ]   | 06_conjetura_goldbach_vma.txt
+  07   | siguiente_primo       | [MAL]    | 07_conjetura_siguiente_primo_acumuladores.txt
+  08   | triangulo_factores    | [MAL]    | 08_teorema_triangulo_factores.txt
+  09   | mdc_teorema1          | [OK]     | 09_mdc_teorema1_delta_S.txt
+                                              | formal\F09_FORMAL.txt
+  10   | mdc_teorema2          | [OK]     | 10_mdc_teorema2_finestra_local.txt
+                                              | formal\F10_FORMAL.txt
+  11   | mdc_atrappament        | [HEUR]   | 11_mdc_teorema_atrappament.txt
+  12   | mdc_cambio_signo      | [OK]     | 12_mdc_proposicion_cambio_signo.txt
+                                              | formal\F12_FORMAL.txt
+  13   | mdc_zona_densa        | [HEUR]   | 13_mdc_heuristica_zona_densa_e.txt
+  14   | mrauv_goldbach        | [HEUR]   | 14_mrauv_criterio_goldbach.txt
+  15   | fermat_alineacion     | [OK]     | 15_teorema_fermat_alineacion_modular.txt
+                                              | formal\F15_FORMAL.txt
+  16   | andrica_salto         | [HEUR]   | 16_lectura_andrica_salto_maximo.txt
+  17   | convergencia_raiz4    | [MAL]    | 17_eq12_convergencia_raiz_cuarta.txt
+  18   | trinchera             | [FILO]   | 18_manifiesto_teorema_trinchera.txt
+  19   | phaseamplifier_k3     | [OK]     | 19_teorema_phaseamplifier_k3.txt
+                                              | 19_THEOREM_PhaseAmplifier_K3_XOR.md
+                                              | formal\F19_FORMAL.txt
+  20   | lema_cofactor_mdc     | [OK]     | 20_mdc_lema2_cofactor.txt
+                                              | formal\F20_FORMAL.txt
+
+--------------------------------------------------------------------------------
+LIBRO 6 — PSEUDOCÓDIGO DE IMPLICACIONES (ChatGPT export)
+--------------------------------------------------------------------------------
+  21   | libro6_indice         | [HEUR]   | 21_libro6_indice_implicaciones.txt
+  22   | sofi_15_impl          | [OK]     | 22_sofi_15_implicaciones.txt
+                                              | formal\F22_FORMAL.txt
+  23   | mrauv_impl            | [HEUR]   | 23_mrauv_implicaciones.txt
+  24   | goldbach_hueco_impl   | [CONJ]   | 24_goldbach_hueco_implicaciones.txt
+  25   | metodo_V_impl         | [HEUR]   | 25_metodo_V_implicaciones.txt
+  26   | plantillas_1_7        | [HEUR]   | 26_plantillas_1_a_7.txt
+
+--------------------------------------------------------------------------------
+LEE ARBUSTO — CHATS NUEVOS (2026-07-10)
+--------------------------------------------------------------------------------
+  27   | goldbach_pp0          | [OK]     | 27_goldbach_pp0_cp_pc_simetrico.txt
+                                              | formal\F27_FORMAL.txt
+  28   | sofi_L1_6k_menos_1    | [OK]     | 28_sofi_L1_L4_variante_6k_menos_1.txt
+                                              | formal\F28_FORMAL.txt
+  29   | pitagorico_visual     | [OK]     | 29_metodo_pitagorico_visual_divisores.txt
+                                              | formal\F29_FORMAL.txt (variante C)
+  30   | primos_decrecen_K     | [OK]     | 30_primos_decrecen_K_9_24.txt
+                                              | formal\F30_FORMAL.txt
+
+  Fuentes: lee arbusto\golbach pp0.txt, factor goldback.txt, (L).txt, (l)(L).txt
+
+  Fuente canónica Libro 6:
+  repo\Libro6 NewtonRapido en busqueda con oraculo\Nuevo Documento de texto.txt
+  (~69 000 líneas). Copia .eml: Pseudocódigo de implicaciones.eml
+
+  NOTA Libro 6: esquemas SI⇒ENTONCES generados en chat; muchos duplican 01–20
+  pero en forma pseudocódigo.
+  31_ME_locales_PvsNP.txt [HEUR] en metodos\; VMA dejó el hilo «lejos».
+  Apiñon hub: INDICE_APINON.txt + apinnon_extraido\ (fuente archivos\Apiñon.docx).
+
+--------------------------------------------------------------------------------
+FUENTES PRINCIPALES ESCANEADAS
+--------------------------------------------------------------------------------
+  archivos\Cribas_cotas_y_estructuras_de_primos_VMA (1).txt
+  lee arbusto\(l)(L).txt
+  lee arbusto\5-7.txt
+  claude-main-extract\claude-main\1\Nuevo Documento de texto (3).txt
+  claude-main-extract\claude-main\cosas\Escuela de Raspall.txt
+  archivos\densidad x cine.txt (analogía MRAUV — no teorema nuevo)
+  techamv.com\web\404_*.txt (siguiente primo en UI)
+  repo\Libro6 NewtonRapido...\Nuevo Documento de texto.txt (Libro 6)
+  lee arbusto\golbach pp0.txt, factor goldback.txt
+
+NOTA: Teoremas clásicos ajenos (Dirichlet, TNP, Bertrand, Wilson…) NO se
+archivan aquí salvo cuando VMA los usa como herramienta en una prueba propia.
+
+TOTAL ARCHIVADO: 30 fichas + índice + resumen + artlovehacker
+TOTAL FORMAL:    34 formal\F##_FORMAL.txt + formal\INDICE_FORMAL.txt
+EXTENSIONES:     F33 teorema_L_no_colapso, F34 limite_V_PC_CP
+TEOREMAS [OK] TRAS FORMALIZACIÓN: 16 (F01,F04,F05,F09,F10,F12,F15,F19,F20,F22,F27,F28,F29,F30,F33,F34)
+
+--------------------------------------------------------------------------------
+CARPETAS NUEVAS (2026-07-10)
+--------------------------------------------------------------------------------
+  metodos\           Matriz método×método, ataques, cadenas típicas
+  cribas\            Criva, desmemoriada, modular 6k±1, híbrida, Sofí+PIE
+  segunda_vuelta\    Autocrítica VMA, crítica sociedad, límites honestos
+  porque_no_33x1\    Mercados ganables, propuesta 33×N, lo que no compran
+  preguntaseria\     Uranio espacial vs civil (pregunta abierta, sin fuente VMA)
+  ingenieria\        18 ideas ingeniería + INDICE_INGENIERIA.txt (ZypyZape, AntiPC…)
+  spacial\           Órbitas espiral, Kiouper, láser, Zero Hit, perneo/Tierra (S09)
+
+================================================================================

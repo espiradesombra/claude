@@ -1,0 +1,89 @@
+================================================================================
+  IDEAS PARA GPT — AntiPC (paquete handoff)
+  Víctor Manzanares Alberola · VMA / 33×1 · 2026-07-11
+================================================================================
+
+Esta carpeta reúne TODO lo hecho sobre AntiPC a partir del chat gptcomputing.txt.
+Sirve para pegar en ChatGPT, Grok u otro LLM y continuar sin perder contexto.
+
+ESTADO ACTUAL
+  Sprint 1     HECHO (Python v0.1.0)
+  KOP binario  HECHO (v0.1.1-parcial)
+  Sprint 2     PENDIENTE — Ledger, Policy, Metrics
+
+--------------------------------------------------------------------------------
+  ORDEN DE LECTURA (para el LLM)
+--------------------------------------------------------------------------------
+
+  1. 03-handoff-chatgpt/CONTINUACION_PARA_GPT.txt   ← PEGAR PRIMERO
+  2. 02-concepto-y-mapa/CONCEPTO.txt
+  3. 02-concepto-y-mapa/MAPA_gptcomputing_a_codigo.txt
+  4. 05-docs-tecnicos/RESULTADOS_BENCHMARK.txt
+  5. 06-python-runtime/  (código ejecutable actual)
+  6. 08-sprints-roadmap/SPRINTS_10520-fin.txt
+  7. 01-chat-original/gptcomputing.txt  (solo si cabe; ~185 KB)
+
+--------------------------------------------------------------------------------
+  ESTRUCTURA
+--------------------------------------------------------------------------------
+
+  00-empezar-aqui/     Este LEEME + EMPEZAR_AQUI.txt
+  01-chat-original/    gptcomputing.txt (conversación fundacional completa)
+  02-concepto-y-mapa/    Qué es AntiPC + mapa txt → código
+  03-handoff-chatgpt/    Instrucciones Sprint 2 para ChatGPT
+  04-cpp-del-chat/       74 headers C++ extraídos del txt (referencia)
+  05-docs-tecnicos/      KOP, benchmarks, arquitectura, explicación científica
+  06-python-runtime/     kernel, knowledge, kop, plugins, demos
+  07-scripts/            demos y regenerar extracción C++
+  08-sprints-roadmap/    Sprints 1–6 (líneas 10520–fin del chat)
+
+--------------------------------------------------------------------------------
+  ARCHIVOS MÍNIMOS SI NO CABE TODO EN EL CHAT
+--------------------------------------------------------------------------------
+
+  Obligatorios:
+    03-handoff-chatgpt/CONTINUACION_PARA_GPT.txt
+    02-concepto-y-mapa/MAPA_gptcomputing_a_codigo.txt
+    05-docs-tecnicos/RESULTADOS_BENCHMARK.txt
+    06-python-runtime/kernel.py
+    06-python-runtime/knowledge.py
+    06-python-runtime/event_bus.py
+    06-python-runtime/kop.py
+    06-python-runtime/demos/demo_v010.py
+
+  Recomendados:
+    05-docs-tecnicos/KOP_BINARIO.txt
+    08-sprints-roadmap/SPRINTS_10520-fin.txt
+    04-cpp-del-chat/INDICE_CODIGO_TXT.txt
+
+--------------------------------------------------------------------------------
+  SIGUIENTE OBJETIVO (Sprint 2)
+--------------------------------------------------------------------------------
+
+  [ ] runtime/ledger.py      — libro mayor append-only, entradas KOP 005 / K3MK
+  [ ] knowledge/policy.py    — promoción / expiración de conocimiento
+  [ ] runtime/metrics.py     — P_util, ALU ahorrada, knowledge hits
+  [ ] tests + benchmark      — demo_v010 sigue ≥25% ALU ahorrada
+
+  Ver detalle en CONTINUACION_PARA_GPT.txt
+
+--------------------------------------------------------------------------------
+  EJECUTAR DEMOS (desde just run/antipc, no desde esta carpeta)
+--------------------------------------------------------------------------------
+
+  antipc\scripts\07_demo_v010.bat      — Flow Kernel + knowledge hits
+  antipc\scripts\12_demo_kop.bat       — KOP binario vs JSON
+  antipc\scripts\03_benchmark_udp.bat  — Arquitectura E (62% mejora medida)
+
+  Esta carpeta es COPIA de referencia; el código vivo está en just run\antipc\
+
+--------------------------------------------------------------------------------
+  REGENERAR C++ DEL CHAT
+--------------------------------------------------------------------------------
+
+  python 07-scripts\extract_gptcomputing_code.py
+  (actualiza antipc\from_gptcomputing\; volver a copiar a 04-cpp-del-chat\)
+
+================================================================================
+  FIN — ideas-para-gpt-antipc
+================================================================================

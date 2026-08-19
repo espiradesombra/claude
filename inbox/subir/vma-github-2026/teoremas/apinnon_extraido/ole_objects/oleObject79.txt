@@ -1,0 +1,15 @@
+                    factor = (f3 + f4 * (d3 - d2) / (d3 - d1))
+---
+                    j = j ** abs(factor)
+---
+                # AJUSTE DOBLE CON NUEVOS PAR
+---
+                d3, d2, d1 = d2, d1, j - j1
+---
+                if a / (b ** j) >= b ** j:
+---
+                if abs(d3 - d1) > 1e-12:
+---
+                if abs(j - j1) < precision:
+---
+                j *= (1 + f2 * abs(d1))

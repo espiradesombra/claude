@@ -1,0 +1,147 @@
+================================================================================
+  ANTIPC — PAQUETE DE CONTINUACIÓN PARA CHATGPT (gptcomputing)
+================================================================================
+Autor: Víctor Manzanares Alberola
+Fecha handoff: 2026-07-11
+Estado código: AntiPC v0.1.1-parcial Python — Sprint 1 OK + KOP binario (v0.1.1)
+
+================================================================================
+  INSTRUCCIONES — PEGA ESTO COMO PRIMER MENSAJE EN CHATGPT
+================================================================================
+
+Continuamos AntiPC desde gptcomputing.txt. Reglas:
+
+1. ARQUITECTURA CONGELADA (v0.0.01–v0.1.0). No reabrir axiomas sin discutir.
+2. Sprint 1 YA EXISTE en Python (no reescribir todo en C++ salvo que yo lo pida).
+3. Cada iteración: Plan → Diseño → Código → Tests → Benchmark → Docs → Commit.
+4. Nada entra al núcleo sin benchmark medible. Resto → research/.
+5. Identidad: el conocimiento compartido es el centro; la CPU ejecuta solo si no hay respuesta mejor.
+
+Adjunto:
+  - CONTINUACION_PARA_GPT.txt (este archivo)
+  - MAPA_gptcomputing_a_codigo.txt
+  - RESULTADOS_BENCHMARK.txt (julio 2026)
+  - Carpeta antipc/src/antipc/runtime/ (kernel, knowledge, event_bus…)
+  - Opcional: gptcomputing.txt líneas 10520–10700 (sprints 2–6)
+
+YA HECHO (v0.1.1 parcial — no rehacer):
+  [x] runtime/kop.py — K3 MicroKernel, KOP 001-008 defs, directorio binario
+  [x] runtime/kop_registry.py
+  [x] knowledge.publish_with_kop_blob() — lookup ~5-15x vs JSON
+  [x] demo_kop_binary.py + docs/KOP_BINARIO.txt
+  Ejecutar: antipc\scripts\12_demo_kop.bat
+
+SIGUIENTE OBJETIVO — Sprint 2 (resto):
+  Knowledge Memory ampliada: Ledger interno, Policy, Metrics.
+  Ledger DEBE serializar entradas como extension de KOP 005 en formato K3MK.
+  NO blockchain. Libro mayor del runtime (Tick, Action, Producer, Parents, Trust).
+
+Entregables Sprint 2 que pido:
+  [ ] runtime/ledger.py — append-only; cada entrada = blob KOP o ref a K3MK
+  [ ] knowledge/policy.py — qué conocimiento se promueve / expira
+  [ ] runtime/metrics.py — P_util, K(N), ALU ahorrada, knowledge hits
+  [ ] tests/test_ledger.py + test_metrics.py
+  [ ] benchmarks/ledger/ — demostrar que ledger no rompe throughput demo_v010
+  [ ] Actualizar MAPA con v0.1.1
+
+Benchmark de aceptación Sprint 2:
+  - demo_v010 --mode battery --count 500 --repeat 0.35 sigue ≥25% ALU ahorrada
+  - Ledger añade <5% overhead en ingest
+  - Métricas exportables a JSON para dashboard
+
+NO HACER en Sprint 2:
+  - Wave Provider, Mechanical Provider (Sprint 6 / research)
+  - Reescribir CMake/C++ completo
+  - Cambiar contrato IPlugin existente
+  - Afirmar "ALU libre" o "0 heat"
+
+Contexto VMA: esto va dentro del zip just-run-unificado; integra plugins K3 y MDC ya en antipc/plugins/.
+
+================================================================================
+  QUÉ YA ESTÁ IMPLEMENTADO (NO REINVENTAR)
+================================================================================
+
+v0.0.01  Flow Kernel           antipc/src/antipc/runtime/kernel.py
+v0.0.02  Knowledge Buffer      runtime/knowledge.py
+v0.0.03  Reference Graph       runtime/reference.py
+v0.0.04  Modelo matemático     runtime/signature.py
+v0.0.05  Especificación        docs/explicacion_cientifica.txt
+v0.0.06  Runtime Modes         runtime/modes.py
+v0.0.065 Plugin System         runtime/plugin.py, plugin_manager.py
+v0.0.07  demo_v010.py
+v0.0.08  udp_benchmark.py, hub_node.py
+v0.1.0   plugins: k3_*, mdc_*, industrial/, architecture/
+
+Benchmarks medidos (mismo PC, jul 2026):
+  Arq E UDP 4 hubs: 62.1% menos tiempo vs convencional
+  demo battery 500 ops 35% dup: ~31.4% ALU ahorrada, 157 knowledge hits
+
+================================================================================
+  ROADMAP PENDIENTE (del gptcomputing.txt)
+================================================================================
+
+Sprint 2  ← AHORA
+  Knowledge Memory, Ledger, Policy, Metrics
+
+Sprint 3
+  K3 Identity, K3 Registry, K3 Signatures, K3 Trust
+
+Sprint 4
+  HashPlugin cache/reuse benchmark (beneficio real ampliado)
+
+Sprint 5
+  Network: Node Discovery, Knowledge Exchange, Distributed Cache
+
+Sprint 6  (solo si benchmark positivo)
+  Mechanical Provider, Toffoli Provider, Wave Provider → research/
+
+Carpetas futuras del txt:
+  benchmarks/{hash,cache,network,scheduler,mechanical,toffoli,wave,k3}
+  philosophy/{engineering.md, principles.md, rejected_ideas.md, accepted_ideas.md}
+
+================================================================================
+  AXIOMAS ACTIVOS (resumen)
+================================================================================
+
+  Ley Inmutabilidad     Reference frozen
+  Ley Determinismo      Capability.deterministic
+  Ley Consulta          knowledge.lookup antes de ejecutar
+  Ley Activación        EventBus, sin polling
+  Ley Neutralidad       núcleo no conoce hash/OCR/IA
+  Axioma 11             ciclo vida por (Epoch, Tick)
+  Axioma 17             consenso evaluadores → Trust, no "verdad absoluta"
+  Knowledge Value       (Reuse × Cost × Trust) / Storage
+
+================================================================================
+  ARCHIVOS MÍNIMOS PARA ADJUNTAR AL CHAT
+================================================================================
+
+  Obligatorios:
+    gptcomputing/CONTINUACION_PARA_GPT.txt
+    gptcomputing/MAPA_gptcomputing_a_codigo.txt
+    antipc/docs/RESULTADOS_BENCHMARK.txt
+    antipc/docs/explicacion_cientifica.txt
+    antipc/src/antipc/runtime/kernel.py
+    antipc/src/antipc/runtime/knowledge.py
+    antipc/src/antipc/runtime/event_bus.py
+    antipc/src/antipc/runtime/plugin.py
+    antipc/src/antipc/demo_v010.py
+
+  Recomendados:
+    gptcomputing/gptcomputing.txt  (o solo líneas 10500–fin)
+    antipc/src/antipc/udp_benchmark.py
+    antipc/src/antipc/plugins/k3_plugin.py
+
+  Límite ChatGPT: si no cabe todo, priorizar este txt + MAPA + kernel + knowledge + benchmark results.
+
+================================================================================
+  VERSIÓN OBJETIVO TRAS SPRINT 2
+================================================================================
+
+  AntiPC v0.1.1 — Knowledge Ledger + Metrics
+  Tag git sugerido: antipc-v0.1.1-ledger
+  Changelog: Sprint 2 gptcomputing; sin ruptura API v0.1.0
+
+================================================================================
+  FIN — CONTINUACION_PARA_GPT.txt
+================================================================================

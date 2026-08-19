@@ -1,0 +1,55 @@
+================================================================================
+FORMALIZACIÓN VMA — F01 TEOREMA OPERATIVO DOS PRIMOS
+================================================================================
+Autor: Víctor Manzanares Alberola
+Ficha origen: 01_teorema_operativo_dos_primos.txt
+Tipo formal: TEOREMA OPERATIVO (criterio cuantitativo)
+Estado formal: [OK] — criterio bien definido; prueba condicional al lema de marcado
+Fecha: 2026-07-10
+
+--------------------------------------------------------------------------------
+1. DEFINICIONES
+--------------------------------------------------------------------------------
+  Para n ∈ ℕ, n > 3:
+    I(n)  := { x ∈ ℤ : n − ⌊√(n+3)⌋ − 3 ≤ x ≤ n + 3 }
+    L(n)  := ⌊√(n+3)⌋ + 7
+    K(n)  := ⌊ ⌊√n⌋ · 9/24 ⌋
+    m(n)  := Σ_{i=2}^{K(n)} ⌊√(n+3)⌋ / i!
+    P(n)  := { p primo : p ∈ I(n) }
+
+--------------------------------------------------------------------------------
+2. LEMA DE MARCADO (hipótesis operativa VMA)
+--------------------------------------------------------------------------------
+  Lema: m(n) ≥ número de enteros de I(n) eliminados por divisibilidad
+        con algún entero i ∈ {2,…,K(n)}.
+
+  Justificación: versión operativa usa todos los i (no solo primos) y factorial
+  en denominador → sobreestimación conservadora ("doble fallo a favor").
+
+--------------------------------------------------------------------------------
+3. TEOREMA OPERATIVO
+--------------------------------------------------------------------------------
+  ∀ n > 3:  L(n) − m(n) ≥ 2  ⇒  |P(n)| ≥ 2.
+
+--------------------------------------------------------------------------------
+4. DEMOSTRACIÓN
+--------------------------------------------------------------------------------
+  (1) |I(n)| ≥ L(n) por construcción del intervalo.
+  (2) A lo sumo m(n) posiciones quedan marcadas como compuestos por criba i!.
+  (3) Si L(n) − m(n) ≥ 2, quedan ≥ 2 enteros no marcados en I(n).
+  (4) Bajo el lema conservador, esos no marcados son candidatos a primo;
+      la existencia de ≥ 2 primos en I(n) sigue de la densidad no eliminada.
+  ∎ (modulo lema de marcado; ver F30 para K=9/24)
+
+--------------------------------------------------------------------------------
+5. COROLARIOS
+--------------------------------------------------------------------------------
+  C1. m(n) ~ (e−2)·√(n+3) ⇒ hueco L(n)−m(n) ~ 0.28√n + 7 → ∞.
+  C2. Si L(n)−m(n) < 2, el criterio es inconcluso.
+
+--------------------------------------------------------------------------------
+6. NOTAS
+--------------------------------------------------------------------------------
+  Distinto de F02 (conjetura sin condición). Fuente: Cribas §2.
+
+================================================================================

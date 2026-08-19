@@ -1,0 +1,37 @@
+================================================================================
+E01 — ZYPYZAPE (Batería cinética / coordinación de parque)
+================================================================================
+
+QUÉ PROBLEMA RESUELVE
+  - Desincronización entre turbinas de un parque eólico (carga mecánica desigual).
+  - Falta de inercia sintética software en redes con alta penetración eólica.
+  - Necesidad de modular el parque como “batería mecánica” sin BESS químico.
+
+MECANISMO (en teoría)
+  - N turbinas (típ. 10 × 2.5 MW) en pares que intercambian energía cíclica (f≈0.4 Hz).
+  - Control de pitch asíncrono + modelo Kuramoto para sincronismo angular.
+  - Aumenta H_eff en ecuación de swing: H_eff = H_sys + H_ZZ.
+  - Objetivo declarado: mejorar nadir de frecuencia y coordinación, NO crear energía.
+
+ESTADO TEÓRICO
+  [OK]     Gemelo NREL 5MW reproducible; conservación energía en ciclo cerrado.
+  Estructural: única métrica diferencial clara vs base = sincronismo del parc.
+  Dudoso: +1.4–1.5% potencia red absoluta (calibración swing agregado).
+  [NO]     RoCoF 0–500 ms vs BESS: τ_actuador ≫ τ_grid → electrónica gana.
+
+TRL estimado: 4–5 (simulación validada, sin piloto campo archivado)
+
+RUTAS EN EL PC
+  C:\Users\cuent\Desktop\repo\ZYPYZAPE Bateria Cinetica\
+    zypyzape_twin_v4*.py, ZypyZape_Documento_Tecnico_*.docx
+    ZypyZape_Propuesta_Elewit_REE_2026.docx
+  C:\Users\cuent\Desktop\subir\VMA-Dossier-Elewit\01_CONTEXT_ZYPYZAPE.txt
+  C:\Users\cuent\Desktop\gemelo_v94.py (integración con Quijote)
+  C:\Users\cuent\Desktop\claude-main-extract\claude-main\33x1\Kuramoto_ZypyZape_VMA_2026.docx
+
+REFERENCIAS CRUZADAS
+  segunda_vuelta\REVISION_QUIJOTE_ZYPYZAPE.txt
+  segunda_vuelta\LIMITES_HONESTOS.txt (bloque ENERGÍA)
+  porque_no_33x1\MERCADOS_GANABLES.txt (módulo N₄)
+
+================================================================================

@@ -1,0 +1,25 @@
+{
+  "timestamp": "2026-07-12T09:31:48",
+  "port": 3333,
+  "hubs": 4,
+  "runs": [
+    {
+      "mode": "A_convencional_memcpy_cola",
+      "packets_in": 2845,
+      "packets_processed": 2845,
+      "drops": 0,
+      "memcpy_user_copies": 5690,
+      "elapsed_s": 2.0038142999983393,
+      "hubs": 4
+    },
+    {
+      "mode": "B_antipc_slot_ring",
+      "packets_in": 2904,
+      "packets_processed": 2904,
+      "drops": 0,
+      "memcpy_user_copies": 2904,
+      "elapsed_s": 2.0014464000123553,
+      "hubs": 4
+    }
+  ]
+}

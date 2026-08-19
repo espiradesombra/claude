@@ -1,0 +1,28 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+*.tmp
+*~
+
+# No subir sesiones IA locales
+.grok/
+
+# Python cache si aparece en copias
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Binarios pesados accidentales
+*.zip
+*.7z
+*.exe
+*.dll
+*.iso
+
+# Credenciales
+.env
+*.pem
+*_token*
+credentials*

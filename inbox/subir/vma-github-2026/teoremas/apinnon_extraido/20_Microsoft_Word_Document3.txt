@@ -1,0 +1,66 @@
+Relación entre x, a y b:
+1. Definiciones:
+- x es un número.
+- a es una variable independiente, donde a < x.
+- b es el resto de x entre x - a, donde b < x - a.
+2. Puntualidades:
+- Cuando x - a = (x + 1)/2:
+- b = a - 1.
+- Cuando x - a = (x + 1)/2 - 1:
+- b = 1.
+3. Secuencias:
+- Cuando a = 1, b = 1.
+- Desde a = 1 hasta x - (x + 1)/2, conforme a incrementa en 1, b incrementa en 1.
+4. Comportamiento en números grandes:
+- Si x es lo suficientemente grande, surge una nueva secuencia. Y el incremento de b conforme al incremento de a crece en una unidad.
+- A cierto punto, esta lógica cambia a un patrón más complejo que es difícil de entender.
+5. Constancia:
+- Una vez se añade un número al patrón, queda añadido. Una vez se crea un patrón, queda añadido. Los patrones se alargan y se crean conforme crece x.
+Ejemplo para x = 51:
+1. Inicio:
+- a = 1
+- b = 1
+2. Iteración desde i = 1 hasta i = (51 + 1)/2:
+- a incrementa en 1
+- b incrementa en 1
+3. Ejemplos:
+- Cuando x - a = 25, a es 26 y b es 1.
+- Cuando x - a = 26, a es 25 y b es 25.
+- Cuando a es 24, b es 2.
+4. Siguiente iteración (el incremento de b aumenta):
+- a incrementa en 1
+- b incrementa en 2
+Esto se repite hasta cierto punto.
+Relación entre x, a y b:
+1. Definiciones:
+- x es un número.
+- a es una variable independiente, donde a < x.
+- b es el resto de x entre x - a, donde b < x - a.
+2. Puntualidades:
+- Cuando x - a = (x + 1)/2:
+- b = a - 1.
+- Cuando x - a = (x + 1)/2 - 1:
+- b = 1.
+3. Secuencias:
+- Cuando a = 1, b = 1.
+- Desde a = 1 hasta x - (x + 1)/2, conforme a incrementa en 1, b incrementa en 1.
+4. Comportamiento en números grandes:
+- Si x es lo suficientemente grande, surge una nueva secuencia. Y el incremento de b conforme al incremento de a crece en una unidad.
+- A cierto punto, esta lógica cambia a un patrón más complejo que es difícil de entender.
+5. Constancia:
+- Una vez se añade un número al patrón, queda añadido. Una vez se crea un patrón, queda añadido. Los patrones se alargan y se crean conforme crece x.
+Ejemplo para x = 51:
+1. Inicio:
+- a = 1
+- b = 1
+2. Iteración desde i = 1 hasta i = (51 + 1)/2:
+- a incrementa en 1
+- b incrementa en 1
+3. Ejemplos:
+- Cuando x - a = 25, a es 26 y b es 1.
+- Cuando x - a = 26, a es 25 y b es 25.
+- Cuando a es 24, b es 2.
+4. Siguiente iteración (el incremento de b aumenta):
+- a incrementa en 1
+- b incrementa en 2
+Esto se repite hasta cierto punto.

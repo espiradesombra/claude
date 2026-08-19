@@ -1,0 +1,45 @@
+================================================================================
+S03 — LÁSER CHINO (400 kW — referencia LW-30 / LY-1)
+================================================================================
+
+QUÉ PROBLEMA RESUELVE (en el plan VMA)
+  - Esculpir asteroides de hielo en forma muñeco de nieve (torno por sublimación).
+  - Soldadura por fusión en vacío entre cubitos (pulso µs → capa líquida → congela).
+  - Propulsión por ablación: chorro de vapor como motor (sin combustible terrestre).
+  - Refrigerar fuente láser con bucle Zero Hit (calor → útil).
+
+DATOS ARCHIVADOS (mati (L).txt, ~7875–8010)
+  Referencia citada en chat:
+    - Sistema chino ~400 kW (menciona LW-30 o derivados alta energía; también LY-1 naval).
+  Empuje (opción B del usuario):
+    - L_s ≈ 2800 kJ/kg (sublimación hielo -50°C → vapor)
+    - P_util ≈ 280 kW (70% de 400 kW)
+    - ṁ ≈ 0.1 kg/s vapor
+    - v_e ≈ 800–1500 m/s → F ≈ 80–150 N
+  Trayectoria ejemplo (10×1000 kg = 10 t):
+    - a ≈ 0.015 m/s² → ~540 m/s/día (10 h láser/día)
+    - ~4 km/s en una semana (suficiente para escape LEO en narrativa)
+    - Consumo ~25% masa hielo para Δv ≈ 4 km/s
+  Soldadura capa 5 mm en cara 1×1 m (cubito 917 kg):
+    - Q_total ≈ 2010 kJ
+    - t teórico 400 kW: ~5 s; con η_absorción 60%: ~8.3 s (mati L §validación)
+
+FÍSICA REAL (independiente de VMA)
+  [OK] Propulsión térmica por láser / ablación: concepto aeroespacial conocido.
+  [OK] China ha demostrado láseres de alta potencia en programas navales/AA.
+  [HEUR] Aplicación a "tren de muñecos de nieve" en Kuiper: ingeniería especulativa.
+
+ESTADO TEÓRICO
+  [OK ref]   Números de potencia/emisión: orden de magnitud razonable en chat.
+  [CONJ]     No hay diseño óptico, enlace láser ni GNC archivados en repo.
+
+RUTAS
+  repo\CLAUDE TXT\mati (L).txt — 7063–7140 (validación reactor-láser)
+  repo\CLAUDE TXT\mati (L).txt — 7875–8010 (escultor + empuje B)
+  repo\gemini\gemini4.txt — 1274–1279 (ablación láser genérica)
+
+NOTA HONESTA
+  "Láser chino" en el corpus = referencia a tecnología existente citada por IA
+  en conversación; NO consta contrato, datasheet ni simulación óptica propia VMA.
+
+================================================================================

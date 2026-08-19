@@ -1,0 +1,73 @@
+================================================================================
+ÍNDICE FORMAL — TEOREMAS VMA (F01–F34)
+================================================================================
+Autor: Víctor Manzanares Alberola
+Carpeta: C:\Users\cuent\Desktop\teoremas\formal
+Fecha: 2026-07-10
+
+Cada archivo contiene: DEFINICIONES → ENUNCIADO → DEMOSTRACIÓN → COROLARIOS → NOTAS
+
+Leyenda estado formal:
+  [OK]     Demostración cerrada o criterio bien definido con prueba
+  [CONJ]   Conjetura formalizada; prueba general abierta
+  [HEUR]   Heurística / modelo operativo formalizado
+  [PARCIAL] Reformulado; prueba incompleta
+  [MAL]    Mal definido o pendiente de variables
+  [FILO]   No matemático
+  [ESPEC]  Especificación algorítmica
+
+--------------------------------------------------------------------------------
+Nº | FICHA | ESTADO FORMAL | ARCHIVO FORMAL
+--------------------------------------------------------------------------------
+01 | dos_primos            | [OK]      | F01_FORMAL.txt
+02 | intervalo_dos_primos  | [CONJ]    | F02_FORMAL.txt
+03 | salto_maximo          | [HEUR]    | F03_FORMAL.txt
+04 | sofi_L4_L2            | [OK]      | F04_FORMAL.txt
+05 | sofi_U2_infinito      | [OK]      | F05_FORMAL.txt
+06 | goldbach_vma          | [CONJ]    | F06_FORMAL.txt
+07 | siguiente_primo       | [ESPEC]   | F07_FORMAL.txt
+08 | triangulo_factores    | [PARCIAL] | F08_FORMAL.txt
+09 | mdc_teorema1          | [OK]      | F09_FORMAL.txt
+10 | mdc_teorema2          | [OK]      | F10_FORMAL.txt
+11 | mdc_atrappament       | [HEUR]    | F11_FORMAL.txt
+12 | mdc_cambio_signo      | [OK]      | F12_FORMAL.txt
+13 | mdc_zona_densa        | [HEUR]    | F13_FORMAL.txt
+14 | mrauv_goldbach        | [HEUR]    | F14_FORMAL.txt
+15 | fermat_alineacion     | [OK]      | F15_FORMAL.txt
+16 | andrica_salto         | [HEUR]    | F16_FORMAL.txt
+17 | eq12_raiz_cuarta      | [MAL]     | F17_FORMAL.txt
+18 | trinchera             | [FILO]    | F18_FORMAL.txt
+19 | phaseamplifier_k3     | [OK]      | F19_FORMAL.txt
+20 | lema_cofactor_mdc     | [OK]      | F20_FORMAL.txt
+21 | libro6_indice         | [HEUR]    | F21_FORMAL.txt
+22 | sofi_15_impl          | [OK]      | F22_FORMAL.txt
+23 | mrauv_impl            | [HEUR]    | F23_FORMAL.txt
+24 | goldbach_hueco_impl   | [CONJ]    | F24_FORMAL.txt
+25 | metodo_V_impl         | [HEUR]    | F25_FORMAL.txt
+26 | plantillas_1_7        | [HEUR]    | F26_FORMAL.txt
+27 | goldbach_pp0          | [OK]      | F27_FORMAL.txt  (lema simetría + condicional)
+28 | sofi_L1_6k_menos_1    | [OK]      | F28_FORMAL.txt  (PIE + |Lsg|≠0)
+29 | pitagorico_visual     | [OK]      | F29_FORMAL.txt  (variante C; A/B heur.)
+30 | primos_decrecen_K     | [OK]      | F30_FORMAL.txt  (cota 9/24)
+
+--------------------------------------------------------------------------------
+EXTENSIONES FORMALES (sin ficha 01–30)
+--------------------------------------------------------------------------------
+33 | teorema_L_no_colapso  | [OK]      | F33_FORMAL.txt  (subfamilias 2v+2, 3v+2)
+34 | limite_V_PC_CP        | [OK]      | F34_FORMAL.txt  (V family ≠ pareja PP)
+
+--------------------------------------------------------------------------------
+TEOREMAS [OK] TRAS FORMALIZACIÓN (16 + extensiones)
+--------------------------------------------------------------------------------
+  F01, F04, F05, F09, F10, F12, F15, F19, F20, F22, F27, F28, F29, F30
+  F33, F34
+  (+ F01 condicional al lema de marcado)
+
+--------------------------------------------------------------------------------
+RELACIÓN CON FICHAS ORIGINALES
+--------------------------------------------------------------------------------
+  teoremas\01_*.txt … 30_*.txt  →  formal\F01_FORMAL.txt … F30_FORMAL.txt
+  Extensiones: F33 (Teorema L), F34 (límite V vs PC/CP)
+  Índice maestro: teoremas\INDICE_MAESTRO.txt
+
+================================================================================

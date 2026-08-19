@@ -1,0 +1,125 @@
+================================================================================
+  AntiPC — PERSPECTIVA INDUSTRIAL
+  Inferido de gptcomputing.txt (diálogo ChatGPT) e implementado en código
+  Autor: Víctor Manzanares Alberola
+================================================================================
+
+1. QUÉ QUERÍA EL CHAT (INFERENCIA)
+--------------------------------------------------------------------------------
+
+El diálogo no pedía un solo programa. Pedía demostrar que:
+
+  a) La red deja de ser transporte y pasa a ser cómputo distribuido.
+  b) La ALU del maestro se alivia desplazando HASH/INDEX/QUERY a hubs.
+  c) El conocimiento derivado (K(N)) es reutilizable — segunda consulta ~O(1).
+  d) Grafcet + existencia + redundancia reducen sincronización.
+  e) El sistema es industrial: determinista, auditable, sin malloc en bucle
+     crítico (K3 C), perfiles de ejecución, permisos de red.
+
+ChatGPT proponía 4 experimentos medibles. AntiPC los implementa como A→E.
+La v0.1.0 añade Flow Kernel. Esta capa industrial añade el caso de fábrica.
+
+
+2. ARQUITECTURA INDUSTRIAL IMPLEMENTADA
+--------------------------------------------------------------------------------
+
+  ExecutionProfile     Perfiles: portable, server, cluster, laboratory, industrial_audit
+  KnowledgeResolver    resolve(sig) → FOUND_LOCAL | EXECUTE | WAIT (v0.0.064)
+  PluginManager        UPS v0.0.065 — registro, métricas, API version
+  IndustrialTelemetry  CSV + JSON para auditoría / SCADA / laboratorio
+  Worker pool          scan_files() — hubs simulados con ThreadPoolExecutor
+
+  Plugins industriales:
+    K3_FILE            Huella fichero (tamaño + hash HASHTOOLCODE)
+    K3_DEDUP           Agrupación duplicados (lógica k3dedup.c)
+    K3_HASH            Transformación en grafo de flujo
+
+
+3. CASO DE USO INDUSTRIAL
+--------------------------------------------------------------------------------
+
+  Problema de fábrica / servidor de archivos:
+    - Auditar integridad de miles de ficheros de configuración
+    - Detectar duplicados antes de backup o sincronización
+    - Segunda pasada debe costar menos (conocimiento ya en buffer)
+
+  Pipeline:
+    Ruta fichero → K3_FILE → Knowledge Resolver → (reuse | execute)
+                 → K3_DEDUP → informe bytes recuperables
+
+  Comparación:
+    Monolítico     : hash secuencial, sin caché, 100% ALU cada vez
+    Industrial     : resolver + workers + K(N)
+    2ª pasada      : demuestra reutilización (objetivo del chat)
+
+
+4. PERFILES DE EJECUCIÓN (gptcomputing v0.0.06)
+--------------------------------------------------------------------------------
+
+  portable()         Battery optimizer ON, red OFF
+  server()           Distribuido ON, publicar conocimiento
+  cluster()          Red ON + permisos + distribuido
+  laboratory()       Research mode — fuerza ejecución (validar hipótesis)
+  industrial_audit() Distribuido + benchmark + telemetría
+
+  Separación clave del chat:
+    Runtime Mode ≠ Network Mode
+    Un perfil combina capacidades; no hay un solo "modo".
+
+
+5. LEYES AntiPC CUMPLIDAS EN CÓDIGO
+--------------------------------------------------------------------------------
+
+  Inmutabilidad        Reference frozen
+  Determinismo         Plugins pure (K3_FILE, K3_HASH)
+  Consulta previa      KnowledgeResolver antes de execute
+  Activación por evento EventBus (no polling)
+  Neutralidad núcleo   Flow Kernel no conoce HASH — solo plugins
+  Publicación          knowledge.publish() tras execute
+
+
+6. QUÉ FALTA PARA PLANTA REAL
+--------------------------------------------------------------------------------
+
+  [ ] k3hash.dll compilada (ALU nativa, no Python)
+  [ ] Hubs UDP en 2+ PCs físicos de la LAN
+  [ ] Permisos HMAC del ZIP comunicacion hashcode
+  [ ] Checkpoint: cola eventos + knowledge buffer en disco
+  [ ] Plugin OCR / ZIP / DATABASE (IDs del chat)
+  [ ] Certificación: informe firmado + 3 repeticiones estadísticas
+  [ ] Integración Gemelo/Quijote/SCADA si aplica a 33×1
+
+
+7. CÓMO EJECUTAR LA DEMO INDUSTRIAL
+--------------------------------------------------------------------------------
+
+  cd src\antipc
+  python industrial_demo.py
+  python industrial_demo.py --root "C:\ruta\a\auditar" --max-files 200
+
+  Salida:
+    output/telemetria_pasada1.csv
+    output/telemetria_pasada2.csv
+    output/informe_pasada1.json
+    output/informe_pasada2.json
+
+
+8. VALOR INDUSTRIAL DEL PAQUETE sale-it
+--------------------------------------------------------------------------------
+
+  Nivel actual: prototipo de validación (TRL 4-5)
+
+  Entregable a un evaluador industrial:
+    - Ejecuta INICIO.bat → opción demo industrial
+    - Ve monolítico vs cluster vs 2ª pasada
+    - Recibe CSV auditable
+
+  No es aún producto certificado IEC/ISO.
+  Sí es base verificable para piloto en:
+    - Auditoría de ficheros de configuración
+    - Deduplicación antes de backup
+    - Red local como extensión ALU (hash distribuido)
+
+================================================================================
+FIN
+================================================================================

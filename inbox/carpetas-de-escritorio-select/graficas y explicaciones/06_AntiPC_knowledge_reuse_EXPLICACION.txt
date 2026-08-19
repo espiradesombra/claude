@@ -1,0 +1,12 @@
+GRÁFICA 06 — ANTIPC KNOWLEDGE REUSE
+═══════════════════════════════════════
+AntiPC (Víctor Manzanares Alberola) NO es un hash tool ni un cache LRU estándar.
+
+Ley VMA: "Mover conocimiento, no recalcular ALU."
+  • Flow Kernel + Knowledge Buffer + plugins (K3, MDC)
+  • Segunda ejecución idéntica → 0 ALU (reuse)
+
+Esto no aparece en OS textbooks: es runtime de conocimiento con firma K3.
+Demo real: antipc hash --text "Hola" → 2ª vez 0 ms.
+
+Backend actual: k3hash.dll nativa (HASHTOOLCODE).

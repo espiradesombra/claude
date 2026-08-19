@@ -1,0 +1,15 @@
+            .ChartTitle.Text = "Universo: " & universo(i) & " 
+---
+            .SeriesCollection(1).Values = Array(derivados(i), universo(i) - derivados(i))
+---
+            .SeriesCollection(1).XValues = Array("Derivados", "Resto")
+---
+        .ChartTitle.Text = "Carga Sofi - Convergencia"
+---
+        .SetSourceData Source:=ws.Range("C2:C10") ' % Derivados
+---
+        Set chartData = chartShape.Chart
+---
+        Set chartShape = slide.Shapes.AddChart2(251, xlPie, 150, 100, 400, 300)
+---
+        Set slide = ppt.Slides.Add(ppt.Slides.Count + 1, ppLayoutBlank)

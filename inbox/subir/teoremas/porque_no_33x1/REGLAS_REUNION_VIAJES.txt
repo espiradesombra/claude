@@ -1,0 +1,116 @@
+================================================================================
+REGLAS COMERCIALES — SIN COCHE, REUNIONES = VIAJES PAGADOS
+================================================================================
+Autor: Víctor Manzanares Alberola
+Fecha: 2026-07-10
+Contexto: no hay vehículo propio; desplazamiento = coste real + tiempo.
+Autoría: borrador IA; reuniones las lleva Víctor, no el asistente. NOTA_AUTORIA_IA.txt
+
+--------------------------------------------------------------------------------
+REGLA DE ORO
+--------------------------------------------------------------------------------
+  Por defecto: TODO remoto (vídeo, CSV, repo, acta firmada por email).
+  Presencial: SOLO si el cliente paga viaje completo ANTES o en SOW con anticipo.
+
+  No aceptar: «pásate por la oficina», «quedamos cerca», «ya te invitamos a comer».
+  Sí aceptar: «te pagamos tren/avión + hotel + dietas + honorarios día presencial».
+
+--------------------------------------------------------------------------------
+MODALIDADES DE CONTRATO
+--------------------------------------------------------------------------------
+  A) REMOTO 100% (preferida)
+     - Kick-off videollamada 1 h
+     - Entregables CSV / zip / INICIO.bat
+     - Cierre videollamada + acta
+     - Precio: tarifa piloto estándar (one-pagers) SIN línea viaje
+
+  B) HÍBRIDO (cliente paga viaje)
+     - Fase 0 remoto (4–6 semanas)
+     - 1 viaje presencial si go/no-go positivo
+     - Viaje: facturado aparte o anticipo 100% antes de reservar
+
+  C) PRESENCIAL INICIAL (solo grandes cuentas)
+     - Elewit / utility / agencia: pueden exigir 1ª reunión cara a cara
+     - Condición: anticipo viaje + día consultoría (ver tarifas abajo)
+     - Agrupar: 2–3 reuniones misma ciudad en 1 viaje (ver clustering)
+
+--------------------------------------------------------------------------------
+TARIFAS ORIENTATIVAS DÍA PRESENCIAL (además del piloto)
+--------------------------------------------------------------------------------
+  Día consultoría on-site       | 800–1.500 €/día (+ IVA si aplica)
+  Viaje Valencia ↔ Madrid       | tren AVE ida/vuelta + 1 noche ~150–250 €
+  Viaje Valencia ↔ Barcelona    | similar 150–280 €
+  Viaje Valencia ↔ Bilbao/PT    | 200–350 € (tren o bus larga distancia)
+  Vuelo nacional (BCN/MAD hub)  | 150–400 € según antelación
+  Vuelo UE (Elewit partners)    | 250–600 € + hotel 1–2 noches
+  Dietas                        | según tabla cliente o 26,67 €/día España (referencia)
+
+  El viaje NO se subsidia con «futuro éxito del piloto». Anticipo o PO de viaje.
+
+--------------------------------------------------------------------------------
+CLUSTERING — UN VIAJE, VARIAS REUNIONES
+--------------------------------------------------------------------------------
+  Madrid (mismo viaje 2–3 días):
+    - Elewit / Red Eléctrica / posibles TSO
+    - Universidad / lab HPC (N₁ academia-industria)
+    - VC deep tech (solo si cubren viaje)
+
+  Barcelona:
+    - Industria 4.0, edge, algún OEM eólico
+
+  Valencia / Alicante (local sin coche):
+    - Bus/tren/cercanías a cargo cliente si es «reunión» fuera de Alcoi
+    - O exigir que ellos vengan a punto accesible (estación, campus)
+
+  Regla: mínimo 2 citas confirmadas + viaje pagado para desplazarse fuera de radio
+  bus directo desde tu base (definir: p. ej. >30 km o >45 min sin coche).
+
+--------------------------------------------------------------------------------
+FRASES PARA NEGOCIAR (copiar/pegar)
+--------------------------------------------------------------------------------
+  «El piloto se ejecuta remoto con CSV en 90 días. Si necesitáis presencial,
+   va como línea aparte: anticipo de desplazamiento y día de consultoría.»
+
+  «No dispongo de coche; las reuniones presenciales las hago con viaje pagado
+   por la empresa, como cualquier consultor externo.»
+
+  «Puedo estar en Madrid 2 días y encadenar Elewit + [X] si cubrís tren,
+   hotel y honorarios de los dos días.»
+
+  «La demo AntiPC corre en vuestro entorno con INICIO.bat; no hace falta
+   que vaya yo al datacenter.»
+
+--------------------------------------------------------------------------------
+QUÉ PONER EN EL SOW (cláusula tipo)
+--------------------------------------------------------------------------------
+  Desplazamientos: cualquier actividad presencial requiere anticipo del 100%
+  del coste estimado (transporte público, taxi estación-hotel, alojamiento,
+  dietas) o billetes a nombre del cliente. Sin anticipo, la prestación es
+  exclusivamente remota. Tiempo de viaje facturable a 50% tarifa día o incluido
+  en paquete viaje cerrado, según negociación.
+
+--------------------------------------------------------------------------------
+MERCADO POR MODALIDAD (resumen)
+--------------------------------------------------------------------------------
+  N₁ DC/Edge        | Remoto ideal — no necesitan tu cuerpo en el rack
+  N₂ Ciber          | Remoto — integración en su pipeline
+  N₄ Elewit/Energía | Híbrido — 1 viaje Madrid si pagan; sim primero remoto
+  Espacial          | Remoto años 1–2; congresos solo si beca o viaje pagado
+  N₅ Diplomacia     | Presencial inevitable — SOLO si estado/fondo paga viaje VIP
+
+--------------------------------------------------------------------------------
+LO QUE NO HACER
+--------------------------------------------------------------------------------
+  ✗ Piloto barato «a cambio de que vengas» sin viaje
+  ✗ Varias idas sueltas a la misma ciudad sin agrupar
+  ✗ Reunión «informal» que consume día sin facturar
+  ✗ Asumir que PDF + café sustituye anticipo (LO_QUE_NO_COMPRAN.txt)
+
+--------------------------------------------------------------------------------
+VINCULO ONE-PAGERS
+--------------------------------------------------------------------------------
+  Añadir en cada propuesta la línea:
+    «Modalidad preferente: remoto. Presencial opcional con anticipo viaje.»
+  Ver: ONE_PAGER_*.txt (bloque MODALIDAD al final de cada uno)
+
+================================================================================

@@ -1,0 +1,41 @@
+================================================================================
+FORMALIZACIÓN VMA — F06 CONJETURA GOLDBACH VMA
+================================================================================
+Autor: Víctor Manzanares Alberola
+Ficha origen: 06_conjetura_goldbach_vma.txt
+Tipo formal: CONJETURA + PROGRAMA
+Estado formal: [CONJ] — variantes no unificadas; Goldbach clásica abierta
+Fecha: 2026-07-10
+
+--------------------------------------------------------------------------------
+1. DEFINICIONES
+--------------------------------------------------------------------------------
+  G(2n) := |{ (p,q) : p≤q primos, p+q=2n }|.
+  Partición cuaternaria sobre parejas ordenadas (a,b), a+b=2n:
+    PP, PC, CP, CC (primo/compuesto).
+
+--------------------------------------------------------------------------------
+2. CONJETURA (Goldbach fuerte)
+--------------------------------------------------------------------------------
+  ∀ entero par 2n > 2:  G(2n) ≥ 1.
+
+--------------------------------------------------------------------------------
+3. VARIANTES VMA (no equivalentes entre sí)
+--------------------------------------------------------------------------------
+  A) Densidad: f(x)·2 ≤ f(2x).
+  B) Partición PP/PC/CP/CC (véase F27).
+  C) Criba: L(n)−m(n) crece (F01, F24).
+  D) MRAUV: Σ_j E_j ≥ 1 (F14, F23, F24).
+
+--------------------------------------------------------------------------------
+4. ESTADO
+--------------------------------------------------------------------------------
+  Ninguna variante A–D demuestra Goldbach en sentido clásico sin hipótesis
+  probabilísticas adicionales. F27 aporta lema de simetría condicional.
+
+--------------------------------------------------------------------------------
+5. NOTAS
+--------------------------------------------------------------------------------
+  Mantener como conjetura + programa. Fuente: Cribas §7, §11.16.
+
+================================================================================

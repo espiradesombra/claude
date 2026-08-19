@@ -1,0 +1,62 @@
+================================================================================
+SOFÍ — TEOREMA UNIFICADO (15 IMPLICACIONES) + PSEUDOCÓDIGO
+================================================================================
+Fuente: Libro 6, Nuevo Documento de texto.txt (líneas ~244–476)
+Estado: [PARCIAL] — esquema TCR/Dirichlet sólido; paso 12–15 requieren pulir
+Relación: complementa 04_teorema_sofi_L4_menos_L2.txt, 05_teorema_infinitud_U2
+
+--------------------------------------------------------------------------------
+DEFINICIONES (modo implicaciones)
+--------------------------------------------------------------------------------
+  SI n mod 6 = 5           ⇒ n ∈ L1
+  SI n ∈ L1 ∧ n=(6k−1)(6h+1) ⇒ n ∈ L3  ⇒ n compuesto
+  SI n ∈ L1 ∧ 2n+1=(6j−1)(6g+1) ⇒ n ∈ L4 ⇒ 2n+1 compuesto
+  SI n ∈ L3 ∧ n ∈ L4       ⇒ n ∈ L2
+  SI n ∈ L1 ∧ n∉L3 ∧ n∉L4  ⇒ n ∈ U2  ⇒ n ∈ LSG (Sophie Germain)
+
+--------------------------------------------------------------------------------
+15 IMPLICACIONES UNIFICADAS
+--------------------------------------------------------------------------------
+  1.  SI n ≡ 5 (mod 6) ⇒ n ∈ L1
+  2.  SI n ∈ L1 ∧ ∃k,h: n=(6k−1)(6h+1) ⇒ n ∈ L3
+  3.  SI n ∈ L1 ∧ 2n+1=(6j−1)(6g+1) ⇒ n ∈ L4
+  4.  SI n ∈ L3 ∧ n ∈ L4 ⇒ n ∈ L2
+  5.  SI n ∈ L1 ∧ n∉L3 ∧ n∉L4 ⇒ n ∈ U2
+  6.  SI n ∈ L3 ⇒ n es compuesto
+  7.  SI n ∈ L4 ⇒ 2n+1 es compuesto
+  8.  SI ∀q≥5 imponemos 2n+1≡0(mod q) ⇒ n≡(q−1)/2(mod q)
+  9.  SI n≡5(mod 6) ∧ n≡(q−1)/2(mod q) ⇒ ∃r(mod 6q) [TCR]
+  10. SI gcd(r,6q)=1 ⇒ Dirichlet: infinitos n≡r(mod 6q)
+  11. SI n≡r(mod 6q) ⇒ n∈L4 (2n+1 múltiplo de q)
+  12. SI n≡r(mod 6q) Y residuos evitan forma L3 ⇒ n∉L3
+  13. SI n∈L4 ∧ n∉L3 ⇒ n∈L4\L2
+  14. SI infinitos n en clase r ⇒ |L4\L2|=∞
+  15. SI |L4\L2|=∞ y análogo L3\L2 ⇒ |U2|=∞ ⇒ infinitos primos Sophie Germain
+
+--------------------------------------------------------------------------------
+PSEUDOCÓDIGO — ClasificarSofi(n)
+--------------------------------------------------------------------------------
+  SI n mod 6 != 5 → fuera de L1
+  en_L3 := ∃k,h: n=(6k−1)(6h+1)
+  en_L4 := ∃j,g: 2n+1=(6j−1)(6g+1)
+  en_L2 := en_L3 ∧ en_L4
+  en_U2 := en_L1 ∧ ¬en_L3 ∧ ¬en_L4
+  RETORNAR (en_L1, en_L3, en_L4, en_L2, en_U2)
+
+--------------------------------------------------------------------------------
+PSEUDOCÓDIGO — GENERAR_U2()
+--------------------------------------------------------------------------------
+  para cada primo q ≥ 5:
+      r ≡ 5 (mod 6)  [TCR con r ≡ (q−1)/2 (mod q)]
+      para n en progresión r mod 6q:
+          SI n ∉ L3 → añadir a U2
+
+--------------------------------------------------------------------------------
+NOTAS
+--------------------------------------------------------------------------------
+  - Implicación 15 asume infinitud Sophie Germain vía |U2|=∞; la conexión
+    U2 ⊆ LSG requiere demostración adicional (no solo clasificación modular).
+  - Paso 12 ("residuos evitan forma L3") es el punto técnico a formalizar.
+  - Teorema 2 definitivo Libro 6 (línea ~2604) coincide con este esquema.
+
+================================================================================

@@ -1,0 +1,15 @@
+C:\Users\Usuario\AppData\Local\Microsoft\Windows\INetCache\Content.Word\CMakeLists.txt
+---
+C:\Users\Usuario\AppData\Local\Temp\{AC27CEBB-B486-4B11-AF7C-E6BFC8C31DBA}\{FEA5A17C-95CD-4D69-9FF9-EAF5F39DA833}\CMakeLists.txt
+---
+add_executable(bench_log bench_log.cpp tu_algo.cpp)
+---
+add_executable(bench_root bench_root.cpp tu_algo.cpp)
+---
+cmake_minimum_required(VERSION 3.16)
+---
+find_library(CRLIBM_LIB crlibm)
+---
+find_path(CRLIBM_INCLUDE_DIR crlibm.h)
+---
+find_path(SLEEF_INCLUDE_DIR sleef.h)

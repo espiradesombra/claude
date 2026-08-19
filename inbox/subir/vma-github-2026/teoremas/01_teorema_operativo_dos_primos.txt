@@ -1,0 +1,31 @@
+ID: 01_dos_primos
+ESTADO: [OK] — Teorema operativo bien definido
+AUTOR: Víctor Manzanares Alberola
+FUENTE: archivos\Cribas_cotas_y_estructuras_de_primos_VMA (1).txt §2, (E.4)
+
+--------------------------------------------------------------------------------
+ENUNCIADO
+--------------------------------------------------------------------------------
+Definiciones:
+  I(n) = [ n − ⌊√(n+3)⌋ − 3 ,  n + 3 ]
+  L(n) = ⌊√(n+3)⌋ + 7
+  K    = ⌊⌊√n⌋ · 9/24⌋
+  m(n) = Σ_{i=2}^{K} √(n+3) / i!     (aprox. (e−2)·√n)
+
+Teorema operativo (criterio dos primos):
+  Si L(n) − m(n) ≥ 2, entonces el intervalo I(n) contiene al menos dos primos.
+
+--------------------------------------------------------------------------------
+LECTURA
+--------------------------------------------------------------------------------
+m(n) sobreestima posiciones “ocupadas” por compuestos inducidos por primos
+pequeños; si quedan ≥2 huecos en L(n), caben al menos dos primos en I(n).
+
+--------------------------------------------------------------------------------
+GAPS / PENDIENTE
+--------------------------------------------------------------------------------
+- Demostración formal completa no está en el TXT (es criterio operativo).
+- Validación numérica recomendada en el documento original.
+- No confundir con conjetura §3 (intervalo mínimo), que es más fuerte.
+
+================================================================================

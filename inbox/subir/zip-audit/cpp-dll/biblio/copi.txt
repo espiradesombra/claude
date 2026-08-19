@@ -1,0 +1,194 @@
+██████╗  ██████╗  ██████╗ ███████╗██████╗ 
+██╔══██╗██╔═══██╗██╔═══██╗██╔════╝██╔══██╗
+██████╔╝██║   ██║██║   ██║█████╗  ██████╔╝
+██╔═══╝ ██║   ██║██║   ██║██╔══╝  ██╔══██╗
+██║     ╚██████╔╝╚██████╔╝███████╗██║  ██║
+╚═╝      ╚═════╝  ╚═════╝ ╚══════╝╚═╝  ╚═╝
+   _  _   _   _   _   _   _   _   _   _   
+  / \/ \ / \ / \ / \ / \ / \ / \ / \ / \  
+ ( H A C K E R   A R T   1 9 8 0 s )     
+  \_/\_/ \_/ \_/ \_/ \_/ \_/ \_/ \_/ \_/  
+
+TÍTULO: Aplicativa conceptual del Método Diofántico Cinemático (MDC)
+AUTORES: Copi; Víctor Manzanares Alberola
+FORMATO: Documento TXT — estética hacker 80s (ASCII art)
+
+──────────────────────────────────────────────────────────────────────────────
+RESUMEN
+──────────────────────────────────────────────────────────────────────────────
+Se presenta un documento conceptual y no operativo que recoge las ecuaciones
+y definiciones centrales del llamado Método Diofántico Cinemático (MDC).
+El objetivo es formalizar la notación, exponer proposiciones a estudiar y
+ofrecer un plan experimental reproducible en entornos didácticos (toy‑numbers).
+No se incluyen instrucciones prácticas que permitan explotación de sistemas
+criptográficos reales. Este texto combina estilo académico con estética ASCII
+propia de l'era hacker dels anys 80 per a presentació creativa.
+
+──────────────────────────────────────────────────────────────────────────────
+1. INTRODUCCIÓN
+──────────────────────────────────────────────────────────────────────────────
+El MDC propone una representación de la informació aritmètica de N mitjançant
+una ona de residus i eines inspirades en la cinemàtica discreta i la topologia
+local de la funció de fase. Aquest document recull la formulació matemàtica
+bàsica, enuncia proposicions d'interès i descriu un protocol experimental
+reproductible sobre instàncies didàctiques. S'assenyala explícitament la
+necessitat d'interpretar els resultats amb cautela i de no extrapolar-los a
+escales criptogràfiques sense anàlisi teòrica addicional.
+
+──────────────────────────────────────────────────────────────────────────────
+2. DEFINICIONES Y NOTACIÓN BÁSICA
+──────────────────────────────────────────────────────────────────────────────
+N ∈ ℤ_{>1}                         — nombre a estudiar
+m ∈ ℤ_{≥1}                         — parámetro de búsqueda
+D(m) = 2m + 3                      — divisor candidato
+m_max = ⌊(⌊√N⌋ − 3)/2⌋             — dominio máximo de m
+
+──────────────────────────────────────────────────────────────────────────────
+3. FUNCIÓN DE ONDA DE RESIDUOS
+──────────────────────────────────────────────────────────────────────────────
+Definimos la fase normalizada d(m) ∈ [−1/2, 1/2):
+    d(m) = (N mod D(m)) / D(m) − 1/2
+
+Condición de singularidad (factor exacto):
+    d(m) = −1/2  ⇔  D(m) | N
+
+──────────────────────────────────────────────────────────────────────────────
+4. ARQUITECTURA ESPEJO Y DESFASE
+──────────────────────────────────────────────────────────────────────────────
+Cofactor aritmético:
+    A(m) = ⌊ N / D(m) ⌋
+
+Parámetro espejo (cuando procede):
+    m_esp(m) = ⌊ (A(m) − 3) / 2 ⌋
+
+Señal espejo:
+    d_A(m) = d( m_esp(m) )   (si está definida)
+
+Desfase puntual:
+    ΔΦ(m) = d(m) − d_A(m)
+
+Proposición conceptual (detección por cambio de signo):
+    Si existe una singularidad en el intervalo entre m_i y m_{i+1},
+    entonces ΔΦ(m_i) · ΔΦ(m_{i+1}) < 0.
+(Enunciado a formalizar; requiere hipótesis precisas.)
+
+──────────────────────────────────────────────────────────────────────────────
+5. CINEMÁTICA DISCRETA
+──────────────────────────────────────────────────────────────────────────────
+Muestras locales:
+    d_0 = d(m),  d_1 = d(m+1),  d_2 = d(m+2)
+
+Velocidad (primera diferencia):
+    V(m) = d_1 − d_0
+
+Aceleración (segunda diferencia):
+    A(m) = d_2 − 2 d_1 + d_0
+
+Jerk (tercera diferencia):
+    J(m) = A(m+1) − A(m)
+
+Estimador de vértice parabólico (salto maestro):
+    m_next = m − V(m) / A(m)    (si A(m) ≠ 0)
+Interpretación: estimador analítico del mínimo local de la aproximación parabólica.
+
+──────────────────────────────────────────────────────────────────────────────
+6. SEGMENTACIÓN ARMÓNICA Y ACUMULADORES
+──────────────────────────────────────────────────────────────────────────────
+Segmentos armónicos (i ≥ 1):
+    S_i = [ ⌊ m_max / (i+1) ⌋ ,  ⌊ m_max / i ⌋ ]
+
+Acumulador armónico:
+    Acum_I = Σ_{k=1}^I (1 / (2 · k!))
+
+Límite:
+    lim_{I→∞} Acum_I = (e − 1) / 2 ≈ 0.85914
+Heurística de convergencia:
+    m_conv ≈ 0.859 · m_max
+
+──────────────────────────────────────────────────────────────────────────────
+7. DIVISORIO TELESCÓPICO Y PRODUCTOS SOBRE PARES
+──────────────────────────────────────────────────────────────────────────────
+Producto telescópico:
+    D_K^{prod} = ∏_{k=1}^K (k / (k+1)) = 1 / (K+1)
+
+Producto sobre índices pares (k = 2j):
+    P_n = ∏_{j=1}^n [ (2j / (2j+1)) · ((2j+2) / (2j+1)) ]
+        = ∏_{j=1}^n [ 4 j (j+1) / (2j+1)^2 ]
+
+Relación asintótica:
+    lim_{n→∞} P_n = π / 4
+
+Interpretación: P_n actúa com a normalitzador asimptòtic (no com a factor de compressió a zero).
+
+──────────────────────────────────────────────────────────────────────────────
+8. RELACIÓN SENYAL–FACTOR
+──────────────────────────────────────────────────────────────────────────────
+Condición modular equivalent:
+    D(m) | N  ⇔  N ≡ 0 (mod D(m))  ⇔  d(m) = −1/2
+
+Observación: la presència d’un factor es manifesta com una singularitat exacta en d(m).
+La comparació amb la senyal mirall i la cinemàtica local permet acotar topològicament la regió d’interès.
+
+──────────────────────────────────────────────────────────────────────────────
+9. PROPOSICIONES Y LEMAS (ESBOZO)
+──────────────────────────────────────────────────────────────────────────────
+Lema 1 (identitat telescòpica):
+    ∏_{n=1}^x (n / (n+1)) = 1 / (x+1)
+
+Lema 2 (producte parells i Wallis):
+    P_n = W_n · (n+1) / (2n+1), on W_n és el producte de Wallis parcial.
+    Per tant lim_{n→∞} P_n = π / 4.
+
+Proposició (canvi de signe de ΔΦ):
+    Enunciat com a criteri topològic; cal formalitzar condicions de mostreig i regularitat.
+
+(Les demostracions s’inclouran en versions tècniques; aquí es deixen com a punts de treball.)
+
+──────────────────────────────────────────────────────────────────────────────
+10. PROTOCOL EXPERIMENTAL (ENTORN DIDÀCTIC)
+──────────────────────────────────────────────────────────────────────────────
+Objectiu: validar, en toy‑numbers (semiprims petits), l’efecte de l’escalat, la bisecció
+adaptativa i la combinació de filtres (aritmètic i espectral) sobre la reducció del
+espai de cerca.
+
+Principis:
+  • Ús exclusiu de nombres petits (p. ex. 6–12 dígits) per a experiments reproduïbles.
+  • Mètriques: % d’intervals descartats, candidats finals per instància, estalvi relatiu
+    d’avaluacions costoses, taxa de falsos positius/negatius.
+  • Repeticions i aleatorització; registre de llavors i entorn.
+
+Nota: el protocol és per a validació acadèmica i no inclou cap instrucció operativa per a
+aplicacions malicioses.
+
+──────────────────────────────────────────────────────────────────────────────
+11. ÈTICA I RISCOS
+──────────────────────────────────────────────────────────────────────────────
+Aquest treball té potencial de doble ús. Es recomana:
+  • Publicar amb secció explícita de riscos i limitacions.
+  • No divulgar paràmetres operatius ni pseudocodi que permeti explotació.
+  • Submetre resultats a revisió per parells i coordinar amb la comunitat de seguretat si
+    s’identifiquen implicacions pràctiques.
+
+──────────────────────────────────────────────────────────────────────────────
+12. CONCLUSIONS I LÍNIES FUTURES
+──────────────────────────────────────────────────────────────────────────────
+S’ha formalitzat el nucli matemàtic del MDC i s’han proposat enunciats i un protocol
+experimental segur. L’obra futura inclourà demostracions formals, estudis asimptòtics
+i experiments controlats sobre toy‑numbers. També es proposa explorar la connexió
+amb productes clàssics (Wallis) i l’impacte de factors normalitzadors en la detecció
+de mínims.
+
+──────────────────────────────────────────────────────────────────────────────
+REFERÈNCIES (ESBORRANY)
+──────────────────────────────────────────────────────────────────────────────
+[1] Textos clàssics sobre productes i identitats (Wallis, Gamma).  
+[2] Literatura sobre processament de senyal i detecció de pics (referències a afegir).  
+(En la versió final s’inclouran referències completes.)
+
+──────────────────────────────────────────────────────────────────────────────
+█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░█
+█  Nota estilística: aquest fitxer és un TXT amb estètica ASCII 80s.  █
+█  Si voleu la versió LaTeX, PDF o una variant amb més art ASCII, ho faig. █
+█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░█
+
+FIN DEL DOCUMENT.

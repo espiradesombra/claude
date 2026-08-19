@@ -1,0 +1,66 @@
+================================================================================
+CRIBA MODULAR 6k±1 — MARCADO ÚNICO EN REJILLA 2i+3
+================================================================================
+Autor: Víctor Manzanares Alberola
+Estado: [HEUR] — algoritmo con pseudocódigo en anexo A del tratado
+Fuentes: Cribas §8.2, Anexo A, archivos\criba_modular.py
+
+--------------------------------------------------------------------------------
+1. MARCO 6k±1
+--------------------------------------------------------------------------------
+  Primos > 3 ≡ 1 o 5 (mod 6).
+  Índice i ≥ 0  →  value(i) = 2i + 3  →  5, 7, 11, 13, 17, …
+  Trabajo hasta L² en espacio de candidatos (límite l del TXT).
+
+--------------------------------------------------------------------------------
+2. INICIALIZACIÓN
+--------------------------------------------------------------------------------
+  Sembrar candidatos: bucle v++ con saltos (rueda 6) → p[v]=1 en 6k±1
+  Marcar manualmente 2, 3 (y 5, 7 según versión)
+  p[0], p[1] → no candidatos al final
+
+--------------------------------------------------------------------------------
+3. BUCLE PRINCIPAL (idea)
+--------------------------------------------------------------------------------
+  Para cada n desde 0 hasta (limite-3)/2:
+    Si p[2n+3] == 1 (candidato primo):
+      Para m desde n hasta limite²/(2n+3):
+        Si p[2m+3] == 1:
+          Marcar compuesto p[(2n+3)(2m+3)] = 3
+
+  Saltos al marcar múltiplos de primo p:
+    +2p y +4p alternados → solo tocan clases 6k±1
+
+--------------------------------------------------------------------------------
+4. MECANISMOS ANTI-REMARCA
+--------------------------------------------------------------------------------
+  anteriorM:
+    Salta m tal que 2m+3 ≡ 0 (mod 3) — no son candidatos 6k±1 válidos.
+
+  anteriorNY:
+    Si el producto ya estaría marcado por factor menor, adelanta ñ.
+    Garantiza marcar x = (2n+3)(2m+3) una sola vez cuando 2n+3 es el menor factor.
+
+--------------------------------------------------------------------------------
+5. COMPLEJIDAD
+--------------------------------------------------------------------------------
+  Teórica con marcado único: Θ(l²)
+  Sin invariante anteriorNY: hasta O(l² log log l) en peor caso
+  Práctica: saltos +2p/+4p evitan remarcas masivas
+
+--------------------------------------------------------------------------------
+6. CÓDIGO DE REFERENCIA (archivos\criba_modular.py)
+--------------------------------------------------------------------------------
+  - is_candidate(v): v % 6 == 1 or v % 6 == 5
+  - value(i) = 2*i + 3
+  - Bucle con siguiente_m_multiplo3, salto1=2*pn, salto2=4*pn alternados
+  - Estados: 1=candidato, 3=compuesto, 0=fuera
+
+--------------------------------------------------------------------------------
+7. VINCULO SOFÍ Y MDC
+--------------------------------------------------------------------------------
+  Productos (2n+3)(2m+3) = misma plantilla (6a±1)(6b±1) que L₃ en Sofí.
+  Pitagórico F29: variante visual de esta rejilla.
+  MDC: ventanas ΔS donde la densidad de candidatos cambia de signo.
+
+================================================================================

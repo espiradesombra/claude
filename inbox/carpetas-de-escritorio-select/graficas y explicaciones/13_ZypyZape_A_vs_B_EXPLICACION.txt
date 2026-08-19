@@ -1,0 +1,17 @@
+GRÁFICA 13 — ZypyZape A vs B (medición real)
+═══════════════════════════════════════
+Benchmark UDP en localhost (HP Envy, Windows).
+Timestamp JSON: 2026-07-12T09:31:48
+
+  A) recvinto(temp) + bytes(temp) → Queue  → 2 copias usuario/pkt
+  B) recvinto(slot fijo del ring)          → 1 copia usuario/pkt
+
+Datos:
+  Throughput A: 1420 pkt/s   copias: 5690
+  Throughput B: 1451 pkt/s   copias: 2904
+
+B NO es DMA del NIC: evita la segunda memcpy usuario entre red y worker.
+Pipeline completo AntiPC: B → Grafcet (D) con `antipc network demo`.
+
+Regenerar medición:
+  ideas-para-gpt-antipc\antipc\scripts\19_zypyzape_viabilidad.bat

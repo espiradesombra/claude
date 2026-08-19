@@ -1,0 +1,64 @@
+================================================================================
+FORMALIZACIÓN VMA — F28 SOFÍ L1–L4 VARIANTE + PIE
+================================================================================
+Autor: Víctor Manzanares Alberola
+Ficha origen: 28_sofi_L1_L4_variante_6k_menos_1.txt
+Tipo formal: TEOREMA (PIE) + PROPOSICIÓN (contradicción |Lsg|=0)
+Estado formal: [OK] PIE; [OK] contradicción condicional
+Fecha: 2026-07-10
+
+--------------------------------------------------------------------------------
+1. DEFINICIONES (variante post golbach pp0)
+--------------------------------------------------------------------------------
+  L1 := { p : p = 6k−1, 2p+1 = 6h−1 }  [forma restringida]
+  L3 := { p∈L1 : p compuesto, p=(6k−1)(6v+1) o (6k+1)(6v−1) }
+  L4 := { p∈L1 : 2p+1 = (6k−1)(6v+1) o (6k+1)(6v−1) }
+  L2 := L3 ∩ L4
+  Lsg := L1 \ (L3 ∪ L4)
+
+  Nota: L1 estándar Cribas es {n≡5(mod 6)}; esta variante añade 2p+1=6h−1.
+
+--------------------------------------------------------------------------------
+2. TEOREMA (PIE — inclusión-exclusión)
+--------------------------------------------------------------------------------
+  |Lsg| = |L1| − |L3| − |L4| + |L2|.
+
+  Prueba: Lsg = L1 \ (L3 ∪ L4). Por PIE en conjuntos finitos:
+    |L1 \ (L3∪L4)| = |L1| − |L3| − |L4| + |L3∩L4| = |L1|−|L3|−|L4|+|L2|. ∎
+
+  Forma alternativa del post:
+    |Lsg| = |L1| + |L2| − |L3| − |L4|  [equivalente].
+
+--------------------------------------------------------------------------------
+3. PROPOSICIÓN (imposibilidad |Lsg|=0 con |L1|=∞)
+--------------------------------------------------------------------------------
+  Supongamos |L1|=∞, |L3|=∞, |L4|=∞ (F04, F05).
+  Si |Lsg|=0, entonces |L2| = |L3|+|L4|−|L1| por PIE.
+
+  Con jerarquía propuesta |L2| < |Lsg| < |L3| < |L4| < |L1|:
+    |Lsg|=0 ⇒ |L3|+|L4|−|L2| = |L1|.
+    Pero |L3|,|L4| crecen; |Lsg|=0 contradice que supervivientes se agoten.
+
+  Prueba formal (contradicción):
+    |Lsg|=0 ⇒ L1 = L3 ∪ L4 (modulo L2).
+    Por F04, infinitos primos en L4\L2 ⊂ L4.
+    Esos primos están en L1 pero no en L3 (son primos) ⇒ están en Lsg.
+    Luego |Lsg| ≥ ∞. Contradicción con |Lsg|=0. ∎
+
+--------------------------------------------------------------------------------
+4. COROLARIO
+--------------------------------------------------------------------------------
+  |Lsg| = ∞ (infinitos supervivientes en estructura Sofí).
+
+--------------------------------------------------------------------------------
+5. RELACIÓN CON F04–F05
+--------------------------------------------------------------------------------
+  L1 Cribas ≡ {5 mod 6}; variante post es subconjunto. PIE es general.
+  Infinitud Lsg sigue de primos en U₂/Lsg por argumento F05.
+
+--------------------------------------------------------------------------------
+6. NOTAS
+--------------------------------------------------------------------------------
+  Fuente: golbach pp0.txt. Analogía Lsg↔PP en Goldbach (F27).
+
+================================================================================

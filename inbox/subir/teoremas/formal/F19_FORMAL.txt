@@ -1,0 +1,59 @@
+================================================================================
+FORMALIZACIÓN VMA — F19 PHASE AMPLIFIER K=3 XOR
+================================================================================
+Autor: Víctor Manzanares Alberola
+Ficha origen: 19_teorema_phaseamplifier_k3.txt
+Tipo formal: TEOREMA (sistemas booleanos)
+Estado formal: [OK] — demostración completa
+Fecha: 2026-07-10
+
+--------------------------------------------------------------------------------
+1. DEFINICIONES
+--------------------------------------------------------------------------------
+  S = (v1,f1,v2,f2) ∈ {0,1}⁴.
+  shift: permutación Gray en (v1,v2); fases fijas.
+  Toffoli(S) = (v1, f1, v1∧v2, 0).
+  T₃(S) = Toffoli(S) ⊕ Toffoli(shift(S)) ⊕ Toffoli(shift²(S)).
+  S_next = S ⊕ T₃(S).
+
+--------------------------------------------------------------------------------
+2. TEOREMA
+--------------------------------------------------------------------------------
+  (a) f2(S_next) = f2(S) ∀S. Subespacios F⁰={f2=0}, F¹={f2=1} cerrados.
+  (b) v1=0 ⇒ en 1 ciclo v1=1.
+  (c) En Fᶠ², estados con v1=1 forman ciclo único de período 4.
+  (d) Si S_A, S_B difieren solo en f1, entonces v2(S_A(t))≠v2(S_B(t)) ∀t≥1.
+  (e) K=3 es mínimo para propagación persistente (K=1,4 fallan).
+
+--------------------------------------------------------------------------------
+3. DEMOSTRACIÓN (a)
+--------------------------------------------------------------------------------
+  Toffoli siempre devuelve f2=0. XOR de tres Toffoli: f2(T₃)=0.
+  f2(S_next)=f2(S)⊕0=f2(S). ∎
+
+--------------------------------------------------------------------------------
+4. DEMOSTRACIÓN (b)(c)
+--------------------------------------------------------------------------------
+  Tabla exhaustiva de 16 estados (ver 19_THEOREM_PhaseAmplifier_K3_XOR.md §4).
+  Si v1=0, primer bit de T₃(S) es siempre 1 ⇒ v1(S_next)=1.
+  Si v1=1, v1 se conserva; transiciones forman 4-ciclo. ∎
+
+--------------------------------------------------------------------------------
+5. DEMOSTRACIÓN (d)
+--------------------------------------------------------------------------------
+  Cálculo explícito: S_A=(0,0,1,0), S_B=(0,1,1,0).
+  S_A(1)=(1,1,1,0), S_B(1)=(1,0,0,0); v2 difiere.
+  Periodicidad 4 mantiene diff_v2≠0. ∎
+
+--------------------------------------------------------------------------------
+6. DEMOSTRACIÓN (e)
+--------------------------------------------------------------------------------
+  Búsqueda sistemática K=1..8: solo K=3,7 producen oscilación 1,2 persistente.
+  K=7 equivalente a K=3 por shift⁴=id. ∎
+
+--------------------------------------------------------------------------------
+7. NOTAS
+--------------------------------------------------------------------------------
+  Aplicable a K3 hash. No es factorización RSA.
+
+================================================================================

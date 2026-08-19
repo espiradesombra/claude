@@ -1,0 +1,32 @@
+================================================================================
+E08 — ANTIPC / SALE-IT (edge computing UDP)
+================================================================================
+
+QUÉ PROBLEMA RESUELVE
+  - Red local como extensión del sistema de ejecución (no solo “más CPUs”).
+  - Reducir coordinación/recálculo en CPU monolítica mediante Grafcet distribuido.
+  - Segunda pasada con índice de conocimiento K(N) reutilizable.
+
+MECANISMO
+  - Motor hash K3 integrado.
+  - Buffer circular lock-free SPSC.
+  - Protocolo UDP binario: WORK / RESULT / DONE.
+  - Arquitecturas A→E medibles (benchmark.py, udp_benchmark.py).
+  - INICIO.bat one-click Windows.
+
+ESTADO TEÓRICO
+  [OK]     Benchmarks reproducibles (sale-it INICIO.bat, scripts 03_benchmark_udp).
+  [OK]     Honestidad: ALU no queda “libre”; se reduce coordinación.
+  TRL 4–5  Prototipo Python industrial-documentado; roadmap C++/DPDK declarado.
+
+RUTAS EN EL PC
+  C:\Users\cuent\Desktop\teoremas\lee arbusto\sale-it\
+  C:\Users\cuent\Desktop\teoremas\lee arbusto\antipc\
+  Zips: AntiPC-SaleIt-v0.1*.zip, AntiPC-Stack-UDP-Enlazado.zip
+  Docs: PAPER_33x1_IRONIA.txt, ARQUITECTURA_UNIFICADA.txt, RESULTADOS_BENCHMARK.txt
+
+REFERENCIAS
+  segunda_vuelta\LIMITES_HONESTOS.txt (COMERCIAL)
+  porque_no_33x1\MERCADOS_GANABLES.txt (módulo N₁)
+
+================================================================================

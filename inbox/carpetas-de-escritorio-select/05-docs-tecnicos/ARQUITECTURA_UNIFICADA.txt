@@ -1,0 +1,133 @@
+================================================================================
+  AntiPC — ARQUITECTURA UNIFICADA
+  Integración: HASHTOOLCODE + gptcomputing.txt + Regla Mecánica (MDC)
+  Autor: Víctor Manzanares Alberola — Proyecto 33×1
+================================================================================
+
+VISIÓN
+--------------------------------------------------------------------------------
+AntiPC deja de ser un benchmark suelto y pasa a ser una ARQUITECTURA en 5 capas
+que unifica tres paquetes del escritorio del autor:
+
+  1. HASHTOOLCODE(l)L()(L ) (L).zip
+     - k3hash      → huella, dedup, indexación
+     - comunicacion hashcode → permisos de red (HMAC-SHA256)
+     - cpp y dll/biblio → Regla Mecánica Universal + MDC
+
+  2. gptcomputing.txt (ChatGPT)
+     - Flow Kernel, referencias, Knowledge Resolver, Event Bus
+     - Plugins UPS, perfiles de ejecución, UDP como cómputo
+
+  3. AntiPC implementado (este paquete)
+     - Benchmarks A→E, industrial, telemetría
+
+
+DIAGRAMA DE CAPAS
+--------------------------------------------------------------------------------
+
+                    ┌─────────────────────────────────────┐
+                    │  L4 INDUSTRIAL — Telemetría, perfiles│
+                    │  dedup ficheros, informes CSV/JSON   │
+                    └──────────────────┬──────────────────┘
+                                       │
+                    ┌──────────────────▼──────────────────┐
+                    │  L3 RED — UDP hubs, WORK/RESULT      │
+                    │  permiso HMAC antes de conectar      │
+                    └──────────────────┬──────────────────┘
+                                       │
+                    ┌──────────────────▼──────────────────┐
+                    │  L2 FLOW KERNEL — Referencias        │
+                    │  Resolver, EventBus, Scheduler       │
+                    │  PluginManager (neutralidad núcleo) │
+                    └──────────────────┬──────────────────┘
+                                       │
+          ┌────────────────────────────┼────────────────────────────┐
+          │                            │                            │
+┌─────────▼─────────┐      ┌───────────▼──────────┐      ┌──────────▼─────────┐
+│ L1 MDC            │      │ L1 Plugins K3        │      │ L1 Plugins auth    │
+│ MDC_PHASE         │      │ K3_HASH K3_FILE      │      │ NetworkAuthGate    │
+│ MDC_REGLA         │      │ K3_DEDUP             │      │ (challenge HMAC)   │
+│ MDC_FACTOR (toy)  │      │                      │      │                    │
+│ ReglaCalculo      │      │                      │      │                    │
+└─────────┬─────────┘      └───────────┬──────────┘      └──────────┬─────────┘
+          │                            │                            │
+          └────────────────────────────┼────────────────────────────┘
+                                       │
+                    ┌──────────────────▼──────────────────┐
+                    │  L0 FUNDACIÓN — k3hash.c (C)        │
+                    │  hash_engine.py (DLL o Python)      │
+                    └─────────────────────────────────────┘
+
+
+PLUGINS REGISTRADOS (UPS)
+--------------------------------------------------------------------------------
+
+  PluginID      Origen HASHTOOLCODE        Función
+  -------------------------------------------------------------------------
+  K3_HASH       k3hash/                   Transformación hash streaming
+  K3_FILE       k3dedup.c                 Huella fichero (tamaño+hash)
+  K3_DEDUP      k3dedup.c                 Agrupación duplicados
+  MDC_PHASE     analisi_modular.hpp       Fase/curvatura modular
+  MDC_REGLA     regla_calculo.hpp         Escala log (Battery planner)
+  MDC_FACTOR    factoritzacio_mdc.hpp     Factorización toy (≤10 dígitos)
+
+
+FLUJOS DE DATOS
+--------------------------------------------------------------------------------
+
+  Auditoría industrial:
+    Ruta → K3_FILE → KnowledgeResolver → (reuse|hash)
+         → MDC_PHASE(size, modulus) → telemetría CSV
+
+  Análisis numérico (laboratorio):
+    N → MDC_FACTOR → factor
+      → MDC_REGLA  → producto en escala log
+
+  Red distribuida (ENLAZADA):
+    request_network_permission()  →  HMAC local OK
+    start_network(hubs=4)         →  spawn hubs + AUTH UDP por hub
+    dispatch_remote_hash(payload) →  WORK → hub K3 → RESULT
+    pipeline_remote_files(paths)  →  lectura local + HASH en hubs
+    stop_network()                →  DONE + apagar procesos
+
+  Protocolo AUTH UDP:
+    AUTH_REQUEST → AUTH_CHALLENGE → AUTH_RESPONSE → AUTH_OK
+    (HASHTOOLCODE comunicacion hashcode)
+
+
+LEYES DE LA ARQUITECTURA
+--------------------------------------------------------------------------------
+
+  1. Neutralidad del núcleo — Flow Kernel no conoce HASH ni MDC
+  2. Consulta antes de ejecutar — KnowledgeResolver.resolve()
+  3. Red con permiso — nunca Network ON sin HMAC
+  4. Inmutabilidad — Reference frozen
+  5. P_util(N) = N·E(N) + K(N)
+
+
+CÓDIGO DE ENTRADA
+--------------------------------------------------------------------------------
+
+  AntiPCStack          architecture/antipc_stack.py
+  Demo completa        demo_arquitectura.py
+  Demo industrial      industrial_demo.py
+  Benchmark red        udp_benchmark.py
+
+
+REFERENCIA C++ ORIGINAL
+--------------------------------------------------------------------------------
+
+  referencia/k3hash/           k3hash.c del ZIP
+  referencia/mdc/              ReglaMecanicaUniversal.hpp + módulos
+
+
+EJECUCIÓN
+--------------------------------------------------------------------------------
+
+  python demo_arquitectura.py
+  python demo_arquitectura.py --n 1147
+  INICIO.bat → [A] Arquitectura unificada
+
+================================================================================
+FIN
+================================================================================

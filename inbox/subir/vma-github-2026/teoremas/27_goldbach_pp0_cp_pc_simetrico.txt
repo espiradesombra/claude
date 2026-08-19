@@ -1,0 +1,72 @@
+================================================================================
+GOLDBACH — ARGUMENTO PP=0 ⇒ CP↔PC SIMÉTRICOS ⇒ PP>0
+================================================================================
+ID: 27_goldbach_pp0
+ESTADO: [PARCIAL] — esquema lógico publicado; no demostración formal completa
+AUTOR: Víctor Manzanares Alberola
+FUENTE: lee arbusto\golbach pp0.txt (post LinkedIn, ~2026)
+
+--------------------------------------------------------------------------------
+CONTEXTO
+--------------------------------------------------------------------------------
+Para N = 2n, descomponer N en todas las parejas (a,b) con a+b=N, a≤b.
+Clasificar cada pareja:
+
+  (pp)  primo + primo
+  (cp)  compuesto + primo   (orden: compuesto < primo)
+  (pc)  primo + compuesto   (orden: primo < compuesto)
+  (cc)  compuesto + compuesto
+
+--------------------------------------------------------------------------------
+IDENTIDADES (conteo por mitades)
+--------------------------------------------------------------------------------
+  cp + pc + cc + cc = (1 − π(N)) · N
+
+  pp + pp + pc + cp = π(N) · N     [notación del original: doble pp en suma]
+
+donde π(N) es la fracción/densidad de primos en el rango relevante (primera mitad).
+
+--------------------------------------------------------------------------------
+HIPÓTESIS PP = 0
+--------------------------------------------------------------------------------
+Si no hay parejas primo+primo:
+
+  cp + pc = π(N) · N
+  cc      = (1 − 2π(N)) · N
+
+--------------------------------------------------------------------------------
+SIMETRÍA CP ↔ PC (cuando PP=0)
+--------------------------------------------------------------------------------
+La clase (cc) es simétrica entre primera y segunda mitad del intervalo.
+Si PP=0, la simetría de (cc) obliga a que (cp) y (pc) sean simétricos:
+misma cardinalidad en mitad inferior y superior.
+
+--------------------------------------------------------------------------------
+REDUCCIÓN AL ABSURDO → PP > 0
+--------------------------------------------------------------------------------
+Opción 2 (asimetría forzada) lleva a:
+  “compuestos de la 2ª mitad (×2) + primos de la 2ª mitad (×2)
+   = el doble de primos de la 1ª mitad”
+→ consecuencia absurda.
+
+Por tanto Opción 1: debe existir al menos una pareja (pp), es decir PP > 0.
+
+Enunciado operativo:
+  Para cada N=2n (en el marco del ejercicio), asumir PP=0 contradice
+  la simetría cc + balance cp/pc ⇒ existe representación Goldbach p+q=N.
+
+--------------------------------------------------------------------------------
+RELACIÓN CON OTRAS FICHAS
+--------------------------------------------------------------------------------
+  Analogía Sofí↔Goldbach: claude9.txt (L_sg↔PP, L3↔PC, L4↔CP, L2↔CC)
+  Ficha 06: conjetura Goldbach VMA (MRAUV)
+  Ficha 28: variante L1-L4 del mismo post
+
+--------------------------------------------------------------------------------
+GAPS
+--------------------------------------------------------------------------------
+  - π(N) no definido con rigor en el post (conteo vs densidad).
+  - “Absurdo” requiere formalizar límites asintóticos.
+  - No cubre todos los 2n sin verificación computacional adicional.
+
+================================================================================

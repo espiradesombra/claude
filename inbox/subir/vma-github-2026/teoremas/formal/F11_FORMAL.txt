@@ -1,0 +1,39 @@
+================================================================================
+FORMALIZACIÓN VMA — F11 MDC TEOREMA DE ATRAPAMIENTO
+================================================================================
+Autor: Víctor Manzanares Alberola
+Ficha origen: 11_mdc_teorema_atrappament.txt
+Tipo formal: PROPOSICIÓN EMPÍRICA
+Estado formal: [HEUR] — observación experimental; formalización parcial
+Fecha: 2026-07-10
+
+--------------------------------------------------------------------------------
+1. DEFINICIONES
+--------------------------------------------------------------------------------
+  N semiprimo, m parámetro k-sweep, ΔΦ(m) desfase normalizado.
+  Singularidad: m* donde ΔΦ cambia de signo (F12).
+
+--------------------------------------------------------------------------------
+2. PROPOSICIÓN (Atrapamiento)
+--------------------------------------------------------------------------------
+  Para N semiprimo RSA-typical, ∃ m₁ < m* < m₂ en rango de búsqueda tales que
+  el factor verdadero p = 2m*+3 satisface m* ∈ (m₁,m₂) delimitado por
+  singularidades de ΔΦ.
+
+--------------------------------------------------------------------------------
+3. ESTADO
+--------------------------------------------------------------------------------
+  Verificado experimentalmente en benchmarks MDC.
+  Demostración analítica ∀N: ABIERTA.
+
+--------------------------------------------------------------------------------
+4. ESQUEMA DE PRUEBA PROPUESTO
+--------------------------------------------------------------------------------
+  Combinar F12 (cambio de signo) + F13 (zona densa) + F09 (identidad Δ=k²).
+
+--------------------------------------------------------------------------------
+5. NOTAS
+--------------------------------------------------------------------------------
+  Nombre "teorema" reservado hasta enunciado ∀N con hipótesis explícitas.
+
+================================================================================

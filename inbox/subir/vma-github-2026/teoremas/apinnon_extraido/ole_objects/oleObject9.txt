@@ -1,0 +1,15 @@
+  E_{saldo,virtual}(t+\delta t) = E_{saldo,virtual}(t) + P_{gen}(t)\delta t - P_{reb}(t)\delta t
+---
+  P_{desc}(\text{real}) = P_{desc}(\text{virtual}) + P_{desc}(\text{almac
+---
+  \text{Para } t \in [0, t_{540}],\quad T_{descenso}(t) = m \cdot g \cdot r_{eq}
+---
+  \text{Para } t \in [t_{540}, t_{720}],\quad T_{reb}(t) = -T_{reb,prog}(t)
+---
+  \text{Si} \quad \theta_{actual} \mod 720^\circ = 0,\quad \text{reset ciclo}
+---
+  \theta_{actual} = \int_{0}^{t} \omega(\tau) d\tau
+---
+  donde \( T \) es el torque total, \( I \) el momento de inercia, y \( \alpha \) la aceleraci
+---
+  mgh_{des} - mgh_{asc} = W_{p

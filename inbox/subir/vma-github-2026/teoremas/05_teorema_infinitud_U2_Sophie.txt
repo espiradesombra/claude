@@ -1,0 +1,28 @@
+ID: 05_sofi_U2
+ESTADO: [PARCIAL]
+AUTOR: VMA
+FUENTE: Cribas_cotas §5 (demostración U₂ infinito)
+
+--------------------------------------------------------------------------------
+ENUNCIADO
+--------------------------------------------------------------------------------
+  |U₂| = ∞, donde U₂ = L₁ \ (L₃ ∪ L₄).
+
+Además: U₂ ⊆ LSG (primos p con 2p+1 primo — Sophie Germain).
+
+--------------------------------------------------------------------------------
+ESQUEMA DE PRUEBA
+--------------------------------------------------------------------------------
+1. L₄\L₂ infinito (teorema 04).
+2. L₃\L₂ infinito (argumento análogo CRT).
+3. L₂ = L₃∩L₄ infinito (intersección de progresiones).
+4. Construcción explícita de progresión en L₁ que evita L₃ y L₄.
+
+--------------------------------------------------------------------------------
+GAPS
+--------------------------------------------------------------------------------
+- Paso 4 usa “desigualdades modulares” sin formalizar el conjunto evitado.
+- La implicación U₂⊆LSG necesita verificar que elementos de U₂ son primos.
+- Conexión con infinitud de primos Sophie Germain es heurística fuerte.
+
+================================================================================

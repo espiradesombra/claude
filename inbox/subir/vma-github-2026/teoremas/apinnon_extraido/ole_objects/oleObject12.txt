@@ -1,0 +1,15 @@
+                           arrowstyle='-|>', mutation_scale=12, lw=1.8, color=color, alpha=0.8)
+---
+        # corregir: 0.24+1.44=1.68
+---
+        # flecha de empuje en el eje
+---
+        ax.arrow(0, 0, -0.6, 0, head_width=0.1, head_length=0.12, fc='#F18F01', ec='#F18F01', length_includes_head=True)
+---
+        ax.arrow(cx, cy, 40, 0, head_width=10, head_length=12, fc='#F18F01', ec='#F18F01', length_includes_head=True)
+---
+        ha='center', va='top', fontsize=11)
+---
+        theta_r = 0.0 + 0.01*f
+---
+        theta_r = 0.24 + 0.12*(f-24)  # empuje

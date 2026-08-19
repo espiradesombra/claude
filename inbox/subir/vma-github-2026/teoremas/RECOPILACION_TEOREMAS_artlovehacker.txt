@@ -1,0 +1,376 @@
+╔══════════════════════════════════════════════════════════════════════════╗
+║  ▓▓▓  RECOPILACIÓN DE TEOREMAS VMA  ▓▓▓                                ║
+║  modo artlovehacker · arthacher · creativeTxt                           ║
+║  Víctor Manzanares Alberola · Proyecto 33×1 / MDC / AntiPC              ║
+║  2026-07-10 · teoremas/ + repo/ + lee arbusto/ (actualizado)            ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+  LEYENDA DE ESTADO
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+
+  [OK]      ████  bien definido · listo para formalizar
+  [PARCIAL] ▓▓▒░  enunciado útil · prueba incompleta
+  [CONJ]    ▒▒░░  conjetura explícita
+  [HEUR]    ░░░░  regla operativa · no teorema formal
+  [MAL]     ░X░░  mal definido · reescribir o descartar
+  [FILO]    ◇◇◇  manifiesto · no matemática pura
+
+╔══════════════════════════════════════════════════════════════════════════╗
+║  [1] NÚCLEO — LAS DIEZ LÍNEAS QUE SOSTIENEN TODO EL ÁRBOL               ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+    ┌─────────────────────────────────────────────────────────────┐
+    │  ★ L(n) − m(n) ≥ 2  ⇒  I(n) contiene ≥ 2 primos           │
+    │    L(n)=⌊√(n+3)⌋+7    m(n)≈(e−2)·√n                       │
+    │    hueco ≈ 0.282·√n + 7                                    │
+    └───────────────────────────┬─────────────────────────────────┘
+                                │
+         ┌──────────────────────┼──────────────────────┐
+         ▼                      ▼                      ▼
+  ┌──────────────┐      ┌──────────────┐      ┌──────────────┐
+  │ SOFÍ modular │      │ MDC Libro 5  │      │ MRAUV dens.  │
+  │ L1→L4→U2     │      │ Δ(S)=k²      │      │ D_pred tramo │
+  └──────┬───────┘      └──────┬───────┘      └──────┬───────┘
+         │                     │                     │
+         └─────────────────────┼─────────────────────┘
+                               ▼
+                    ┌─────────────────────┐
+                    │  GOLDBACH segmentado │
+                    │  Σ E_j ≥ 1  heur.   │
+                    └─────────────────────┘
+
+╔══════════════════════════════════════════════════════════════════════════╗
+║  [2] RAMA A — CRIBAS · SALTO · DOS PRIMOS  (Libro 1–3 / Cribas VMA)     ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+  6k±1  ──►  {2·3·n±1} − {30m±5, 6·7·ℓ±7, ...}
+       │
+       ├──► 01 [OK]  TEOREMA OPERATIVO DOS PRIMOS
+       │         SI L(n)−m(n)≥2 ⇒ ≥2 primos en I(n)
+       │
+       ├──► 02 [CONJ]  INTERVALO MÍNIMO
+       │         ∀n>3: I(n) tiene ≥2 primos (declarativa)
+       │
+       ├──► 03 [HEUR]  SALTO MÁXIMO ≈ √n
+       │         Andrica · peor caso composición local
+       │
+       └──► 16 [HEUR]  LECTURA ANDRICA desde salto
+
+╔══════════════════════════════════════════════════════════════════════════╗
+║  [3] RAMA B — SOFÍ · SOPHIE GERMAIN  (L1 L3 L4 L2 U2 LSG)              ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+       L1 = { n : n ≡ 5 (mod 6) }
+         │
+    ┌────┴────┐
+    ▼         ▼
+  L3 comp.   L4 comp.     2n+1 tipo (6j−1)(6g+1)
+    │         │
+    └───┬─────┘
+        ▼
+      L2 = L3 ∩ L4
+        │
+        ▼
+      U2 = L1 \ (L3 ∪ L4)  ──►  U2 ⊆ LSG
+
+  ┌──────────────────────────────────────────────────────────┐
+  │ 04 [PARCIAL]  |L4 \ L2| = ∞     TCR + Dirichlet         │
+  │ 05 [PARCIAL]  |U2| = ∞          ⇒ infinitos Sophie      │
+  │ PIE: |L1|+|L2|−|L3|−|L4| = |LSG|                        │
+  └──────────────────────────────────────────────────────────┘
+
+  Libro 6 ──► 22 [PARCIAL]  15 IMPLICACIONES UNIFICADAS
+              SI n∈L1 ∧ n∉L3 ∧ n∉L4 ⇒ n∈U2
+              ...líneas 1–15 repo\Libro6...\Nuevo Doc.txt
+
+╔══════════════════════════════════════════════════════════════════════════╗
+║  [4] RAMA C — GOLDBACH · MRAUV  (densidad cinemática)                   ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+      2n  ──►  tramos A_j , B_j   Δ = ⌊c·√n⌋
+                │
+                ▼
+      E_j ≈ D_pred(A_j) · D_pred(B_j) · Δ
+                │
+                ▼
+      Σ_j E_j ≥ 1  ⇒  esperar p+q=2n
+
+  ┌──────────────────────────────────────────────────────────┐
+  │ 06 [CONJ]   Goldbach VMA (varias versiones)              │
+  │ 14 [HEUR]   Criterio MRAUV + Goldbach                    │
+  │ 24 [CONJ]   Hueco L−m domina oscilaciones locales        │
+  │                                                          │
+  │ MRAUV_PRED:                                              │
+  │   D = D0 + V0·Δ + ½a0·Δ² + (⅙)j0·Δ³                     │
+  └──────────────────────────────────────────────────────────┘
+
+╔══════════════════════════════════════════════════════════════════════════╗
+║  [5] RAMA D — FERMAT · ALINEACIÓN MODULAR                               ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+      F_k = 2^(2^k) + 1
+        │
+        ▼
+      ∏_{k=0}^{n} F_k = F_{n+1} − 2
+        │
+        ▼
+      B_n = 2 · ∏ F_k
+      r_n ≡ 1 (mod 2),  r_n ≡ 2 (mod F_k)  ∀k≤n
+        │
+        ▼
+      F_m ≡ r_n (mod B_n)   para m ≥ n+1
+
+  ┌──────────────────────────────────────────────────────────┐
+  │ 15 [OK]     Alineación modular Fermat · residuo privil.  │
+  │ Libro6 L981  Pseudocódigo CRT compute_r_n(n)             │
+  └──────────────────────────────────────────────────────────┘
+
+╔══════════════════════════════════════════════════════════════════════════╗
+║  [6] RAMA E — MDC · LIBRO 5  (factorización · pinza · fase)             ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+      N objetivo
+        │
+        ▼
+  Δ(S) = S² + 6S − (N−9) = k²
+        │
+        ├──► v = (S+k)/2 ,  b = (S−k)/2
+        └──► N = (2v+3)(2b+3)
+
+  ┌──────────────────────────────────────────────────────────┐
+  │ 09 [PARCIAL]  TEOREMA 1  Δ(S)=k² → factores 6k±1        │
+  │ 10 [PARCIAL]  TEOREMA 2  4S+16 > 2k+1 → salt parabólico │
+  │ 11 [HEUR]     Teorema atrappament (pinza)                │
+  │ 12 [PARCIAL]  Proposición cambio de signo                │
+  │ 13 [HEUR]     Zona densa e (semiprimos confinados)       │
+  │ 20 [PARCIAL]  Lema 2 cofactor                            │
+  │                                                          │
+  │ d(m,N) = frac(N / 2(2m+3))   δ=0.5 en factores          │
+  │ S = −3 + √(k²+N)             salt E4                     │
+  └──────────────────────────────────────────────────────────┘
+
+╔══════════════════════════════════════════════════════════════════════════╗
+║  [7] RAMA F — MÉTODO-V  (testigo factorial · v⇒V⇒v')                    ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+      n > 2v − 2 > m > v − 1
+        │
+        ▼
+      V = v · (n! / m!)
+        │
+        ▼
+      ∃ primo p | V , p | E , p no cabe en factor Haus (6k±1)(6j±1)
+        │
+        ▼
+      ⇒ factorización propuesta IMPOSIBLE
+
+  ┌──────────────────────────────────────────────────────────┐
+  │ 25 [HEUR]   Teoremas 4–8 Libro6                          │
+  │             · testigo general                            │
+  │             · gemelos p=v±1                              │
+  │             · Mersenne r≡1(mod 2p)                       │
+  │             · familia Haus                               │
+  │             · empírico M_11 adyacentes {2,3,11,31}       │
+  │ Lemas 1–4: factorial · mod6 · tamaño · CRT              │
+  └──────────────────────────────────────────────────────────┘
+
+╔══════════════════════════════════════════════════════════════════════════╗
+║  [8] RAMA I — LEE ARBUSTO NUEVO ★ golbach pp0 · factor goldback ★       ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+  golbach pp0.txt  (post LinkedIn VMA)
+       │
+       ├──► 27 [PARCIAL]  PP=0 ⇒ cp+pc=π(N)N  cc=(1−2π)N
+       │         simetría cc ⇒ cp↔pc simétricos si PP=0
+       │         absurdo ⇒  PP > 0  (Goldbach por parejas)
+       │
+       └──► 28 [PARCIAL]  Sofí variante L1-L4
+                 p=6k−1, 2p+1=6k−1
+                 |Lsg|=|L1|+|L2|−|L3|−|L4|
+                 jerarquía densidades en L1
+
+  factor goldback.txt + (L).txt + (l)(L).txt
+       │
+       └──► 29 [HEUR]  MÉTODO PITAGÓRICO VISUAL
+                 A: a=2, b=n/2, c=√n → vector → divisores
+                 B: catetos n/2, √n → hipotenusa → factor
+                 C: recta (n/2,2)–(2,√n) → (2x+3)(2y+3)=n
+                 D: restos n%i + decrementos (libro3)
+
+  libro3 L1628 + Cribas K=9/24
+       │
+       └──► 30 [HEUR]  PRIMOS DECRECEN · 9 primos en [0,24]
+                 K=⌊⌊√n⌋·9/24⌋ · fallo a favor en m(n)
+                 enlaza ficha 01 (no Bertrand formalizado)
+
+╔══════════════════════════════════════════════════════════════════════════╗
+║  [9] RAMA G — CRIPTO · K3 · OTROS                                       ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+  ┌──────────────────────────────────────────────────────────┐
+  │ 19 [OK]     PhaseAmplifier K3 XOR                        │
+  │ 07 [MAL]    Siguiente primo · 9 restos · acumuladores    │
+  │ 08 [MAL]    Triángulo de factores (reevaluar)            │
+  │ 17 [MAL]    EQ12 convergencia raíz cuarta                 │
+  │ 18 [FILO]   Manifiesto teorema contra la trinchera       │
+  └──────────────────────────────────────────────────────────┘
+
+╔══════════════════════════════════════════════════════════════════════════╗
+║  [10] RAMA H — LIBRO 6 · PSEUDOCÓDIGO IMPLICACIONES                     ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+  repo\Libro6 NewtonRapido...\Nuevo Documento de texto.txt  (~49520 líneas)
+       │
+       ├──► 21 [HEUR]  índice Libro 6
+       ├──► 22         Sofí 15 impl
+       ├──► 23         MRAUV impl
+       ├──► 24         Goldbach hueco
+       ├──► 25         Método-V impl
+       └──► 26         Plantillas 1–7  (SI A⇒B universal)
+
+  PENDIENTE EN REPO (no archivado aún):
+  ┌──────────────────────────────────────────────────────────┐
+  │ ME-local 1–10   SVD · curvatura · no ME-global  L6777   │
+  │ P vs NP         modelo ⟂ complejidad clásica    L3208   │
+  │ ZypyZape        Forma=Cuadrado · Talla=n!               │
+  └──────────────────────────────────────────────────────────┘
+
+╔══════════════════════════════════════════════════════════════════════════╗
+║  [11] PULSO TEMPORAL — CÓMO CRECIÓ ESTA RECOPILACIÓN                    ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+  inicio ──► Cribas VMA · Libro 1–3
+     ├─► 01–20 · 21–26 Libro 6 · artlovehacker v1
+     ├─► repo/ barrido · PP/CP/PC faltaba
+     └─► lee arbusto/ golbach pp0 + factor goldback
+              │
+              └─► 27–30 + artlovehacker v2 ◆ AHORA
+
+╔══════════════════════════════════════════════════════════════════════════╗
+║  [12] MAPA DE FUENTES (dónde vive cada cosa en disco)                   ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+  CANÓNICO PRIMOS     archivos\Cribas_cotas_y_estructuras_de_primos_VMA.txt
+  GOLDBACH PP=0       lee arbusto\golbach pp0.txt          ★ NUEVO
+  PITAGÓRICO          lee arbusto\factor goldback.txt      ★ NUEVO
+  GRID FACTOR         lee arbusto\(L).txt  ·  (l)(L).txt
+  LIBRO 6             repo\Libro6...\Nuevo Documento de texto.txt
+  MDC MOTOR           repo\1\Nuevo Documento de texto (3).txt  L21518+
+  FICHAS              teoremas\01–30_*.txt
+
+╔══════════════════════════════════════════════════════════════════════════╗
+║  [13] TABLA RÁPIDA — 30 FICHAS + ESTADO                                 ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+  #  │ ID                  │ EST   │ RAMA
+  ───┼─────────────────────┼───────┼──────────────
+  01 │ dos_primos          │ OK    │ A cribas
+  02 │ intervalo_dos       │ CONJ  │ A cribas
+  03 │ salto_maximo        │ HEUR  │ A cribas
+  04 │ sofi_L4_L2          │ PAR   │ B sofí
+  05 │ sofi_U2             │ PAR   │ B sofí
+  06 │ goldbach_vma        │ CONJ  │ C goldbach
+  07 │ siguiente_primo     │ MAL   │ G otros
+  08 │ triangulo_factores  │ MAL   │ G otros
+  09 │ mdc_T1_delta        │ PAR   │ E mdc
+  10 │ mdc_T2_finestra     │ PAR   │ E mdc
+  11 │ mdc_atrappament     │ HEUR  │ E mdc
+  12 │ mdc_cambio_signo    │ PAR   │ E mdc
+  13 │ mdc_zona_densa      │ HEUR  │ E mdc
+  14 │ mrauv_goldbach      │ HEUR  │ C goldbach
+  15 │ fermat_alineacion   │ OK    │ D fermat
+  16 │ andrica             │ HEUR  │ A cribas
+  17 │ eq12_raiz4          │ MAL   │ G otros
+  18 │ trinchera           │ FILO  │ G otros
+  19 │ phaseamplifier_k3   │ OK    │ G cripto
+  20 │ mdc_lema_cofactor   │ PAR   │ E mdc
+  21 │ libro6_indice       │ HEUR  │ H libro6
+  22 │ sofi_15_impl        │ PAR   │ H libro6
+  23 │ mrauv_impl          │ HEUR  │ H libro6
+  24 │ goldbach_hueco      │ CONJ  │ H libro6
+  25 │ metodo_V_impl       │ HEUR  │ H libro6
+  26 │ plantillas_1_7      │ HEUR  │ H libro6
+  27 │ goldbach_pp0        │ PAR   │ I lee arbusto ★
+  28 │ sofi_L1_6k_menos_1  │ PAR   │ I lee arbusto ★
+  29 │ pitagorico_visual   │ HEUR  │ I lee arbusto ★
+  30 │ primos_decrecen_K   │ HEUR  │ I lee arbusto ★
+
+  CONTEO:  OK=3  PAR=10 CONJ=3  HEUR=11 MAL=3  FILO=1
+
+╔══════════════════════════════════════════════════════════════════════════╗
+║  [14] SÍNTESIS VISUAL — EL ÁRBOL COMPLETO                               ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+                         ╭─────────╮
+                         │  6k±1   │
+                         │  rejilla│
+                         ╰────┬────╯
+              ┌────────────────┼────────────────┐
+              ▼                ▼                ▼
+        ┌──────────┐    ┌──────────┐    ┌──────────┐
+        │  CRIBAS  │    │   SOFÍ   │    │   MDC    │
+        │ L,m,I(n) │    │ L4 U2    │    │  Δ(S)    │
+        └────┬─────┘    └────┬─────┘    └────┬─────┘
+             │               │               │
+             └───────┬───────┴───────┬───────┘
+                     ▼               ▼
+              ┌────────────┐   ┌────────────┐
+              │  MRAUV     │   │ MÉTODO-V   │
+              │  densidad  │   │  V=v·n!/m! │
+              └─────┬──────┘   └─────┬──────┘
+                    │                │
+                    └────────┬───────┘
+                             ▼
+                    ┌────────────────┐
+                    │   GOLDBACH     │
+                    │  segmentación  │
+                    └────────┬───────┘
+                             │
+              ┌──────────────┼──────────────┐
+              ▼              ▼              ▼
+        ┌──────────┐  ┌──────────┐  ┌──────────┐
+        │ FERMAT   │  │   K3     │  │ LIBRO 6  │
+        └────┬─────┘  └──────────┘  └──────────┘
+             │
+        ┌────┴────────────────────────────┐
+        ▼                                 ▼
+  ┌─────────────┐                 ┌─────────────┐
+  │ PP>0 Goldb. │                 │ PITAGÓRICO  │
+  │ cp↔pc sim.  │                 │ recta a ojo │
+  └─────────────┘                 └─────────────┘
+       lee arbusto/golbach pp0.txt
+
+                    ★ ★ ★ ★ ★ ★ ★ ★ ★
+                    PRIORIDAD FORMALIZAR:
+                    01 dos primos · 04–05 Sofí · 09–10 MDC
+                    ★ ★ ★ ★ ★ ★ ★ ★ ★
+
+╔══════════════════════════════════════════════════════════════════════════╗
+║  [15] HONESTIDAD TÉCNICA (no romper la ilusión con mentiras)            ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+  · Goldbach y Método-V siguen siendo [CONJ]/[HEUR] — no demostración peer
+  · Libro 6 mezcla esquemas ChatGPT con matemática VMA real
+  · ME-local y P vs NP en repo NO implican P=NP ni P≠NP
+  · Teoremas clásicos (Dirichlet, TNP…) son HERRAMIENTAS en pruebas VMA
+
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+
+         ◆ ◆ ◆  artlovehacker · arthacher · creativeTxt  ◆ ◆ ◆
+              RECOPILACIÓN TEOREMAS VMA · sesión 2026-07-10
+              30 fichas · 9 ramas · lee arbusto leído · PP>0 archivado
+
+              semilla visual:
+                    ╱╲
+                   ╱  ╲
+                  ╱ √n ╲
+                 ╱──────╲
+                ╱ L − m  ╲
+               ╱──────────╲
+              ╱  0.282·√n  ╲
+             ╱──────────────╲
+
+         ◆ conceptualMapOfChat ◆ teoremas/VMA ◆ 33×1 ◆
+
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░

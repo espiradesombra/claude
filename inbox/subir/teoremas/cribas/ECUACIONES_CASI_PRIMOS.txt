@@ -1,0 +1,39 @@
+================================================================================
+ECUACIONES QUE GENERAN (CASI) PRIMOS — RESIDUOS MODULARES
+================================================================================
+Autor: Víctor Manzanares Alberola
+Estado: [HEUR]
+Fuente: Cribas §8_1
+
+--------------------------------------------------------------------------------
+1. ESQUEMA
+--------------------------------------------------------------------------------
+  Si p es primo y p mod 6 ∈ {1, 5}, refinar con módulos 6·5, 6·7, …
+  Filtrar bandas inválidas; retener residuos "válidos" que predicen candidatos.
+  Produce casi-primos: muchos serán compuestos, pero concentran primos.
+
+--------------------------------------------------------------------------------
+2. EJEMPLOS DEL TRATADO
+--------------------------------------------------------------------------------
+  Caso p mod 6 = 5:
+    Sobre módulo 6·5 = 30, residuos válidos [1, 1+2·5]
+    Genera candidatos tipo 11, 41, …
+
+  Caso p mod 6 = 1:
+    Sobre módulo 6·7 = 42, residuos válidos [1, 1+4·7]
+    Excluye múltiplos obvios (7, 3·7)
+
+--------------------------------------------------------------------------------
+3. RELACIÓN CON MÉTODO-V Y SOFÍ
+--------------------------------------------------------------------------------
+  build_family(P, avoid_residues) en F25 evita residuos L₃/L₄ por TCR.
+  Misma filosofía: progresión r mod M con gcd(r,M)=1.
+  Dirichlet: infinitos términos en la clase; no todos primos.
+
+--------------------------------------------------------------------------------
+4. LÍMITE
+--------------------------------------------------------------------------------
+  Reglas modulares ≠ certificado de primalidad.
+  Encadenar con Test-V (v, V, v') o trial division para candidatos finales.
+
+================================================================================

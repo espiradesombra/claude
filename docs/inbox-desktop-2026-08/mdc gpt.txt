@@ -1,0 +1,252 @@
+jue, 6 ago a la(s) 19:37
+copia_de_untitled1.py
+Python
+mdc_v23.py
+Python
+Números oTra VeZ 1.pdf
+PDF
+con siguiente primo y mdc sabes hacer el truco de talla=p*q -> mdc(talla*siguienteprimo(talla)) -> p-1<raiz talla->ksweep O(1) ?? entens ?? 
+
+Sí, creo que entiendo la idea que propones, aunque hay un detalle importante.
+
+Si
+
+N = p·q (semiprimo),
+s = siguiente_primo(N),
+calculas g = mcd(N, s),
+
+entonces siempre será:
+
+g = 1.
+
+Porque s es primo y s > N, así que no puede compartir ningún factor con N.
+
+Creo que lo que realmente quieres decir es algo del estilo:
+
+usar la distancia al siguiente primo para obtener información sobre la talla del semiprimo;
+construir un número derivado de N y del siguiente primo;
+aplicar un mcd contra otra expresión para recuperar el factor pequeño p.
+
+Eso sí tendría sentido como línea de investigación.
+
+Cuando escribes:
+
+talla = pq -> mdc(tallasiguienteprimo(talla)) -> p-1<√talla -> ksweep O(1)
+
+yo lo interpreto como:
+
+obtener s = siguiente_primo(N);
+formar una expresión con N y s;
+aplicar un mcd con otra cantidad relacionada;
+demostrar que el factor pequeño queda forzado a estar en un rango p-1 < √N;
+entonces el k-sweep sólo recorre una ventana constante.
+
+La parte crítica es el segundo MCD. Un mcd(N, siguiente_primo(N)) por sí solo no revela factores.
+
+Si tu truco realmente usa algo como
+
+mcd(N·s, f(N,s))
+
+o
+
+mcd(N+s, ...)
+
+o cualquier otra combinación, entonces sí merece analizarse.
+
+De hecho, viendo tu trabajo sobre MDC v23 y el K-sweep orientado a √N, la idea de reducir el rango antes del barrido encaja con la arquitectura que ya estás desarrollando.
+
+Creo que me falta una pieza del truco. Escríbelo exactamente en una línea, por ejemplo:
+
+g = mcd( ..., ... )
+
+con las dos expresiones completas. Ahí podré comprobar si realmente puede reducir el problema hasta un K-sweep prácticamente constante o si hay algún caso donde falle.
+
+Hecho. He empezado por reconstruir L5 desde dentro, no por inventar otra versión. Y hay una conclusión bastante clara.
+
+1. El mapa real de L5
+
+Las carpetas L5 están organizadas como un corpus de código + textos + resultados:
+
+PY L5: 26 Python + 1 TXT.
+files l5: ksweep_predictiu.py y militar_test.py.
+filestot l5: reúne las versiones v15–v23, mdc_estudi_senyal.py, híbridos, benchmarks, etc.
+txt l5: contiene todo libro5.txt, v15 en adelante.txt, 2a+3..., recopilaciones y demás documentación.
+
+Y el propio Libro5 Factorizacion con 2v+3 confirma que esas son las piezas que forman el corpus MDC/L5.
+
+2. He encontrado la pieza que buscábamos
+
+Y es PY L5/mdc_v17.py.
+
+No v23.
+
+La v17 declara literalmente:
+
+“PINÇA DOBLE 4+4”
+
+y hace:
+
+m, m+1, m+2, m+3
+m, m-1, m-2, m-3
+
+y de cada dirección calcula:
+
+V
+A
+J
+
+para después obtener un salto hacia delante y otro hacia atrás.
+
+Esto es mucho más cercano a lo que tú estabas describiendo que v23.
+
+3. Pero encontré algo todavía más interesante
+
+files l5/ksweep_predictiu.py.
+
+Ese código hace algo que se parece muchísimo a tu explicación de:
+
+“4 mediciones → diferenciales → salto → una iteración de K-sweep”
+
+Utiliza cuatro puntos consecutivos:
+
+r0
+r1
+r2
+r3
+
+calcula:
+
+velocidad
+aceleración
+
+y construye una ecuación cuadrática entera para predecir el m*.
+
+Después no barre miles de posiciones: comprueba el punto predicho y un radio pequeño de ±4.
+
+Eso es importantísimo.
+
+Porque significa que en L5 sí existe ya una implementación cuya filosofía es:
+
+4 mediciones
+      ↓
+Δ
+      ↓
+Δ²
+      ↓
+predicción cuadrática
+      ↓
+m*
+      ↓
+±4 comprobaciones
+
+No es la misma implementación que la pinza 4+4, pero son dos piezas que parecen poder combinarse.
+
+4. Y ahora entiendo mejor tu crítica de v14 → v23
+
+La evolución que veo es aproximadamente:
+
+v14
+ │
+ │  señal + pinza / navegación
+ ↓
+v15
+ │
+ │  Fraction + segmentación armónica
+ ↓
+v16
+ │
+ │  señal espejo ΔΦ
+ ↓
+v17
+ │
+ │  ★ PINZA DOBLE 4+4
+ │  ★ V/A/J
+ │  ★ salto exacto por pendiente
+ ↓
+v18
+ │
+ │  K-sweep zona densa
+ ↓
+v19
+ │
+ │  ΔΦ → bisección
+ ↓
+v20
+ │
+ │  K-sweep + bisección
+ ↓
+v21
+ │
+ │  signo entero
+ ↓
+v22
+ │
+ │  bisección cuaternaria
+ ↓
+v23
+ │
+ └── 25/75 + K-sweep
+
+Esto no demuestra que las versiones posteriores sean "peores", pero sí demuestra que fueron cambiando el mecanismo central.
+
+En particular, v17 todavía tiene explícitamente la pinza 4+4 y el salto; v18 pasa a colocar un K-sweep exhaustivo en [m_conv,m_max]; v19 convierte ΔΦ en un oráculo de bisección; v20 consolida criba + K-sweep + bisección; y v22/v23 siguen optimizando la bisección.
+
+Tu intuición de que se pudo perder el salto original es, por tanto, una hipótesis razonable que merece comprobarse.
+
+5. Hay además una pieza matemática que NO debemos tragarnos
+
+L5 afirma en v17:
+
+si cambia el signo de ΔΦ entre dos sondas, existe un factor en el segmento.
+
+Pero el propio código lo presenta como “teorema de atrapamiento (verificado experimentalmente)”.
+
+Eso no es todavía una demostración matemática.
+
+Y eso es precisamente lo que tenemos que hacer ahora.
+
+Mi propuesta ahora
+
+Yo congelaría v17 + ksweep_predictiu.py como las dos piezas históricas fundamentales:
+
+                 MDC-L5 ORIGINAL
+                       │
+          ┌────────────┴────────────┐
+          │                         │
+       v17 4+4                ksweep_predictiu
+          │                         │
+     4 → + 4 ←                 4 puntos
+          │                         │
+       V A J                    Δ + Δ²
+          │                         │
+     doble dirección          predicción cuadrática
+          │                         │
+          └────────────┬────────────┘
+                       ↓
+                 m_predicho
+                       ↓
+                 K-sweep ±4
+                       ↓
+                   FACTOR
+
+Ese es el código que yo reconstruiría primero.
+
+No añadiría todavía v23, bisección cuaternaria, ni más capas.
+
+Y luego haría algo que hasta ahora falta: un benchmark científico específico que mida, para miles de semiprimos balanceados, cuántas evaluaciones necesita realmente este mecanismo desde la pinza hasta el factor.
+
+Si resulta que habitualmente son 4+4 → predicción → ≤1 K-sweep, entonces tendremos algo muy concreto que investigar.
+
+Si falla, sabremos exactamente dónde.
+
+Eso me parece ahora mismo mucho más valioso que seguir fabricando v24.
+
+vale 
+
+Perfecto. Entonces nos quedamos con v17 + ksweep_predictiu.py como núcleo histórico y no añadimos complejidad todavía.
+
+El siguiente paso lógico es comprobarlo experimentalmente: 4+4 → diferenciales → predicción → K-sweep ±4 → factor, midiendo exactamente cuántas comprobaciones necesita y cuándo falla.
+
+ok 
+
+👍 Seguimos con v17 + ksweep_predictiu.py, sin añadir capas hasta comprobar qué hace realmente el mecanismo.

@@ -1,0 +1,15 @@
+ incluido en C++ (para portabilidad); `ULP` se calcula contra `libm`/CRlibm. Para una auditor
+---
+# logbench: Comparativa de tu algoritmo vs TOP libm
+---
+- **CRlibm** (log natural con *correct rounding*)
+---
+- **TU_ALGO** (doble ajuste simult
+---
+- **libm** del sistema (`std::log`, `std::pow`)
+---
+- CRlibm: log con *correct rounding* en doble precisi
+---
+- SLEEF: variantes 1-ULP con rutas SIMD.
+---
+./build/bench_log && ./build/bench_root && python3 gen_report.py

@@ -1,0 +1,27 @@
+ID: 03_salto_maximo
+ESTADO: [HEUR] — Cota heurística, no teorema
+AUTOR: VMA (*Números i numeritos*, Cribas §4)
+FUENTE: recopilacion de libros.txt pág.19-23; Cribas §4
+
+--------------------------------------------------------------------------------
+DEFINICIÓN OPERATIVA
+--------------------------------------------------------------------------------
+SaltoMaximo(n):
+  Considerando todos los 6k±1 menores que √n como primos (suposición fuerte),
+  el salto máximo entre primos consecutivos sería ≈ √n.
+
+Iteración {+4, +2} sobre candidatos 6k±1 hasta √n.
+
+--------------------------------------------------------------------------------
+LECTURA ANDRICA
+--------------------------------------------------------------------------------
+  √n − √(n − √n) < 1  (guía cualitativa; límite cuando n→∞)
+
+--------------------------------------------------------------------------------
+GAPS — POR QUÉ NO ES TEOREMA
+--------------------------------------------------------------------------------
+- La premisa “todos los 6k±1 ≤ √n son primos” es falsa.
+- Es límite superior teórico, no cota real del salto.
+- Útil como herramienta pedagógica y cota laxa.
+
+================================================================================

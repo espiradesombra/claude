@@ -1,0 +1,68 @@
+================================================================================
+CADENAS TÍPICAS — FLUJOS DE TRABAJO VMA
+================================================================================
+Autor: Víctor Manzanares Alberola
+Fecha: 2026-07-10
+
+--------------------------------------------------------------------------------
+CADENA A — "¿El universo 6k±1 sigue vivo?"
+--------------------------------------------------------------------------------
+  1. Clasificar n con Sofí (L₁,L₃,L₄,L₂,U₂)
+  2. Aplicar Criva → estimar proporción supervivientes
+  3. PIE (F28) → |Lsg| ≠ 0 si |L₃|+|L₄| < |L₁|+|L₂|
+  4. Teorema L → subfamilias 2v+2, 3v+2 no colapsan
+  5. (Opcional) Método-V en F_{M,r} para testigos factoriales
+
+  Salida honesta: existencia de clases infinitas no colapsadas, no Goldbach global.
+
+--------------------------------------------------------------------------------
+CADENA B — "¿Hay representación Goldbach para este 2n?"
+--------------------------------------------------------------------------------
+  1. Clasificar parejas PP/PC/CP/CC (F27)
+  2. Probar PP=0 → reducción al absurdo por simetría (esquema)
+  3. MRAUV: estimar número esperado de representaciones (heurística)
+  4. NO usar solo v'(n) — consultar F34 antes de afirmar PP
+
+  Salida honesta: argumento condicional o predicción, no teorema general.
+
+--------------------------------------------------------------------------------
+CADENA C — "¿Factorización imposible en patrón Haus/Mersenne?"
+--------------------------------------------------------------------------------
+  1. Definir v, m, n en rango Método-V (F25)
+  2. Calcular V = v·n!/m!
+  3. Buscar primo testigo p|V que contradiga factorización permitida (T4–T7)
+  4. Cruzar con MDC si hay ventana ΔS local
+
+  Salida: certificado de imposibilidad para patrón específico, no para todo n.
+
+--------------------------------------------------------------------------------
+CADENA D — "Exploración visual de divisores"
+--------------------------------------------------------------------------------
+  1. Rejilla Pitagórica (2x+3)(2y+3)=n (F29)
+  2. Filtrar con cribas modulares (Criva)
+  3. Verificar L₃/L₄ en candidatos sobrevivientes
+
+--------------------------------------------------------------------------------
+CADENA F — "Generar primos / mapa v (SunRaman Jet)"
+--------------------------------------------------------------------------------
+  1. Elegir modo: gvma_criba_jet (rango pequeño) o gvma_criba_segmentada (1MB)
+  2. v compuesto si v = 2nm + 3n + 3m + 3
+  3. Primo candidato: mapa[v]==0 → N = 2v+3
+  4. (Opcional) gvma_factorizar_flash(v) para diagnóstico
+  5. Cruzar con Sofí: supervivientes Lsg no automáticos — verificar L₃/L₄
+
+  Equivalente C3 criba modular; mejor para GPU y bloques incrementales.
+
+--------------------------------------------------------------------------------
+CADENA E — "Segunda pasada (conocimiento reutilizable)"
+--------------------------------------------------------------------------------
+  Inspiración: sale-it AntiPC — primera pasada adquiere, segunda ~O(1) con K(N).
+
+  En matemáticas VMA:
+    1. Primera pasada: clasificación Sofí + conteos PIE en rango [N₁,N₂]
+    2. Segunda pasada: solo revisar bordes donde ΔS (MDC) cambió signo
+    3. MRAUV solo recalibrar en tramos nuevos, no recomputar todo
+
+  Ver carpeta: segunda_vuelta/
+
+================================================================================
