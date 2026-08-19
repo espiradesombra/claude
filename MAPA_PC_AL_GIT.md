@@ -21,6 +21,8 @@ Tot el que he cregut útil del Desktop, organitzat al repo.
 - `mat ed.7z` corrupto
 - **Borrador de carta Embajada China / Defensa** → només nota local al Desktop `_NOTA_NO_GIT_carta_embajada.txt` (pregunta'm si el vols en privat)
 
+| Escritorio `EliminaDuplicadosK3.exe` (build 2026-08) | `hashtool-work/bin/EliminaDuplicadosK3.exe` |
+
 ## Com navegar
 
 1. Docs tècnics nets: `docs/tecnicos-vma/00_INDICE.md`

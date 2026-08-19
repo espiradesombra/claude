@@ -51,6 +51,7 @@ Monorepo **VMA** (Víctor Manzanares Alberola): mates, energía (ZypyZape / Quij
 |-------|--------|
 | AntiPC (runtime / UDP / KOP) | `antipc/`, `antipc-port-c/`, `inbox/carpetas-de-escritorio-select/06-python-runtime/` |
 | K3 / hash / integridad | `vma-k3/`, `encriptacionGeometrica/`, `hashtool-*` |
+| **EliminaDuplicadosK3** (GUI + exe) | `hashtool-work/bin/EliminaDuplicadosK3.exe` + `elimina_duplicados_k3.py` |
 | Sale-it / packs | `sale-it/`, `inbox/subir/` |
 
 ### Webs
