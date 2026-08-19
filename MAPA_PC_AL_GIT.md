@@ -10,13 +10,15 @@ Tot el que he cregut útil del Desktop, organitzat al repo.
 | `Desktop\repo\subir\` | `inbox/subir/` |
 | `Desktop\carpetas de escritorio\` (00–08 + VMA) | `inbox/carpetas-de-escritorio-select/` |
 | Staging complet | `pc-missing-2026-08-20/` (còpia d'arxiu / audit) |
+| **Pasada selectiva** `monton viejo revisar/archivos` (gemelos py, VMA Primos, ZZ/KM docs) | [`docs/from-monton-viejo-2026-08/`](docs/from-monton-viejo-2026-08/) |
 
 ## Exclòs deliberadament
 
 - Instal·ladors, cracks, APKs, Alcohol/Portables
 - Vídeos/captures personals
-- `monton viejo revisar` (~333 GB)
-- Zips mirall del repo sencer
+- El **monton entero** (~333 GB): zips OneDrive/Telegram/Backup, ISOs, fotos (`azul`), apuntes UPV con copyright
+- Zips mirall del repo (`grok.zip` ja duplicat; `vma.zip` = `.git`; `claude-main*.zip`)
+- `mat ed.7z` corrupto
 - **Borrador de carta Embajada China / Defensa** → només nota local al Desktop `_NOTA_NO_GIT_carta_embajada.txt` (pregunta'm si el vols en privat)
 
 ## Com navegar

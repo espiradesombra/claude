@@ -66,6 +66,7 @@ Monorepo **VMA** (Víctor Manzanares Alberola): mates, energía (ZypyZape / Quij
 |--|--|
 | Muñeco de Nieve — órbitas en espiral | [`docs/muneco-nieve/`](docs/muneco-nieve/) |
 | Inbox Desktop (docx/txt VMA) | [`docs/inbox-desktop-2026-08/`](docs/inbox-desktop-2026-08/) |
+| **Rescate montón viejo** (selectivo) | [`docs/from-monton-viejo-2026-08/`](docs/from-monton-viejo-2026-08/) |
 | Staging audit PC | [`pc-missing-2026-08-20/`](pc-missing-2026-08-20/) |
 
 ---
@@ -75,7 +76,7 @@ Monorepo **VMA** (Víctor Manzanares Alberola): mates, energía (ZypyZape / Quij
 ```
 claude/
 ├── 33x1/                    ← trato político-técnico + inbox cartas
-├── docs/                    ← física, gemelos toy, técnicos-vma, muneco-nieve
+├── docs/                    ← física, gemelos, técnicos-vma, muneco, from-monton-viejo
 ├── kilometro_sim/           ← sims Kilómetro (Desktop/33x1)
 ├── kilometre;(soles_bateria)/
 ├── VMA_mates_rescat_2026/   ← pack mates + XFI rescatado
