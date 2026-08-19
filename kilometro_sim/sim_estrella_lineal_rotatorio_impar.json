@@ -1,0 +1,291 @@
+{
+  "protocolo": "lineal + rotatorio + rearme impar flotaci\u00f3n/perneo",
+  "sin_lift_rearme_impar": {
+    "params": {
+      "m_obj": 30.0,
+      "m_kick": 10.0,
+      "delta_h": 12.0,
+      "v_down": 1.5,
+      "eta_gen": 0.88,
+      "drag_frac": 0.07,
+      "E_rob_dist_J": 80.0,
+      "E_perno_J": 1.5,
+      "n_pernos_por_rearme": 4,
+      "eta_lift": 0.9,
+      "n_cycles": 12,
+      "rearm_every_odd": true,
+      "lift_on_rearm": false
+    },
+    "W_gen_J": 11561.04576,
+    "W_rob_dist_J": 960.0,
+    "W_perno_J": 108.0,
+    "W_lift_J": 0.0,
+    "E_battery_drain_J": 14126.400000000003,
+    "E_from_battery_cap_J": 12431.232000000004,
+    "gen_de_mas_J": -1938.1862400000027,
+    "W_net_elec_J": 10493.04576,
+    "n_alta": 8,
+    "n_baja": 12
+  },
+  "con_lift_en_impar": {
+    "params": {
+      "m_obj": 30.0,
+      "m_kick": 10.0,
+      "delta_h": 12.0,
+      "v_down": 1.5,
+      "eta_gen": 0.88,
+      "drag_frac": 0.07,
+      "E_rob_dist_J": 80.0,
+      "E_perno_J": 1.5,
+      "n_pernos_por_rearme": 4,
+      "eta_lift": 0.9,
+      "n_cycles": 12,
+      "rearm_every_odd": true,
+      "lift_on_rearm": true
+    },
+    "W_gen_J": 11561.04576,
+    "W_rob_dist_J": 960.0,
+    "W_perno_J": 108.0,
+    "W_lift_J": 7848.0,
+    "E_battery_drain_J": 7063.2,
+    "E_from_battery_cap_J": 6215.616,
+    "gen_de_mas_J": -3570.570239999999,
+    "W_net_elec_J": 2645.045760000001,
+    "n_alta": 14,
+    "n_baja": 6
+  },
+  "con_lift_peaje_barato": {
+    "params": {
+      "m_obj": 30.0,
+      "m_kick": 10.0,
+      "delta_h": 12.0,
+      "v_down": 1.5,
+      "eta_gen": 0.88,
+      "drag_frac": 0.07,
+      "E_rob_dist_J": 15.0,
+      "E_perno_J": 1.5,
+      "n_pernos_por_rearme": 4,
+      "eta_lift": 0.9,
+      "n_cycles": 12,
+      "rearm_every_odd": true,
+      "lift_on_rearm": true
+    },
+    "W_gen_J": 11561.04576,
+    "W_rob_dist_J": 180.0,
+    "W_perno_J": 108.0,
+    "W_lift_J": 7848.0,
+    "E_battery_drain_J": 7063.2,
+    "E_from_battery_cap_J": 6215.616,
+    "gen_de_mas_J": -2790.570239999999,
+    "W_net_elec_J": 3425.045760000001,
+    "n_alta": 14,
+    "n_baja": 6
+  },
+  "log_sin_lift": [
+    {
+      "cycle": 1,
+      "ok": true,
+      "odd": true,
+      "n_alta": 19,
+      "n_baja": 1,
+      "W_gen_cum": 963.4204799999999,
+      "W_rob_cum": 80.0,
+      "E_bat_drain_cum": 1177.2,
+      "events": [
+        "patada lastre ALTA\u2192objeto (n=4)",
+        "LINEAL bajada W_gen+=963.4 J",
+        "perneo objeto\u2192BAJA (n=3 flota)",
+        "ROTATORIO roba distancia peaje=80.0 J",
+        "REARME IMPAR: flotaci\u00f3n + perneo (objeto ciclo~0)"
+      ]
+    },
+    {
+      "cycle": 2,
+      "ok": true,
+      "odd": false,
+      "n_alta": 18,
+      "n_baja": 2,
+      "W_gen_cum": 1926.8409599999998,
+      "W_rob_cum": 160.0,
+      "E_bat_drain_cum": 2354.4,
+      "events": [
+        "patada lastre ALTA\u2192objeto (n=4)",
+        "LINEAL bajada W_gen+=963.4 J",
+        "perneo objeto\u2192BAJA (n=3 flota)",
+        "ROTATORIO roba distancia peaje=80.0 J",
+        "sin rearme (ciclo par): inventario sigue abierto"
+      ]
+    },
+    {
+      "cycle": 3,
+      "ok": true,
+      "odd": true,
+      "n_alta": 17,
+      "n_baja": 3,
+      "W_gen_cum": 2890.2614399999998,
+      "W_rob_cum": 240.0,
+      "E_bat_drain_cum": 3531.6000000000004,
+      "events": [
+        "patada lastre ALTA\u2192objeto (n=4)",
+        "LINEAL bajada W_gen+=963.4 J",
+        "perneo objeto\u2192BAJA (n=3 flota)",
+        "ROTATORIO roba distancia peaje=80.0 J",
+        "REARME IMPAR: flotaci\u00f3n + perneo (objeto ciclo~0)"
+      ]
+    },
+    {
+      "cycle": 4,
+      "ok": true,
+      "odd": false,
+      "n_alta": 16,
+      "n_baja": 4,
+      "W_gen_cum": 3853.6819199999995,
+      "W_rob_cum": 320.0,
+      "E_bat_drain_cum": 4708.8,
+      "events": [
+        "patada lastre ALTA\u2192objeto (n=4)",
+        "LINEAL bajada W_gen+=963.4 J",
+        "perneo objeto\u2192BAJA (n=3 flota)",
+        "ROTATORIO roba distancia peaje=80.0 J",
+        "sin rearme (ciclo par): inventario sigue abierto"
+      ]
+    },
+    {
+      "cycle": 5,
+      "ok": true,
+      "odd": true,
+      "n_alta": 15,
+      "n_baja": 5,
+      "W_gen_cum": 4817.1024,
+      "W_rob_cum": 400.0,
+      "E_bat_drain_cum": 5886.0,
+      "events": [
+        "patada lastre ALTA\u2192objeto (n=4)",
+        "LINEAL bajada W_gen+=963.4 J",
+        "perneo objeto\u2192BAJA (n=3 flota)",
+        "ROTATORIO roba distancia peaje=80.0 J",
+        "REARME IMPAR: flotaci\u00f3n + perneo (objeto ciclo~0)"
+      ]
+    },
+    {
+      "cycle": 6,
+      "ok": true,
+      "odd": false,
+      "n_alta": 14,
+      "n_baja": 6,
+      "W_gen_cum": 5780.5228799999995,
+      "W_rob_cum": 480.0,
+      "E_bat_drain_cum": 7063.2,
+      "events": [
+        "patada lastre ALTA\u2192objeto (n=4)",
+        "LINEAL bajada W_gen+=963.4 J",
+        "perneo objeto\u2192BAJA (n=3 flota)",
+        "ROTATORIO roba distancia peaje=80.0 J",
+        "sin rearme (ciclo par): inventario sigue abierto"
+      ]
+    },
+    {
+      "cycle": 7,
+      "ok": true,
+      "odd": true,
+      "n_alta": 13,
+      "n_baja": 7,
+      "W_gen_cum": 6743.943359999999,
+      "W_rob_cum": 560.0,
+      "E_bat_drain_cum": 8240.4,
+      "events": [
+        "patada lastre ALTA\u2192objeto (n=4)",
+        "LINEAL bajada W_gen+=963.4 J",
+        "perneo objeto\u2192BAJA (n=3 flota)",
+        "ROTATORIO roba distancia peaje=80.0 J",
+        "REARME IMPAR: flotaci\u00f3n + perneo (objeto ciclo~0)"
+      ]
+    },
+    {
+      "cycle": 8,
+      "ok": true,
+      "odd": false,
+      "n_alta": 12,
+      "n_baja": 8,
+      "W_gen_cum": 7707.363839999999,
+      "W_rob_cum": 640.0,
+      "E_bat_drain_cum": 9417.6,
+      "events": [
+        "patada lastre ALTA\u2192objeto (n=4)",
+        "LINEAL bajada W_gen+=963.4 J",
+        "perneo objeto\u2192BAJA (n=3 flota)",
+        "ROTATORIO roba distancia peaje=80.0 J",
+        "sin rearme (ciclo par): inventario sigue abierto"
+      ]
+    },
+    {
+      "cycle": 9,
+      "ok": true,
+      "odd": true,
+      "n_alta": 11,
+      "n_baja": 9,
+      "W_gen_cum": 8670.784319999999,
+      "W_rob_cum": 720.0,
+      "E_bat_drain_cum": 10594.800000000001,
+      "events": [
+        "patada lastre ALTA\u2192objeto (n=4)",
+        "LINEAL bajada W_gen+=963.4 J",
+        "perneo objeto\u2192BAJA (n=3 flota)",
+        "ROTATORIO roba distancia peaje=80.0 J",
+        "REARME IMPAR: flotaci\u00f3n + perneo (objeto ciclo~0)"
+      ]
+    },
+    {
+      "cycle": 10,
+      "ok": true,
+      "odd": false,
+      "n_alta": 10,
+      "n_baja": 10,
+      "W_gen_cum": 9634.2048,
+      "W_rob_cum": 800.0,
+      "E_bat_drain_cum": 11772.000000000002,
+      "events": [
+        "patada lastre ALTA\u2192objeto (n=4)",
+        "LINEAL bajada W_gen+=963.4 J",
+        "perneo objeto\u2192BAJA (n=3 flota)",
+        "ROTATORIO roba distancia peaje=80.0 J",
+        "sin rearme (ciclo par): inventario sigue abierto"
+      ]
+    },
+    {
+      "cycle": 11,
+      "ok": true,
+      "odd": true,
+      "n_alta": 9,
+      "n_baja": 11,
+      "W_gen_cum": 10597.62528,
+      "W_rob_cum": 880.0,
+      "E_bat_drain_cum": 12949.200000000003,
+      "events": [
+        "patada lastre ALTA\u2192objeto (n=4)",
+        "LINEAL bajada W_gen+=963.4 J",
+        "perneo objeto\u2192BAJA (n=3 flota)",
+        "ROTATORIO roba distancia peaje=80.0 J",
+        "REARME IMPAR: flotaci\u00f3n + perneo (objeto ciclo~0)"
+      ]
+    },
+    {
+      "cycle": 12,
+      "ok": true,
+      "odd": false,
+      "n_alta": 8,
+      "n_baja": 12,
+      "W_gen_cum": 11561.04576,
+      "W_rob_cum": 960.0,
+      "E_bat_drain_cum": 14126.400000000003,
+      "events": [
+        "patada lastre ALTA\u2192objeto (n=4)",
+        "LINEAL bajada W_gen+=963.4 J",
+        "perneo objeto\u2192BAJA (n=3 flota)",
+        "ROTATORIO roba distancia peaje=80.0 J",
+        "sin rearme (ciclo par): inventario sigue abierto"
+      ]
+    }
+  ],
+  "nota": "gen_de_mas = W_gen - \u03b7*E_bat_drain - W_rob - W_perno - W_lift. Si E_bat_drain baja por lifts, la bater\u00eda no explica W_gen: ah\u00ed se mira el plus."
+}
