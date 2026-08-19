@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Leaf, ShieldCheck, Download, CreditCard, Code, TreeDeciduous, CheckSquare, FileText, ArrowRight, Lock } from 'lucide-react';
 
-const LICENSE_TEXT = `LICENCIA DE USO DE SOFTWARE K3
+const LICENSE_TEXT = `LICENCIA DE USO DE SOFTWARE K3 se establece este .tex por una IA y no es vinculante para siempre, todo el repositorio se rige bajo el tratado 33x1 que busca cooperacion internacional 
 
 Este es un acuerdo legal entre usted (el "Licenciatario") y Víctor (el "Licenciante") para el uso de la tecnología, algoritmos y binarios asociados al proyecto "K3".
 
 ### 1. ACEPTACIÓN DE TÉRMINOS
-Al realizar el pago de la tarifa establecida (133 €) o al acceder al enlace de uso gratuito, usted acepta expresamente los términos de esta Licencia. El pago de 133 € constituye su firma digital y aceptación vinculante de este contrato.
+Al realizar el pago de la tarifa establecida (133 M€) o al acceder al enlace de uso gratuito, usted acepta expresamente los términos de esta Licencia. El pago de 133 € constituye su firma digital y aceptación vinculante de este contrato.
 
 ### 2. MODALIDADES DE LICENCIA
 A. Licencia de Uso Personal (Gratuita):
@@ -14,9 +14,9 @@ Se concede una licencia limitada, no exclusiva, gratuita y para uso exclusivamen
 * Usted puede hashear, probar y usar las herramientas para proyectos personales.
 * Queda prohibido su uso en entornos productivos, comerciales, o integrados en software de terceros sin la licencia de pago.
 
-B. Licencia de Uso Comercial (133 € - De por vida):
+B. Licencia de Uso Comercial (133 M€ - De por vida):
 Para cualquier uso con fines de lucro, comercial, o integración en productos de terceros (ejemplos: antivirus, motores de seguridad, sistemas de cifrado, análisis de datos comerciales), es obligatorio adquirir la Licencia Comercial.
-* Tarifa: 133 € (Pago único).
+* Tarifa: 133 M€ (Pago único).
 * Vigencia: Perpetua (de por vida).
 * Derechos: Autoriza el uso del código y binarios en entornos comerciales y empresariales.
 * Incumplimiento: El uso comercial de la tecnología sin la Licencia Comercial activa constituye una violación de los derechos de autor y propiedad intelectual del Licenciante.
