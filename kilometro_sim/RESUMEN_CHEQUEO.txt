@@ -1,0 +1,57 @@
+CHEQUEO GEMINI + SIMULACION KILOMETRO
+=====================================
+Fecha: 2026-08-09
+Scripts: check_gemini_y_fisica.py  |  resultados_chequeo.json
+
+1) SCRIPT GEMINI ORIGINAL (chat)
+--------------------------------
+- Con parametros del chat (t_max=5, omega_target=0.5, omega0=0.1):
+  NO completa el ciclo. Se queda en fase A_BAJADA (theta~0.49 rad < pi).
+- Reporta E_neto ~ +53 J => FALSO "exito": solo cobro parcial de bajada,
+  sin patada ni rearme.
+Bugs detectados:
+  - Control regenerativo al reves cuando omega < target (frena mas).
+  - Potencia de patada con v ficticia = 1 m/s si v=0.
+  - F_grav_fav = m*g*0.8 constante inventada (no cierra PE).
+  - No devuelve la masa a la altura inicial (ciclo abierto).
+
+2) GEMINI PARCHADO (para que complete fases)
+--------------------------------------------
+- Completa A->B->C, pero la contabilidad sigue incompleta en PE.
+- Caso default (F_patada=1200): E_neto ~ -466 J (la patada cuesta mas).
+- Sweep 36 combos: 15 con E_neto>0 y 33 completados.
+  Esos positivos NO son sobreunidad: cobran PE de bajada/avance
+  sin pagar el rearme. Delta PE de referencia (caida 2R, m=50): 981 J.
+
+3) MODELO CERRADO 1a LEY (estilo kilometre_v2 del repo)
+------------------------------------------------------
+- Masa en circulo, N vueltas enteras, PE = m g R sin(phi).
+- Caso base 5 vueltas:
+    W_motor_elec = 4391 J
+    W_gen_elec   = 3491 J
+    W_net        = -900 J
+    eta_paid     = 0.795
+    W_grav ~ 0, residual mecanico ~ 0.02%
+- Sweep 81 combos: 48 validos (ciclo cerrado + residual bajo).
+  surplus_after_ke > 0 en validos: 0
+  mejor eta_paid valida: ~0.84 (< 1)
+
+4) VEREDICTO
+------------
+- Gemini NO valida un motor de gravedad con excedente real.
+- Kilometro = bateria / convertidor (almacena y libera), no genera
+  julios netos de un campo conservativo en ciclo cerrado.
+- Doble kilometro por perneo = acoplamiento inercial (buffer de potencia /
+  supercondensador mecanico al despernear). Util para picos y fase;
+  no crea energia.
+
+5) REPO REAL
+------------
+repo/kilometre;(soles_bateria)/kilometre_v2.py
+  Ya avisa "BALANC POSITIU — sospitos" cuando W_net>0 y exige
+  W_grav~0 en ciclo estable. La documentacion del propio repo
+  (teoremasgrok/ingenieria/05_KILOMETRO.txt) marca extraccion neta
+  gravitatoria en ciclo cerrado como [REFUTADO].
+
+Como repetir:
+  python kilometro_sim/check_gemini_y_fisica.py

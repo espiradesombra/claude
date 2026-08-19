@@ -1,0 +1,15 @@
+id,item,spec,cantidad,est_eur_min,est_eur_max,notas
+E1,ESP32 DevKit,ESP32-WROOM,1,6,12,Arduino IDE
+E2,Fuente 12V,2-3A conmutada,1,10,20,solenoides
+E3,Buck 12 a 5V,step-down,1,3,6,si no se usa USB
+E4,MOSFET logic-level,IRLZ44N o modulo 3ch,3,5,12,low-side switch
+E5,Diodo flyback,1N5408 o UF4007,3,1,2,paralelo bobina
+E6,Solenoide push-pull,12V carrera 5-10mm,3,25,60,intermitente / biestable mec
+E7,Final de carrera,microswitch o reed,2,4,10,FC_ALTA FC_BAJA
+E8,Boton momentaneo,START RESET,2,2,4,
+E9,LED + resistencia,5mm + 220R,2,1,2,OK y FAULT
+E10,Protoboard y cables,kit,1,8,15,
+E11,Caja IP54,electronica fuera tanque,1,10,20,
+E12,Prensaestopas,PG7/PG9,4,8,15,cables
+E13,Cable bowden,1.5mm + funda,3,8,15,solenoide seco a pasador
+E14,Resistencias gate,220R y 10k,kit,1,2,

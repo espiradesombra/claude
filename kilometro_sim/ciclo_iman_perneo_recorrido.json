@@ -1,0 +1,46 @@
+{
+  "base_naive": {
+    "m_obj": 40.0,
+    "m_im": 8.0,
+    "delta_h_m": 20.0,
+    "W_grav_down_J": 9417.6,
+    "W_rec_down_J": 7604.712,
+    "W_lift_im_ideal_J": 1569.6000000000001,
+    "W_lift_im_elec_J": 1783.6363636363637,
+    "E_switch_J": 2.0,
+    "E_out_J": 7604.712,
+    "E_in_J": 1785.6363636363637,
+    "surplus_J": 5819.0756363636365,
+    "surplus_if_forget_im_reset_J": 7602.712,
+    "is_generator": true,
+    "note": "Pernear el iman al recorrido SOLO mueve el peso al carril. Quien cierre el ciclo (rotar guia / subir iman por la otra parte) paga m_im*g*Dh. Electroiman ~ interruptor barato."
+  },
+  "base_honest": {
+    "m_obj": 40.0,
+    "m_im": 8.0,
+    "delta_h_m": 20.0,
+    "W_grav_down_J": 9417.6,
+    "W_rec_down_J": 7604.712,
+    "W_lift_im_ideal_J": 1569.6000000000001,
+    "W_lift_im_elec_J": 1783.6363636363637,
+    "E_switch_J": 2.0,
+    "E_out_J": 7604.712,
+    "E_in_J": 1785.6363636363637,
+    "surplus_J": 5819.0756363636365,
+    "surplus_if_forget_im_reset_J": 7602.712,
+    "is_generator": true,
+    "note": "Pernear el iman al recorrido SOLO mueve el peso al carril. Quien cierre el ciclo (rotar guia / subir iman por la otra parte) paga m_im*g*Dh. Electroiman ~ interruptor barato.",
+    "W_rec_obj_J": 6337.26,
+    "W_rec_im_J": 1267.452,
+    "surplus_honest_J": -518.1843636363637,
+    "is_generator_honest": false
+  },
+  "verdict": {
+    "roba_gravedad": false,
+    "electroiman_es_fuente": false,
+    "electroiman_es_interruptor": true,
+    "perneo_al_recorrido_mueve_peso_a_la_guia": true,
+    "quien_paga": "subir/reponer el iman en la cota alta (recorrido, rotacion o enjambre)",
+    "utilidad": "acoplamiento, densidad conmutable, perneo/desperneo, no generador primario"
+  }
+}

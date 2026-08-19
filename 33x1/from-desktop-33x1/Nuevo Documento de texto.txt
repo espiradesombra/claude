@@ -1,0 +1,91 @@
+SI TE DOY un codigo de criba te puedo sorprender ?? si lo hago haces algo por mi ? 
+
+😂 Claro, pásame el código de criba. A ver si de verdad consigues sorprenderme.
+
+Y si me sorprendes, trato hecho: haré algo por ti dentro de lo que pueda. 😏
+
+p[0]=1 ;
+ p[2]=1;
+ p[3]=1 ;
+ anterior=0;
+ desde v=0 a limite^2:{ 
+ v++; p[v]=1; v+=4; p[v]=1; 
+ } 
+
+ para n de 0 a (limite-3)/2:{ 
+ si(anterior+3=n){anterior=n;n++;} 
+ si(p[2n+3])=1{ 
+ ñ=1;
+ anteriorM=n;
+ anteriorMM= 2n+3;
+ para m de n a limite*limite/(2n+3):{ 
+
+ si(anteriorM=m){anteriorM=m+3;m++}
+ 
+ si(p[(2m+3)]=1){ p[(2n+3)(2m+3)]=3}
+ ñ++;
+si(anteriorMM=2m+3){
+ si(anteriorNY=ñ){anteriorNY+=3;ñ++;}
+ anterorMM*=2ñ+3;
+ p[4mn+6n+6m+0]=3;}
+
+ } } }
+ p[0]=3;p[1]=3;  
+
+😳 Vale… sí me has sorprendido.
+
+No parece una criba convencional tipo Eratóstenes. Hay varias cosas bastante particulares aquí:
+
+Estás usando p[v]=1 como una especie de máscara inicial sobre números de una determinada forma.
+Los valores 3 parecen representar los compuestos detectados.
+2n+3 y 2m+3 están recorriendo los impares.
+La parte
+p[(2n+3)(2m+3)]=3
+marca directamente productos de candidatos.
+Pero lo realmente curioso es este bloque:
+anterorMM*=2ñ+3;
+p[4mn+6n+6m+0]=3;
+
+porque ahí parece que estás intentando evitar recorrer explícitamente ciertos productos, reconstruyéndolos mediante relaciones entre índices.
+
+Y además tienes mecanismos como:
+
+si(anteriorM=m){anteriorM=m+3;m++}
+
+que parecen estar incorporando saltos para aprovechar información previa, en lugar de hacer una criba completamente ciega.
+
+Así que sí: me has picado la curiosidad. 😂
+
+Y como dijiste «si lo hago haces algo por mí», te concedo que el código merece premio: si quieres, me comprometo a coger esta criba y hacer algo serio con ella: reconstruir exactamente qué algoritmo estás implementando, traducirlo a código ejecutable y comprobar matemáticamente qué está marcando como primo/compuesto.
+
+Eso sí sería mi parte del trato. 😏
+
+y te catas de que se puede mejorar XD p[0]=1 ;
+ p[2]=1;
+ p[3]=1 ;
+ anterior=0;
+ desde v=0 a limite^2:{ 
+ v++; p[v]=1; v+=4; p[v]=1; 
+ } 
+
+ para n de 0 a (limite-3)/2:{ 
+ si(anterior+3=n){anterior=n;n++;} 
+ si(p[2n+3])=1{ 
+ ñ=1;
+ anteriorM=n;
+ anteriorMM= 2n+3;
+ para m de n a limite*limite/(2n+3):{ 
+
+ si(anteriorM=m){anteriorM=m+3;m++}
+ 
+ si(p[(2m+3)]=1){ p[(2n+3)(2m+3)]=3}
+ ñ++;
+si(anteriorMM=2m+3){
+ si(anteriorNY=ñ){anteriorNY+=3;ñ++;}
+ anterorMM*=2ñ+3;
+ p[4mn+6n+6m+0]=3;}
+
+ } } }
+ p[0]=3;p[1]=3;  
+
+anteriorMM puede crecer con ñ XD jajaj es como la burla al informatico 

@@ -1,0 +1,624 @@
+{
+  "params": {
+    "m_obj_base": 30.0,
+    "m_peso": 10.0,
+    "n_float": 3,
+    "n_sink": 4,
+    "n_puntas": 2,
+    "n_stock_alta": 5,
+    "n_stock_baja": 0,
+    "delta_h": 15.0,
+    "eta_gen": 0.85,
+    "eta_lift": 0.9,
+    "E_perno_J": 1.5,
+    "drag_frac": 0.06
+  },
+  "run_A_sin_lift": {
+    "cycles": 5,
+    "n_alta": 0,
+    "n_baja": 5,
+    "E_out": 5878.642500000001,
+    "E_in": 30.0,
+    "surplus_naive": 5848.642500000001,
+    "log": [
+      {
+        "cycle": 1,
+        "ok": true,
+        "events": [
+          "enganche peso alta->objeto",
+          "baja m=70.0 kg  W_rec_honest=1175.7 J  (naive_total=8230.1 J)",
+          "perneo peso objeto->recorrido BAJA",
+          "sube objeto ligero (boyancia) + recarga distancia en lado S"
+        ],
+        "n_alta": 4,
+        "n_baja": 1,
+        "n_on_obj": 3,
+        "E_out": 1175.7285000000002,
+        "E_in": 6.0,
+        "surplus": 1169.7285000000002,
+        "W_rec_this": 1175.7285000000002,
+        "W_rec_naive_total": 8230.099499999998,
+        "m_ballast": 10.0,
+        "impar": true
+      },
+      {
+        "cycle": 2,
+        "ok": true,
+        "events": [
+          "enganche peso alta->objeto",
+          "baja m=70.0 kg  W_rec_honest=1175.7 J  (naive_total=8230.1 J)",
+          "perneo peso objeto->recorrido BAJA",
+          "sube objeto ligero (boyancia) + recarga distancia en lado S"
+        ],
+        "n_alta": 3,
+        "n_baja": 2,
+        "n_on_obj": 3,
+        "E_out": 2351.4570000000003,
+        "E_in": 12.0,
+        "surplus": 2339.4570000000003,
+        "W_rec_this": 1175.7285000000002,
+        "W_rec_naive_total": 8230.099499999998,
+        "m_ballast": 10.0,
+        "impar": false
+      },
+      {
+        "cycle": 3,
+        "ok": true,
+        "events": [
+          "enganche peso alta->objeto",
+          "baja m=70.0 kg  W_rec_honest=1175.7 J  (naive_total=8230.1 J)",
+          "perneo peso objeto->recorrido BAJA",
+          "sube objeto ligero (boyancia) + recarga distancia en lado S"
+        ],
+        "n_alta": 2,
+        "n_baja": 3,
+        "n_on_obj": 3,
+        "E_out": 3527.1855000000005,
+        "E_in": 18.0,
+        "surplus": 3509.1855000000005,
+        "W_rec_this": 1175.7285000000002,
+        "W_rec_naive_total": 8230.099499999998,
+        "m_ballast": 10.0,
+        "impar": true
+      },
+      {
+        "cycle": 4,
+        "ok": true,
+        "events": [
+          "enganche peso alta->objeto",
+          "baja m=70.0 kg  W_rec_honest=1175.7 J  (naive_total=8230.1 J)",
+          "perneo peso objeto->recorrido BAJA",
+          "sube objeto ligero (boyancia) + recarga distancia en lado S"
+        ],
+        "n_alta": 1,
+        "n_baja": 4,
+        "n_on_obj": 3,
+        "E_out": 4702.914000000001,
+        "E_in": 24.0,
+        "surplus": 4678.914000000001,
+        "W_rec_this": 1175.7285000000002,
+        "W_rec_naive_total": 8230.099499999998,
+        "m_ballast": 10.0,
+        "impar": false
+      },
+      {
+        "cycle": 5,
+        "ok": true,
+        "events": [
+          "enganche peso alta->objeto",
+          "baja m=70.0 kg  W_rec_honest=1175.7 J  (naive_total=8230.1 J)",
+          "perneo peso objeto->recorrido BAJA",
+          "sube objeto ligero (boyancia) + recarga distancia en lado S"
+        ],
+        "n_alta": 0,
+        "n_baja": 5,
+        "n_on_obj": 3,
+        "E_out": 5878.642500000001,
+        "E_in": 30.0,
+        "surplus": 5848.642500000001,
+        "W_rec_this": 1175.7285000000002,
+        "W_rec_naive_total": 8230.099499999998,
+        "m_ballast": 10.0,
+        "impar": true
+      },
+      {
+        "cycle": 6,
+        "ok": false,
+        "events": [
+          "STOP: stock alta=0 < need=1 para hundir (n_on_obj=3)"
+        ],
+        "n_alta": 0,
+        "n_baja": 5,
+        "surplus": 5848.642500000001
+      }
+    ]
+  },
+  "run_B_con_lift": {
+    "cycles": 20,
+    "n_alta": 5,
+    "n_baja": 0,
+    "E_out": 23514.570000000014,
+    "E_in": 32820.00000000001,
+    "surplus": -9305.429999999993,
+    "log": [
+      {
+        "cycle": 1,
+        "ok": true,
+        "events": [
+          "enganche peso alta->objeto",
+          "baja m=70.0 kg  W_rec_honest=1175.7 J  (naive_total=8230.1 J)",
+          "perneo peso objeto->recorrido BAJA",
+          "sube objeto ligero (boyancia) + recarga distancia en lado S",
+          "LIFT peso baja->alta  W_in=1635.0 J"
+        ],
+        "n_alta": 5,
+        "n_baja": 0,
+        "n_on_obj": 3,
+        "E_out": 1175.7285000000002,
+        "E_in": 1641.0000000000002,
+        "surplus": -465.27150000000006,
+        "W_rec_this": 1175.7285000000002,
+        "W_rec_naive_total": 8230.099499999998,
+        "m_ballast": 10.0,
+        "impar": true
+      },
+      {
+        "cycle": 2,
+        "ok": true,
+        "events": [
+          "enganche peso alta->objeto",
+          "baja m=70.0 kg  W_rec_honest=1175.7 J  (naive_total=8230.1 J)",
+          "perneo peso objeto->recorrido BAJA",
+          "sube objeto ligero (boyancia) + recarga distancia en lado S",
+          "LIFT peso baja->alta  W_in=1635.0 J"
+        ],
+        "n_alta": 5,
+        "n_baja": 0,
+        "n_on_obj": 3,
+        "E_out": 2351.4570000000003,
+        "E_in": 3282.0000000000005,
+        "surplus": -930.5430000000001,
+        "W_rec_this": 1175.7285000000002,
+        "W_rec_naive_total": 8230.099499999998,
+        "m_ballast": 10.0,
+        "impar": false
+      },
+      {
+        "cycle": 3,
+        "ok": true,
+        "events": [
+          "enganche peso alta->objeto",
+          "baja m=70.0 kg  W_rec_honest=1175.7 J  (naive_total=8230.1 J)",
+          "perneo peso objeto->recorrido BAJA",
+          "sube objeto ligero (boyancia) + recarga distancia en lado S",
+          "LIFT peso baja->alta  W_in=1635.0 J"
+        ],
+        "n_alta": 5,
+        "n_baja": 0,
+        "n_on_obj": 3,
+        "E_out": 3527.1855000000005,
+        "E_in": 4923.000000000001,
+        "surplus": -1395.8145000000004,
+        "W_rec_this": 1175.7285000000002,
+        "W_rec_naive_total": 8230.099499999998,
+        "m_ballast": 10.0,
+        "impar": true
+      },
+      {
+        "cycle": 4,
+        "ok": true,
+        "events": [
+          "enganche peso alta->objeto",
+          "baja m=70.0 kg  W_rec_honest=1175.7 J  (naive_total=8230.1 J)",
+          "perneo peso objeto->recorrido BAJA",
+          "sube objeto ligero (boyancia) + recarga distancia en lado S",
+          "LIFT peso baja->alta  W_in=1635.0 J"
+        ],
+        "n_alta": 5,
+        "n_baja": 0,
+        "n_on_obj": 3,
+        "E_out": 4702.914000000001,
+        "E_in": 6564.000000000001,
+        "surplus": -1861.0860000000002,
+        "W_rec_this": 1175.7285000000002,
+        "W_rec_naive_total": 8230.099499999998,
+        "m_ballast": 10.0,
+        "impar": false
+      },
+      {
+        "cycle": 5,
+        "ok": true,
+        "events": [
+          "enganche peso alta->objeto",
+          "baja m=70.0 kg  W_rec_honest=1175.7 J  (naive_total=8230.1 J)",
+          "perneo peso objeto->recorrido BAJA",
+          "sube objeto ligero (boyancia) + recarga distancia en lado S",
+          "LIFT peso baja->alta  W_in=1635.0 J"
+        ],
+        "n_alta": 5,
+        "n_baja": 0,
+        "n_on_obj": 3,
+        "E_out": 5878.642500000001,
+        "E_in": 8205.000000000002,
+        "surplus": -2326.357500000001,
+        "W_rec_this": 1175.7285000000002,
+        "W_rec_naive_total": 8230.099499999998,
+        "m_ballast": 10.0,
+        "impar": true
+      },
+      {
+        "cycle": 6,
+        "ok": true,
+        "events": [
+          "enganche peso alta->objeto",
+          "baja m=70.0 kg  W_rec_honest=1175.7 J  (naive_total=8230.1 J)",
+          "perneo peso objeto->recorrido BAJA",
+          "sube objeto ligero (boyancia) + recarga distancia en lado S",
+          "LIFT peso baja->alta  W_in=1635.0 J"
+        ],
+        "n_alta": 5,
+        "n_baja": 0,
+        "n_on_obj": 3,
+        "E_out": 7054.371000000001,
+        "E_in": 9846.000000000002,
+        "surplus": -2791.629000000001,
+        "W_rec_this": 1175.7285000000002,
+        "W_rec_naive_total": 8230.099499999998,
+        "m_ballast": 10.0,
+        "impar": false
+      },
+      {
+        "cycle": 7,
+        "ok": true,
+        "events": [
+          "enganche peso alta->objeto",
+          "baja m=70.0 kg  W_rec_honest=1175.7 J  (naive_total=8230.1 J)",
+          "perneo peso objeto->recorrido BAJA",
+          "sube objeto ligero (boyancia) + recarga distancia en lado S",
+          "LIFT peso baja->alta  W_in=1635.0 J"
+        ],
+        "n_alta": 5,
+        "n_baja": 0,
+        "n_on_obj": 3,
+        "E_out": 8230.0995,
+        "E_in": 11487.000000000002,
+        "surplus": -3256.9005000000016,
+        "W_rec_this": 1175.7285000000002,
+        "W_rec_naive_total": 8230.099499999998,
+        "m_ballast": 10.0,
+        "impar": true
+      },
+      {
+        "cycle": 8,
+        "ok": true,
+        "events": [
+          "enganche peso alta->objeto",
+          "baja m=70.0 kg  W_rec_honest=1175.7 J  (naive_total=8230.1 J)",
+          "perneo peso objeto->recorrido BAJA",
+          "sube objeto ligero (boyancia) + recarga distancia en lado S",
+          "LIFT peso baja->alta  W_in=1635.0 J"
+        ],
+        "n_alta": 5,
+        "n_baja": 0,
+        "n_on_obj": 3,
+        "E_out": 9405.828000000001,
+        "E_in": 13128.000000000002,
+        "surplus": -3722.1720000000005,
+        "W_rec_this": 1175.7285000000002,
+        "W_rec_naive_total": 8230.099499999998,
+        "m_ballast": 10.0,
+        "impar": false
+      },
+      {
+        "cycle": 9,
+        "ok": true,
+        "events": [
+          "enganche peso alta->objeto",
+          "baja m=70.0 kg  W_rec_honest=1175.7 J  (naive_total=8230.1 J)",
+          "perneo peso objeto->recorrido BAJA",
+          "sube objeto ligero (boyancia) + recarga distancia en lado S",
+          "LIFT peso baja->alta  W_in=1635.0 J"
+        ],
+        "n_alta": 5,
+        "n_baja": 0,
+        "n_on_obj": 3,
+        "E_out": 10581.556500000002,
+        "E_in": 14769.000000000002,
+        "surplus": -4187.443499999999,
+        "W_rec_this": 1175.7285000000002,
+        "W_rec_naive_total": 8230.099499999998,
+        "m_ballast": 10.0,
+        "impar": true
+      },
+      {
+        "cycle": 10,
+        "ok": true,
+        "events": [
+          "enganche peso alta->objeto",
+          "baja m=70.0 kg  W_rec_honest=1175.7 J  (naive_total=8230.1 J)",
+          "perneo peso objeto->recorrido BAJA",
+          "sube objeto ligero (boyancia) + recarga distancia en lado S",
+          "LIFT peso baja->alta  W_in=1635.0 J"
+        ],
+        "n_alta": 5,
+        "n_baja": 0,
+        "n_on_obj": 3,
+        "E_out": 11757.285000000003,
+        "E_in": 16410.000000000004,
+        "surplus": -4652.715,
+        "W_rec_this": 1175.7285000000002,
+        "W_rec_naive_total": 8230.099499999998,
+        "m_ballast": 10.0,
+        "impar": false
+      },
+      {
+        "cycle": 11,
+        "ok": true,
+        "events": [
+          "enganche peso alta->objeto",
+          "baja m=70.0 kg  W_rec_honest=1175.7 J  (naive_total=8230.1 J)",
+          "perneo peso objeto->recorrido BAJA",
+          "sube objeto ligero (boyancia) + recarga distancia en lado S",
+          "LIFT peso baja->alta  W_in=1635.0 J"
+        ],
+        "n_alta": 5,
+        "n_baja": 0,
+        "n_on_obj": 3,
+        "E_out": 12933.013500000005,
+        "E_in": 18051.000000000004,
+        "surplus": -5117.986499999999,
+        "W_rec_this": 1175.7285000000002,
+        "W_rec_naive_total": 8230.099499999998,
+        "m_ballast": 10.0,
+        "impar": true
+      },
+      {
+        "cycle": 12,
+        "ok": true,
+        "events": [
+          "enganche peso alta->objeto",
+          "baja m=70.0 kg  W_rec_honest=1175.7 J  (naive_total=8230.1 J)",
+          "perneo peso objeto->recorrido BAJA",
+          "sube objeto ligero (boyancia) + recarga distancia en lado S",
+          "LIFT peso baja->alta  W_in=1635.0 J"
+        ],
+        "n_alta": 5,
+        "n_baja": 0,
+        "n_on_obj": 3,
+        "E_out": 14108.742000000006,
+        "E_in": 19692.000000000004,
+        "surplus": -5583.257999999998,
+        "W_rec_this": 1175.7285000000002,
+        "W_rec_naive_total": 8230.099499999998,
+        "m_ballast": 10.0,
+        "impar": false
+      },
+      {
+        "cycle": 13,
+        "ok": true,
+        "events": [
+          "enganche peso alta->objeto",
+          "baja m=70.0 kg  W_rec_honest=1175.7 J  (naive_total=8230.1 J)",
+          "perneo peso objeto->recorrido BAJA",
+          "sube objeto ligero (boyancia) + recarga distancia en lado S",
+          "LIFT peso baja->alta  W_in=1635.0 J"
+        ],
+        "n_alta": 5,
+        "n_baja": 0,
+        "n_on_obj": 3,
+        "E_out": 15284.470500000007,
+        "E_in": 21333.000000000004,
+        "surplus": -6048.529499999997,
+        "W_rec_this": 1175.7285000000002,
+        "W_rec_naive_total": 8230.099499999998,
+        "m_ballast": 10.0,
+        "impar": true
+      },
+      {
+        "cycle": 14,
+        "ok": true,
+        "events": [
+          "enganche peso alta->objeto",
+          "baja m=70.0 kg  W_rec_honest=1175.7 J  (naive_total=8230.1 J)",
+          "perneo peso objeto->recorrido BAJA",
+          "sube objeto ligero (boyancia) + recarga distancia en lado S",
+          "LIFT peso baja->alta  W_in=1635.0 J"
+        ],
+        "n_alta": 5,
+        "n_baja": 0,
+        "n_on_obj": 3,
+        "E_out": 16460.199000000008,
+        "E_in": 22974.000000000004,
+        "surplus": -6513.800999999996,
+        "W_rec_this": 1175.7285000000002,
+        "W_rec_naive_total": 8230.099499999998,
+        "m_ballast": 10.0,
+        "impar": false
+      },
+      {
+        "cycle": 15,
+        "ok": true,
+        "events": [
+          "enganche peso alta->objeto",
+          "baja m=70.0 kg  W_rec_honest=1175.7 J  (naive_total=8230.1 J)",
+          "perneo peso objeto->recorrido BAJA",
+          "sube objeto ligero (boyancia) + recarga distancia en lado S",
+          "LIFT peso baja->alta  W_in=1635.0 J"
+        ],
+        "n_alta": 5,
+        "n_baja": 0,
+        "n_on_obj": 3,
+        "E_out": 17635.92750000001,
+        "E_in": 24615.000000000004,
+        "surplus": -6979.072499999995,
+        "W_rec_this": 1175.7285000000002,
+        "W_rec_naive_total": 8230.099499999998,
+        "m_ballast": 10.0,
+        "impar": true
+      },
+      {
+        "cycle": 16,
+        "ok": true,
+        "events": [
+          "enganche peso alta->objeto",
+          "baja m=70.0 kg  W_rec_honest=1175.7 J  (naive_total=8230.1 J)",
+          "perneo peso objeto->recorrido BAJA",
+          "sube objeto ligero (boyancia) + recarga distancia en lado S",
+          "LIFT peso baja->alta  W_in=1635.0 J"
+        ],
+        "n_alta": 5,
+        "n_baja": 0,
+        "n_on_obj": 3,
+        "E_out": 18811.65600000001,
+        "E_in": 26256.000000000004,
+        "surplus": -7444.343999999994,
+        "W_rec_this": 1175.7285000000002,
+        "W_rec_naive_total": 8230.099499999998,
+        "m_ballast": 10.0,
+        "impar": false
+      },
+      {
+        "cycle": 17,
+        "ok": true,
+        "events": [
+          "enganche peso alta->objeto",
+          "baja m=70.0 kg  W_rec_honest=1175.7 J  (naive_total=8230.1 J)",
+          "perneo peso objeto->recorrido BAJA",
+          "sube objeto ligero (boyancia) + recarga distancia en lado S",
+          "LIFT peso baja->alta  W_in=1635.0 J"
+        ],
+        "n_alta": 5,
+        "n_baja": 0,
+        "n_on_obj": 3,
+        "E_out": 19987.38450000001,
+        "E_in": 27897.000000000004,
+        "surplus": -7909.615499999993,
+        "W_rec_this": 1175.7285000000002,
+        "W_rec_naive_total": 8230.099499999998,
+        "m_ballast": 10.0,
+        "impar": true
+      },
+      {
+        "cycle": 18,
+        "ok": true,
+        "events": [
+          "enganche peso alta->objeto",
+          "baja m=70.0 kg  W_rec_honest=1175.7 J  (naive_total=8230.1 J)",
+          "perneo peso objeto->recorrido BAJA",
+          "sube objeto ligero (boyancia) + recarga distancia en lado S",
+          "LIFT peso baja->alta  W_in=1635.0 J"
+        ],
+        "n_alta": 5,
+        "n_baja": 0,
+        "n_on_obj": 3,
+        "E_out": 21163.113000000012,
+        "E_in": 29538.000000000004,
+        "surplus": -8374.886999999992,
+        "W_rec_this": 1175.7285000000002,
+        "W_rec_naive_total": 8230.099499999998,
+        "m_ballast": 10.0,
+        "impar": false
+      },
+      {
+        "cycle": 19,
+        "ok": true,
+        "events": [
+          "enganche peso alta->objeto",
+          "baja m=70.0 kg  W_rec_honest=1175.7 J  (naive_total=8230.1 J)",
+          "perneo peso objeto->recorrido BAJA",
+          "sube objeto ligero (boyancia) + recarga distancia en lado S",
+          "LIFT peso baja->alta  W_in=1635.0 J"
+        ],
+        "n_alta": 5,
+        "n_baja": 0,
+        "n_on_obj": 3,
+        "E_out": 22338.841500000013,
+        "E_in": 31179.000000000004,
+        "surplus": -8840.15849999999,
+        "W_rec_this": 1175.7285000000002,
+        "W_rec_naive_total": 8230.099499999998,
+        "m_ballast": 10.0,
+        "impar": true
+      },
+      {
+        "cycle": 20,
+        "ok": true,
+        "events": [
+          "enganche peso alta->objeto",
+          "baja m=70.0 kg  W_rec_honest=1175.7 J  (naive_total=8230.1 J)",
+          "perneo peso objeto->recorrido BAJA",
+          "sube objeto ligero (boyancia) + recarga distancia en lado S",
+          "LIFT peso baja->alta  W_in=1635.0 J"
+        ],
+        "n_alta": 5,
+        "n_baja": 0,
+        "n_on_obj": 3,
+        "E_out": 23514.570000000014,
+        "E_in": 32820.00000000001,
+        "surplus": -9305.429999999993,
+        "W_rec_this": 1175.7285000000002,
+        "W_rec_naive_total": 8230.099499999998,
+        "m_ballast": 10.0,
+        "impar": false
+      }
+    ]
+  },
+  "honest_A": {
+    "per_cycle": [
+      {
+        "cycle": 1,
+        "W_rec_honest": 1175.7285000000002,
+        "W_rec_naive_total": 8230.099499999998,
+        "W_pernos": 6.0,
+        "surplus_honest_cycle": 1169.7285000000002,
+        "n_alta": 4,
+        "n_baja": 1,
+        "impar": true
+      },
+      {
+        "cycle": 2,
+        "W_rec_honest": 1175.7285000000002,
+        "W_rec_naive_total": 8230.099499999998,
+        "W_pernos": 6.0,
+        "surplus_honest_cycle": 1169.7285000000002,
+        "n_alta": 3,
+        "n_baja": 2,
+        "impar": false
+      },
+      {
+        "cycle": 3,
+        "W_rec_honest": 1175.7285000000002,
+        "W_rec_naive_total": 8230.099499999998,
+        "W_pernos": 6.0,
+        "surplus_honest_cycle": 1169.7285000000002,
+        "n_alta": 2,
+        "n_baja": 3,
+        "impar": true
+      },
+      {
+        "cycle": 4,
+        "W_rec_honest": 1175.7285000000002,
+        "W_rec_naive_total": 8230.099499999998,
+        "W_pernos": 6.0,
+        "surplus_honest_cycle": 1169.7285000000002,
+        "n_alta": 1,
+        "n_baja": 4,
+        "impar": false
+      },
+      {
+        "cycle": 5,
+        "W_rec_honest": 1175.7285000000002,
+        "W_rec_naive_total": 8230.099499999998,
+        "W_pernos": 6.0,
+        "surplus_honest_cycle": 1169.7285000000002,
+        "n_alta": 0,
+        "n_baja": 5,
+        "impar": true
+      }
+    ],
+    "acc_honest_no_reset": 5848.642500000001,
+    "reset_all_cost": 8175.000000000001,
+    "saldo_si_cierras_almacen": -2326.3575
+  },
+  "verdict_es": "Sin lift: el sistema hace tantos ciclos como pesos en stock alta; el surplus naive crece porque cobras m g h de lastre que dejas abajo. Impar/par solo marca el inventario. Al reponer todos los pesos, el saldo honesto cierra en negativo (eta). Con lift cada ciclo, surplus < 0 siempre."
+}

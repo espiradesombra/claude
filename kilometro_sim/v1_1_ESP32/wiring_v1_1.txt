@@ -1,0 +1,66 @@
+Kilometro v1.1 — cableado (resumen)
+====================================
+
+ALIMENTACION
+------------
+  Fuente 12V 2-3A
+    12V+  -->  bobinas solenoides (comun positivo)
+    GND   -->  source MOSFETS + GND ESP32 (estrella comun)
+
+  ESP32
+    USB al PC (programacion + Serial 115200)
+    o Buck 12V->5V a pin 5V del DevKit (si el modelo lo admite)
+
+SOLENOIDES (low-side MOSFET)
+----------------------------
+  Cada canal:
+    12V+ ---- bobina ---- drain MOSFET
+    source MOSFET ---- GND
+    diodo flyback: catodo a 12V+, anodo a drain (paralelo bobina)
+    GPIO ESP32 --[220R]--> gate MOSFET
+    (opcional 10k gate-GND)
+
+  SOL_O   = GPIO 25  -->  perno Objeto
+  SOL_RA  = GPIO 26  -->  perno Recorrido ALTA
+  SOL_RB  = GPIO 27  -->  perno Recorrido BAJA
+
+FINALES DE CARRERA
+------------------
+  FC_ALTA  GPIO 32  (INPUT_PULLUP)
+    un lado --> GPIO, otro --> GND  (activo al cerrar = LOW)
+
+  FC_BAJA  GPIO 33  igual
+
+  Montaje: se activan solo con el modulo centrado en cota ALTA o BAJA.
+
+BOTONES
+-------
+  BTN_START  GPIO 18 a GND (pull-up interno)
+  BTN_RESET  GPIO 19 a GND
+
+LEDS
+----
+  LED_OK    GPIO 2  (+ R 220 a anodo; catodo GND)  [o LED onboard]
+  LED_FAULT GPIO 4  + R 220
+
+MECANICA RECOMENDADA
+--------------------
+  Solenoides en PUENTE SECO (fuera del agua)
+  Carrera 5-10 mm --> cable bowden --> pasador biestable con muesca
+  Firmware da pulso ~250 ms; la muesca mantiene sin corriente
+
+SECUENCIA OPERADOR
+------------------
+  1. Lastre enganchado en R_alta (guia)
+  2. Modulo en ALTA (FC_ALTA = 1)
+  3. Serial 's' o boton START
+  4. Enganche automatico, bajada, entrega en BAJA, subida
+  5. CICLO_OK: DEVOLVER LASTRE A ALTA A MANO (recarga bateria)
+  6. Repetir
+
+FAULT CODES
+-----------
+  1 = enganche sin FC_ALTA
+  2 = entrega sin FC_BAJA
+  3 = timeout bajada
+  4 = timeout subida
