@@ -67,7 +67,8 @@ Monorepo **VMA** (Víctor Manzanares Alberola): mates, energía (ZypyZape / Quij
 |--|--|
 | Muñeco de Nieve — órbitas en espiral | [`docs/muneco-nieve/`](docs/muneco-nieve/) |
 | Inbox Desktop (docx/txt VMA) | [`docs/inbox-desktop-2026-08/`](docs/inbox-desktop-2026-08/) |
-| **Rescate montón viejo** (selectivo) | [`docs/from-monton-viejo-2026-08/`](docs/from-monton-viejo-2026-08/) |
+| **Rescate montón viejo** (selectivo) |
+| Desconocidos montón (Apiñón, CV…) | [`docs/from-monton-desconocidos-2026-08/`](docs/from-monton-desconocidos-2026-08/) | [`docs/from-monton-viejo-2026-08/`](docs/from-monton-viejo-2026-08/) |
 | Staging audit PC | [`pc-missing-2026-08-20/`](pc-missing-2026-08-20/) |
 
 ---
