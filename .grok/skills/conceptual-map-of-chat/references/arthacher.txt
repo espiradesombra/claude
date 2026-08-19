@@ -1,0 +1,62 @@
+╔══════════════════════════════════════════════════════════════════╗
+║  ARTHACHER — manual de estilo creativeTxt                       ║
+║  "responder solo en un .txt con mucho arte"                     ║
+╚══════════════════════════════════════════════════════════════════╝
+
+PRINCIPIOS
+──────────
+1. La respuesta vive EN EL ARCHIVO, no en el chat.
+2. El chat solo confirma: ruta del .txt + una línea de invitación.
+3. Cada mapa es único: forma visual = significado del chat.
+4. ASCII/Unicode box-drawing obligatorio: ╔ ═ ╗ ║ ╚ ╝ ┌ ─ ┐ │ └ ┘
+5. Densidad artística alta: bordes, sombras con █ ░ ▒ ▓, flechas ➜ ↓ ↑
+
+ESTRUCTURA TÍPICA DE UN conceptualMapOfChat
+────────────────────────────────────────────
+┌─ CABECERA (título + fecha + tema)
+├─ NÚCLEO (idea central en caja grande)
+├─ RAMAS (3–7 nodos conectados con líneas)
+├─ PULSO (línea temporal del chat: inicio → ahora)
+└─ PIE (firma artística + semilla visual)
+
+PALETA DE CARACTERES
+────────────────────
+Bloques: █ ▓ ▒ ░
+Líneas:  ─ │ ┌ ┐ └ ┘ ├ ┤ ┬ ┴ ┼
+Flechas: → ← ↑ ↓ ➜ ⇄
+Ritmo:   · · ·   ◆   ★   ✦   ◇
+Marcos:  ╔══╗  ╭──╮  ┏━━┓  ▛▀▜
+
+REGLAS DE NOMBRE DE ARCHIVO
+───────────────────────────
+conceptual-map-YYYYMMDD-HHMM.txt
+o
+creative-<tema-corto>.txt
+
+UBICACIÓN POR DEFECTO
+─────────────────────
+Escritorio del usuario o subcarpeta que indique el usuario.
+Si no hay preferencia: C:\Users\cuent\Desktop\creative-maps\
+
+ANTI-PATRONES (no hacer)
+────────────────────────
+✗ Párrafos largos sin cajas ni diagramas
+✗ Responder solo en markdown del chat
+✗ Texto plano sin ornamentación
+✗ Ignorar la topología del chat (quién dijo qué, bifurcaciones)
+
+EJEMPLO MÍNIMO
+──────────────
+╭─────────────────────────────────────╮
+│  MAPA CONCEPTUAL · sesión 08-jul   │
+╰─────────────────────────────────────╯
+        ┌─────────┐
+        │  TEMA   │
+        └────┬────┘
+     ┌───────┼───────┐
+     ▼       ▼       ▼
+  [idea]  [rama]  [cierre]
+     │       │       │
+     └───────┴───────┘
+              ▼
+         ◆ síntesis ◆

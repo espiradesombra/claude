@@ -69,6 +69,8 @@ Monorepo **VMA** (Víctor Manzanares Alberola): mates, energía (ZypyZape / Quij
 | Inbox Desktop (docx/txt VMA) | [`docs/inbox-desktop-2026-08/`](docs/inbox-desktop-2026-08/) |
 | **Rescate montón viejo** (selectivo) |
 | Desconocidos montón (Apiñón, CV…) | [`docs/from-monton-desconocidos-2026-08/`](docs/from-monton-desconocidos-2026-08/) | [`docs/from-monton-viejo-2026-08/`](docs/from-monton-viejo-2026-08/) |
+| Apiñón descomprimido | [`docs/apinon-descomprimido/`](docs/apinon-descomprimido/) |
+| Skills Grok (canto / mapa) | [`.grok/skills/`](.grok/skills/) |
 | Staging audit PC | [`pc-missing-2026-08-20/`](pc-missing-2026-08-20/) |
 
 ---
