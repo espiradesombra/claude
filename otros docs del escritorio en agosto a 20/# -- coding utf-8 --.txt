@@ -1,0 +1,210 @@
+# -*- coding: utf-8 -*-
+"""
+BUSCADOR CON TRAMPA DEL SIGUIENTE PRIMO (versión real)
+Usa el algoritmo siguiente_primo del capítulo final de "Números otra vez"
+y ejecuta mdc_v23 con solo 1 iteración de bisección.
+"""
+
+import math
+import time
+from mdc_v23 import mdc_v23, MAX_BISEC, LIM_KSWEEP
+
+# ============================================================================
+#  ALGORITMO siguiente_primo (de Conclusión.txt)
+# ============================================================================
+
+def siguiente_primo(inicio: int) -> int:
+    """
+    Dado un primo 'inicio', devuelve el siguiente primo.
+    Funciona aunque inicio no sea primo (el algoritmo lo detecta).
+    Basado en el método de acumuladores y 9 módulos del capítulo final.
+    """
+    if inicio < 2:
+        return 2
+
+    # Inicialización exacta como en el libro
+    n = inicio
+    m = n + 1
+    ny = n - 1
+
+    t = ny * ny
+    tt = n * n
+    nt = m * m
+
+    n += 1
+    m += 1
+    ny += 1
+
+    # Variables de memoria para los pasos de Karnaugh
+    antp1 = False
+    ant2p1 = False
+    antp2 = False
+    paso1 = False
+    paso2 = False
+
+    # Bucle infinito (hasta encontrar primo)
+    while True:
+        # 9 módulos
+        t1 = t % ny
+        t2 = t % n
+        t3 = t % m
+        tt1 = tt % ny
+        tt2 = tt % n
+        tt3 = tt % m
+        nt1 = nt % ny
+        nt2 = nt % n
+        nt3 = nt % m
+
+        # PASO 1 (se ejecuta durante 2 iteraciones)
+        # Antes de actualizar, guardamos el estado anterior para que paso1 pueda
+        # mantenerse activo durante 2 iteraciones.
+        ant2p1 = antp1
+        antp1 = (t3 > 0 and nt2 == 0)   # condición base
+
+        # paso1 es verdadero si se cumple la condición base o alguna de las memorias
+        paso1 = antp1 or antp1 or ant2p1   # (antp1 ya está, ant2p1 es la memoria de 2 pasos atrás)
+
+        # PASO 2 (requiere que paso1 sea verdadero, y otras condiciones)
+        if paso1 and t2 > 0 and tt2 > 0 and t3 == 0:
+            antp2 = True
+        else:
+            antp2 = False
+
+        paso2 = antp2   # paso2 se activa cuando se cumple la condición de paso2
+
+        # PASO 3 (el decisivo)
+        # Si paso2 es verdadero y se cumplen las condiciones finales, ny es primo
+        if paso2 and t1 > 0 and (nt1 + nt2) == 0:
+            # ¡Encontrado! ny es el siguiente primo
+            return ny
+
+        # Acumular los siguientes consecutivos
+        t *= ny
+        tt *= n
+        nt *= m
+
+        # Incrementar contadores
+        ny += 1
+        n += 1
+        m += 1
+
+        # Si ny supera un límite razonable, rompemos (por seguridad)
+        if ny > 10**12:   # límite alto, pero evita bucles infinitos en caso de bug
+            break
+
+    # Fallback: si el algoritmo falla, usamos el método tradicional (por si acaso)
+    # Esto nunca debería ocurrir si el algoritmo es correcto.
+    return _siguiente_primo_tradicional(inicio)
+
+
+def _siguiente_primo_tradicional(n):
+    """Fallback: siguiente primo por fuerza bruta (solo por seguridad)."""
+    if n < 2:
+        return 2
+    n = n + 1 if n % 2 == 0 else n + 2
+    while True:
+        es = True
+        for p in range(3, int(math.isqrt(n)) + 1, 2):
+            if n % p == 0:
+                es = False
+                break
+        if es:
+            return n
+        n += 2
+
+
+# ============================================================================
+#  WRAPPER PARA mdc_v23 CON ITERACIONES LIMITADAS
+# ============================================================================
+
+def mdc_v23_limited(N, max_bisec_iter=1, verbose=False):
+    """
+    Ejecuta mdc_v23 pero limitando el número de iteraciones de bisección.
+    """
+    # Guardamos el valor original de MAX_BISEC para restaurarlo después
+    global MAX_BISEC
+    original_max = MAX_BISEC
+
+    try:
+        # Sobrescribimos MAX_BISEC con el valor deseado
+        # (Esto es un truco rápido para no modificar el código de mdc_v23)
+        import mdc_v23 as mdc
+        mdc.MAX_BISEC = max_bisec_iter
+        # También forzamos LIM_KSWEEP a un valor pequeño para que no se dispare
+        mdc.LIM_KSWEEP = min(LIM_KSWEEP, 1000)  # opcional: reducir para pruebas rápidas
+        factor, tiempo = mdc.mdc_v23(N, verbose=verbose)
+        return factor, tiempo
+    finally:
+        # Restauramos los valores originales
+        mdc.MAX_BISEC = original_max
+        mdc.LIM_KSWEEP = LIM_KSWEEP
+
+
+# ============================================================================
+#  BUSCADOR CON TRAMPA (usa siguiente_primo real)
+# ============================================================================
+
+def buscar_factor_con_trampa(N, max_iter=1, verbose=False):
+    """
+    Intenta factorizar N usando mdc_v23 con max_iter iteraciones.
+    Si falla, calcula sp = siguiente_primo(N) y prueba con N*sp.
+    """
+    # Primer intento: sobre N directamente
+    if verbose:
+        print(f"\n🔍 [Intento 1] Factorizando {N:,} con {max_iter} iteración(es)...")
+    factor, t1 = mdc_v23_limited(N, max_bisec_iter=max_iter, verbose=verbose)
+
+    if factor is not None:
+        if verbose:
+            print(f"✅ Encontrado en el primer intento: {factor:,}")
+        return factor, N, t1
+
+    # Si falla, aplicamos la trampa: sp = siguiente_primo(N)
+    if verbose:
+        print(f"⚠️  Primer intento fallido. Calculando siguiente_primo({N:,})...")
+    sp = siguiente_primo(N)
+    if verbose:
+        print(f"   → sp = {sp:,}")
+
+    N2 = N * sp
+    if verbose:
+        print(f"\n🔍 [Intento 2] Factorizando {N2:,} (N·sp) con {max_iter} iteración(es)...")
+        print(f"   (N·sp = {N:,} × {sp:,})")
+
+    factor2, t2 = mdc_v23_limited(N2, max_bisec_iter=max_iter, verbose=verbose)
+
+    if factor2 is not None:
+        # Verificar si factor2 realmente divide a N
+        if math.gcd(N, factor2) > 1:
+            if verbose:
+                print(f"✅ Encontrado en el segundo intento: {factor2:,} (divide a N)")
+            return factor2, N2, t2
+        else:
+            if verbose:
+                print(f"❌ Factor {factor2:,} no divide a N (probablemente factor de sp).")
+            return None, N2, t2
+
+    return None, None, t1 + t2
+
+
+# ============================================================================
+#  EJEMPLO DE USO
+# ============================================================================
+
+if __name__ == "__main__":
+    # N = p * q, con p=100003, q=100019 (primos consecutivos)
+    N = 100003 * 100019
+
+    print("=" * 72)
+    print("  BUSCADOR CON TRAMPA (usando siguiente_primo real)")
+    print("=" * 72)
+
+    factor, usado, tiempo = buscar_factor_con_trampa(N, max_iter=1, verbose=True)
+
+    if factor:
+        print(f"\n✅ FACTOR ENCONTRADO: {factor:,}")
+        print(f"   → N / factor = {N // factor:,}")
+        print(f"   → Tiempo total: {tiempo:.2f} ms")
+    else:
+        print("\n❌ No se encontró factor.")
+        print(f"   Tiempo total: {tiempo:.2f} ms")

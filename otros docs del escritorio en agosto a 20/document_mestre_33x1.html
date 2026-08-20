@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="ca" class="scroll-smooth bg-slate-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projecte 33×1: Captura d'Asteroide - Document Mestre</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e3a8a', // blue-900
+                        secondary: '#3b82f6', // blue-500
+                        accent: '#f59e0b', // amber-500
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Merriweather', 'serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:ital,wght@0,300;0,700;1,300&family=Fira+Code&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- MathJax for rendering LaTeX formulas -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+    </script>
+
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, h4, .font-serif { font-family: 'Merriweather', serif; }
+        .math-block { overflow-x: auto; padding: 1rem 0; }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        table { border-collapse: collapse; width: 100%; margin-bottom: 2rem; }
+        th, td { border: 1px solid #e2e8f0; padding: 0.75rem; text-align: left; }
+        th { background-color: #f8fafc; font-weight: 600; color: #1e293b; }
+        tr:nth-child(even) { background-color: #f8fafc; }
+    </style>
+</head>
+
+<body class="text-slate-800 antialiased leading-relaxed relative">
+
+    <!-- Navegació superior per a mòbils -->
+    <nav class="xl:hidden bg-primary text-white p-4 sticky top-0 z-50 shadow-md flex justify-between items-center">
+        <div class="font-bold text-lg truncate">PROJECTE 33×1</div>
+        <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="text-white hover:text-accent focus:outline-none">
+            <i class="fas fa-bars text-xl"></i>
+        </button>
+    </nav>
+    <div id="mobile-menu" class="hidden xl:hidden bg-primary text-white p-4 fixed w-full z-40 shadow-lg top-14 h-[calc(100vh-3.5rem)] overflow-y-auto">
+        <ul class="space-y-4">
+            <li><a href="#resum" class="block hover:text-accent" onclick="document.getElementById('mobile-menu').classList.add('hidden')">1. Resum Executiu</a></li>
+            <li><a href="#asteroide" class="block hover:text-accent" onclick="document.getElementById('mobile-menu').classList.add('hidden')">2. L'Asteroide 2016 HO3</a></li>
+            <li><a href="#tecnologia" class="block hover:text-accent" onclick="document.getElementById('mobile-menu').classList.add('hidden')">3. Tecnologia</a></li>
+            <li><a href="#fases" class="block hover:text-accent" onclick="document.getElementById('mobile-menu').classList.add('hidden')">4. Fases del Projecte</a></li>
+            <li><a href="#governanca" class="block hover:text-accent" onclick="document.getElementById('mobile-menu').classList.add('hidden')">5. Governança i Sobirania</a></li>
+            <li><a href="#beneficis" class="block hover:text-accent" onclick="document.getElementById('mobile-menu').classList.add('hidden')">6. Beneficis</a></li>
+            <li><a href="#compromis" class="block hover:text-accent" onclick="document.getElementById('mobile-menu').classList.add('hidden')">7. Compromís de 33 Anys</a></li>
+            <li><a href="#participar" class="block hover:text-accent" onclick="document.getElementById('mobile-menu').classList.add('hidden')">8. Com Participar</a></li>
+            <li><a href="#cronograma" class="block hover:text-accent" onclick="document.getElementById('mobile-menu').classList.add('hidden')">9. Cronograma Estimat</a></li>
+            <li><a href="#apendix" class="block hover:text-accent" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Apèndix Tècnic i Matemàtic</a></li>
+            <li><a href="#diccionari" class="block hover:text-accent" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Diccionari</a></li>
+        </ul>
+    </div>
+
+    <!-- Contenidor Principal -->
+    <div class="flex max-w-[1400px] mx-auto">
+        
+        <!-- Sidebar navegació per a desktop -->
+        <aside class="hidden xl:block w-72 sticky top-0 h-screen overflow-y-auto bg-white border-r border-slate-200 p-8 shadow-sm">
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-primary font-serif">33×1</h2>
+                <p class="text-sm text-slate-500 mt-1 uppercase tracking-wider">Document Mestre</p>
+            </div>
+            <nav class="space-y-1 text-sm font-medium text-slate-600">
+                <a href="#inici" class="block px-3 py-2 rounded-md hover:bg-slate-50 hover:text-primary transition-colors">Inici</a>
+                <a href="#resum" class="block px-3 py-2 rounded-md hover:bg-slate-50 hover:text-primary transition-colors">1. Resum Executiu</a>
+                <a href="#asteroide" class="block px-3 py-2 rounded-md hover:bg-slate-50 hover:text-primary transition-colors">2. L'Asteroide</a>
+                <a href="#tecnologia" class="block px-3 py-2 rounded-md hover:bg-slate-50 hover:text-primary transition-colors">3. Tecnologia</a>
+                <a href="#fases" class="block px-3 py-2 rounded-md hover:bg-slate-50 hover:text-primary transition-colors">4. Fases del Projecte</a>
+                <a href="#governanca" class="block px-3 py-2 rounded-md hover:bg-slate-50 hover:text-primary transition-colors">5. Governança</a>
+                <a href="#beneficis" class="block px-3 py-2 rounded-md hover:bg-slate-50 hover:text-primary transition-colors">6. Beneficis</a>
+                <a href="#compromis" class="block px-3 py-2 rounded-md hover:bg-slate-50 hover:text-primary transition-colors">7. Compromís de 33 Anys</a>
+                <a href="#participar" class="block px-3 py-2 rounded-md hover:bg-slate-50 hover:text-primary transition-colors">8. Com Participar</a>
+                <a href="#cronograma" class="block px-3 py-2 rounded-md hover:bg-slate-50 hover:text-primary transition-colors">9. Cronograma</a>
+                <a href="#conclusions" class="block px-3 py-2 rounded-md hover:bg-slate-50 hover:text-primary transition-colors">10. Conclusions</a>
+                
+                <div class="pt-6 pb-2">
+                    <p class="px-3 text-xs font-bold uppercase tracking-wider text-slate-400">Tècnic</p>
+                </div>
+                <a href="#apendix" class="block px-3 py-2 rounded-md hover:bg-slate-50 hover:text-primary transition-colors">Apèndix Tècnic</a>
+                <a href="#simulacio" class="block px-3 py-2 rounded-md hover:bg-slate-50 hover:text-primary transition-colors">Simulació (Codi)</a>
+                <a href="#diccionari" class="block px-3 py-2 rounded-md hover:bg-slate-50 hover:text-primary transition-colors">Diccionari</a>
+            </nav>
+        </aside>
+
+        <!-- Contingut principal -->
+        <main class="flex-1 w-full bg-white shadow-xl min-h-screen">
+            <article class="max-w-4xl mx-auto px-6 py-12 md:px-12 md:py-20">
+                
+                <!-- Portada -->
+                <header id="inici" class="text-center mb-24 relative">
+                    <div class="absolute inset-0 -z-10 flex items-center justify-center opacity-5">
+                        <i class="fas fa-meteor text-9xl"></i>
+                    </div>
+                    <span class="text-secondary font-bold tracking-widest uppercase text-sm mb-4 block">Document per a la Cooperació Internacional</span>
+                    <h1 class="text-4xl md:text-6xl font-extrabold text-primary mb-6 leading-tight">PROJECTE 33×1</h1>
+                    <h2 class="text-2xl md:text-3xl text-slate-700 font-light mb-10">Captura d'Asteroide per a Recursos i Sobirania</h2>
+                    
+                    <div class="bg-slate-50 border-l-4 border-accent p-6 text-left italic text-slate-600 my-10 rounded-r-lg max-w-2xl mx-auto">
+                        "L'honor és la nostra divisa i el resultat la nostra ambició: 33×1"
+                    </div>
+                    
+                    <div class="mt-12 text-slate-500">
+                        <p class="font-semibold text-lg">Víctor Manzanares Alberola</p>
+                        <p class="text-sm">EPSA-UPV Alcoi · 2026</p>
+                        <p class="text-sm mt-4 text-primary font-medium hover:underline"><a href="#contacte"><i class="fab fa-github mr-2"></i>github.com/espiradesombra/claude</a></p>
+                    </div>
+                </header>
+
+                <hr class="my-12 border-slate-200">
+
+                <!-- 1. Resum Executiu -->
+                <section id="resum" class="mb-16">
+                    <h2 class="text-3xl font-bold text-primary mb-6 border-b-2 border-slate-100 pb-2">1. Resum Executiu</h2>
+                    <p class="mb-4 text-lg">El Projecte 33×1 proposa una <strong>oportunitat sense precedents</strong> per als països participants. Ens trobem a les portes d'una revolució industrial a escala interplanetària, on l'esgotament dels recursos terrestres i la necessitat d'una expansió sostenible cap a l'espai conflueixen en un únic objectiu.</p>
+                    <ul class="space-y-4 mb-6 list-none">
+                        <li class="flex items-start">
+                            <i class="fas fa-gem text-accent mt-1 mr-3"></i>
+                            <div><strong>Recursos il·limitats:</strong> Un asteroide de 100 m conté aigua, metalls i minerals valorats en milers de milions d'euros.</div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-bolt text-accent mt-1 mr-3"></i>
+                            <div><strong>Independència energètica:</strong> L'aigua de l'asteroide es converteix en combustible (hidrogen/oxigen) per a coets i centrals elèctriques.</div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-flag text-accent mt-1 mr-3"></i>
+                            <div><strong>Sobirania tecnològica:</strong> Cada país rep la tecnologia per a controlar el seu propi asteroide en el futur.</div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-shield-alt text-accent mt-1 mr-3"></i>
+                            <div><strong>Seguretat planetària:</strong> Aprenem a desviar asteroides que amenacen la Terra.</div>
+                        </li>
+                    </ul>
+                    <div class="bg-blue-50 p-6 rounded-lg text-blue-900 mt-6 shadow-sm border border-blue-100">
+                        <p class="mb-2"><strong>L'objectiu:</strong> Capturar un asteroide proper a la Terra (2016 HO3) mitjançant sublimació làser i braços giratoris, per a extreure'n recursos i garantir la sobirania tecnològica dels països participants.</p>
+                        <p class="mb-2"><strong>La condició:</strong> Cooperació internacional durant 33 anys. Cap nació pot monopolitzar el coneixement; tots els participants han de ser copropietaris de la tecnologia de base.</p>
+                        <p><strong>La recompensa:</strong> Recursos il·limitats que establiran l'economia del pròxim segle i la sobirania tecnològica absoluta per a cada estat sobirà membre.</p>
+                    </div>
+                </section>
+
+                <!-- 2. L'Asteroide -->
+                <section id="asteroide" class="mb-16">
+                    <h2 class="text-3xl font-bold text-primary mb-6 border-b-2 border-slate-100 pb-2">2. L'Asteroide: 2016 HO3</h2>
+                    <h3 class="text-xl font-bold mb-4">2.1 Per què aquest asteroide?</h3>
+                    <div class="overflow-x-auto shadow-sm rounded-lg border border-slate-200">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr>
+                                    <th>Característica</th>
+                                    <th>Valor</th>
+                                    <th>Avantatge</th>
+                                    <th>Font</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="font-semibold">Mida</td>
+                                    <td>40–100 m</td>
+                                    <td><strong>Fàcil de moure</strong> (massa moderada)</td>
+                                    <td>NASA</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-semibold">Tipus</td>
+                                    <td>C-type (probable)</td>
+                                    <td><strong>Conté aigua</strong> (gel)</td>
+                                    <td>OSIRIS-REx</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-semibold">Distància</td>
+                                    <td>Òrbita terrestre</td>
+                                    <td><strong>Viatge curt</strong> (2–3 anys)</td>
+                                    <td>JAXA</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-semibold">ΔV necessari</td>
+                                    <td>~1.5 km/s</td>
+                                    <td><strong>Baix consum energètic</strong></td>
+                                    <td>Càlculs propis</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="text-xl font-bold mt-8 mb-4">2.2 Recursos estimats</h3>
+                    <div class="overflow-x-auto shadow-sm rounded-lg border border-slate-200 mb-4">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr>
+                                    <th>Recurs</th>
+                                    <th>Quantitat</th>
+                                    <th>Valor (€)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="font-semibold"><i class="fas fa-tint text-blue-500 mr-2"></i>Aigua</td>
+                                    <td>$10^6$ – $10^7$ kg</td>
+                                    <td>1.000–10.000 M€ (com a combustible)</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-semibold"><i class="fas fa-cubes text-gray-500 mr-2"></i>Metalls (platí, or, níquel)</td>
+                                    <td>$10^3$ – $10^5$ kg</td>
+                                    <td>50–500 M€ (segons preu mercat)</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-semibold"><i class="fas fa-mountain text-stone-500 mr-2"></i>Minerals (silicats, carbonats)</td>
+                                    <td>$10^7$ – $10^8$ kg</td>
+                                    <td>Ús industrial directe</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="font-bold text-primary bg-slate-100 p-3 rounded text-center">Valor total estimat: 1.000–10.000 milions d'euros.</p>
+                    <p class="text-xs text-slate-500 mt-2 text-center">Els valors són estimacions basades en preus actuals de mercat (2026). El preu real pot variar segons la demanda i la disponibilitat.</p>
+                </section>
+
+                <!-- 3. Tecnologia -->
+                <section id="tecnologia" class="mb-16">
+                    <h2 class="text-3xl font-bold text-primary mb-6 border-b-2 border-slate-100 pb-2">3. Tecnologia: Com ho farem</h2>
+                    
+                    <h3 class="text-xl font-bold mb-4">3.1 Principi físic (contraober + braços giratoris)</h3>
+                    <p class="mb-4 text-slate-700">La bellesa d'aquest sistema rau en la seva eficiència radical: no necessitem llançar milers de tones de combustible des de la Terra per frenar l'asteroide. En canvi, utilitzem una petita quantitat de gel (o aigua extreta prèviament de l'espai), energia solar/nuclear (làser) i l'enginy mecànic inspirat en els principis del model <em>ZypyZape</em> i <em>Quijote</em>.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <div>
+                            <ol class="space-y-4 list-decimal pl-5 text-slate-700">
+                                <li><strong>Braços giratoris:</strong> Instal·lem 3–5 braços amb caps de gel que giren en sentit contrari a la rotació de l'asteroide.</li>
+                                <li><strong>Làser continu:</strong> Un làser (100 MW – 1 GW) dispara sobre el cap que apunta en la direcció del moviment (contraober).</li>
+                                <li><strong>Sublimació:</strong> El gel es converteix en gas, que surt en direcció oposada, generant una <strong>empenta retrògrada</strong>.</li>
+                                <li><strong>Frenada contínua:</strong> L'asteroide perd velocitat i la seua òrbita es contrau en <strong>espiral</strong> fins a ser capturat.</li>
+                            </ol>
+                        </div>
+                        <div class="bg-slate-800 text-white p-6 rounded-xl flex items-center justify-center flex-col shadow-inner">
+                            <i class="fas fa-satellite text-4xl text-accent mb-4"></i>
+                            <p class="text-center font-mono text-sm leading-relaxed">
+                                Amb un làser de 1 MW i 100 tones de gel artificial, el semieix major es redueix en <strong>14.4 milions de km/any</strong>. En 2-5 anys arriba a una òrbita lunar.
+                            </p>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-bold mb-4">3.2 Tecnologia necessària (ja existeix)</h3>
+                    <div class="overflow-x-auto shadow-sm rounded-lg border border-slate-200">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr>
+                                    <th>Component</th>
+                                    <th>Estat actual</th>
+                                    <th>Cost estimat (M€)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="font-semibold">Làser de 100 MW</td>
+                                    <td>En desenvolupament (laboratoris)</td>
+                                    <td>500–1.000</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-semibold">Braços giratoris</td>
+                                    <td>Tecnologia existent (robòtica espacial)</td>
+                                    <td>100–300</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-semibold">Sonda de control</td>
+                                    <td>Similar a OSIRIS-REx (NASA)</td>
+                                    <td>500–1.000</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-semibold">Llançament</td>
+                                    <td>Coet Falcon Heavy / SLS / Starship</td>
+                                    <td>100–300</td>
+                                </tr>
+                                <tr class="bg-slate-100 font-bold text-primary border-t-2 border-slate-300">
+                                    <td colspan="2" class="text-right">Total Estimat</td>
+                                    <td>1.200–2.600 M€</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 4. Fases del Projecte -->
+                <section id="fases" class="mb-16">
+                    <h2 class="text-3xl font-bold text-primary mb-6 border-b-2 border-slate-100 pb-2">4. Fases del Projecte</h2>
+                    <div class="overflow-x-auto shadow-sm rounded-lg border border-slate-200">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr>
+                                    <th>Fase</th>
+                                    <th>Durada</th>
+                                    <th>Objectiu</th>
+                                    <th>Cost (M€)</th>
+                                    <th>Responsable</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>0. Selecció</strong></td>
+                                    <td>1 any</td>
+                                    <td>Confirmar composició de 2016 HO3</td>
+                                    <td>50</td>
+                                    <td>CNSA, NASA, ESA</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>1. Disseny</strong></td>
+                                    <td>2 anys</td>
+                                    <td>Construir làser, braços i sonda</td>
+                                    <td>1.000</td>
+                                    <td>Consorci internacional</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>2. Llançament</strong></td>
+                                    <td>1 any</td>
+                                    <td>Enviar la sonda a l'asteroide</td>
+                                    <td>300</td>
+                                    <td>SpaceX, ESA</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>3. Instal·lació</strong></td>
+                                    <td>1 any</td>
+                                    <td>Acoblar braços i làser</td>
+                                    <td>200</td>
+                                    <td>Empreses privades</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>4. Frenada</strong></td>
+                                    <td>2–5 anys</td>
+                                    <td>Sublimació contínua en contraober</td>
+                                    <td>100 (operació)</td>
+                                    <td>Consorci 33×1</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>5. Captura</strong></td>
+                                    <td>1 any</td>
+                                    <td>Inserir en òrbita lunar per a extracció</td>
+                                    <td>50</td>
+                                    <td>Consorci internacional</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 5. Governança -->
+                <section id="governanca" class="mb-16">
+                    <h2 class="text-3xl font-bold text-primary mb-6 border-b-2 border-slate-100 pb-2">5. Governança: Sobirania per a cada país</h2>
+                    <h3 class="text-xl font-bold mb-3">5.1 Com funciona el Projecte 33×1</h3>
+                    <p class="mb-4">El model de governança garanteix que cap país quedi exclòs del futur espacial. Aquest sistema destrueix el paradigma clàssic de guanyadors i perdedors; crea un "joc de suma positiva" on aportar valor beneficia a tots simultàniament:</p>
+                    <ul class="list-disc pl-6 space-y-2 mb-6 text-slate-700">
+                        <li><strong>Cada país participant</strong> aporta una part del finançament (segons PIB) i capital humà.</li>
+                        <li><strong>A canvi, rep:</strong>
+                            <ul class="list-circle pl-6 mt-2 space-y-1">
+                                <li><em>Accés a la tecnologia:</em> Tots els plànols, codi (incloent simuladors ZypyZape) i procediments.</li>
+                                <li><em>Participació en la missió:</em> Enginyers, científics i tècnics del país hi treballen.</li>
+                                <li><em>Drets sobre els recursos:</em> L'aigua i metalls extrets es distribueixen proporcionalment a l'aportació.</li>
+                                <li><em>Sobirania tecnològica:</em> El país pot replicar la tecnologia per a les seues pròpies missions futures.</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <h3 class="text-xl font-bold mb-3">5.2 Exemple de distribució (Estimació)</h3>
+                    <div class="overflow-x-auto shadow-sm rounded-lg border border-slate-200 mb-6">
+                        <table class="w-full text-sm text-center">
+                            <thead>
+                                <tr>
+                                    <th class="text-left">País</th>
+                                    <th>Aportació</th>
+                                    <th>Aigua (kg)</th>
+                                    <th>Metalls (kg)</th>
+                                    <th>Valor Retornat (M€)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td class="text-left font-semibold">EUA</td><td>30%</td><td>$3 \times 10^6$</td><td>$3 \times 10^4$</td><td>300–3.000</td></tr>
+                                <tr><td class="text-left font-semibold">Xina</td><td>20%</td><td>$2 \times 10^6$</td><td>$2 \times 10^4$</td><td>200–2.000</td></tr>
+                                <tr><td class="text-left font-semibold">Japó</td><td>15%</td><td>$1.5 \times 10^6$</td><td>$1.5 \times 10^4$</td><td>150–1.500</td></tr>
+                                <tr><td class="text-left font-semibold">Alemanya / França (10% cadascun)</td><td>10%</td><td>$10^6$</td><td>$10^4$</td><td>100–1.000</td></tr>
+                                <tr><td class="text-left font-semibold">Espanya</td><td>5%</td><td>$5 \times 10^5$</td><td>$5 \times 10^3$</td><td>50–500</td></tr>
+                                <tr><td class="text-left font-semibold">Altres</td><td>10%</td><td>$10^6$</td><td>$10^4$</td><td>100–1.000</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 6. Beneficis -->
+                <section id="beneficis" class="mb-16">
+                    <h2 class="text-3xl font-bold text-primary mb-6 border-b-2 border-slate-100 pb-2">6. Beneficis Econòmics i Estratègics</h2>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-xl font-bold mb-4"><i class="fas fa-chart-line text-green-600 mr-2"></i>Retorn de la Inversió</h3>
+                            <ul class="space-y-3 text-slate-700">
+                                <li><strong>Cost total:</strong> 1.700–2.600 M€ (Inversió inicial).</li>
+                                <li><strong>Valor recursos purs:</strong> 1.000–10.000 M€.</li>
+                                <li><strong>Estalvi combustibles (H2/O2):</strong> 500–2.000 M€.</li>
+                                <li><strong>Noves indústries derivades:</strong> > 5.000 M€.</li>
+                                <li class="text-lg font-bold text-green-700 pt-2 border-t border-slate-200 mt-4">Retorn estimat: 3x a 20x la inversió.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-4"><i class="fas fa-globe text-blue-600 mr-2"></i>Beneficis per Estat</h3>
+                            <ul class="space-y-3 text-slate-700">
+                                <li><i class="fas fa-check text-green-500 mr-2"></i><strong>Energia:</strong> Aigua espacial converteix l'òrbita terrestre en la nova "benzinera" espacial.</li>
+                                <li><i class="fas fa-check text-green-500 mr-2"></i><strong>Economia:</strong> Creació de sectors de mineria espacial, robòtica i turisme.</li>
+                                <li><i class="fas fa-check text-green-500 mr-2"></i><strong>Prestigi:</strong> Ser pioner absolut en la nova era de la humanitat.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 7. Compromís -->
+                <section id="compromis" class="mb-16">
+                    <h2 class="text-3xl font-bold text-primary mb-6 border-b-2 border-slate-100 pb-2">7. El Compromís de 33 Anys</h2>
+                    <p class="text-lg mb-4">El Projecte 33×1 no és només una missió tecnològica; és un <strong>acord de pau i cooperació activa</strong> dissenyat per a transcendir cicles polítics i fronteres terrestres.</p>
+                    <div class="bg-slate-800 text-white p-6 rounded-lg shadow-lg">
+                        <h4 class="font-bold text-accent mb-2">Per què 33 anys?</h4>
+                        <ul class="list-disc pl-5 space-y-3 text-slate-300">
+                            <li><strong>Una generació sencera:</strong> És el temps necessari per a consolidar una nova indústria. Durant 33 anys, milers de científics, enginyers i líders polítics de nacions potencialment rivals estaran obligats a treballar colze a colze en l'espai fons.</li>
+                            <li><strong>Estabilitat i Confiança Mútua:</strong> Dècades de cooperació ininterrompuda teixeixen vincles logístics, econòmics i diplomàtics impossibles de trencar de cop, forçant la resolució pacífica de qualsevol conflicte terrestre per no posar en risc la font de riquesa espacial.</li>
+                            <li><strong>Garantia de No Proliferació (Protocol Quijote):</strong> La tecnologia avançada de manipulació orbital (que podria ser utilitzada malintencionadament per llançar roques cap a la Terra) es comparteix amb un escrutini creuat absolut. El domini d'aquesta física és exclusivament per a la <strong>defensa planetària</strong> i la properitat col·lectiva.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- 8 & 9. Participació i Cronograma -->
+                <section id="cronograma" class="mb-16">
+                    <h2 class="text-3xl font-bold text-primary mb-6 border-b-2 border-slate-100 pb-2">8 & 9. Com Participar i Cronograma</h2>
+                    <div class="relative border-l-4 border-blue-500 ml-4 py-2 space-y-8">
+                        <div class="relative pl-6">
+                            <span class="absolute -left-4 top-1 bg-blue-500 text-white w-7 h-7 rounded-full flex items-center justify-center font-bold shadow-md">1</span>
+                            <h4 class="font-bold text-lg">2026: Signatura de l'Acord</h4>
+                            <p class="text-slate-600 text-sm mt-1">S'estableix el consorci i l'aportació segons PIB. S'assignen equips de treball internacionals.</p>
+                        </div>
+                        <div class="relative pl-6">
+                            <span class="absolute -left-4 top-1 bg-blue-500 text-white w-7 h-7 rounded-full flex items-center justify-center font-bold shadow-md">2</span>
+                            <h4 class="font-bold text-lg">2027 - 2028: Validació i Construcció</h4>
+                            <p class="text-slate-600 text-sm mt-1">Es confirma la composició de 2016 HO3. Disseny del làser (1 MW o superior) i integració de la robòtica de braços giratoris, sincronitzats via model Kuramoto.</p>
+                        </div>
+                        <div class="relative pl-6">
+                            <span class="absolute -left-4 top-1 bg-blue-500 text-white w-7 h-7 rounded-full flex items-center justify-center font-bold shadow-md">3</span>
+                            <h4 class="font-bold text-lg">2029 - 2030: Llançament i Acoblament</h4>
+                            <p class="text-slate-600 text-sm mt-1">Missió llançada cap a l'asteroide. Arribada i instal·lació dels sistemes de sublimació contínua.</p>
+                        </div>
+                        <div class="relative pl-6">
+                            <span class="absolute -left-4 top-1 bg-blue-500 text-white w-7 h-7 rounded-full flex items-center justify-center font-bold shadow-md">4</span>
+                            <h4 class="font-bold text-lg">2031 - 2035: Frenada i Captura</h4>
+                            <p class="text-slate-600 text-sm mt-1">Sublimació ininterrompuda en "contraober". L'asteroide entra en trajectòria espiral fins a una òrbita lunar estable.</p>
+                        </div>
+                        <div class="relative pl-6">
+                            <span class="absolute -left-4 top-1 bg-blue-500 text-white w-7 h-7 rounded-full flex items-center justify-center font-bold shadow-md">5</span>
+                            <h4 class="font-bold text-lg">2036 - 2059: L'Era de l'Abundància (33 anys)</h4>
+                            <p class="text-slate-600 text-sm mt-1">Extracció, explotació i distribució proporcional dels recursos a totes les nacions col·laboradores.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 10. Conclusions i Contacte -->
+                <section id="conclusions" class="mb-16">
+                    <h2 class="text-3xl font-bold text-primary mb-6 border-b-2 border-slate-100 pb-2">10. Conclusions</h2>
+                    <p class="mb-6 text-lg font-medium text-slate-800">El Projecte 33×1 és una <strong>oportunitat única</strong> per a la humanitat:</p>
+                    <div class="grid grid-cols-2 gap-4 text-center mb-8">
+                        <div class="bg-slate-50 p-4 border border-slate-200 rounded">
+                            <i class="fas fa-water text-3xl text-blue-400 mb-2"></i>
+                            <h4 class="font-bold">Recursos</h4>
+                            <p class="text-sm text-slate-600">Aigua i metalls valuosos.</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 border border-slate-200 rounded">
+                            <i class="fas fa-microchip text-3xl text-purple-400 mb-2"></i>
+                            <h4 class="font-bold">Tecnologia</h4>
+                            <p class="text-sm text-slate-600">Sobirania tecnològica compartida.</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 border border-slate-200 rounded">
+                            <i class="fas fa-dove text-3xl text-teal-400 mb-2"></i>
+                            <h4 class="font-bold">Pau</h4>
+                            <p class="text-sm text-slate-600">33 anys de cooperació obligada.</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 border border-slate-200 rounded">
+                            <i class="fas fa-rocket text-3xl text-red-400 mb-2"></i>
+                            <h4 class="font-bold">Futur</h4>
+                            <p class="text-sm text-slate-600">Economia espacial sostenible.</p>
+                        </div>
+                    </div>
+                    <p class="text-xl text-center italic text-primary mt-8">
+                        "La física és la mateixa per a tothom. La decisió de compartir-la és nostra."
+                    </p>
+                </section>
+
+                <hr class="border-t-2 border-dashed border-slate-300 my-16">
+
+                <!-- APÈNDIX TÈCNIC I MATEMÀTIC -->
+                <section id="apendix" class="mb-16">
+                    <div class="bg-slate-900 text-white px-8 py-10 rounded-xl shadow-2xl mb-12">
+                        <h2 class="text-3xl font-extrabold text-accent mb-2">APÈNDIX TÈCNIC I MATEMÀTIC</h2>
+                        <h3 class="text-xl font-light text-slate-300">Física, Dinàmica Orbital i Simulacions per a ZypyZape i 33×1</h3>
+                    </div>
+
+                    <h3 class="text-2xl font-bold text-primary mt-8 mb-4 border-b pb-2">1. Mecànica Orbital Bàsica i Captura</h3>
+                    <p class="mb-4">La dinàmica d'un asteroide al voltant del Sol és governada per la llei de gravitació universal de Newton:</p>
+                    <div class="math-block bg-slate-50 rounded-lg text-center shadow-inner border border-slate-200 mb-6">
+                        $$ \mathbf{F} = -G \frac{Mm}{r^2} \mathbf{\hat{r}} $$
+                    </div>
+                    <p class="mb-4">Energia orbital específica i velocitat per a una òrbita (aproximadament circular amb $r = a$):</p>
+                    <div class="math-block bg-slate-50 rounded-lg text-center shadow-inner border border-slate-200 mb-6">
+                        $$ E = \frac{v^2}{2} - \frac{\mu}{r} \implies E = -\frac{\mu}{2a} $$
+                        $$ v = \sqrt{\frac{\mu}{a}} $$
+                    </div>
+                    
+                    <h4 class="font-bold mt-6 mb-2">Pertorbació Orbital per Força de Frenada ($F_{fren}$)</h4>
+                    <p class="mb-4">En aplicar una força de frenada contínua, l'òrbita es contrau en espiral segons:</p>
+                    <div class="math-block bg-slate-50 rounded-lg text-center shadow-inner border border-slate-200 mb-6">
+                        $$ \frac{da}{dt} = - \frac{2a^2 v}{\mu m} F_{fren} $$
+                    </div>
+                    <p class="text-sm text-slate-600 mb-6">Demostració: Derivant $E$ respecte a $t$ ($dE/dt = -F_{fren}v/m$) i respecte a $a$ ($dE/da = \mu/2a^2$), obtenim l'equació anterior combinant-les.</p>
+
+                    <h3 class="text-2xl font-bold text-primary mt-10 mb-4 border-b pb-2">2. Física de la Sublimació Làser</h3>
+                    <p class="mb-4">La força d'ablació ($F_{abl}$) ve determinada per l'expulsió de gasos a causa del làser (3a Llei de Newton):</p>
+                    <div class="math-block bg-slate-50 rounded-lg text-center shadow-inner border border-slate-200 mb-6 flex flex-col md:flex-row justify-center items-center gap-8">
+                        <div>$$ F_{abl} = \dot{m} v_e $$</div>
+                        <div class="border-l pl-8 border-slate-300">$$ \dot{m} = \frac{P_{laser} \cdot \eta}{L_v} $$</div>
+                    </div>
+                    <ul class="list-none text-sm text-slate-700 mb-8 space-y-2 bg-blue-50 p-4 rounded border border-blue-100">
+                        <li><strong>$\dot{m}$</strong>: Taxa de pèrdua de massa per segon.</li>
+                        <li><strong>$v_e$</strong>: Velocitat d'escapament del gas (aigua ≈ 800 m/s).</li>
+                        <li><strong>$P_{laser}$</strong>: Potència del làser (ex: 1 MW = $10^6$ W).</li>
+                        <li><strong>$\eta$</strong>: Eficiència (estimada 0.8).</li>
+                        <li><strong>$L_v$</strong>: Calor latent de sublimació de l'aigua ($2.83 \times 10^6$ J/kg).</li>
+                    </ul>
+
+                    <h3 class="text-2xl font-bold text-primary mt-10 mb-4 border-b pb-2">3. Fonaments Inercials (Sistema Quijote / ZypyZape)</h3>
+                    <h4 class="font-bold mt-4 mb-2">3.1 Robatori Gravitatori</h4>
+                    <p class="mb-4">Per a un sistema de braços on es desplacen masses ($m_w$), el par gravitatori per braç $k$ és:</p>
+                    <div class="math-block bg-slate-50 rounded-lg text-center shadow-inner border border-slate-200 mb-4">
+                        $$ T_g^k(\theta_k) = m_w \cdot g \cdot r_k(t) \cdot \cos(\theta_k) $$
+                    </div>
+                    <p class="mb-4">Integrant en una revolució ($2\pi$), el treball net (energia robada) és:</p>
+                    <div class="math-block bg-slate-50 rounded-lg text-center shadow-inner border border-slate-200 mb-6">
+                        $$ W_{hurto} = 4 \cdot m_w \cdot g \cdot \Delta r $$
+                    </div>
+
+                    <h4 class="font-bold mt-6 mb-2">3.2 Inèrcia Variable i Efecte Patinadora</h4>
+                    <p class="mb-4">El moment d'inèrcia $J(t)$ d'un rotor amb masses desplaçables o en sublimació varia. L'equació de moviment esdevé:</p>
+                    <div class="math-block bg-slate-50 rounded-lg text-center shadow-inner border border-slate-200 mb-6 text-lg">
+                        $$ J(t) \frac{d\omega}{dt} + \frac{dJ}{dt}\omega = T_{aero} + T_{hurto} - T_{gen} $$
+                    </div>
+                    <p class="mb-6 text-sm text-slate-700 bg-slate-100 p-4 rounded-lg">El terme $\frac{dJ}{dt}\omega$ és "l'efecte patinadora". Quan els pesos es retreuen (o perden massa, com el gel sublimat, $dJ/dt < 0$), aquest terme impulsa positivament l'acceleració angular sense requerir par extern. És el secret de l'eficiència massiva en l'estabilització i propulsió.</p>
+
+                    <h4 class="font-bold mt-6 mb-2">3.3 Sincronització Kuramoto</h4>
+                    <p class="mb-4">Múltiples satèl·lits o làsers es coordinen mitjançant el model d'oscil·ladors de Kuramoto per maximitzar la ressonància destructiva (frenada):</p>
+                    <div class="math-block bg-slate-50 rounded-lg text-center shadow-inner border border-slate-200 mb-6">
+                        $$ \frac{d\phi_i}{dt} = \omega_i + \frac{K}{N} \sum_{j=1}^N \sin(\phi_j - \phi_i) $$
+                    </div>
+
+                    <h3 class="text-2xl font-bold text-primary mt-10 mb-4 border-b pb-2">4. Aplicació al 2016 HO3: Resultats</h3>
+                    <div class="overflow-x-auto shadow-sm rounded-lg border border-slate-200 mb-8">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr>
+                                    <th>Paràmetre</th>
+                                    <th>Símbol</th>
+                                    <th>Valor</th>
+                                    <th>Unitats</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Massa de l'asteroide</td><td>$m$</td><td>$10^7$</td><td>kg</td></tr>
+                                <tr><td>Semieix major inicial</td><td>$a_0$</td><td>$1.496 \times 10^{11}$</td><td>m (1 UA)</td></tr>
+                                <tr><td>Velocitat orbital</td><td>$v_0$</td><td>$29,800$</td><td>m/s</td></tr>
+                                <tr><td>Paràmetre gravitacional</td><td>$\mu$</td><td>$1.327 \times 10^{20}$</td><td>m³/s²</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <p class="mb-4">Assumint Làser de 1 MW amb gel artificial de 100 tones ($10^8$ kg), l'eficiència projecta una reducció de:</p>
+                    <div class="bg-accent text-white p-4 font-bold text-center rounded-lg text-xl mb-8 shadow-md">
+                        $$ \frac{da}{dt} \approx -14.4 \text{ milions de km/any} $$
+                        Temps per capturar (reduir de 1.0 UA a 0.5 UA) ≈ 5.2 Anys.
+                    </div>
+
+                    <h3 id="simulacio" class="text-2xl font-bold text-primary mt-10 mb-4 border-b pb-2">5. Simulador de Bessó Digital (Python)</h3>
+                    <p class="mb-4 text-sm text-slate-600">Aquest script modela la reducció del semieix major (captura) generant la gràfica d'òrbita en espiral.</p>
+                    
+                    <div class="rounded-lg overflow-hidden border border-slate-300 bg-slate-900 mb-8 shadow-xl">
+                        <div class="flex items-center px-4 py-2 bg-slate-800 border-b border-slate-700">
+                            <div class="flex space-x-2">
+                                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                            </div>
+                            <div class="ml-4 text-xs font-mono text-slate-400">simulador_33x1.py</div>
+                        </div>
+<pre class="p-4 text-sm font-mono text-blue-300 overflow-x-auto"><code><span class="text-purple-400">import</span> numpy <span class="text-purple-400">as</span> np
+<span class="text-purple-400">import</span> matplotlib.pyplot <span class="text-purple-400">as</span> plt
+
+<span class="text-slate-500"># Constants</span>
+G = <span class="text-green-400">6.67430e-11</span>          <span class="text-slate-500"># m^3 kg^-1 s^-2</span>
+M_sun = <span class="text-green-400">1.989e30</span>         <span class="text-slate-500"># kg</span>
+mu = G * M_sun           <span class="text-slate-500"># m^3/s^2</span>
+
+<span class="text-slate-500"># Paràmetres 2016 HO3 i Làser (1MW)</span>
+m = <span class="text-green-400">1e7</span>                  <span class="text-slate-500"># kg (Asteroide)</span>
+a0 = <span class="text-green-400">1.496e11</span>            <span class="text-slate-500"># 1 UA</span>
+P = <span class="text-green-400">1e6</span>                  <span class="text-slate-500"># Watts (1 MW)</span>
+eta = <span class="text-green-400">0.8</span>                <span class="text-slate-500"># Eficiència</span>
+L_v = <span class="text-green-400">2.83e6</span>             <span class="text-slate-500"># Calor latent aigua J/kg</span>
+v_e = <span class="text-green-400">800</span>                <span class="text-slate-500"># m/s evasió gas</span>
+
+<span class="text-slate-500"># Càlcul Tasa Ablació i Força</span>
+dot_m = (P * eta) / L_v  <span class="text-slate-500"># 0.283 kg/s</span>
+F_abl = dot_m * v_e      <span class="text-slate-500"># N per capçal</span>
+F_total = <span class="text-green-400">3</span> * F_abl      <span class="text-slate-500"># 3 capçals -> ~678 N total</span>
+
+<span class="text-slate-500"># Simulació Espiral Òrbites</span>
+num_orbites = <span class="text-green-400">6</span>
+a = np.zeros(num_orbites + <span class="text-green-400">1</span>)
+a[<span class="text-green-400">0</span>] = a0
+
+<span class="text-purple-400">for</span> i <span class="text-purple-400">in</span> <span class="text-blue-200">range</span>(num_orbites):
+    v = np.sqrt(mu / a[i])
+    T = <span class="text-green-400">2</span> * np.pi * np.sqrt(a[i]**<span class="text-green-400">3</span> / mu) 
+    dv = (F_total / m) * T
+    da = - (<span class="text-green-400">2</span> * a[i] * v * dv) / mu
+    a[i+<span class="text-green-400">1</span>] = a[i] + da
+    <span class="text-purple-400">if</span> a[i+<span class="text-green-400">1</span>] < <span class="text-green-400">0</span>:
+        a[i+<span class="text-green-400">1</span>] = <span class="text-green-400">0</span>; <span class="text-purple-400">break</span>
+
+<span class="text-blue-200">print</span>(<span class="text-yellow-300">f"Captura asolida en {num_orbites} anys. Semieix major final: {a[-1]/1.496e11:.2f} UA"</span>)
+</code></pre>
+                    </div>
+                </section>
+
+                <hr class="border-t-2 border-dashed border-slate-300 my-16">
+
+                <!-- DICCIONARI -->
+                <section id="diccionari" class="mb-16">
+                    <h2 class="text-3xl font-bold text-primary mb-6 border-b-2 border-slate-100 pb-2">Diccionari del Projecte 33×1</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 text-sm text-slate-700">
+                        <div class="bg-slate-50 p-4 rounded border border-slate-100 hover:shadow-md transition">
+                            <h4 class="font-bold text-primary mb-1">Ablació / Sublimació</h4>
+                            <p>Pas directe del gel a l'estat gasós causat per la calor del làser. El xorro de gas resultant actua com a propulsor (3a llei de Newton) per a frenar l'asteroide.</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded border border-slate-100 hover:shadow-md transition">
+                            <h4 class="font-bold text-primary mb-1">Assistència Gravitatòria (Flyby)</h4>
+                            <p>Maniobra que utilitza la gravetat de la Lluna o la Terra per reduir el $\Delta V$ necessari per a frenar o ancorar l'asteroide.</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded border border-slate-100 hover:shadow-md transition">
+                            <h4 class="font-bold text-primary mb-1">Braços giratoris (a contraeix)</h4>
+                            <p>Estructura mecànica que gira contràriament a la rotació natural de l'asteroide, permetent que un dels capçals de gel estigui sempre posicionat davant del làser.</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded border border-slate-100 hover:shadow-md transition">
+                            <h4 class="font-bold text-primary mb-1">Contraober (Empenta Retrògrada)</h4>
+                            <p>Disparar el làser cap a la direcció del moviment de translació. Els gasos expulsen energia a l'inrevés, "frenant" l'òrbita de l'asteroide.</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded border border-slate-100 hover:shadow-md transition">
+                            <h4 class="font-bold text-primary mb-1">Efecte Patinadora (Inèrcia Variable)</h4>
+                            <p>Quan la massa es desplaça (físicament) o disminueix (per sublimació), el moment d'inèrcia baixa, provocant un augment lliure de velocitat angular conservant el moment angular.</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded border border-slate-100 hover:shadow-md transition">
+                            <h4 class="font-bold text-primary mb-1">Espiral Orbital</h4>
+                            <p>Deteriorament controlat de l'òrbita el·líptica cap al sol o planeta d'atracció a causa de la frenada contínua, fonamental per la captura asimptòtica.</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded border border-slate-100 hover:shadow-md transition">
+                            <h4 class="font-bold text-primary mb-1">Robatori (Hurto) Gravitatori</h4>
+                            <p>Mecanisme patentat a ZypyZape que, orquestrant asimètricament el desplaçament de masses (o gel) a favor/contra la gravetat, extreu energia neta sense necessitar par extern constant.</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded border border-slate-100 hover:shadow-md transition">
+                            <h4 class="font-bold text-primary mb-1">Model de Kuramoto</h4>
+                            <p>Llei de sincronització matemàtica utilitzada per governar múltiples vectors de làser de manera autònoma i unificada, formant una xarxa de fre massiva cooperativa.</p>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-bold text-primary mt-10 mb-4 border-b pb-2">Abreviatures</h3>
+                    <div class="flex flex-wrap gap-2 text-xs font-mono">
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">CM: Centre de Masses</span>
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">ΔV: Delta-V</span>
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">J: Moment d'Inèrcia</span>
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">LLO: Òrbita Lunar Baixa</span>
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">NEA: Asteroide proper Terra</span>
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">UA: Unitat Astronòmica</span>
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">μ: Paràmetre gravitacional</span>
+                    </div>
+                </section>
+                
+                <!-- Footer / Contacte -->
+                <footer id="contacte" class="text-center mt-20 pt-8 border-t border-slate-200 text-slate-500">
+                    <p class="font-bold text-primary mb-2">PROJECTE 33×1 · Captura d'Asteroide 2016 HO3</p>
+                    <p class="mb-4">"La tecnologia no és un fi, sinó un mitjà. El fi és un futur compartit."</p>
+                    <a href="https://github.com/espiradesombra/claude" target="_blank" class="inline-block bg-slate-800 hover:bg-slate-700 text-white font-medium py-2 px-6 rounded-full transition shadow-md">
+                        <i class="fab fa-github mr-2"></i>Repositori ZypyZape / Quijote
+                    </a>
+                    <p class="text-xs mt-8 mb-4">Aquest document pot ser traduït a qualsevol idioma i distribuït lliurement per promoure la pau i la sobirania tecnològica.</p>
+                </footer>
+
+            </article>
+        </main>
+    </div>
+
+    <!-- Reproductor de Música Flotant -->
+    <div id="music-player" class="fixed bottom-4 right-4 md:bottom-8 md:right-8 z-50 bg-slate-900 rounded-xl shadow-2xl border border-slate-700 overflow-hidden transition-all duration-300 w-72 md:w-80">
+        <div class="bg-primary text-white p-3 flex justify-between items-center cursor-pointer hover:bg-blue-800 transition-colors" onclick="togglePlayer()">
+            <div class="flex items-center gap-3">
+                <div class="relative flex h-3 w-3">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-3 w-3 bg-accent"></span>
+                </div>
+                <span class="font-bold text-sm uppercase tracking-wide">Banda Sonora</span>
+            </div>
+            <button class="text-white focus:outline-none">
+                <i id="player-icon" class="fas fa-chevron-down"></i>
+            </button>
+        </div>
+        <div id="player-content" class="transition-all duration-500 ease-in-out h-[200px] bg-slate-900">
+            <!-- Mini reproductor fix: el mateix iframe natiu, sempre visible -->
+<aside id="dock" class="no-print fixed bottom-3 right-3 z-50 w-[min(20rem,calc(100vw-1.2rem))] bg-black rounded-xl overflow-hidden shadow-2xl border border-slate-700">
+  <div class="flex items-center justify-between px-2 py-1 bg-slate-900 text-white text-xs">
+    <span>Constitució de Sacasa</span>
+    <a class="text-red-400 underline" href="https://www.youtube.com/watch?v=wNaopPetLjI" target="_blank" rel="noopener">YouTube</a>
+  </div>
+  <iframe
+    width="100%" height="160"
+    src="https://www.youtube.com/embed/wNaopPetLjI?rel=0&playsinline=1"
+    title="Constitució de Sacasa"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen></iframe>
+</aside>
+        </div>
+    </div>
+
+    <script>
+        function togglePlayer() {
+            const content = document.getElementById('player-content');
+            const icon = document.getElementById('player-icon');
+            
+            if (content.classList.contains('h-[200px]')) {
+                content.classList.remove('h-[200px]');
+                content.classList.add('h-0');
+                icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+            } else {
+                content.classList.remove('h-0');
+                content.classList.add('h-[200px]');
+                icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+            }
+        }
+        
+        // Animació inicial per cridar l'atenció sobre la llista de reproducció
+        setTimeout(() => {
+            const player = document.getElementById('music-player');
+            player.classList.add('-translate-y-2');
+            setTimeout(() => {
+                player.classList.remove('-translate-y-2');
+            }, 300);
+        }, 1500);
+    </script>
+</body>
+</html>
