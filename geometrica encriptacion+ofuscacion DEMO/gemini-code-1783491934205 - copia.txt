@@ -1,0 +1,49 @@
+graph TD
+    %% --- NODO CENTRAL ---
+    A[Factorización de Números] --> B[Método Diofántico Cinemático - MDC]
+
+    %% --- ENFOQUE GEOMÉTRICO (A OJO) ---
+    B --> C1[El Triángulo de Factores]
+    C1 -->|"Vértices"| C2["(n/2, 2) y (2, √n)"]
+    C1 -->|"Línea de Acción"| C3[Ecuación de la Recta]
+    C3 -->|"Pendiente Lineal (m)"| C4["m = -n/d o -2√n/n"]
+    C1 -->|"Intersección Visual"| C5[Cruces de la Cuadrícula Cartesiana]
+    C5 -->|"Si toca un cruce entero"| C6[¡Es un Factor Directo!]
+
+    %% --- TEORÍA DE NÚMEROS Y SALTOS ---
+    B --> E1[Dinámica de Saltos Finitos]
+    E1 -->|"Paso mínimo en X para 'Y' entero"| E2["MCM(n, d) / n = d / GCD(n, d)"]
+    E2 -->|"Si d es factor exacto"| E3["GCD(n,d) = d → Paso = 1"]
+    E2 -->|"Si d no es factor"| E4["Salto limpia candidatos de la criba"]
+
+    %% --- DESARROLLO ALGEBRAICO (MDC) ---
+    B --> D1[Ecuación Diofántica Exacta]
+    D1 -->|"Fórmula del Modelo"| D2["(2x + 3)(2y + 3) = n"]
+    D1 -->|"Despejar la Imagen (Y)"| D3["y = (n - 6x - 9) / (4x + 6)"]
+    D1 -->|"Simetría alrededor de la Media"| D4["S ± k  &  Diferencia: 2k"]
+    D4 -->|"Condición del Cuadrado Perfecto"|
+ D5["Discriminante: Δ = S² + 6S - (n-9) = k²"]
+
+    %% --- ARQUITECTURA DEL CÓDIGO (IMPLEMENTACIÓN) ---
+    B --> F1[Optimizaciones del Algoritmo]
+    F1 -->|"Zona Densa (m_conv a m_max)"| F2["K-sweep Exhaustivo
+ sobre Pendientes k = N // D"]
+    F1 -->|"Zona Baja (0 a m_conv)"| F3["Espiral Harmónica decreciente 1/(2·i!)"]
+    F1 -->|"Filtro Cinemático Avanzado"| F4["Pinza Doble 4+4 & Detector Espell ΔΦ"]
+    F1 -->|"Criba de Alto Rendimiento"| F5["Rueda Primorial 
+p210 (48 saltos precomputados)"]
+
+    %% --- CONEXIONES INTERDISCIPLINARIAS (EDUCATIVAS) ---
+    C2 -.->|"Geometría Sagrada y Figuras"| REF1[🏛 Pitágoras]
+    C5 -.->|"Unificación Álgebra + Geometría"| 
+REF2[📐 Cuadrícula Cartesiana - Descartes]
+    D2 -.->|"Soluciones de Ensayos Enteros"| REF3[🧮 Diofanto de Alejandría]
+    F2 -.->|"Estructura en C++ / Python"| REF4[💻 mdc_v18 / Hybrid v4 / .hpp]
+
+    %% Estilos estéticos
+    style A fill:#ffcccb,stroke:#333,stroke-width:2px
+    style B fill:#ffd700,stroke:#333,stroke-width:2px
+    style C1 fill:#b3f0ff,stroke:#333,stroke-width:1px
+    style E1 fill:#d1f7c4,stroke:#333,stroke-width:1px
+    style D1 fill:#ffe4b5,stroke:#333,stroke-width:1px
+    style F1 fill:#e6ccff,stroke:#333,stroke-width:1px

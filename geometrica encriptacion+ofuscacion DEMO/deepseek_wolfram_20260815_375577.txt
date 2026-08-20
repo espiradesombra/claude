@@ -1,0 +1,107 @@
+(* Código Mathematica para el algoritmo Newton Rápido con doble media *)
+
+(* Función principal: Newton rápido con doble aproximación *)
+NewtonRapido[J_, sol_, base_, historial_, tol_, maxIter_, iterActual_:0, modoMedia_:"DOBLE_APROX"] := 
+ Module[{Jestrella, f, df, paso, Jsig, Jcurr, J2, J3, J4, p3, p2, p1, Jprimero, delta, Jnuevo, desc, nuevoHist},
+   If[iterActual > maxIter, Return[{J, iterActual, False}]];
+   (* Criterio de parada *)
+   Jestrella = (sol - (base^J)/sol + 1)/sol;
+   If[Abs[1 - Jestrella] < tol, Return[{J, iterActual, True}]];
+   (* Llenar historial hasta 4 puntos *)
+   If[Length[historial] < 4,
+      f = base^J - sol;
+      df = (base^J) * Log[base];
+      paso = f/df;
+      If[Abs[paso] > 50.0, paso = 50.0 * Sign[paso]];
+      Jsig = J - paso;
+      Return[NewtonRapido[Jsig, sol, base, Prepend[historial, Jsig], tol, maxIter, iterActual+1, modoMedia]]
+   ];
+   (* Extraer historial *)
+   Jcurr = historial[[1]];
+   J2 = historial[[2]];
+   J3 = historial[[3]];
+   J4 = historial[[4]];
+   p3 = Abs[Jcurr - J2];
+   p2 = Abs[J2 - J3];
+   p1 = Abs[J3 - J4];
+   (* Decisión: detección del primer encogido *)
+   If[p3 < p2 && p2 >= p1,
+      (* Predictor amplio *)
+      Jprimero = (J4 + Jcurr)/2.0;
+      delta = Abs[Jcurr - Jprimero];
+      If[modoMedia == "DOBLE_APROX",
+         If[delta > 1.0,
+            Jnuevo = (J3 + Jprimero)/2.0;
+            desc = "Doble media MACRO (refinado con J3 y Jprimero)"
+         ,
+            Jnuevo = (Jcurr + Jprimero)/2.0;
+            desc = "Doble media MICRO (refinado con J y Jprimero)"
+         ]
+      ,
+         If[modoMedia == "J4_J",
+            Jnuevo = Jprimero;
+            desc = StringForm["media simple entre J4=`` y J=``", J4, Jcurr]
+         ,
+            Jnuevo = (J3 + J2)/2.0;
+            desc = StringForm["media clásica entre J3=`` y J2=``", J3, J2]
+         ]
+      ];
+      Print["    🪡 Inflexión detectada. ", desc, " -> J_nuevo=", Jnuevo];
+      Return[NewtonRapido[Jnuevo, sol, base, {Jnuevo}, tol, maxIter, iterActual+1, modoMedia]]
+   ,
+      (* Newton normal *)
+      f = base^Jcurr - sol;
+      df = (base^Jcurr) * Log[base];
+      paso = f/df;
+      If[Abs[paso] > 50.0, paso = 50.0 * Sign[paso]];
+      Jsig = Jcurr - paso;
+      nuevoHist = {Jsig, Jcurr, J2, J3};
+      Return[NewtonRapido[Jsig, sol, base, nuevoHist, tol, maxIter, iterActual+1, modoMedia]]
+   ]
+]
+
+(* Newton estándar (con step bounding) *)
+NewtonEstandar[J_, sol_, base_, tol_, maxIter_] := 
+ Module[{Jlocal = J, i, Jestrella, f, df, paso},
+   For[i = 0, i <= maxIter, i++,
+      Check[
+         Jestrella = (sol - (base^Jlocal)/sol + 1)/sol;
+         If[Abs[1 - Jestrella] < tol, Return[{Jlocal, i, True}]];
+         f = base^Jlocal - sol;
+         df = (base^Jlocal) * Log[base];
+         paso = f/df;
+         If[Abs[paso] > 50.0, paso = 50.0 * Sign[paso]];
+         Jlocal = Jlocal - paso;
+      ,
+         Return[{None, i, False}]
+      ]
+   ];
+   Return[{Jlocal, maxIter, False}]
+]
+
+(* Función para ejecutar un test *)
+EjecutarTest[base_, solucion_, J_inicial_, tol_:1*^-12, maxIter_:200, modoMedia_:"DOBLE_APROX"] := 
+ Module[{Jstd, iterstd, okstd, Jrap, iterrap, okrap},
+   Print[StringForm["\n=================================================="]];
+   Print[StringForm["CASO: ``^J = `` | J_inicial = `` | Modo: ``", base, solucion, J_inicial, modoMedia]];
+   Print["=================================================="];
+   Print["▶ NEWTON ESTÁNDAR:"];
+   {Jstd, iterstd, okstd} = NewtonEstandar[J_inicial, solucion, base, tol, maxIter];
+   If[okstd,
+      Print[StringForm["✅ Convergió en `` iteraciones. Solución: ``", iterstd, NumberForm[Jstd, {10, 10}]]],
+      Print["❌ Falló."]
+   ];
+   Print[StringForm["\n▶ NEWTON RÁPIDO (modo ``):", modoMedia]];
+   {Jrap, iterrap, okrap} = NewtonRapido[J_inicial, solucion, base, {J_inicial}, tol, maxIter, 0, modoMedia];
+   If[okrap,
+      Print[StringForm["✅ Convergió en `` iteraciones. Solución: ``", iterrap, NumberForm[Jrap, {10, 10}]]],
+      Print["❌ Falló."]
+   ]
+]
+
+(* Ejecución de los casos de prueba *)
+EjecutarTest[2, 10, 1.0, modoMedia -> "DOBLE_APROX"];
+EjecutarTest[10, 1000, 0.0, modoMedia -> "DOBLE_APROX"];
+EjecutarTest[E, 20, 1.0, modoMedia -> "DOBLE_APROX"];
+EjecutarTest[2, 10, 20.0, modoMedia -> "DOBLE_APROX"];
+EjecutarTest[E, 20, -5.0, modoMedia -> "DOBLE_APROX"];
