@@ -1,0 +1,1 @@
+gcc -O3 -march=native -fPIC -shared -o build/libk3.so src/*.c -lm

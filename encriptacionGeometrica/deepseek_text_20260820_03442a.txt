@@ -1,0 +1,20 @@
+k3_final/
+├── include/
+│   └── k3.h                    # Cabecera única con todas las definiciones
+├── src/
+│   ├── math.c                  # Taylor, pi, e, lados
+│   ├── sha256.c                # Implementación SHA‑256 (de deepseek_c_20260715_3bbec5.c)
+│   ├── aleatorovix.c           # Generador caótico (opcional, se puede reemplazar por SHA‑256)
+│   ├── phase.c                 # Encriptar/desencriptar semilla (backtracking)
+│   ├── mask.c                  # Máscara lila (XOR con flujo)
+│   ├── trampa.c                # Generación/factorización de semiprimos
+│   └── k3.c                    # Funciones de alto nivel (API pública)
+├── python/
+│   ├── k3.py                   # Binding ctypes unificado
+│   ├── demo.py                 # Demostración completa
+│   └── cli.py                  # Interfaz de línea de comandos (con getpass)
+├── scripts/
+│   ├── build.sh                # Compilación automática
+│   └── test.sh                 # Pruebas rápidas
+├── CMakeLists.txt              # Para compilación avanzada
+└── README.md                   # Documentación técnica y ejemplos
