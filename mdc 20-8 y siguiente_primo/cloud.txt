@@ -1,0 +1,179 @@
+
+Claude ha terminado la respuesta
+
+casi todas ver v13 v14 .txt
+txt
+
+
+deepseek - copia - copia.txt
+txt
+
+
+mdc_estudi_senyal.py
+py
+
+
+mdc_hybrid_v4.py
+py
+
+
+mdc_hybrid_v44.py
+py
+
+
+mdc_hybrid_v444.py
+py
+
+
+mdc_v17 - copia - copia.py
+py
+
+
+deepseek_python_20260328_115c63 (1) - copia.py
+212 líneas
+
+py
+
+
+deepseek_python_20260328_115c63 (1).py
+212 líneas
+
+py
+
+
+deepseek_python_20260328_115c63.py
+212 líneas
+
+py
+
+
+deepseek_python_20260328_c8a6e9.py
+176 líneas
+
+py
+
+
+deepseek_python_20260328_d003d6 - copia - copia.py
+21 líneas
+
+py
+
+
+deepseek_python_20260328_ff181e - copia - copia.py
+170 líneas
+
+py
+
+
+mdc gpt.txt
+252 líneas
+
+txt
+
+
+mdc_benchmark.py
+335 líneas
+
+py
+
+
+mdc_libro5.py
+385 líneas
+
+py
+
+
+militar_test - copia.py
+228 líneas
+
+py
+
+
+militar_test.py
+228 líneas
+
+py
+
+sabes hacer mdcMaestro() que implemente el truco de sp??
+
+
+Pensó durante 33s
+Pensó durante 33s
+Voy a construir mdcMaestro() fusionando las piezas que ya tenéis validadas: la criba p210 de militar_test.py, el k-sweep predictivo (pinza 4+4 → V/A/J → predicción cuadrática entera) y el filtrado L1 de mdc_benchmark.py. Asumo que "el truco de sp" es el salto predictivo (la pinza 4+4 → predicción cuadrática), que es la pieza que quedó congelada como núcleo en mdc_gpt.txt — dímelo si te referías al otro truco (mcd con siguiente_primo), ese quedó sin fórmula cerrada en esa conversación.
+
+
+Ejecutó 6 comandos, archivo creado
+Ejecutó 6 comandos, archivo creado
+F1 se colgaba en casos con |p−q| grande (fuera del alcance conocido del salto predictivo, tal como ya documentaba militar_test.py). Le pongo un presupuesto de evaluaciones para que salga rápido en vez de arrastrarse hasta m_ini, y ajusto los tests para medir el truco de SP en su régimen real (pares cercanos) igual que hacía militar_test.py.
+
+
+4 archivos editados, ejecutó 2 comandos, leyó un archivo · 1 nota
+4 archivos editados, ejecutó 2 comandos, leyó un archivo · 1 nota
+Hecho y probado. mdcMaestro(N) fusiona:
+
+F0 trivial (primos pequeños, cuadrado perfecto)
+F0b criba p210 hasta lim_criba (desbalanceados, de militar_test.py)
+F1 = el truco de SP (salto predictivo): pinza doble 4+4 filtrada por L1 → V/A/J → predicción cuadrática entera a_r·p² + 2v_r·p + 2(r0-D0)=0 → verificación en radio ±4 → si misma_parabola falla, retrocede fino en vez de saltar a ciegas
+Resultados de la batería:
+
+Casos fijos (143, 221, 10403, 15251, primo, equilibrado pequeño) → todos ✓
+Régimen SP (|p−q|≈1000, como en militar_test.py): funciona de 21 a 201 dígitos, aunque no en todos los saltos de exponente probados — el filtro misma_parabola a veces rechaza la predicción y cae a paso fino, lo que dispara evaluaciones. Eso es ajustable (tolerancia tol_rel en _misma_parabola).
+Desbalanceados → ✓ todos, vía criba p210, muy barato.
+Equilibrado genuino (|p−q| grande) → falla con honestidad ("fuera d'abast, requereix F2"), le puse un presupuesto (max_ev_sp) para que no se cuelgue arrastrándose hasta m_ini — la primera versión sin ese límite se colgaba de verdad ahí.
+Lo que le añadí de propio (no estaba en ningún archivo tal cual) es la fusión F0b→F1 en una sola función con presupuesto de evaluaciones, y el contraste misma_parabola como gate antes de aceptar la predicción cuadrática, en vez de aceptarla siempre como hacía militar_test.k_sweep_predictiu.
+
+¿Quieres que afine tol_rel para que el régimen SP no caiga tanto a paso fino, o prefieres que el "truco" sea el otro (mcd con siguiente_primo) y monte ese en su lugar?
+
+
+Mdc maestro
+PY 
+
+Pensó durante 6s
+Pensó durante 6s
+Buena pregunta, y los datos que ya tengo lo dicen: sí funciona, pero de forma inconsistente incluso dentro de su propio régimen (gap=1000). Voy a acotar exactamente cuándo, en vez de dar una respuesta vaga.
+
+
+Ejecutó un comando
+Ejecutó un comando
+El patrón es errático, no un umbral limpio — funciona en gap~10^0 y falla en gap~10^3, luego vuelve a funcionar en 10^4. Eso no es "cuanto más lejos peor", es una inestabilidad real en la implementación. Vamos a verlo por dentro.
+
+
+Ejecutó 4 comandos · 2 notas
+Ejecutó 4 comandos · 2 notas
+Ahí está el bug, clarísimo. En it=14 la predicción cae a distancia 3 del objetivo real, con radio de verificación ±4 — debería haberlo encontrado. Vamos a ver por qué _verificar_radio no lo pilla:
+
+
+Ejecutó 4 comandos, vio 2 archivos, archivo editado · 4 notas
+Ejecutó 4 comandos, vio 2 archivos, archivo editado · 4 notas
+Bug real encontrado y arreglado: _verificar_radio solo miraba hacia arriba (sig_L1), nunca hacia abajo. Por eso el salto predictivo fallaba de forma errática — no por la distancia |p-q|, sino porque la mitad de las veces la predicción caía por debajo del centro comprobado y la función ni se enteraba.
+
+Con el bug corregido:
+
+Cuándo funciona F1: cuando p está cerca de √N (aunque q esté lejísimos — el gap entre p y q no importa, lo comprobé de gap~10⁰ a gap~10⁹, 10/10 OK ahora, antes 5/10 erráticos). 178 evaluaciones en vez de 2 millones fallidas.
+Cuándo NO funciona F1: cuando p está lejos de √N (el caso 15d/25d, p en el "hueco" entre lo que cubre la criba p210 y lo que cubre F1). Eso sigue fallando — pero ya no es un bug, es que F1 arranca en m_max y salta localmente; si el objetivo está a ~19 dígitos de distancia en la rejilla, no hay parábola local que lo alcance sin re-medir por el camino. Eso es lo que resolvería F2.
+Respuesta corta a tu pregunta: el salto predictivo funciona mejor cuanto más cerca está p de √N, independientemente de dónde esté q.
+
+
+Ejecutó un comando, leyó un archivo
+Ejecutó un comando, leyó un archivo
+¿Te construyo F2 (bisección por ΔΦ) para cubrir el caso p lejos de √N?
+
+
+Mdc maestro
+PY 
+
+
+Mensaje contraído
+No, no está. Los resultados de arriba son solo por el fix del bug de _verificar_radio (el que solo miraba hacia arriba) — nada de multiplicar por siguiente_primo(N). Esa parte la comprobamos juntos y no funcionaba (empeora la velocidad local y dispara el rango de búsqueda), así que no la metí en mdc_maestro.py.
+
+
+Ejecutó un comando
+Ejecutó un comando
+
+confirmar que no está en el archivo
+bash
+
+grep -n "siguiente" /home/claude/mdc_maestro.py || echo "— no aparece ninguna referencia a siguiente_primo en el archivo —"
+Salida
+
+— no aparece ninguna referencia a siguiente_primo en el archivo —
