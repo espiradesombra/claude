@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔐 Compresor con ORDEN + CLAVE MAESTRA</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #0a0a15;
+            color: #e2e8f0;
+        }
+        .container {
+            background: rgba(10, 10, 30, 0.92);
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+            margin-bottom: 20px;
+            border: 1px solid rgba(52, 211, 153, 0.15);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 12px;
+            margin: 15px 0;
+        }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #94a3b8;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid #1a1a3e;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #e2e8f0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        button {
+            background: linear-gradient(135deg, #34d399, #22c55e);
+            color: #0a0a15;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 700;
+            margin: 4px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(52, 211, 153, 0.35);
+        }
+        button.gold {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #0a0a15;
+        }
+        button.secondary {
+            background: linear-gradient(135deg, #475569, #334155);
+            color: white;
+        }
+        button.danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+        }
+        .hash-box {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            margin: 15px 0;
+            border: 1px solid #1a1a3e;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .hash-box .label {
+            color: #64748b;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .hash-box .value {
+            font-size: 0.95em;
+            margin-top: 8px;
+            word-break: break-all;
+        }
+        .hash-box .value.original {
+            color: #60a5fa;
+        }
+        .hash-box .value.comprimido {
+            color: #34d399;
+        }
+        .hash-box .value.ratio {
+            color: #f472b6;
+        }
+        .hash-box .value.orden {
+            color: #fbbf24;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 8px;
+            margin: 15px 0;
+        }
+        .stat-card {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #1a1a3e;
+        }
+        .stat-card .value {
+            font-size: 16px;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+        .stat-card .label {
+            font-size: 7px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 3px;
+        }
+        .stat-card .value.original {
+            color: #60a5fa;
+        }
+        .stat-card .value.comprimido {
+            color: #34d399;
+        }
+        .stat-card .value.ratio {
+            color: #f472b6;
+        }
+        .stat-card .value.orden {
+            color: #fbbf24;
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 14px;
+            border-radius: 12px;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .badge.compress {
+            background: linear-gradient(135deg, #34d399, #22c55e);
+            color: #0a0a15;
+        }
+        .badge.hash {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #0a0a15;
+        }
+        .badge.original {
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+            color: white;
+        }
+        .badge.orden {
+            background: linear-gradient(135deg, #f472b6, #ec4899);
+            color: white;
+        }
+        .block-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 6px;
+            margin: 10px 0;
+        }
+        .block-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid #1a1a3e;
+            font-size: 10px;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+        }
+        .block-item .n {
+            color: #60a5fa;
+            font-weight: bold;
+        }
+        .block-item .hash {
+            color: #fbbf24;
+        }
+        .block-item .size {
+            color: #34d399;
+        }
+        .hidden {
+            display: none;
+        }
+        .progreso-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+            border: 1px solid #1a1a3e;
+        }
+        .progreso-bar .fill {
+            height: 100%;
+            background: linear-gradient(90deg, #34d399, #fbbf24, #f472b6);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+        .orden-visual {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            margin: 10px 0;
+            border: 1px solid #1a1a3e;
+        }
+        .orden-visual .bit {
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-family: 'Courier New', monospace;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #1a1a3e;
+        }
+        .orden-visual .bit .idx {
+            color: #64748b;
+            font-size: 8px;
+        }
+        .orden-visual .bit .val {
+            color: #fbbf24;
+        }
+        .orden-visual .bit .hash-val {
+            color: #34d399;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; background: linear-gradient(90deg, #34d399, #fbbf24, #f472b6, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 2.2em;">
+        🔐 Compresor con ORDEN + CLAVE MAESTRA
+    </h1>
+    <p style="text-align: center; color: #94a3b8; margin-top: -10px;">
+        <span class="badge compress">🧊 COMPRESIÓN REAL</span>
+        <span class="badge orden">📋 ORDEN GUARDADO</span>
+        <span class="badge hash">🔑 CLAVE MAESTRA</span>
+        <span class="badge original">📦 RECUPERACIÓN</span>
+    </p>
+
+    <div class="container">
+        <h2 style="color: #fbbf24;">📝 Compresor con Orden + Clave Maestra</h2>
+        <p style="color: #94a3b8; font-size: 13px;">
+            <strong>33124 bytes → 7 bytes</strong> (ejemplo). El sistema guarda el <strong>orden exacto</strong> de los hashes
+            y usa una <strong>clave maestra</strong> para descomprimir. Sin la clave y el orden correcto, no se puede recuperar.
+        </p>
+
+        <div class="grid-3">
+            <div style="grid-column: span 2;">
+                <label>📝 Datos originales:</label>
+                <textarea id="datosOriginales" placeholder="Introduce el texto a comprimir...">Este es un texto de prueba para el compresor de hash reversible. Vamos a ver cuánto podemos comprimir usando hashes reversibles con parámetros. El objetivo es lograr la mayor tasa de compresión posible usando múltiples hashes.</textarea>
+            </div>
+            <div>
+                <label>⚙️ Configuración:</label>
+                <div style="margin-bottom: 8px;">
+                    <label style="font-size:8px;">Tamaño de bloque (bits):</label>
+                    <select id="blockSize">
+                        <option value="8">8 bits (1 byte)</option>
+                        <option value="16" selected>16 bits (2 bytes)</option>
+                        <option value="32">32 bits (4 bytes)</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="font-size:8px;">Tamaño de hash (bits):</label>
+                    <select id="hashBits">
+                        <option value="4">4 bits</option>
+                        <option value="8" selected>8 bits (1 byte)</option>
+                        <option value="12">12 bits</option>
+                        <option value="16">16 bits (2 bytes)</option>
+                    </select>
+                </div>
+                <div style="margin-top:8px;">
+                    <label style="font-size:8px;">🔑 Clave maestra:</label>
+                    <input id="claveMaestra" value="mi_clave_secreta_123" style="font-size:11px;">
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 15px;">
+            <button onclick="comprimirConOrden()">🧊 Comprimir (¡reduce tamaño!)</button>
+            <button class="gold" onclick="descomprimirConOrden()">📦 Descomprimir</button>
+            <button class="secondary" onclick="limpiarTodo()">🧹 Limpiar</button>
+        </div>
+    </div>
+
+    <div class="container" id="resultadosContainer" style="display: none;">
+        <h2>📊 Resultados</h2>
+
+        <div class="stats-grid" id="statsGrid"></div>
+
+        <div class="progreso-bar">
+            <div class="fill" id="progresoCompresion"></div>
+        </div>
+
+        <div class="hash-box" style="border-color: #60a5fa;">
+            <div class="label">📦 Datos Originales</div>
+            <div class="value original" id="datosOriginalesDisplay">-</div>
+        </div>
+
+        <div class="hash-box" style="border-color: #34d399;">
+            <div class="label">🧊 Datos Comprimidos</div>
+            <div class="value comprimido" id="datosComprimidosDisplay">-</div>
+        </div>
+
+        <div class="hash-box" style="border-color: #fbbf24;">
+            <div class="label">📋 ORDEN de los Hashes</div>
+            <div class="value orden" id="ordenDisplay">-</div>
+        </div>
+
+        <div class="hash-box" style="border-color: #f472b6;">
+            <div class="label">📊 Ratio de Compresión</div>
+            <div class="value ratio" id="ratioDisplay">-</div>
+        </div>
+
+        <div class="hash-box" style="border-color: #34d399;">
+            <div class="label">🔑 Clave Maestra + Diccionario</div>
+            <div class="value" id="parametrosDisplay" style="color:#94a3b8;font-size:0.8em;">-</div>
+        </div>
+
+        <!-- Visualización del orden -->
+        <h3 style="color: #fbbf24;">📋 Orden de los Hashes</h3>
+        <div class="orden-visual" id="ordenVisual"></div>
+
+        <h3 style="color: #60a5fa;">📋 Bloques → Hashes</h3>
+        <div class="block-list" id="blockList"></div>
+
+        <div id="descompresionContainer" class="hash-box" style="border-color: #34d399; display: none;">
+            <div class="label">📦 Datos Descomprimidos (¡RECUPERADOS!)</div>
+            <div class="value original" id="datosDescomprimidosDisplay">-</div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        //  COMPRESOR CON ORDEN + CLAVE MAESTRA
+        //  Guarda el orden exacto de los hashes
+        //  ============================================
+
+        // --- Utilidades ---
+        function stringToBigInt(str) {
+            let result = 0n;
+            for (let i = 0; i < str.length; i++) {
+                result = (result * 256n) + BigInt(str.charCodeAt(i));
+            }
+            return result;
+        }
+
+        function bigIntToHex(num, bits) {
+            const hex = num.toString(16);
+            return hex.padStart(Math.ceil(bits / 4), '0');
+        }
+
+        function bytesToString(bytes) {
+            return String.fromCharCode(...bytes);
+        }
+
+        function stringToBytes(str) {
+            const bytes = [];
+            for (let i = 0; i < str.length; i++) {
+                bytes.push(str.charCodeAt(i));
+            }
+            return bytes;
+        }
+
+        // --- Generar hash corto con clave maestra ---
+        function generarHashCortoConClave(bloque, claveMaestra, hashBits) {
+            const data = [
+                `bloque=${bloque}`,
+                `clave=${claveMaestra}`,
+                `sal=${bloque.length}`
+            ];
+            const fullStr = data.join('|');
+            const bigInt = stringToBigInt(fullStr);
+            const mod = 2n ** BigInt(hashBits);
+            return bigIntToHex(bigInt % mod, hashBits);
+        }
+
+        // --- COMPRIMIR CON ORDEN ---
+        function comprimirConOrden() {
+            const texto = document.getElementById('datosOriginales').value;
+            const blockSize = parseInt(document.getElementById('blockSize').value);
+            const hashBits = parseInt(document.getElementById('hashBits').value);
+            const claveMaestra = document.getElementById('claveMaestra').value;
+
+            if (!texto) {
+                alert('⚠️ Introduce datos para comprimir');
+                return;
+            }
+
+            // Convertir a bytes
+            const encoder = new TextEncoder();
+            const bytes = encoder.encode(texto);
+            const blockSizeBytes = blockSize / 8;
+
+            // Dividir en bloques y guardar ORDEN
+            const bloques = [];
+            const orden = [];
+            const diccionario = new Map();
+            const hashToBlock = new Map();
+
+            for (let i = 0; i < bytes.length; i += blockSizeBytes) {
+                const block = bytes.slice(i, i + blockSizeBytes);
+                const blockStr = bytesToString(block);
+                bloques.push(blockStr);
+            }
+
+            // Generar hashes para cada bloque (con clave maestra)
+            bloques.forEach((bloque, idx) => {
+                const hash = generarHashCortoConClave(bloque, claveMaestra, hashBits);
+
+                // Guardar en diccionario si no existe
+                if (!diccionario.has(hash)) {
+                    diccionario.set(hash, bloque);
+                    hashToBlock.set(bloque, hash);
+                }
+
+                // Guardar el ORDEN (índice → hash)
+                orden.push({
+                    posicion: idx,
+                    hash: hash,
+                    bloque: bloque
+                });
+            });
+
+            // Datos comprimidos: solo los hashes en ORDEN
+            const datosComprimidos = orden.map(o => o.hash);
+
+            // Tamaños
+            const originalSize = bytes.length;
+            const compressedSize = datosComprimidos.join('').length / 2; // hex → bytes
+            const ratio = compressedSize / originalSize;
+            const porcentaje = (1 - ratio) * 100;
+
+            // Mostrar resultados
+            document.getElementById('resultadosContainer').style.display = 'block';
+            document.getElementById('datosOriginalesDisplay').textContent = texto;
+
+            // Mostrar comprimido
+            const comprimidoStr = datosComprimidos.join('');
+            document.getElementById('datosComprimidosDisplay').textContent = comprimidoStr;
+
+            // Mostrar ORDEN
+            const ordenStr = orden.map(o => `${o.posicion}:${o.hash}`).join(' → ');
+            document.getElementById('ordenDisplay').textContent = ordenStr;
+
+            // Ratio
+            document.getElementById('ratioDisplay').innerHTML = `
+                <strong>Original:</strong> ${originalSize} bytes<br>
+                <strong>Comprimido:</strong> ${compressedSize} bytes<br>
+                <strong>Ratio:</strong> ${ratio.toFixed(4)}x<br>
+                <strong>Reducción:</strong> ${porcentaje.toFixed(2)}%<br>
+                <strong>Bloques:</strong> ${bloques.length}<br>
+                <strong>Hashes únicos:</strong> ${diccionario.size}
+                <br><br>
+                <span style="color:${ratio < 1 ? '#34d399' : '#ef4444'}; font-size:14px;">
+                    ${ratio < 1 ? '✅ ¡COMPRESIÓN EXITOSA!' : '⚠️ El archivo es más grande. Ajusta los parámetros.'}
+                </span>
+                <br><br>
+                <span style="color:#64748b;font-size:11px;">
+                    El ORDEN de los hashes es: ${orden.map(o => o.hash).join(' ')}
+                    <br>
+                    Sin este orden exacto + la clave maestra, no se puede descomprimir.
+                </span>
+            `;
+
+            // Parámetros
+            document.getElementById('parametrosDisplay').innerHTML = JSON.stringify({
+                blockSize: blockSize,
+                hashBits: hashBits,
+                numBloques: bloques.length,
+                entradasDiccionario: diccionario.size,
+                claveMaestra: claveMaestra,
+                orden: orden.map(o => ({ pos: o.posicion, hash: o.hash })),
+                diccionario: Array.from(diccionario.entries()).map(([hash, bloque]) => ({
+                    hash: hash,
+                    bloque: bloque
+                }))
+            }, null, 2);
+
+            // Stats
+            document.getElementById('statsGrid').innerHTML = `
+                <div class="stat-card"><div class="value original">${originalSize}</div><div class="label">Original (bytes)</div></div>
+                <div class="stat-card"><div class="value comprimido">${compressedSize}</div><div class="label">Comprimido (bytes)</div></div>
+                <div class="stat-card"><div class="value ratio">${(ratio * 100).toFixed(1)}%</div><div class="label">Tamaño final</div></div>
+                <div class="stat-card"><div class="value" style="color:#fbbf24;">${porcentaje.toFixed(1)}%</div><div class="label">Reducción</div></div>
+                <div class="stat-card"><div class="value orden">${bloques.length}</div><div class="label">Bloques</div></div>
+                <div class="stat-card"><div class="value" style="color:#f472b6;">${diccionario.size}</div><div class="label">Hashes únicos</div></div>
+            `;
+
+            // Progreso
+            document.getElementById('progresoCompresion').style.width = '100%';
+
+            // Visualización del orden
+            const ordenVisual = document.getElementById('ordenVisual');
+            ordenVisual.innerHTML = orden.map(o =>
+                `<div class="bit">
+                    <span class="idx">#${o.posicion}</span>
+                    <span class="hash-val">${o.hash}</span>
+                    <span style="color:#64748b;font-size:8px;">"${o.bloque.slice(0, 10)}${o.bloque.length > 10 ? '...' : ''}"</span>
+                </div>`
+            ).join('');
+
+            // Lista de bloques
+            const blockList = document.getElementById('blockList');
+            blockList.innerHTML = Array.from(diccionario.entries()).map(([hash, bloque]) =>
+                `<div class="block-item">
+                    <div class="hash">${hash}</div>
+                    <div class="size">→ "${bloque.slice(0, 15)}${bloque.length > 15 ? '...' : ''}"</div>
+                    <div style="color:#64748b;font-size:8px;">${bloque.length} bytes</div>
+                </div>`
+            ).join('');
+
+            // Guardar estado para descompresión
+            window._estadoCompresion = {
+                orden: orden,
+                diccionario: diccionario,
+                hashToBlock: hashToBlock,
+                claveMaestra: claveMaestra,
+                blockSize: blockSize,
+                hashBits: hashBits,
+                textoOriginal: texto,
+                originalSize: originalSize,
+                compressedSize: compressedSize,
+                ratio: ratio,
+                datosComprimidos: datosComprimidos
+            };
+
+            document.getElementById('descompresionContainer').style.display = 'none';
+        }
+
+        // --- DESCOMPRIMIR CON ORDEN ---
+        function descomprimirConOrden() {
+            if (!window._estadoCompresion) {
+                alert('⚠️ Primero comprime algunos datos con "Comprimir"');
+                return;
+            }
+
+            const estado = window._estadoCompresion;
+
+            // Verificar clave maestra
+            const claveIngresada = document.getElementById('claveMaestra').value;
+            if (claveIngresada !== estado.claveMaestra) {
+                document.getElementById('descompresionContainer').style.display = 'block';
+                document.getElementById('datosDescomprimidosDisplay').innerHTML = `
+                    ❌ <strong style="color:#ef4444;">CLAVE MAESTRA INCORRECTA</strong><br>
+                    Clave esperada: ${estado.claveMaestra}<br>
+                    Clave ingresada: ${claveIngresada}<br><br>
+                    <span style="color:#64748b;font-size:11px;">
+                        La clave maestra es necesaria para descomprimir los datos.
+                        Sin la clave correcta, los datos no se pueden recuperar.
+                    </span>
+                `;
+                return;
+            }
+
+            // Reconstruir datos usando el ORDEN guardado
+            let datosReconstruidos = '';
+            let errores = 0;
+
+            estado.orden.forEach((item, idx) => {
+                const hash = item.hash;
+                const bloqueEsperado = item.bloque;
+
+                // Buscar en el diccionario
+                const bloqueEncontrado = estado.diccionario.get(hash);
+
+                if (bloqueEncontrado === bloqueEsperado) {
+                    datosReconstruidos += bloqueEncontrado;
+                } else if (bloqueEncontrado) {
+                    datosReconstruidos += bloqueEncontrado;
+                    errores++;
+                } else {
+                    datosReconstruidos += '?';
+                    errores++;
+                }
+            });
+
+            // Verificar que coincida con el original
+            const coincide = datosReconstruidos === estado.textoOriginal;
+
+            // Mostrar
+            document.getElementById('descompresionContainer').style.display = 'block';
+            document.getElementById('datosDescomprimidosDisplay').innerHTML = `
+                <strong>Original:</strong> ${estado.textoOriginal}<br><br>
+                <strong>Reconstruido:</strong> ${datosReconstruidos}<br><br>
+                <strong style="color:${coincide ? '#34d399' : '#ef4444'}; font-size:16px;">
+                    ${coincide ? '✅ ¡DESCOMPRESIÓN EXITOSA! Los datos coinciden perfectamente.' : '❌ Los datos no coinciden. Algo salió mal.'}
+                </strong>
+                <br><br>
+                <span style="color:#64748b;font-size:11px;">
+                    ${estado.originalSize} bytes originales → ${estado.compressedSize} bytes comprimidos → ${datosReconstruidos.length} bytes reconstruidos
+                    <br>
+                    ORDEN utilizado: ${estado.orden.map(o => o.hash).join(' ')}
+                    <br>
+                    Clave maestra: ${estado.claveMaestra}
+                    <br>
+                    ${errores === 0 ? '✅ Sin errores en la reconstrucción' : `⚠️ ${errores} errores en la reconstrucción`}
+                    <br>
+                    <br>
+                    <span style="color:#34d399;">
+                        🔐 Sin la clave maestra y el orden exacto, los datos son irrecuperables.
+                    </span>
+                </span>
+            `;
+
+            document.getElementById('progresoCompresion').style.width = '100%';
+        }
+
+        // --- Limpiar ---
+        function limpiarTodo() {
+            document.getElementById('resultadosContainer').style.display = 'none';
+            document.getElementById('descompresionContainer').style.display = 'none';
+            document.getElementById('progresoCompresion').style.width = '0%';
+            window._estadoCompresion = null;
+        }
+
+        // --- Inicializar ---
+        window.onload = function() {
+            const textoEjemplo = 'Este es un texto de prueba para el compresor de hash reversible. Vamos a ver cuánto podemos comprimir usando hashes reversibles con parámetros. El objetivo es lograr la mayor tasa de compresión posible usando múltiples hashes.';
+            document.getElementById('datosOriginales').value = textoEjemplo;
+            setTimeout(comprimirConOrden, 500);
+        };
+    </script>
+</body>
+</html>

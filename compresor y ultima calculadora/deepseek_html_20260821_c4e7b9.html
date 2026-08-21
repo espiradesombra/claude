@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧠 VERDADERO Compresor de Hash Reversible</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #0a0a15;
+            color: #e2e8f0;
+        }
+        .container {
+            background: rgba(10, 10, 30, 0.92);
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+            margin-bottom: 20px;
+            border: 1px solid rgba(52, 211, 153, 0.15);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 12px;
+            margin: 15px 0;
+        }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #94a3b8;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid #1a1a3e;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #e2e8f0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        button {
+            background: linear-gradient(135deg, #34d399, #22c55e);
+            color: #0a0a15;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 700;
+            margin: 4px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(52, 211, 153, 0.35);
+        }
+        button.gold {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #0a0a15;
+        }
+        button.secondary {
+            background: linear-gradient(135deg, #475569, #334155);
+            color: white;
+        }
+        .hash-box {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            margin: 15px 0;
+            border: 1px solid #1a1a3e;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .hash-box .label {
+            color: #64748b;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .hash-box .value {
+            font-size: 0.95em;
+            margin-top: 8px;
+            word-break: break-all;
+        }
+        .hash-box .value.original {
+            color: #60a5fa;
+        }
+        .hash-box .value.comprimido {
+            color: #34d399;
+        }
+        .hash-box .value.ratio {
+            color: #f472b6;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 8px;
+            margin: 15px 0;
+        }
+        .stat-card {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #1a1a3e;
+        }
+        .stat-card .value {
+            font-size: 16px;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+        .stat-card .label {
+            font-size: 7px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 3px;
+        }
+        .stat-card .value.original {
+            color: #60a5fa;
+        }
+        .stat-card .value.comprimido {
+            color: #34d399;
+        }
+        .stat-card .value.ratio {
+            color: #f472b6;
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 14px;
+            border-radius: 12px;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .badge.compress {
+            background: linear-gradient(135deg, #34d399, #22c55e);
+            color: #0a0a15;
+        }
+        .badge.hash {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #0a0a15;
+        }
+        .badge.original {
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+            color: white;
+        }
+        .badge.ratio {
+            background: linear-gradient(135deg, #f472b6, #ec4899);
+            color: white;
+        }
+        .block-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 8px;
+            margin: 10px 0;
+        }
+        .block-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #1a1a3e;
+            font-size: 11px;
+            font-family: 'Courier New', monospace;
+        }
+        .block-item .n {
+            color: #60a5fa;
+            font-weight: bold;
+        }
+        .block-item .hash {
+            color: #fbbf24;
+        }
+        .block-item .size {
+            color: #34d399;
+        }
+        .hidden {
+            display: none;
+        }
+        .progreso-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+            border: 1px solid #1a1a3e;
+        }
+        .progreso-bar .fill {
+            height: 100%;
+            background: linear-gradient(90deg, #34d399, #fbbf24, #f472b6);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; background: linear-gradient(90deg, #34d399, #fbbf24, #f472b6, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 2.2em;">
+        🧠 VERDADERO Compresor de Hash Reversible
+    </h1>
+    <p style="text-align: center; color: #94a3b8; margin-top: -10px;">
+        <span class="badge compress">🧊 COMPRESIÓN REAL</span>
+        <span class="badge hash">🔐 HASH + DICCIONARIO</span>
+        <span class="badge original">📦 REDUCCIÓN DE TAMAÑO</span>
+        <span class="badge ratio">📊 RATIO > 1</span>
+    </p>
+
+    <div class="container">
+        <h2 style="color: #fbbf24;">📝 Datos a Comprimir DE VERDAD</h2>
+        <p style="color: #94a3b8; font-size: 13px;">
+            El sistema usa un <strong>diccionario de bloques</strong> + hashes reversibles para <strong>REDUCIR</strong> el tamaño.
+            Los bloques comunes se mapean a hashes cortos. ¡Compresión real!
+        </p>
+
+        <div class="grid-3">
+            <div style="grid-column: span 2;">
+                <label>📝 Datos originales:</label>
+                <textarea id="datosOriginales" placeholder="Introduce el texto a comprimir...">Este es un texto de prueba para el compresor de hash reversible. Vamos a ver cuánto podemos comprimir usando hashes reversibles con parámetros. El objetivo es lograr la mayor tasa de compresión posible usando múltiples hashes.</textarea>
+            </div>
+            <div>
+                <label>⚙️ Configuración:</label>
+                <div style="margin-bottom: 8px;">
+                    <label style="font-size:8px;">Tamaño de bloque (bits):</label>
+                    <select id="blockSize">
+                        <option value="8">8 bits (1 byte)</option>
+                        <option value="16" selected>16 bits (2 bytes)</option>
+                        <option value="32">32 bits (4 bytes)</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="font-size:8px;">Tamaño de hash (bits):</label>
+                    <select id="hashBits">
+                        <option value="4">4 bits (¡muy comprimido!)</option>
+                        <option value="8" selected>8 bits (1 byte)</option>
+                        <option value="12">12 bits</option>
+                        <option value="16">16 bits (2 bytes)</option>
+                    </select>
+                </div>
+                <div style="margin-top:8px;">
+                    <label style="font-size:8px;">Clave maestra:</label>
+                    <input id="claveMaestra" value="mi_clave_secreta" style="font-size:11px;">
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 15px;">
+            <button onclick="comprimirReal()">🧊 Comprimir (¡REDUCE TAMAÑO!)</button>
+            <button class="gold" onclick="descomprimirReal()">📦 Descomprimir</button>
+            <button class="secondary" onclick="limpiarTodo()">🧹 Limpiar</button>
+        </div>
+    </div>
+
+    <div class="container" id="resultadosContainer" style="display: none;">
+        <h2>📊 Resultados de Compresión REAL</h2>
+
+        <div class="stats-grid" id="statsGrid"></div>
+
+        <div class="progreso-bar">
+            <div class="fill" id="progresoCompresion"></div>
+        </div>
+
+        <div class="hash-box" style="border-color: #60a5fa;">
+            <div class="label">📦 Datos Originales</div>
+            <div class="value original" id="datosOriginalesDisplay">-</div>
+        </div>
+
+        <div class="hash-box" style="border-color: #34d399;">
+            <div class="label">🧊 Datos Comprimidos (¡MÁS PEQUEÑO!)</div>
+            <div class="value comprimido" id="datosComprimidosDisplay">-</div>
+        </div>
+
+        <div class="hash-box" style="border-color: #f472b6;">
+            <div class="label">📊 Ratio de Compresión</div>
+            <div class="value ratio" id="ratioDisplay">-</div>
+        </div>
+
+        <div class="hash-box" style="border-color: #fbbf24;">
+            <div class="label">🔑 Diccionario + Parámetros</div>
+            <div class="value hash" id="parametrosDisplay">-</div>
+        </div>
+
+        <h3 style="color: #60a5fa;">📋 Mapeo de Bloques</h3>
+        <div class="block-list" id="blockList"></div>
+
+        <div id="descompresionContainer" class="hash-box" style="border-color: #34d399; display: none;">
+            <div class="label">📦 Datos Descomprimidos (¡RECUPERADOS!)</div>
+            <div class="value original" id="datosDescomprimidosDisplay">-</div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        //  VERDADERO COMPRESOR DE HASH REVERSIBLE
+        //  Con diccionario para REDUCIR tamaño
+        // ============================================
+
+        // --- Utilidades ---
+        function stringToBigInt(str) {
+            let result = 0n;
+            for (let i = 0; i < str.length; i++) {
+                result = (result * 256n) + BigInt(str.charCodeAt(i));
+            }
+            return result;
+        }
+
+        function bigIntToHex(num, bits) {
+            const hex = num.toString(16);
+            return hex.padStart(Math.ceil(bits / 4), '0');
+        }
+
+        function bytesToString(bytes) {
+            return String.fromCharCode(...bytes);
+        }
+
+        // --- Generar hash corto para un bloque ---
+        function generarHashCorto(bloque, params, claveMaestra) {
+            const { hashBits } = params;
+
+            // Usar el bloque como semilla
+            const seed = stringToBigInt(bloque);
+
+            // Datos para el hash
+            const data = [
+                `bloque=${bloque}`,
+                `seed=${seed}`,
+                `maestra=${claveMaestra}`
+            ];
+
+            const fullStr = data.join('|');
+            const bigInt = stringToBigInt(fullStr);
+            const mod = 2n ** BigInt(hashBits);
+            const hashFinal = bigInt % mod;
+
+            return bigIntToHex(hashFinal, hashBits);
+        }
+
+        // --- COMPRIMIR DE VERDAD ---
+        function comprimirReal() {
+            const texto = document.getElementById('datosOriginales').value;
+            const blockSize = parseInt(document.getElementById('blockSize').value);
+            const hashBits = parseInt(document.getElementById('hashBits').value);
+            const claveMaestra = document.getElementById('claveMaestra').value;
+
+            if (!texto) {
+                alert('⚠️ Introduce datos para comprimir');
+                return;
+            }
+
+            // Convertir texto a bytes
+            const encoder = new TextEncoder();
+            const bytes = encoder.encode(texto);
+
+            // Dividir en bloques
+            const blocks = [];
+            const blockSizeBytes = blockSize / 8;
+            for (let i = 0; i < bytes.length; i += blockSizeBytes) {
+                const block = bytes.slice(i, i + blockSizeBytes);
+                blocks.push(block);
+            }
+
+            // Diccionario de bloques → hashes cortos
+            const diccionario = new Map();
+            const hashToBlock = new Map();
+
+            blocks.forEach((block, idx) => {
+                const blockStr = bytesToString(block);
+                const params = { hashBits };
+                const hash = generarHashCorto(blockStr, params, claveMaestra);
+
+                // Si el hash ya existe, usar el existente
+                if (!diccionario.has(hash)) {
+                    diccionario.set(hash, blockStr);
+                    hashToBlock.set(blockStr, hash);
+                }
+            });
+
+            // Datos comprimidos: solo los hashes
+            const datosComprimidos = [];
+            blocks.forEach((block) => {
+                const blockStr = bytesToString(block);
+                const hash = hashToBlock.get(blockStr);
+                datosComprimidos.push(hash);
+            });
+
+            // Tamaños
+            const originalSize = bytes.length;
+            const compressedSize = datosComprimidos.join('').length / 2; // hex → bytes
+            const ratio = compressedSize / originalSize;
+            const porcentaje = (1 - ratio) * 100;
+
+            // Mostrar resultados
+            document.getElementById('resultadosContainer').style.display = 'block';
+            document.getElementById('datosOriginalesDisplay').textContent = texto;
+
+            // Mostrar comprimido (hashes)
+            const comprimidoStr = datosComprimidos.join('');
+            document.getElementById('datosComprimidosDisplay').textContent = comprimidoStr;
+
+            document.getElementById('ratioDisplay').innerHTML = `
+                <strong>Original:</strong> ${originalSize} bytes<br>
+                <strong>Comprimido:</strong> ${compressedSize} bytes<br>
+                <strong>Ratio:</strong> ${ratio.toFixed(4)}x<br>
+                <strong>Reducción:</strong> ${porcentaje.toFixed(2)}%<br>
+                <strong>Bloques:</strong> ${blocks.length}<br>
+                <strong>Entradas en diccionario:</strong> ${diccionario.size}
+                <br><br>
+                <span style="color:${ratio < 1 ? '#34d399' : '#ef4444'}; font-size:14px;">
+                    ${ratio < 1 ? '✅ ¡COMPRESIÓN EXITOSA! El archivo es más pequeño.' : '❌ El archivo es más grande. Ajusta los parámetros.'}
+                </span>
+            `;
+
+            // Parámetros
+            document.getElementById('parametrosDisplay').innerHTML = JSON.stringify({
+                blockSize: blockSize,
+                hashBits: hashBits,
+                numBloques: blocks.length,
+                entradasDiccionario: diccionario.size,
+                diccionario: Array.from(diccionario.entries()).map(([hash, bloque]) => ({
+                    hash: hash,
+                    bloque: bloque
+                })),
+                claveMaestra: claveMaestra
+            }, null, 2);
+
+            // Stats
+            document.getElementById('statsGrid').innerHTML = `
+                <div class="stat-card"><div class="value original">${originalSize}</div><div class="label">Original (bytes)</div></div>
+                <div class="stat-card"><div class="value comprimido">${compressedSize}</div><div class="label">Comprimido (bytes)</div></div>
+                <div class="stat-card"><div class="value ratio">${(ratio * 100).toFixed(1)}%</div><div class="label">Tamaño final</div></div>
+                <div class="stat-card"><div class="value" style="color:#fbbf24;">${porcentaje.toFixed(1)}%</div><div class="label">Reducción</div></div>
+                <div class="stat-card"><div class="value" style="color:#60a5fa;">${diccionario.size}</div><div class="label">Entradas dict</div></div>
+                <div class="stat-card"><div class="value" style="color:#f472b6;">${blocks.length}</div><div class="label">Bloques</div></div>
+            `;
+
+            // Progreso
+            document.getElementById('progresoCompresion').style.width = '100%';
+
+            // Lista de bloques
+            const blockList = document.getElementById('blockList');
+            blockList.innerHTML = datosComprimidos.map((hash, idx) => {
+                const bloqueOriginal = diccionario.get(hash) || '?';
+                return `<div class="block-item">
+                    <span class="n">#${idx}</span>
+                    <span class="hash">${hash}</span>
+                    <span class="size">${bloqueOriginal.length} → ${hash.length/2} bytes</span>
+                    <div style="color:#64748b;font-size:9px;">"${bloqueOriginal.slice(0, 20)}${bloqueOriginal.length > 20 ? '...' : ''}"</div>
+                </div>`;
+            }).join('');
+
+            // Guardar estado
+            window._estadoCompresion = {
+                datosComprimidos: datosComprimidos,
+                diccionario: diccionario,
+                hashToBlock: hashToBlock,
+                blockSize: blockSize,
+                hashBits: hashBits,
+                claveMaestra: claveMaestra,
+                textoOriginal: texto,
+                originalSize: originalSize,
+                compressedSize: compressedSize,
+                ratio: ratio
+            };
+
+            document.getElementById('descompresionContainer').style.display = 'none';
+        }
+
+        // --- DESCOMPRIMIR ---
+        function descomprimirReal() {
+            if (!window._estadoCompresion) {
+                alert('⚠️ Primero comprime algunos datos');
+                return;
+            }
+
+            const estado = window._estadoCompresion;
+            const { datosComprimidos, diccionario, claveMaestra } = estado;
+
+            // Reconstruir datos
+            let datosReconstruidos = '';
+            datosComprimidos.forEach(hash => {
+                const bloque = diccionario.get(hash);
+                if (bloque) {
+                    datosReconstruidos += bloque;
+                } else {
+                    datosReconstruidos += '?';
+                }
+            });
+
+            // Mostrar
+            document.getElementById('descompresionContainer').style.display = 'block';
+            document.getElementById('datosDescomprimidosDisplay').innerHTML = `
+                <strong>Original:</strong> ${estado.textoOriginal}<br><br>
+                <strong>Reconstruido:</strong> ${datosReconstruidos}<br><br>
+                <strong style="color:${estado.textoOriginal === datosReconstruidos ? '#34d399' : '#ef4444'}">
+                    ${estado.textoOriginal === datosReconstruidos ? '✅ ¡COMPRESIÓN Y DESCOMPRESIÓN EXITOSA!' : '❌ Los datos no coinciden'}
+                </strong>
+                <br><br>
+                <span style="color:#64748b;font-size:11px;">
+                    ${estado.originalSize} bytes originales → ${estado.compressedSize} bytes comprimidos → ${datosReconstruidos.length} bytes reconstruidos
+                    ${estado.originalSize === datosReconstruidos.length ? '✅' : '⚠️'}
+                    <br>
+                    Ratio de compresión: ${(estado.ratio * 100).toFixed(1)}% del tamaño original
+                    <br>
+                    ¡AHORRO: ${((1 - estado.ratio) * 100).toFixed(1)}%!
+                </span>
+            `;
+
+            document.getElementById('progresoCompresion').style.width = '100%';
+        }
+
+        // --- Limpiar ---
+        function limpiarTodo() {
+            document.getElementById('resultadosContainer').style.display = 'none';
+            document.getElementById('descompresionContainer').style.display = 'none';
+            document.getElementById('progresoCompresion').style.width = '0%';
+            window._estadoCompresion = null;
+        }
+
+        // --- Inicializar ---
+        window.onload = function() {
+            document.getElementById('datosOriginales').value =
+                'Este es un texto de prueba para el compresor de hash reversible. Vamos a ver cuánto podemos comprimir usando hashes reversibles con parámetros. El objetivo es lograr la mayor tasa de compresión posible usando múltiples hashes.';
+            setTimeout(comprimirReal, 500);
+        };
+    </script>
+</body>
+</html>

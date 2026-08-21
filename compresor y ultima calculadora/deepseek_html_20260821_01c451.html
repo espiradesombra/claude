@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🪞 Hash del Espejo Degradante - El Santo Grial</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #0a0a15;
+            color: #e2e8f0;
+            background-image: radial-gradient(ellipse at 50% 80%, #1a0a2e 0%, #0a0a15 70%);
+        }
+        .container {
+            background: rgba(10, 10, 30, 0.92);
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+            margin-bottom: 20px;
+            border: 1px solid rgba(251, 191, 36, 0.15);
+            backdrop-filter: blur(8px);
+        }
+        .container.gold {
+            border-color: rgba(251, 191, 36, 0.3);
+            background: rgba(20, 10, 0, 0.92);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 12px;
+            margin: 15px 0;
+        }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #94a3b8;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+        input,
+        select {
+            width: 100%;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid #1a1a3e;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #e2e8f0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        input:focus,
+        select:focus {
+            border-color: #fbbf24;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.15);
+        }
+        input[type="range"] {
+            padding: 0;
+            height: 6px;
+            background: #1a1a3e;
+            border-radius: 3px;
+            -webkit-appearance: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid #0a0a15;
+        }
+        button {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #0a0a15;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 700;
+            margin: 4px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(251, 191, 36, 0.2);
+        }
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(251, 191, 36, 0.35);
+        }
+        button.success {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+        }
+        button.warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+        button.secondary {
+            background: linear-gradient(135deg, #475569, #334155);
+            color: white;
+        }
+        button.space {
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+            color: white;
+        }
+        button.mirror {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b, #fbbf24);
+            background-size: 200% 200%;
+            animation: mirrorPulse 3s ease infinite;
+            color: #0a0a15;
+        }
+        @keyframes mirrorPulse {
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+        .hash-box {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            margin: 15px 0;
+            border: 1px solid #1a1a3e;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .hash-box .label {
+            color: #64748b;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .hash-box .value {
+            font-size: 1em;
+            margin-top: 8px;
+            word-break: break-all;
+        }
+        .hash-box .value.hash {
+            color: #fbbf24;
+        }
+        .hash-box .value.reflectividad {
+            color: #60a5fa;
+        }
+        .hash-box .value.degradacion {
+            color: #f472b6;
+        }
+        .hash-box .value.fotones {
+            color: #34d399;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 8px;
+            margin: 15px 0;
+        }
+        .stat-card {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #1a1a3e;
+        }
+        .stat-card .value {
+            font-size: 16px;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+        .stat-card .label {
+            font-size: 7px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 3px;
+        }
+        .stat-card .value.hash {
+            color: #fbbf24;
+        }
+        .stat-card .value.fotones {
+            color: #34d399;
+        }
+        .stat-card .value.tiempo {
+            color: #60a5fa;
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 14px;
+            border-radius: 12px;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .badge.mirror {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #0a0a15;
+        }
+        .badge.fotones {
+            background: linear-gradient(135deg, #34d399, #22c55e);
+            color: white;
+        }
+        .badge.degradacion {
+            background: linear-gradient(135deg, #f472b6, #ec4899);
+            color: white;
+        }
+        .categoria-tabs {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            margin: 10px 0;
+        }
+        .cat-tab {
+            padding: 4px 14px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #1a1a3e;
+            cursor: pointer;
+            color: #94a3b8;
+            transition: all 0.3s;
+        }
+        .cat-tab:hover {
+            border-color: #fbbf24;
+            color: #e2e8f0;
+        }
+        .cat-tab.active {
+            border-color: #fbbf24;
+            background: rgba(251, 191, 36, 0.1);
+            color: #fbbf24;
+        }
+        .espejo-visual {
+            position: relative;
+            background: radial-gradient(ellipse at 50% 50%, #1a1a3e 0%, #0a0a15 100%);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 15px 0;
+            border: 2px solid #fbbf24;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .espejo-visual .reflejo {
+            width: 80%;
+            max-width: 400px;
+            height: 200px;
+            border-radius: 12px;
+            border: 3px solid rgba(251, 191, 36, 0.3);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.1s;
+            box-shadow: 0 0 60px rgba(251, 191, 36, 0.1);
+        }
+        .espejo-visual .reflejo .superficie {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #c0c0c0, #e8e8e8, #a0a0a0);
+            transition: all 0.1s;
+            position: relative;
+        }
+        .espejo-visual .reflejo .superficie::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at 30% 40%, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .espejo-visual .fotones {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        .espejo-visual .foton {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: radial-gradient(circle, #fbbf24, transparent);
+            border-radius: 50%;
+            animation: fotonVuela 3s linear infinite;
+        }
+        @keyframes fotonVuela {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--dx), var(--dy)) scale(0);
+                opacity: 0;
+            }
+        }
+        .historial-item {
+            padding: 4px 10px;
+            margin: 3px 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 6px;
+            font-size: 12px;
+            font-family: 'Courier New', monospace;
+        }
+        .historial-item .op {
+            color: #fbbf24;
+        }
+        .historial-item .res {
+            color: #34d399;
+        }
+        .hidden {
+            display: none;
+        }
+        .fotones-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 8px;
+            margin: 10px 0;
+        }
+        .foton-card {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #1a1a3e;
+        }
+        .foton-card .valor {
+            font-size: 14px;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+        .foton-card .label {
+            font-size: 7px;
+            color: #64748b;
+            text-transform: uppercase;
+        }
+        .foton-card .valor.reflejado {
+            color: #34d399;
+        }
+        .foton-card .valor.absorbido {
+            color: #f472b6;
+        }
+        .foton-card .valor.degradado {
+            color: #fbbf24;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; background: linear-gradient(90deg, #fbbf24, #f59e0b, #f472b6, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 2.2em;">
+        🪞 Hash del Espejo Degradante
+    </h1>
+    <p style="text-align: center; color: #94a3b8; margin-top: -10px;">
+        <span class="badge mirror">🪞 REFLECTIVIDAD</span>
+        <span class="badge fotones">☀️ FOTONES</span>
+        <span class="badge degradacion">⏳ DEGRADACIÓN</span>
+    </p>
+
+    <div class="container gold">
+        <h2 style="color: #fbbf24;">☀️ El Espejo se Oscurece con el Tiempo</h2>
+        <p style="color: #94a3b8; font-size: 13px;">
+            El espejo se degrada exponencialmente. La <strong>velocidad de degradación</strong> depende de los parámetros.
+            Cuando <strong>paralizas</strong> el cambio, el estado del espejo es el <strong>hash</strong>.
+            Los <strong>fotones reflejados</strong> dan la lectura.
+        </p>
+
+        <div class="grid-3">
+            <div>
+                <label>🪞 Reflectividad inicial (R₀):</label>
+                <input id="R0" value="0.95" type="number" step="0.01" min="0.1" max="1">
+            </div>
+            <div>
+                <label>⏳ Velocidad de degradación (k):</label>
+                <input id="k" value="0.01" type="number" step="0.001" min="0.001" max="0.1">
+            </div>
+            <div>
+                <label>☀️ Intensidad de luz (I):</label>
+                <input id="intensidad" value="1.0" type="number" step="0.1" min="0.1" max="5">
+            </div>
+        </div>
+
+        <div class="grid-3">
+            <div>
+                <label>📐 Ángulo de incidencia (θ):</label>
+                <input id="angulo" value="45" type="number" step="1" min="0" max="90">
+            </div>
+            <div>
+                <label>⏰ Tiempo de exposición (t):</label>
+                <input id="tiempo" value="10" type="number" step="0.5" min="0.1" max="100">
+            </div>
+            <div>
+                <label>🔄 Pasadas de fotones:</label>
+                <input id="pasadasFotones" value="3" type="number" step="1" min="1" max="10">
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 15px;">
+            <button class="mirror" onclick="simularEspejo()">🪞 Simular Degradación</button>
+            <button class="success" onclick="paralizarHash()">⏸️ Paralizar y Hashear</button>
+            <button class="warning" onclick="inferirFotones()">☀️ Inferir Fotones</button>
+            <button class="secondary" onclick="limpiarTodo()">🧹 Limpiar</button>
+        </div>
+    </div>
+
+    <div class="container" id="resultadosContainer" style="display: none;">
+        <h2>📊 Estado del Espejo</h2>
+
+        <div class="stats-grid" id="statsGrid"></div>
+
+        <!-- Visualización del Espejo -->
+        <div class="espejo-visual" id="espejoVisual">
+            <div style="position:absolute; top:10px; right:15px; font-size:11px; color:#64748b; z-index:10;">
+                <span id="estadoEspejo">🪞 Reflectividad: 0.9500</span>
+            </div>
+            <div class="reflejo" id="reflejoEspejo">
+                <div class="superficie" id="superficieEspejo"></div>
+                <div class="fotones" id="fotonesContainer"></div>
+            </div>
+            <div style="margin-top:15px; display:flex; gap:20px; flex-wrap:wrap; justify-content:center; font-size:12px; color:#64748b;">
+                <span>☀️ Fotones incidentes: <span id="fotonesIn" style="color:#fbbf24;">0</span></span>
+                <span>🪞 Reflejados: <span id="fotonesRef" style="color:#34d399;">0</span></span>
+                <span>🌑 Absorbidos: <span id="fotonesAbs" style="color:#f472b6;">0</span></span>
+                <span>📉 Degradación: <span id="degradacionValor" style="color:#f59e0b;">0%</span></span>
+            </div>
+        </div>
+
+        <div class="hash-box" style="border-color: #fbbf24;">
+            <div class="label">🪞 Hash del Espejo (Estado Paralizado)</div>
+            <div class="value hash" id="hashFinal">-</div>
+        </div>
+
+        <div class="hash-box" style="border-color: #60a5fa;">
+            <div class="label">📊 Datos de Reflectividad</div>
+            <div class="value reflectividad" id="reflectividadData">-</div>
+        </div>
+
+        <div class="hash-box" style="border-color: #34d399;">
+            <div class="label">☀️ Inferencia de Fotones</div>
+            <div class="value fotones" id="fotonesData">-</div>
+        </div>
+
+        <div class="hash-box" style="border-color: #f472b6;">
+            <div class="label">📉 Degradación</div>
+            <div class="value degradacion" id="degradacionData">-</div>
+        </div>
+
+        <div class="fotones-stats" id="fotonesStats"></div>
+
+        <div class="hash-box" style="border-color: #64748b; max-height: 200px;">
+            <div class="label">📜 Historial de Estados</div>
+            <div class="value" id="historialContainer" style="color:#94a3b8;font-size:0.8em;">-</div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        //  HASH DEL ESPEJO DEGRADANTE
+        //  Física: R(t) = R₀ * e^(-k * I * t * cos(θ))
+        //  Fotones: inferencia por reflexión
+        // ============================================
+
+        // --- Estado del espejo ---
+        let estadoEspejo = {
+            R0: 0.95,
+            k: 0.01,
+            intensidad: 1.0,
+            angulo: 45,
+            tiempo: 10,
+            pasadasFotones: 3,
+            reflectividadActual: 0.95,
+            fotonesIncidentes: 0,
+            fotonesReflejados: 0,
+            fotonesAbsorbidos: 0,
+            historial: [],
+            hash: null
+        };
+
+        // --- Utilidades ---
+        function stringToBigInt(str) {
+            let result = 0n;
+            for (let i = 0; i < str.length; i++) {
+                result = (result * 256n) + BigInt(str.charCodeAt(i));
+            }
+            return result;
+        }
+
+        function bigIntToHex(num, bits) {
+            const hex = num.toString(16);
+            return hex.padStart(Math.ceil(bits / 4), '0');
+        }
+
+        // --- Función de reflectividad ---
+        function calcularReflectividad(R0, k, intensidad, angulo, tiempo) {
+            const thetaRad = angulo * Math.PI / 180;
+            const cosTheta = Math.cos(thetaRad);
+            // R(t) = R₀ * e^(-k * I * t * cos(θ))
+            const R = R0 * Math.exp(-k * intensidad * tiempo * cosTheta);
+            return Math.max(0, Math.min(1, R));
+        }
+
+        // --- Simular degradación ---
+        function simularEspejo() {
+            const R0 = parseFloat(document.getElementById('R0').value) || 0.95;
+            const k = parseFloat(document.getElementById('k').value) || 0.01;
+            const intensidad = parseFloat(document.getElementById('intensidad').value) || 1.0;
+            const angulo = parseFloat(document.getElementById('angulo').value) || 45;
+            const tiempo = parseFloat(document.getElementById('tiempo').value) || 10;
+            const pasadas = parseInt(document.getElementById('pasadasFotones').value) || 3;
+
+            // Actualizar estado
+            estadoEspejo.R0 = R0;
+            estadoEspejo.k = k;
+            estadoEspejo.intensidad = intensidad;
+            estadoEspejo.angulo = angulo;
+            estadoEspejo.tiempo = tiempo;
+            estadoEspejo.pasadasFotones = pasadas;
+
+            // Calcular reflectividad
+            const R = calcularReflectividad(R0, k, intensidad, angulo, tiempo);
+            estadoEspejo.reflectividadActual = R;
+
+            // Simular fotones
+            const fotonesIn = Math.floor(100 * (1 + intensidad * 0.5));
+            const fotonesRef = Math.floor(fotonesIn * R);
+            const fotonesAbs = fotonesIn - fotonesRef;
+
+            estadoEspejo.fotonesIncidentes = fotonesIn;
+            estadoEspejo.fotonesReflejados = fotonesRef;
+            estadoEspejo.fotonesAbsorbidos = fotonesAbs;
+
+            // Guardar historial
+            estadoEspejo.historial.push({
+                tiempo: tiempo,
+                reflectividad: R,
+                fotonesIn: fotonesIn,
+                fotonesRef: fotonesRef,
+                fotonesAbs: fotonesAbs,
+                timestamp: new Date().toLocaleTimeString()
+            });
+
+            // Mostrar resultados
+            mostrarResultados();
+            dibujarEspejo();
+            actualizarHistorial();
+
+            document.getElementById('resultadosContainer').style.display = 'block';
+        }
+
+        // --- Paralizar y Hashear ---
+        function paralizarHash() {
+            // "Paralizar" significa tomar el estado actual y convertirlo en hash
+            const R = estadoEspejo.reflectividadActual;
+            const t = estadoEspejo.tiempo;
+            const params = {
+                R0: estadoEspejo.R0,
+                k: estadoEspejo.k,
+                intensidad: estadoEspejo.intensidad,
+                angulo: estadoEspejo.angulo,
+                pasadas: estadoEspejo.pasadasFotones
+            };
+
+            // Generar hash desde el estado del espejo
+            const hashData = [
+                `R=${R}`,
+                `t=${t}`,
+                `R0=${params.R0}`,
+                `k=${params.k}`,
+                `I=${params.intensidad}`,
+                `θ=${params.angulo}`,
+                `fotonesRef=${estadoEspejo.fotonesReflejados}`,
+                `fotonesAbs=${estadoEspejo.fotonesAbsorbidos}`,
+                `historial=${JSON.stringify(estadoEspejo.historial.slice(-5))}`
+            ];
+
+            const fullStr = hashData.join('|');
+            const bigInt = stringToBigInt(fullStr);
+            const mod = 2n ** 64n;
+            const hashFinal = bigInt % mod;
+            const hashHex = bigIntToHex(hashFinal, 64);
+
+            estadoEspejo.hash = hashHex;
+
+            document.getElementById('hashFinal').textContent = hashHex;
+            document.getElementById('hashFinal').style.color = '#fbbf24';
+
+            // Guardar en historial
+            estadoEspejo.historial.push({
+                evento: 'HASH',
+                hash: hashHex,
+                timestamp: new Date().toLocaleTimeString()
+            });
+
+            actualizarHistorial();
+
+            // Animación de "paralización"
+            const superficie = document.getElementById('superficieEspejo');
+            superficie.style.transition = 'all 0.3s';
+            superficie.style.filter = 'grayscale(1) contrast(1.2)';
+            setTimeout(() => {
+                superficie.style.filter = 'none';
+            }, 500);
+
+            return hashHex;
+        }
+
+        // --- Inferir Fotones ---
+        function inferirFotones() {
+            // Simular la inferencia de fotones reflejados
+            const R = estadoEspejo.reflectividadActual;
+            const fotonesIn = estadoEspejo.fotonesIncidentes;
+            const fotonesRef = estadoEspejo.fotonesReflejados;
+            const fotonesAbs = estadoEspejo.fotonesAbsorbidos;
+
+            // Inferir propiedades del espejo desde los fotones
+            const inferencia = {
+                reflectividad_inferida: fotonesRef / fotonesIn,
+                angulo_inferido: Math.acos(Math.min(1, -Math.log(R / estadoEspejo.R0) / (estadoEspejo.k * estadoEspejo
+                    .intensidad * estadoEspejo.tiempo))) * 180 / Math.PI,
+                degradacion_inferida: 1 - R / estadoEspejo.R0,
+                fotones_perdidos: fotonesAbs,
+                calidad_reflejo: fotonesRef / fotonesIn * 100
+            };
+
+            document.getElementById('fotonesData').textContent = JSON.stringify({
+                reflectividad_inferida: inferencia.reflectividad_inferida.toFixed(4),
+                angulo_inferido: isNaN(inferencia.angulo_inferido) ? 'N/A' : inferencia.angulo_inferido.toFixed(2) + '°',
+                degradacion: (inferencia.degradacion_inferida * 100).toFixed(2) + '%',
+                fotones_perdidos: inferencia.fotones_perdidos,
+                calidad_reflejo: inferencia.calidad_reflejo.toFixed(2) + '%'
+            }, null, 2);
+
+            // Stats de fotones
+            document.getElementById('fotonesStats').innerHTML = `
+                <div class="foton-card">
+                    <div class="valor reflejado">${fotonesRef}</div>
+                    <div class="label">🪞 Reflejados</div>
+                </div>
+                <div class="foton-card">
+                    <div class="valor absorbido">${fotonesAbs}</div>
+                    <div class="label">🌑 Absorbidos</div>
+                </div>
+                <div class="foton-card">
+                    <div class="valor degradado">${(fotonesAbs / fotonesIn * 100).toFixed(1)}%</div>
+                    <div class="label">📉 Pérdida</div>
+                </div>
+                <div class="foton-card">
+                    <div class="valor" style="color:#60a5fa;">${(fotonesRef / fotonesIn * 100).toFixed(1)}%</div>
+                    <div class="label">✨ Reflectividad</div>
+                </div>
+            `;
+
+            return inferencia;
+        }
+
+        // --- Visualizar Espejo ---
+        function dibujarEspejo() {
+            const R = estadoEspejo.reflectividadActual;
+            const superficie = document.getElementById('superficieEspejo');
+
+            // Calcular degradación (oscurecimiento)
+            const degradacion = 1 - R;
+            const brillo = 100 - degradacion * 80;
+
+            // Color del espejo (más oscuro = más degradado)
+            const gris = Math.floor(200 * R + 55);
+            const color = `rgb(${gris}, ${gris}, ${gris})`;
+
+            superficie.style.background = `
+                linear-gradient(135deg, 
+                    ${color}, 
+                    ${color} 30%, 
+                    ${Math.min(gris + 40, 255)}, 
+                    ${color} 70%, 
+                    ${Math.max(gris - 30, 0)}
+                )
+            `;
+
+            // Añadir brillo especular simulado
+            const specular = R > 0.5 ? `radial-gradient(ellipse at 30% 40%, rgba(255,255,255,${R * 0.5}) 0%, transparent 70%)` :
+                'none';
+            superficie.style.backgroundImage = specular;
+
+            // Actualizar info
+            document.getElementById('estadoEspejo').textContent =
+                `🪞 Reflectividad: ${R.toFixed(4)} | Degradación: ${(degradacion * 100).toFixed(2)}%`;
+
+            // Fotones
+            const container = document.getElementById('fotonesContainer');
+            container.innerHTML = '';
+
+            const numFotones = Math.min(estadoEspejo.fotonesReflejados, 30);
+            for (let i = 0; i < numFotones; i++) {
+                const foton = document.createElement('div');
+                foton.className = 'foton';
+                const x = 10 + Math.random() * 70;
+                const y = 10 + Math.random() * 70;
+                const dx = (Math.random() - 0.5) * 200;
+                const dy = (Math.random() - 0.5) * 200;
+                foton.style.cssText = `
+                    left: ${x}%;
+                    top: ${y}%;
+                    --dx: ${dx}px;
+                    --dy: ${dy}px;
+                    animation-duration: ${1 + Math.random() * 2}s;
+                    animation-delay: ${Math.random() * 2}s;
+                    width: ${3 + Math.random() * 4}px;
+                    height: ${3 + Math.random() * 4}px;
+                    opacity: ${0.3 + Math.random() * 0.7};
+                `;
+                container.appendChild(foton);
+            }
+
+            // Stats
+            document.getElementById('fotonesIn').textContent = estadoEspejo.fotonesIncidentes;
+            document.getElementById('fotonesRef').textContent = estadoEspejo.fotonesReflejados;
+            document.getElementById('fotonesAbs').textContent = estadoEspejo.fotonesAbsorbidos;
+            document.getElementById('degradacionValor').textContent =
+                `${((1 - estadoEspejo.reflectividadActual / estadoEspejo.R0) * 100).toFixed(2)}%`;
+        }
+
+        // --- Mostrar Resultados ---
+        function mostrarResultados() {
+            const R = estadoEspejo.reflectividadActual;
+            const degradacion = 1 - R / estadoEspejo.R0;
+
+            document.getElementById('reflectividadData').textContent = JSON.stringify({
+                reflectividad_actual: R.toFixed(6),
+                reflectividad_inicial: estadoEspejo.R0,
+                degradacion: (degradacion * 100).toFixed(2) + '%',
+                tiempo: estadoEspejo.tiempo + 's',
+                intensidad: estadoEspejo.intensidad,
+                angulo: estadoEspejo.angulo + '°',
+                formula: `R = R₀·e^(-k·I·t·cos(θ))`,
+                valor_calculado: `${estadoEspejo.R0}·e^(-${estadoEspejo.k}·${estadoEspejo.intensidad}·${estadoEspejo.tiempo}·cos(${estadoEspejo.angulo}°)) = ${R.toFixed(6)}`
+            }, null, 2);
+
+            document.getElementById('degradacionData').textContent = JSON.stringify({
+                degradacion_total: (degradacion * 100).toFixed(2) + '%',
+                velocidad_degradacion: estadoEspejo.k,
+                fotones_absorbidos: estadoEspejo.fotonesAbsorbidos,
+                fotones_reflejados: estadoEspejo.fotonesReflejados,
+                relacion_reflejo_absorcion: (estadoEspejo.fotonesReflejados / Math.max(estadoEspejo.fotonesAbsorbidos,
+                    1)).toFixed(2)
+            }, null, 2);
+
+            // Stats
+            document.getElementById('statsGrid').innerHTML = `
+                <div class="stat-card"><div class="value hash">${(R * 100).toFixed(2)}%</div><div class="label">Reflectividad</div></div>
+                <div class="stat-card"><div class="value fotones">${estadoEspejo.fotonesReflejados}</div><div class="label">Fotones Reflejados</div></div>
+                <div class="stat-card"><div class="value" style="color:#f472b6;">${estadoEspejo.fotonesAbsorbidos}</div><div class="label">Fotones Absorbidos</div></div>
+                <div class="stat-card"><div class="value tiempo">${estadoEspejo.tiempo}s</div><div class="label">Tiempo</div></div>
+                <div class="stat-card"><div class="value" style="color:#f59e0b;">${(degradacion * 100).toFixed(2)}%</div><div class="label">Degradación</div></div>
+                <div class="stat-card"><div class="value" style="color:#60a5fa;">${estadoEspejo.angulo}°</div><div class="label">Ángulo</div></div>
+            `;
+        }
+
+        // --- Historial ---
+        function actualizarHistorial() {
+            const container = document.getElementById('historialContainer');
+            const items = estadoEspejo.historial.slice(-15).reverse();
+            container.innerHTML = items.map(h => {
+                let texto = '';
+                if (h.evento === 'HASH') {
+                    texto =
+                    `<span class="op">🔒 HASH</span> = <span class="res">${h.hash}</span>`;
+                } else {
+                    texto =
+                    `<span class="op">🪞 R=${h.reflectividad?.toFixed(4) || 'N/A'}</span> | Fotones: ${h.fotonesRef || 0}/${h.fotonesIn || 0} | ${h.timestamp}`;
+                }
+                return `<div class="historial-item">${texto}</div>`;
+            }).join('');
+        }
+
+        // --- Limpiar ---
+        function limpiarTodo() {
+            estadoEspejo.historial = [];
+            estadoEspejo.hash = null;
+            document.getElementById('resultadosContainer').style.display = 'none';
+            document.getElementById('hashFinal').textContent = '-';
+            document.getElementById('reflectividadData').textContent = '-';
+            document.getElementById('fotonesData').textContent = '-';
+            document.getElementById('degradacionData').textContent = '-';
+            document.getElementById('fotonesStats').innerHTML = '';
+            document.getElementById('historialContainer').innerHTML = '-';
+            document.getElementById('fotonesContainer').innerHTML = '';
+            const superficie = document.getElementById('superficieEspejo');
+            superficie.style.background = 'linear-gradient(135deg, #c0c0c0, #e8e8e8, #a0a0a0)';
+            document.getElementById('estadoEspejo').textContent = '🪞 Reflectividad: 0.9500';
+            document.getElementById('fotonesIn').textContent = '0';
+            document.getElementById('fotonesRef').textContent = '0';
+            document.getElementById('fotonesAbs').textContent = '0';
+            document.getElementById('degradacionValor').textContent = '0%';
+        }
+
+        // --- Inicializar ---
+        window.onload = function() {
+            simularEspejo();
+        };
+    </script>
+</body>
+</html>

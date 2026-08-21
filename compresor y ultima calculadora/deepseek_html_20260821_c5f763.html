@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🪞 Hash del Espejo - Gestor de Parámetros y Reversibilidad</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #0a0a15;
+            color: #e2e8f0;
+            background-image: radial-gradient(ellipse at 50% 80%, #1a0a2e 0%, #0a0a15 70%);
+        }
+        .container {
+            background: rgba(10, 10, 30, 0.92);
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+            margin-bottom: 20px;
+            border: 1px solid rgba(251, 191, 36, 0.15);
+            backdrop-filter: blur(8px);
+        }
+        .container.gold {
+            border-color: rgba(251, 191, 36, 0.3);
+            background: rgba(20, 10, 0, 0.92);
+        }
+        .container.reversible {
+            border-color: rgba(52, 211, 153, 0.3);
+            background: rgba(0, 30, 20, 0.92);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 12px;
+            margin: 15px 0;
+        }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #94a3b8;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+        input,
+        select {
+            width: 100%;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid #1a1a3e;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #e2e8f0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        input:focus,
+        select:focus {
+            border-color: #fbbf24;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.15);
+        }
+        input[type="range"] {
+            padding: 0;
+            height: 6px;
+            background: #1a1a3e;
+            border-radius: 3px;
+            -webkit-appearance: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid #0a0a15;
+        }
+        button {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #0a0a15;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 700;
+            margin: 4px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(251, 191, 36, 0.2);
+        }
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(251, 191, 36, 0.35);
+        }
+        button.success {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+        }
+        button.warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+        button.secondary {
+            background: linear-gradient(135deg, #475569, #334155);
+            color: white;
+        }
+        button.reversible {
+            background: linear-gradient(135deg, #34d399, #22c55e);
+            color: white;
+        }
+        button.space {
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+            color: white;
+        }
+        button.mirror {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b, #fbbf24);
+            background-size: 200% 200%;
+            animation: mirrorPulse 3s ease infinite;
+            color: #0a0a15;
+        }
+        @keyframes mirrorPulse {
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+        .hash-box {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            margin: 15px 0;
+            border: 1px solid #1a1a3e;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .hash-box .label {
+            color: #64748b;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .hash-box .value {
+            font-size: 0.95em;
+            margin-top: 8px;
+            word-break: break-all;
+        }
+        .hash-box .value.hash {
+            color: #fbbf24;
+        }
+        .hash-box .value.params {
+            color: #60a5fa;
+        }
+        .hash-box .value.reversible {
+            color: #34d399;
+        }
+        .hash-box .value.verify {
+            color: #f472b6;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 8px;
+            margin: 15px 0;
+        }
+        .stat-card {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #1a1a3e;
+        }
+        .stat-card .value {
+            font-size: 16px;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+        .stat-card .label {
+            font-size: 7px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 3px;
+        }
+        .stat-card .value.hash {
+            color: #fbbf24;
+        }
+        .stat-card .value.params {
+            color: #60a5fa;
+        }
+        .stat-card .value.reversible {
+            color: #34d399;
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 14px;
+            border-radius: 12px;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .badge.mirror {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #0a0a15;
+        }
+        .badge.params {
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+            color: white;
+        }
+        .badge.reversible {
+            background: linear-gradient(135deg, #34d399, #22c55e);
+            color: white;
+        }
+        .badge.verify {
+            background: linear-gradient(135deg, #f472b6, #ec4899);
+            color: white;
+        }
+        .param-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 10px 0;
+        }
+        .param-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-family: 'Courier New', monospace;
+            border: 1px solid #1a1a3e;
+        }
+        .param-item .key {
+            color: #60a5fa;
+        }
+        .param-item .value {
+            color: #fbbf24;
+        }
+        .espejo-visual {
+            position: relative;
+            background: radial-gradient(ellipse at 50% 50%, #1a1a3e 0%, #0a0a15 100%);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 15px 0;
+            border: 2px solid #fbbf24;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .espejo-visual .reflejo {
+            width: 80%;
+            max-width: 400px;
+            height: 200px;
+            border-radius: 12px;
+            border: 3px solid rgba(251, 191, 36, 0.3);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.1s;
+            box-shadow: 0 0 60px rgba(251, 191, 36, 0.1);
+        }
+        .espejo-visual .reflejo .superficie {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #c0c0c0, #e8e8e8, #a0a0a0);
+            transition: all 0.1s;
+            position: relative;
+        }
+        .espejo-visual .reflejo .superficie::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at 30% 40%, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .historial-item {
+            padding: 4px 10px;
+            margin: 3px 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 6px;
+            font-size: 12px;
+            font-family: 'Courier New', monospace;
+        }
+        .historial-item .op {
+            color: #fbbf24;
+        }
+        .historial-item .res {
+            color: #34d399;
+        }
+        .hidden {
+            display: none;
+        }
+        .fotones-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 8px;
+            margin: 10px 0;
+        }
+        .foton-card {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #1a1a3e;
+        }
+        .foton-card .valor {
+            font-size: 14px;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+        .foton-card .label {
+            font-size: 7px;
+            color: #64748b;
+            text-transform: uppercase;
+        }
+        .foton-card .valor.reflejado {
+            color: #34d399;
+        }
+        .foton-card .valor.absorbido {
+            color: #f472b6;
+        }
+        .foton-card .valor.degradado {
+            color: #fbbf24;
+        }
+        .gestion-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 12px;
+            margin: 15px 0;
+        }
+        .gestion-card {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #1a1a3e;
+        }
+        .gestion-card .titulo {
+            color: #60a5fa;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+        .gestion-card .contenido {
+            font-size: 12px;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; background: linear-gradient(90deg, #fbbf24, #f59e0b, #34d399, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 2.2em;">
+        🪞 Hash del Espejo - Gestor de Parámetros y Reversibilidad
+    </h1>
+    <p style="text-align: center; color: #94a3b8; margin-top: -10px;">
+        <span class="badge mirror">🪞 ESPEJO</span>
+        <span class="badge params">🔑 PARÁMETROS</span>
+        <span class="badge reversible">🔁 REVERSIBLE</span>
+        <span class="badge verify">✅ VERIFICACIÓN</span>
+    </p>
+
+    <div class="container gold">
+        <h2 style="color: #fbbf24;">☀️ Configuración del Espejo</h2>
+        <p style="color: #94a3b8; font-size: 13px;">
+            Cada espejo tiene una <strong>identidad única</strong> (parámetros). 
+            El hash se genera desde el <strong>estado actual</strong> del espejo.
+            Con los parámetros, puedes <strong>reconstruir</strong> y <strong>verificar</strong> cualquier estado.
+        </p>
+
+        <div class="grid-3">
+            <div>
+                <label>🪞 ID del Espejo (nombre):</label>
+                <input id="espejoID" value="espejo_alpha" placeholder="Ej: espejo_alpha">
+            </div>
+            <div>
+                <label>🔑 Clave Maestra (salt):</label>
+                <input id="claveMaestra" value="mi_clave_secreta_123" placeholder="Clave maestra">
+            </div>
+            <div>
+                <label>📊 Bits de hash:</label>
+                <select id="hashBits">
+                    <option value="32">32 bits</option>
+                    <option value="64" selected>64 bits</option>
+                    <option value="128">128 bits</option>
+                    <option value="256">256 bits</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="grid-3">
+            <div>
+                <label>🪞 Reflectividad inicial (R₀):</label>
+                <input id="R0" value="0.95" type="number" step="0.01" min="0.1" max="1">
+            </div>
+            <div>
+                <label>⏳ Velocidad degradación (k):</label>
+                <input id="k" value="0.01" type="number" step="0.001" min="0.001" max="0.1">
+            </div>
+            <div>
+                <label>☀️ Intensidad de luz (I):</label>
+                <input id="intensidad" value="1.0" type="number" step="0.1" min="0.1" max="5">
+            </div>
+        </div>
+
+        <div class="grid-3">
+            <div>
+                <label>📐 Ángulo de incidencia (θ):</label>
+                <input id="angulo" value="45" type="number" step="1" min="0" max="90">
+            </div>
+            <div>
+                <label>⏰ Tiempo de exposición (t):</label>
+                <input id="tiempo" value="10" type="number" step="0.5" min="0.1" max="100">
+            </div>
+            <div>
+                <label>🔄 Pasadas de fotones:</label>
+                <input id="pasadasFotones" value="3" type="number" step="1" min="1" max="10">
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 15px;">
+            <button class="mirror" onclick="generarHashConParams()">🪞 Generar Hash con Parámetros</button>
+            <button class="reversible" onclick="reconstruirHash()">🔁 Reconstruir Hash</button>
+            <button class="success" onclick="verificarHash()">✅ Verificar Hash</button>
+            <button class="secondary" onclick="limpiarTodo()">🧹 Limpiar</button>
+        </div>
+    </div>
+
+    <div class="container reversible" id="gestionContainer" style="display: none;">
+        <h2 style="color: #34d399;">🔑 Gestión de Parámetros</h2>
+
+        <div class="gestion-container">
+            <div class="gestion-card">
+                <div class="titulo">📊 Estado Actual</div>
+                <div class="contenido" id="estadoActual">-</div>
+            </div>
+            <div class="gestion-card">
+                <div class="titulo">🔑 Parámetros Guardados</div>
+                <div class="contenido" id="parametrosGuardados">-</div>
+            </div>
+            <div class="gestion-card">
+                <div class="titulo">🪞 Hash Generado</div>
+                <div class="contenido" id="hashGenerado">-</div>
+            </div>
+        </div>
+
+        <div class="hash-box" style="border-color: #34d399;">
+            <div class="label">🔁 Clave de Reversibilidad (con parámetros)</div>
+            <div class="value reversible" id="claveReversibilidad">-</div>
+        </div>
+    </div>
+
+    <div class="container" id="resultadosContainer" style="display: none;">
+        <h2>📊 Resultados</h2>
+
+        <div class="stats-grid" id="statsGrid"></div>
+
+        <!-- Visualización del Espejo -->
+        <div class="espejo-visual" id="espejoVisual">
+            <div style="position:absolute; top:10px; right:15px; font-size:11px; color:#64748b; z-index:10;">
+                <span id="estadoEspejo">🪞 Reflectividad: 0.9500</span>
+            </div>
+            <div class="reflejo" id="reflejoEspejo">
+                <div class="superficie" id="superficieEspejo"></div>
+            </div>
+            <div style="margin-top:15px; display:flex; gap:20px; flex-wrap:wrap; justify-content:center; font-size:12px; color:#64748b;">
+                <span>☀️ Fotones incidentes: <span id="fotonesIn" style="color:#fbbf24;">0</span></span>
+                <span>🪞 Reflejados: <span id="fotonesRef" style="color:#34d399;">0</span></span>
+                <span>🌑 Absorbidos: <span id="fotonesAbs" style="color:#f472b6;">0</span></span>
+                <span>📉 Degradación: <span id="degradacionValor" style="color:#f59e0b;">0%</span></span>
+            </div>
+        </div>
+
+        <div class="hash-box" style="border-color: #fbbf24;">
+            <div class="label">🪞 Hash del Espejo (Estado Paralizado)</div>
+            <div class="value hash" id="hashFinal">-</div>
+        </div>
+
+        <div class="hash-box" style="border-color: #60a5fa;">
+            <div class="label">🔑 Parámetros del Espejo (Clave)</div>
+            <div class="value params" id="paramsFinal">-</div>
+        </div>
+
+        <div class="hash-box" style="border-color: #34d399;">
+            <div class="label">🔁 Verificación Reversible</div>
+            <div class="value reversible" id="verificacionFinal">-</div>
+        </div>
+
+        <div class="fotones-stats" id="fotonesStats"></div>
+
+        <div class="hash-box" style="border-color: #64748b; max-height: 200px;">
+            <div class="label">📜 Historial de Hashes</div>
+            <div class="value" id="historialContainer" style="color:#94a3b8;font-size:0.8em;">-</div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        //  HASH DEL ESPEJO - GESTOR DE PARÁMETROS
+        //  Reversible con clave maestra + parámetros
+        // ============================================
+
+        // --- Base de datos de espejos ---
+        const baseDatosEspejos = {};
+
+        // --- Utilidades ---
+        function stringToBigInt(str) {
+            let result = 0n;
+            for (let i = 0; i < str.length; i++) {
+                result = (result * 256n) + BigInt(str.charCodeAt(i));
+            }
+            return result;
+        }
+
+        function bigIntToHex(num, bits) {
+            const hex = num.toString(16);
+            return hex.padStart(Math.ceil(bits / 4), '0');
+        }
+
+        // --- Función de reflectividad ---
+        function calcularReflectividad(R0, k, intensidad, angulo, tiempo) {
+            const thetaRad = angulo * Math.PI / 180;
+            const cosTheta = Math.cos(thetaRad);
+            const R = R0 * Math.exp(-k * intensidad * tiempo * cosTheta);
+            return Math.max(0, Math.min(1, R));
+        }
+
+        // --- Generar clave de reversibilidad ---
+        function generarClaveReversibilidad(params, claveMaestra) {
+            const data = [
+                `id=${params.id}`,
+                `R0=${params.R0}`,
+                `k=${params.k}`,
+                `I=${params.intensidad}`,
+                `θ=${params.angulo}`,
+                `t=${params.tiempo}`,
+                `pasadas=${params.pasadas}`,
+                `maestra=${claveMaestra}`
+            ];
+            const fullStr = data.join('|');
+            const bigInt = stringToBigInt(fullStr);
+            const mod = 2n ** 128n;
+            return bigIntToHex(bigInt % mod, 128);
+        }
+
+        // --- Generar hash desde parámetros ---
+        function generarHashDesdeParams(params, claveMaestra, hashBits) {
+            // Calcular reflectividad
+            const R = calcularReflectividad(
+                params.R0, params.k, params.intensidad,
+                params.angulo, params.tiempo
+            );
+
+            // Simular fotones
+            const fotonesIn = Math.floor(100 * (1 + params.intensidad * 0.5));
+            const fotonesRef = Math.floor(fotonesIn * R);
+            const fotonesAbs = fotonesIn - fotonesRef;
+
+            // Generar clave de reversibilidad
+            const claveRev = generarClaveReversibilidad(params, claveMaestra);
+
+            // Construir hash
+            const hashData = [
+                `id=${params.id}`,
+                `R=${R}`,
+                `t=${params.tiempo}`,
+                `R0=${params.R0}`,
+                `k=${params.k}`,
+                `I=${params.intensidad}`,
+                `θ=${params.angulo}`,
+                `fotonesRef=${fotonesRef}`,
+                `fotonesAbs=${fotonesAbs}`,
+                `claveRev=${claveRev}`,
+                `maestra=${claveMaestra}`
+            ];
+
+            const fullStr = hashData.join('|');
+            const bigInt = stringToBigInt(fullStr);
+            const mod = 2n ** BigInt(hashBits);
+            const hashFinal = bigInt % mod;
+            const hashHex = bigIntToHex(hashFinal, hashBits);
+
+            // Guardar en la base de datos
+            const entry = {
+                id: params.id,
+                params: params,
+                hash: hashHex,
+                claveRev: claveRev,
+                reflectividad: R,
+                fotones: { in: fotonesIn, ref: fotonesRef, abs: fotonesAbs },
+                timestamp: new Date().toISOString()
+            };
+
+            baseDatosEspejos[params.id] = entry;
+
+            return entry;
+        }
+
+        // --- Reconstruir hash desde parámetros ---
+        function reconstruirHashDesdeParams(id, params, claveMaestra, hashBits) {
+            // Verificar que los parámetros coinciden con los guardados
+            const guardado = baseDatosEspejos[id];
+            if (!guardado) {
+                return { exito: false, error: 'Espejo no encontrado en la base de datos' };
+            }
+
+            // Recalcular hash con los mismos parámetros
+            const nuevoHash = generarHashDesdeParams(params, claveMaestra, hashBits);
+
+            return {
+                exito: true,
+                hashOriginal: guardado.hash,
+                hashRecalculado: nuevoHash.hash,
+                coincide: guardado.hash === nuevoHash.hash,
+                datos: nuevoHash
+            };
+        }
+
+        // --- Verificar hash ---
+        function verificarHash(id, hash, claveMaestra) {
+            const guardado = baseDatosEspejos[id];
+            if (!guardado) {
+                return { exito: false, error: 'Espejo no encontrado' };
+            }
+
+            // Verificar con la clave de reversibilidad
+            const claveEsperada = generarClaveReversibilidad(guardado.params, claveMaestra);
+            const claveValida = guardado.claveRev === claveEsperada;
+
+            // Verificar hash
+            const hashValido = guardado.hash === hash;
+
+            return {
+                exito: true,
+                hashValido: hashValido,
+                claveValida: claveValida,
+                id: id,
+                hashGuardado: guardado.hash,
+                hashRecibido: hash,
+                params: guardado.params,
+                reflectividad: guardado.reflectividad
+            };
+        }
+
+        // ============================================
+        //  UI
+        // ============================================
+
+        let ultimoEstado = null;
+
+        function generarHashConParams() {
+            const id = document.getElementById('espejoID').value.trim() || 'espejo_default';
+            const claveMaestra = document.getElementById('claveMaestra').value || 'default_key';
+            const hashBits = parseInt(document.getElementById('hashBits').value);
+            const R0 = parseFloat(document.getElementById('R0').value) || 0.95;
+            const k = parseFloat(document.getElementById('k').value) || 0.01;
+            const intensidad = parseFloat(document.getElementById('intensidad').value) || 1.0;
+            const angulo = parseFloat(document.getElementById('angulo').value) || 45;
+            const tiempo = parseFloat(document.getElementById('tiempo').value) || 10;
+            const pasadas = parseInt(document.getElementById('pasadasFotones').value) || 3;
+
+            const params = { id, R0, k, intensidad, angulo, tiempo, pasadas };
+
+            const resultado = generarHashDesdeParams(params, claveMaestra, hashBits);
+            ultimoEstado = resultado;
+
+            // Mostrar resultados
+            document.getElementById('resultadosContainer').style.display = 'block';
+            document.getElementById('gestionContainer').style.display = 'block';
+
+            document.getElementById('hashFinal').textContent = resultado.hash;
+            document.getElementById('paramsFinal').textContent = JSON.stringify(params, null, 2);
+            document.getElementById('claveReversibilidad').textContent = resultado.claveRev;
+
+            // Estado actual
+            document.getElementById('estadoActual').innerHTML = `
+                <strong>ID:</strong> ${resultado.id}<br>
+                <strong>Reflectividad:</strong> ${resultado.reflectividad.toFixed(6)}<br>
+                <strong>Fotones Reflejados:</strong> ${resultado.fotones.ref}<br>
+                <strong>Fotones Absorbidos:</strong> ${resultado.fotones.abs}<br>
+                <strong>Degradación:</strong> ${((1 - resultado.reflectividad / params.R0) * 100).toFixed(2)}%
+            `;
+
+            document.getElementById('parametrosGuardados').innerHTML = Object.entries(params).map(([k, v]) =>
+                `<span class="param-item"><span class="key">${k}:</span> <span class="value">${v}</span></span>`
+            ).join('');
+
+            document.getElementById('hashGenerado').textContent = resultado.hash;
+
+            // Verificación
+            document.getElementById('verificacionFinal').innerHTML = `
+                ✅ <strong>Hash generado correctamente</strong><br>
+                ID: ${resultado.id}<br>
+                Clave de reversibilidad: ${resultado.claveRev.slice(0, 16)}...<br>
+                <span style="color:#64748b;font-size:11px;">(Guardado en base de datos de espejos)</span>
+            `;
+
+            // Stats
+            const degradacion = ((1 - resultado.reflectividad / params.R0) * 100);
+            document.getElementById('statsGrid').innerHTML = `
+                <div class="stat-card"><div class="value hash">${resultado.hash.slice(0, 8)}...</div><div class="label">Hash</div></div>
+                <div class="stat-card"><div class="value params">${(resultado.reflectividad * 100).toFixed(2)}%</div><div class="label">Reflectividad</div></div>
+                <div class="stat-card"><div class="value reversible">${resultado.fotones.ref}</div><div class="label">Fotones Ref</div></div>
+                <div class="stat-card"><div class="value" style="color:#f472b6;">${degradacion.toFixed(2)}%</div><div class="label">Degradación</div></div>
+                <div class="stat-card"><div class="value" style="color:#60a5fa;">${params.tiempo}s</div><div class="label">Tiempo</div></div>
+            `;
+
+            // Visualizar espejo
+            dibujarEspejo(resultado.reflectividad, resultado.fotones);
+
+            // Historial
+            actualizarHistorial(resultado);
+
+            // Stats fotones
+            document.getElementById('fotonesStats').innerHTML = `
+                <div class="foton-card">
+                    <div class="valor reflejado">${resultado.fotones.ref}</div>
+                    <div class="label">🪞 Reflejados</div>
+                </div>
+                <div class="foton-card">
+                    <div class="valor absorbido">${resultado.fotones.abs}</div>
+                    <div class="label">🌑 Absorbidos</div>
+                </div>
+                <div class="foton-card">
+                    <div class="valor degradado">${(resultado.fotones.abs / resultado.fotones.in * 100).toFixed(1)}%</div>
+                    <div class="label">📉 Pérdida</div>
+                </div>
+                <div class="foton-card">
+                    <div class="valor" style="color:#60a5fa;">${(resultado.fotones.ref / resultado.fotones.in * 100).toFixed(1)}%</div>
+                    <div class="label">✨ Reflectividad</div>
+                </div>
+            `;
+
+            // Guardar para reconstrucción
+            window._ultimoID = id;
+            window._ultimosParams = params;
+            window._ultimaClave = claveMaestra;
+            window._ultimoHash = resultado.hash;
+            window._ultimoResultado = resultado;
+        }
+
+        // --- Reconstruir hash ---
+        function reconstruirHash() {
+            if (!window._ultimoID || !window._ultimosParams) {
+                alert('⚠️ Primero genera un hash con parámetros');
+                return;
+            }
+
+            const id = window._ultimoID;
+            const params = window._ultimosParams;
+            const claveMaestra = window._ultimaClave;
+            const hashBits = parseInt(document.getElementById('hashBits').value);
+
+            const resultado = reconstruirHashDesdeParams(id, params, claveMaestra, hashBits);
+
+            if (!resultado.exito) {
+                document.getElementById('verificacionFinal').innerHTML = `
+                    ❌ <strong>Error:</strong> ${resultado.error}
+                `;
+                return;
+            }
+
+            document.getElementById('verificacionFinal').innerHTML = `
+                🔁 <strong>Reconstrucción</strong><br>
+                Hash original: ${resultado.hashOriginal}<br>
+                Hash recalculado: ${resultado.hashRecalculado}<br>
+                <strong style="color:${resultado.coincide ? '#34d399' : '#ef4444'}">
+                    ${resultado.coincide ? '✅ COINCIDEN - El hash es reproducible' : '❌ NO COINCIDEN - Algo ha cambiado'}
+                </strong>
+                <br><br>
+                <span style="color:#64748b;font-size:11px;">
+                    La reconstrucción usa los mismos parámetros + clave maestra.
+                    Si coinciden, el hash es determinista y reversible.
+                </span>
+            `;
+        }
+
+        // --- Verificar hash ---
+        function verificarHash() {
+            if (!window._ultimoID || !window._ultimoHash) {
+                alert('⚠️ Primero genera un hash con parámetros');
+                return;
+            }
+
+            const id = window._ultimoID;
+            const hash = window._ultimoHash;
+            const claveMaestra = window._ultimaClave;
+
+            const resultado = verificarHash(id, hash, claveMaestra);
+
+            if (!resultado.exito) {
+                document.getElementById('verificacionFinal').innerHTML = `
+                    ❌ <strong>Error:</strong> ${resultado.error}
+                `;
+                return;
+            }
+
+            document.getElementById('verificacionFinal').innerHTML = `
+                ✅ <strong>Verificación</strong><br>
+                ID: ${resultado.id}<br>
+                Hash guardado: ${resultado.hashGuardado}<br>
+                Hash recibido: ${resultado.hashRecibido}<br>
+                <strong style="color:${resultado.hashValido ? '#34d399' : '#ef4444'}">
+                    ${resultado.hashValido ? '✅ HASH VÁLIDO' : '❌ HASH INVÁLIDO'}
+                </strong>
+                <br>
+                <span style="color:${resultado.claveValida ? '#34d399' : '#ef4444'}">
+                    ${resultado.claveValida ? '✅ Clave de reversibilidad válida' : '❌ Clave inválida'}
+                </span>
+                <br><br>
+                <span style="color:#64748b;font-size:11px;">
+                    Reflectividad en el momento del hash: ${(resultado.reflectividad * 100).toFixed(2)}%
+                </span>
+            `;
+        }
+
+        // --- Visualizar espejo ---
+        function dibujarEspejo(reflectividad, fotones) {
+            const superficie = document.getElementById('superficieEspejo');
+            const degradacion = 1 - reflectividad;
+            const gris = Math.floor(200 * reflectividad + 55);
+
+            superficie.style.background = `
+                linear-gradient(135deg, 
+                    rgb(${gris}, ${gris}, ${gris}), 
+                    rgb(${gris}, ${gris}, ${gris}) 30%, 
+                    rgb(${Math.min(gris + 40, 255)}, ${Math.min(gris + 40, 255)}, ${Math.min(gris + 40, 255)}), 
+                    rgb(${gris}, ${gris}, ${gris}) 70%, 
+                    rgb(${Math.max(gris - 30, 0)}, ${Math.max(gris - 30, 0)}, ${Math.max(gris - 30, 0)})
+                )
+            `;
+
+            const specular = reflectividad > 0.5 ?
+                `radial-gradient(ellipse at 30% 40%, rgba(255,255,255,${reflectividad * 0.5}) 0%, transparent 70%)` :
+                'none';
+            superficie.style.backgroundImage = specular;
+
+            document.getElementById('estadoEspejo').textContent =
+                `🪞 Reflectividad: ${reflectividad.toFixed(4)} | Degradación: ${(degradacion * 100).toFixed(2)}%`;
+
+            if (fotones) {
+                document.getElementById('fotonesIn').textContent = fotones.in;
+                document.getElementById('fotonesRef').textContent = fotones.ref;
+                document.getElementById('fotonesAbs').textContent = fotones.abs;
+                document.getElementById('degradacionValor').textContent = `${(degradacion * 100).toFixed(2)}%`;
+            }
+        }
+
+        // --- Historial ---
+        function actualizarHistorial(resultado) {
+            const container = document.getElementById('historialContainer');
+            const entry = document.createElement('div');
+            entry.className = 'historial-item';
+            entry.innerHTML = `
+                <span class="op">🪞 ${resultado.id}</span>
+                R=${resultado.reflectividad.toFixed(4)} | 
+                Hash: <span class="res">${resultado.hash}</span> | 
+                ${new Date().toLocaleTimeString()}
+            `;
+            container.prepend(entry);
+        }
+
+        // --- Limpiar ---
+        function limpiarTodo() {
+            document.getElementById('resultadosContainer').style.display = 'none';
+            document.getElementById('gestionContainer').style.display = 'none';
+            document.getElementById('hashFinal').textContent = '-';
+            document.getElementById('paramsFinal').textContent = '-';
+            document.getElementById('claveReversibilidad').textContent = '-';
+            document.getElementById('verificacionFinal').textContent = '-';
+            document.getElementById('historialContainer').innerHTML = '';
+            document.getElementById('fotonesStats').innerHTML = '';
+            const superficie = document.getElementById('superficieEspejo');
+            superficie.style.background = 'linear-gradient(135deg, #c0c0c0, #e8e8e8, #a0a0a0)';
+            superficie.style.backgroundImage = 'radial-gradient(ellipse at 30% 40%, rgba(255,255,255,0.4) 0%, transparent 70%)';
+            document.getElementById('estadoEspejo').textContent = '🪞 Reflectividad: 0.9500';
+            document.getElementById('fotonesIn').textContent = '0';
+            document.getElementById('fotonesRef').textContent = '0';
+            document.getElementById('fotonesAbs').textContent = '0';
+            document.getElementById('degradacionValor').textContent = '0%';
+            window._ultimoID = null;
+            window._ultimosParams = null;
+            window._ultimaClave = null;
+            window._ultimoHash = null;
+            window._ultimoResultado = null;
+        }
+
+        // --- Inicializar ---
+        window.onload = function() {
+            // Auto-generar ejemplo
+            setTimeout(generarHashConParams, 300);
+        };
+    </script>
+</body>
+</html>

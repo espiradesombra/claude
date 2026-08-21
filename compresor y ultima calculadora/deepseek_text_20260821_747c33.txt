@@ -1,0 +1,11 @@
+1. Generas hash con parámetros
+   → hash = F(parámetros, clave_maestra)
+
+2. Guardas los parámetros
+   → baseDatos[id] = { params, hash, claveRev }
+
+3. Para reconstruir:
+   → nuevo_hash = F(parámetros, clave_maestra)
+
+4. Comparas:
+   → hash_original === nuevo_hash → ¡Válido!
