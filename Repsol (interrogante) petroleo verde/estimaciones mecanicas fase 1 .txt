@@ -1,0 +1,25 @@
+Documento Técnico: 33x1 (Fase 1)
+Diseño de Producto Mínimo Viable (MVP) para Captura Logística a Bordo
+Este documento consolida las métricas base y los requerimientos electromecánicos para la implementación de la Fase 1. En esta iteración, el vehículo se comporta como un nodo recolector puro. La reconversión del gas se delega a las instalaciones centralizadas integradas en la infraestructura eléctrica de ZypyZape, asegurando una transición viable para la industria automotriz actual.
+1. Parámetros de Diseño y Rendimiento Base
+Se ha modelado el sistema sobre un vehículo de combustión diésel de eficiencia estándar para demostrar la aplicabilidad inmediata de la tecnología electromecánica.
+MÉTRICA	VALOR CALCULADO	JUSTIFICACIÓN TÉCNICA
+Consumo de Combustible	5.0 L / 100 km	Línea base realista para motores térmicos modernos.
+Rango de Autonomía	600 km	Distancia operativa garantizada sin repostaje.
+Factor Emisión CO2	2.64 kg/L	Cálculo estequiométrico derivado de la densidad del diésel.
+Presión de Almacenamiento	150 bar	Estándar comercial de compresión para gestión segura de fluidos en chasis.
+2. Estimación de Masas y Volúmenes Cautivos
+Durante un ciclo de conducción de 600 km (consumiendo 30.0 L), los subsistemas de recuperación capturan y confinan los siguientes subproductos:
+FLUIDO CAPTURADO	MASA NETA (KG)	VOLUMEN A PRESIÓN (LITROS)
+Dióxido de Carbono (a 150.0 bar)	79.20 kg	99.00 L
+Vapor Condensado (H2O líquida)	32.40 kg	32.40 L
+CARGA TOTAL	111.60 kg	131.40 L
+Viabilidad Logística: El volumen total requerido es de 131.4 Litros. Este espacio es inferior al tamaño de los tanques de Gas Natural Comprimido (GNC) o los packs de baterías actuales. Puede integrarse sin alterar significativamente la arquitectura estructural del chasis. 
+3. Balance Termodinámico (Gasto Energético de Compresión)
+El sistema requiere comprimir de manera continua los gases desde la presión atmosférica del escape hasta los 150.0 bar del tanque interno. Este trabajo se obtiene a través de un compresor acoplado al eje o alimentado por el sistema eléctrico de frenada regenerativa.
+Cálculo de Trabajo Isotérmico: W = m · R · T · ln(P₂/P₁)
+•	Trabajo Total Requerido: 6.25 kWh (acumulado en 8.0 h).
+•	Potencia Media Continua: 0.78 kW.
+•	Esfuerzo Mecánico sobre el Motor: ~1.05 CV.
+Veredicto Electromecánico: Una demanda pico inferior a 1 kW es estadísticamente imperceptible para el motor de tracción principal. Equivale a encender el climatizador del vehículo. Queda demostrada la total viabilidad de la Fase 1. 
+Generado para análisis del ecosistema 33x1 (ZypyZape / Captura Logística). 

@@ -1,0 +1,14 @@
+CERO_EMISIONES_REPSOL_33x1/
+├── README.md                   # El punto de entrada para cualquiera que llegue a la carpeta.
+├── docs/
+│   ├── 01_FISICA_Y_TERMODINAMICA.md  # Explicación física completa.
+│   └── 02_METRICAS_Y_REGULACION_EU.md # Análisis regulatorio y de mercado.
+├── simulaciones/
+│   ├── gemelo_1_dac.py         # Simulación de captura de CO2.
+│   ├── gemelo_2_sintesis.py    # Simulación de síntesis de gasoil.
+│   ├── gemelo_3_ciclo_completo.py # Simulación integrada.
+│   └── requirements.txt        # Dependencias de Python.
+├── financiero/
+│   └── analisis_roi.py        # Análisis de costes, ROI y casos de uso.
+└── presentacion/
+    └── SOLICITUD_REPSOL.md    # El documento ejecutivo para presentar a Repsol.

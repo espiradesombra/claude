@@ -1,0 +1,45 @@
+graph TD
+    subgraph "Generación y Almacenamiento de Energía"
+        A[Motor 3xO2] --> B(Alternador)
+        C[Servoruedas] --> D(Generador/Regenerador)
+        E[Kilómetro] --> F(Batería Mecánica)
+        
+        B --> G[<b>Batería Principal</b>]
+        D --> G
+        F --> G
+        
+        G --> H[<b>Batería Local Servorueda</b> (Pequeña)]
+        G --> I[<b>Batería de Síntesis</b>]
+    end
+
+    subgraph "Consumo y Accionamiento"
+        H --> J(Motor Servorueda)
+        J --> K[<b>Control de Estabilidad</b> (Par diferencial, frenado)]
+        
+        I --> L(Compresor CO2)
+        L --> M[<b>Captura DAC</b>]
+        
+        I --> N(Reactores: Sabatier + Fischer-Tropsch)
+        N --> O[<b>Síntesis de Gasoil</b>]
+    end
+
+    subgraph "Sensores y Control (Gemelos Digitales)"
+        P[Sensores: Aceleración, Giro, Velocidad, Presión CO2] --> Q[<b>Centralita 33x1</b>]
+        Q --> R[Comunicación Inalámbrica (CAN Bus)]
+        R --> S[<b>Rueda 1</b> (Par)]
+        R --> T[<b>Rueda 2</b> (Par)]
+        R --> U[<b>Rueda 3</b> (Par)]
+        R --> V[<b>Rueda 4</b> (Par)]
+        
+        Q --> W[<b>Gemelo Digital</b> (Quijote/Kilómetro)]
+        W --> X[Optimización en Tiempo Real]
+        X --> Q
+    end
+
+    style A fill:#f9f,stroke:#333,stroke-width:4px
+    style C fill:#f96,stroke:#333,stroke-width:4px
+    style E fill:#f96,stroke:#333,stroke-width:4px
+    style G fill:#99f,stroke:#333,stroke-width:4px
+    style K fill:#9f9,stroke:#333,stroke-width:4px
+    style O fill:#9f9,stroke:#333,stroke-width:4px
+    style Q fill:#ff9,stroke:#333,stroke-width:4px

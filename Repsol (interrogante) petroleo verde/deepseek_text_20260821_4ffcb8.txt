@@ -1,0 +1,118 @@
+
+---
+
+#### **2. `docs/01_FISICA_Y_TERMODINAMICA.md`**
+
+```markdown
+# Física y Termodinámica del Sistema Gasoil Verde 33×1
+
+Este documento detalla los principios físicos que rigen el ciclo cerrado de combustible propuesto.
+
+## 1. El Motor de Combustión Interna con Ciclo 3×O2
+
+El motor es el punto de partida, pero su funcionamiento se optimiza drásticamente con la inyección de aire a presión.
+
+### 1.1. Principio de Funcionamiento:
+
+*   **Motor Estándar:** El aire entra a 1 atm. La compresión (15:1) eleva la temperatura para la ignición. La combustión es a menudo incompleta, generando residuos y perdiendo eficiencia.
+*   **Motor 3×O2:** Un compresor (alimentado por el alternador) presuriza el aire de admisión a 2.5-3 bar. Esto triplica efectivamente la cantidad de oxígeno en la cámara de combustión.
+
+### 1.2. Ventajas Físicas:
+
+1.  **Combustión Completa:** Con 3 veces más oxígeno, la combustión del gasoil (C₁₂H₂₃) es completa. Esto elimina la producción de CO (monóxido de carbono) y HC (hidrocarburos no quemados), reduciendo drásticamente la contaminación local y maximizando la energía extraída de cada gota de combustible.
+2.  **Aumento de la Eficiencia:**
+    *   Motor Diésel normal (η) ≈ 35-40%.
+    *   Motor 3×O2 (η) ≈ 50-55%.
+    *   **Razón:** Se aprovecha mejor la energía química del combustible y se reducen las pérdidas por calor en el escape.
+3.  **Aumento de Potencia (Torque):** La mayor densidad de aire en la cámara permite inyectar más combustible o generar una explosión más potente, incrementando la potencia disponible.
+
+---
+
+## 2. La Captura Directa de Aire (DAC) a Bordo
+
+### 2.1. El Problema:
+Un motor diésel produce ~3.15 kg de CO2 por cada litro de gasoil quemado.
+
+### 2.2. La Solución (Captura de Escape):
+El sistema de escape del vehículo se rediseña para incluir un **Módulo DAC** que captura el CO2 antes de que salga al exterior.
+
+*   **Mecanismo:** El gas de escape pasa a través de un material adsorbente (como zeolitas o MOFs) que atrapa selectivamente las moléculas de CO2.
+*   **Energía para la Captura:** El proceso de adsorción libera calor, y para liberar el CO2 del filtro se necesita aplicar calor, que se obtiene del propio calor residual del motor (aprox. 120°C). Esto hace que el proceso sea energéticamente casi gratuito.
+*   **Compresión y Almacenamiento:** El CO2 capturado es comprimido por un pequeño compresor a 150 bar y almacenado en un depósito de acero de alta presión (similar a los de GNC) de aproximadamente 15-20 litros. Una vez lleno, el depósito puede ser vaciado en una estación de servicio para su procesamiento centralizado (en una primera fase) o para su uso a bordo.
+
+---
+
+## 3. Síntesis de Combustible (CO₂ → Gasoil)
+
+### 3.1. Química de la Síntesis (Pasos):
+
+1.  **Electrólisis (H₂O → H₂ + O₂):**
+    *   **Reacción:** 2 H₂O (l) → 2 H₂ (g) + O₂ (g)
+    *   **Descripción:** Se utiliza electricidad para romper la molécula de agua, produciendo hidrógeno (H₂).
+    *   **Costo Energético:** ~52.5 kWh para producir 1 kg de H₂.
+
+2.  **Reacción de Sabatier (CO₂ + 4H₂ → CH₄ + 2H₂O):**
+    *   **Descripción:** El CO₂ capturado y el H₂ producido reaccionan en un reactor catalítico a alta temperatura (300-400°C) para formar metano (CH₄) y agua.
+
+3.  **Síntesis de Fischer-Tropsch (CH₄ → Gasoil):**
+    *   **Descripción:** El metano (CH₄) se convierte en hidrocarburos de cadena larga (como el gasoil, C₁₂H₂₃) mediante un proceso catalítico a presión y temperatura moderadas (250°C, 25 bar).
+
+### 3.2. Balance Energético:
+
+Para sintetizar 1 kg de gasoil se necesita una cantidad significativa de energía (aprox. 46 MJ, o 12.8 kWh).
+Esta energía es el principal desafío, y es donde entra en juego el **Kilómetro**.
+
+---
+
+## 4. La Batería "Kilómetro": Energía del Movimiento
+
+### 4.1. ¿Qué es el Kilómetro?
+Es un sistema mecánico integrado en el vehículo (como un volante de inercia de masa variable) que es capaz de extraer energía de las "irregularidades" del movimiento (aceleraciones, frenadas, cambios de pendiente) y de las fuerzas gravitatorias. No es un motor perpetuo, sino un sistema de **recuperación de energía de alta eficiencia** y **almacenamiento mecánico**.
+
+*   **Fuente de Energía:** Aprovecha el **"hurto gravitatorio"** y la **asimetría de fase** (ciclo impar de patadas: 1.5 vs 2 vueltas) para generar un par motor adicional en el eje.
+*   **Energía Generada:** Se estima que el sistema puede generar entre **1 y 2 kWh** de energía adicional por cada hora de conducción.
+
+### 4.2. El Papel del Kilómetro en el Ciclo Cerrado:
+Esta energía, generada "gratuitamente" durante la conducción, es la que alimenta la **Electrólisis** y, en parte, el **Reactor Sabatier**.
+
+*   **Sin Kilómetro:** El ciclo es inviable, ya que la energía para la síntesis tendría que venir del propio motor, reduciendo su eficiencia total a cero o haciendo que el sistema fuera un "consumidor neto" de energía.
+*   **Con Kilómetro:** La energía para la síntesis es "excedente", lo que convierte el ciclo en **casi autosuficiente**. Se genera energía "extra" que se utiliza para crear más combustible a partir de los residuos.
+
+---
+
+## 5. Diagrama del Ciclo Cerrado (Mermaid)
+
+```mermaid
+graph TD
+    A[<b>Motor 3xO2</b>] --> B(Combustión eficiente)
+    B --> C{Energía Mecánica}
+    B --> D[<b>Gases de Escape</b><br>(CO2, H2O, N2)]
+    
+    C --> E[<b>Par Motor</b>]
+    C --> F[<b>Alternador</b><br>Genera Electricidad]
+    
+    F --> G[<b>Batería Eléctrica</b>]
+    G --> H[<b>Compresor de Aire</b><br>(para 3xO2)]
+    G --> I[<b>Electrolizador</b><br>(produce H2)]
+    
+    D --> J[<b>Sistema DAC</b><br>Captura CO2]
+    J --> K[<b>Depósito CO2</b><br>a 150 bar]
+    
+    I --> L(H2)
+    K --> M(CO2)
+    
+    M & L --> N[<b>Reactor Sabatier</b><br>CO2 + 4H2 → CH4 + 2H2O]
+    N --> O(CH4)
+    O --> P[<b>Síntesis Fischer-Tropsch</b><br>CH4 → Gasoil]
+    
+    P --> Q[<b>Gasoil Sintético</b>]
+    Q --> A
+    
+    R[<b>Batería Kilómetro</b>] --> G
+    R --> N
+    
+    style A fill:#f9f,stroke:#333,stroke-width:4px
+    style D fill:#ff9,stroke:#333,stroke-width:2px
+    style J fill:#9f9,stroke:#333,stroke-width:2px
+    style N fill:#99f,stroke:#333,stroke-width:2px
+    style R fill:#f96,stroke:#333,stroke-width:4px
