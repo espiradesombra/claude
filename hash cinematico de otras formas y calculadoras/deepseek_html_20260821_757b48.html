@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Ondas + Regla de Cálculo 📐</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #0a0a15;
+            color: #e2e8f0;
+        }
+        .container {
+            background: rgba(20, 20, 40, 0.9);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+            border: 1px solid rgba(100, 50, 200, 0.2);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #94a3b8;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        input,
+        select {
+            width: 100%;
+            padding: 8px 12px;
+            background: #0a0a15;
+            border: 1px solid #2a1a3e;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #e2e8f0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        button {
+            background: linear-gradient(135deg, #7c3aed, #3b82f6);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            margin: 4px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+        }
+        button.success {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+        }
+        button.warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        button.secondary {
+            background: linear-gradient(135deg, #64748b, #475569);
+        }
+        .hash-box {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            margin: 15px 0;
+            border: 1px solid #2a1a3e;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .hash-box .label {
+            color: #64748b;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .hash-box .value {
+            font-size: 1em;
+            margin-top: 8px;
+            word-break: break-all;
+        }
+        .hash-box .value.resultado {
+            color: #34d399;
+        }
+        .hash-box .value.log {
+            color: #fbbf24;
+        }
+        .hash-box .value.onda {
+            color: #60a5fa;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .stat-card {
+            background: rgba(10, 10, 20, 0.8);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #1a1a2e;
+        }
+        .stat-card .value {
+            font-size: 18px;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+        .stat-card .label {
+            font-size: 8px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 3px;
+        }
+        .stat-card .value.onda {
+            color: #60a5fa;
+        }
+        .stat-card .value.log {
+            color: #fbbf24;
+        }
+        .stat-card .value.resultado {
+            color: #34d399;
+        }
+        .regla-container {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #1a1a2e;
+            margin: 15px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .regla-container .escala {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            position: relative;
+        }
+        .regla-container .escala .linea {
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(90deg, #60a5fa, #a78bfa, #f472b6);
+            position: relative;
+        }
+        .regla-container .escala .marca {
+            position: absolute;
+            top: -8px;
+            width: 2px;
+            height: 16px;
+            background: #64748b;
+        }
+        .regla-container .escala .marca.principal {
+            height: 24px;
+            background: #e2e8f0;
+            top: -12px;
+        }
+        .regla-container .cursor {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 2px;
+            height: 100%;
+            background: #ef4444;
+            transition: left 0.5s ease;
+            pointer-events: none;
+        }
+        .regla-container .cursor::after {
+            content: '▼';
+            position: absolute;
+            top: -18px;
+            left: -6px;
+            color: #ef4444;
+            font-size: 12px;
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 14px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .badge.onda {
+            background: linear-gradient(135deg, #3b82f6, #7c3aed);
+            color: white;
+        }
+        .badge.log {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+        .badge.resultado {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+        }
+        .hidden {
+            display: none;
+        }
+        .regla-real {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #2a1a3e;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            overflow-x: auto;
+            white-space: pre;
+        }
+        .regla-real .destacar {
+            color: #f472b6;
+            font-weight: bold;
+        }
+        .regla-real .escala-log {
+            color: #fbbf24;
+        }
+        .regla-real .escala-lineal {
+            color: #60a5fa;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; background: linear-gradient(90deg, #60a5fa, #fbbf24, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+        📐 Calculadora de Ondas + Regla de Cálculo
+    </h1>
+    <p style="text-align: center; color: #94a3b8; margin-top: -10px;">
+        <span class="badge onda">🌊 INFERENCIA DE ONDAS</span>
+        <span class="badge log">📐 REGLA DE CÁLCULO</span>
+        <span class="badge resultado">🧮 CALCULADORA HÍBRIDA</span>
+    </p>
+
+    <!-- Calculadora -->
+    <div class="container">
+        <h2 style="color: #60a5fa;">🧮 Calculadora Analógica (Regla de Cálculo)</h2>
+
+        <div class="grid">
+            <div>
+                <label>Operación:</label>
+                <select id="operacion">
+                    <option value="multiplicar">✖️ Multiplicar (a × b)</option>
+                    <option value="dividir">➗ Dividir (a ÷ b)</option>
+                    <option value="cuadrado">🔲 Cuadrado (a²)</option>
+                    <option value="raiz">√ Raíz cuadrada (√a)</option>
+                    <option value="log">📊 Logaritmo (log₁₀ a)</option>
+                    <option value="seno">📐 Seno (sin a)</option>
+                    <option value="coseno">📐 Coseno (cos a)</option>
+                </select>
+            </div>
+            <div>
+                <label>Valor a:</label>
+                <input id="valorA" value="2" placeholder="Ej: 2, 3.14">
+            </div>
+            <div>
+                <label>Valor b (para × y ÷):</label>
+                <input id="valorB" value="3" placeholder="Ej: 3, 1.5">
+            </div>
+            <div>
+                <label>Frecuencia WiFi (GHz):</label>
+                <select id="frecuenciaWiFi">
+                    <option value="2.4">2.4 GHz</option>
+                    <option value="5">5 GHz</option>
+                    <option value="6">6 GHz</option>
+                </select>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button class="success" onclick="calcularRegla()">🧮 Calcular con Regla</button>
+            <button class="warning" onclick="calcularOndas()">🌊 Calcular con Ondas</button>
+            <button class="secondary" onclick="compararMetodos()">📊 Comparar Métodos</button>
+        </div>
+    </div>
+
+    <!-- Resultados -->
+    <div class="container" id="resultadosContainer" style="display: none;">
+        <h2>📊 Resultados</h2>
+
+        <div class="stats-grid" id="statsGrid"></div>
+
+        <div class="hash-box">
+            <div class="label">🧮 Resultado (Regla de Cálculo)</div>
+            <div class="value resultado" id="resultadoRegla">-</div>
+        </div>
+
+        <div class="hash-box" style="border-color: #60a5fa;">
+            <div class="label">🌊 Resultado (Inferencia de Ondas)</div>
+            <div class="value onda" id="resultadoOndas">-</div>
+        </div>
+
+        <div class="hash-box" style="border-color: #fbbf24;">
+            <div class="label">📐 Pasos Logarítmicos</div>
+            <div class="value log" id="pasosLog">-</div>
+        </div>
+
+        <div class="hash-box" style="border-color: #34d399;">
+            <div class="label">🔬 Datos de la Onda</div>
+            <div class="value" id="datosOnda" style="color: #94a3b8; font-size: 0.8em;">-</div>
+        </div>
+
+        <!-- Regla de Cálculo Visual -->
+        <div class="regla-container" id="reglaVisual">
+            <div style="display: flex; justify-content: space-between; font-size: 10px; color: #64748b; margin-bottom: 5px;">
+                <span>Escala Logarítmica (C)</span>
+                <span>Escala Lineal (D)</span>
+            </div>
+            <div class="regla-real" id="reglaReal"></div>
+            <div class="cursor" id="cursorRegla"></div>
+        </div>
+
+        <div id="comparacionContainer" class="hash-box" style="border-color: #f472b6; display: none;">
+            <div class="label">📊 Comparación de Métodos</div>
+            <div class="value" id="comparacionResultado" style="color: #f472b6; font-size: 0.8em;">-</div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        //  CALCULADORA HÍBRIDA
+        //  Regla de Cálculo + Inferencias de Ondas
+        // ============================================
+
+        // --- Regla de Cálculo ---
+        function reglaCalculo(operacion, a, b = 0) {
+            const log10 = Math.log10;
+            const resultado = { pasos: [], resultado: 0 };
+
+            switch (operacion) {
+                case 'multiplicar':
+                    resultado.pasos.push(`log₁₀(${a}) = ${log10(a).toFixed(4)}`);
+                    resultado.pasos.push(`log₁₀(${b}) = ${log10(b).toFixed(4)}`);
+                    const suma = log10(a) + log10(b);
+                    resultado.pasos.push(`log₁₀(${a} × ${b}) = ${suma.toFixed(4)}`);
+                    resultado.resultado = Math.pow(10, suma);
+                    resultado.pasos.push(`Resultado: ${a} × ${b} = ${resultado.resultado.toFixed(4)}`);
+                    break;
+
+                case 'dividir':
+                    resultado.pasos.push(`log₁₀(${a}) = ${log10(a).toFixed(4)}`);
+                    resultado.pasos.push(`log₁₀(${b}) = ${log10(b).toFixed(4)}`);
+                    const resta = log10(a) - log10(b);
+                    resultado.pasos.push(`log₁₀(${a} ÷ ${b}) = ${resta.toFixed(4)}`);
+                    resultado.resultado = Math.pow(10, resta);
+                    resultado.pasos.push(`Resultado: ${a} ÷ ${b} = ${resultado.resultado.toFixed(4)}`);
+                    break;
+
+                case 'cuadrado':
+                    resultado.pasos.push(`log₁₀(${a}) = ${log10(a).toFixed(4)}`);
+                    const doble = 2 * log10(a);
+                    resultado.pasos.push(`2 × log₁₀(${a}) = ${doble.toFixed(4)}`);
+                    resultado.resultado = Math.pow(10, doble);
+                    resultado.pasos.push(`Resultado: ${a}² = ${resultado.resultado.toFixed(4)}`);
+                    break;
+
+                case 'raiz':
+                    resultado.pasos.push(`log₁₀(${a}) = ${log10(a).toFixed(4)}`);
+                    const mitad = log10(a) / 2;
+                    resultado.pasos.push(`log₁₀(${a}) / 2 = ${mitad.toFixed(4)}`);
+                    resultado.resultado = Math.pow(10, mitad);
+                    resultado.pasos.push(`Resultado: √${a} = ${resultado.resultado.toFixed(4)}`);
+                    break;
+
+                case 'log':
+                    resultado.pasos.push(`log₁₀(${a}) = ${log10(a).toFixed(4)}`);
+                    resultado.resultado = log10(a);
+                    resultado.pasos.push(`Resultado: log₁₀(${a}) = ${resultado.resultado.toFixed(4)}`);
+                    break;
+
+                case 'seno':
+                    resultado.pasos.push(`sin(${a} rad) = ${Math.sin(a).toFixed(4)}`);
+                    resultado.resultado = Math.sin(a);
+                    break;
+
+                case 'coseno':
+                    resultado.pasos.push(`cos(${a} rad) = ${Math.cos(a).toFixed(4)}`);
+                    resultado.resultado = Math.cos(a);
+                    break;
+
+                default:
+                    resultado.resultado = 0;
+            }
+
+            return resultado;
+        }
+
+        // --- Inferencia de Ondas ---
+        function inferenciaOndas(operacion, a, b = 0, frecuencia) {
+            // Simular CSI de ondas WiFi
+            const c = 3e8; // Velocidad de la luz
+            
+            // Fase como función de distancia y frecuencia
+            const distancia = a * 0.5 + b * 0.3;
+            const fase = 2 * Math.PI * frecuencia * 1e9 * distancia / c;
+            
+            // Doppler simulado
+            const doppler = -2 * a * frecuencia * 1e9 / c * 0.5;
+            
+            // Multicamino
+            const multicamino = Array.from({length: 3}, (_, i) => ({
+                distancia: distancia * (0.5 + i * 0.2),
+                atenuacion: 0.3 + i * 0.2,
+                fase: fase * (0.7 + i * 0.15)
+            }));
+            
+            // "Calcular" usando la fase como escala logarítmica
+            let resultado = 0;
+            let pasos = [];
+            
+            switch (operacion) {
+                case 'multiplicar':
+                    // Usar fase como logaritmo natural
+                    const logA = Math.log(a + 1);
+                    const logB = Math.log(b + 1);
+                    resultado = Math.exp(logA + logB) - 1;
+                    pasos.push(`Fase como log: ln(${a}+1) + ln(${b}+1) = ${(logA + logB).toFixed(4)}`);
+                    break;
+                    
+                case 'dividir':
+                    const logA2 = Math.log(a + 1);
+                    const logB2 = Math.log(b + 1);
+                    resultado = Math.exp(logA2 - logB2) - 1;
+                    pasos.push(`Fase como log: ln(${a}+1) - ln(${b}+1) = ${(logA2 - logB2).toFixed(4)}`);
+                    break;
+                    
+                case 'cuadrado':
+                    const logA3 = Math.log(a + 1);
+                    resultado = Math.exp(2 * logA3) - 1;
+                    pasos.push(`Fase como log: 2 × ln(${a}+1) = ${(2 * logA3).toFixed(4)}`);
+                    break;
+                    
+                case 'raiz':
+                    const logA4 = Math.log(a + 1);
+                    resultado = Math.exp(logA4 / 2) - 1;
+                    pasos.push(`Fase como log: ln(${a}+1)/2 = ${(logA4 / 2).toFixed(4)}`);
+                    break;
+                    
+                default:
+                    resultado = a + b;
+            }
+            
+            return {
+                resultado: Math.max(0, resultado),
+                pasos,
+                fase,
+                doppler,
+                multicamino,
+                distancia,
+                frecuencia
+            };
+        }
+
+        // --- UI ---
+        function calcularRegla() {
+            const operacion = document.getElementById('operacion').value;
+            const a = parseFloat(document.getElementById('valorA').value);
+            const b = parseFloat(document.getElementById('valorB').value) || 0;
+            
+            const resultado = reglaCalculo(operacion, a, b);
+            
+            document.getElementById('resultadosContainer').style.display = 'block';
+            document.getElementById('resultadoRegla').textContent = resultado.resultado.toFixed(6);
+            document.getElementById('pasosLog').textContent = resultado.pasos.join(' → ');
+            
+            // Stats
+            document.getElementById('statsGrid').innerHTML = `
+                <div class="stat-card"><div class="value resultado">${resultado.resultado.toFixed(4)}</div><div class="label">Resultado</div></div>
+                <div class="stat-card"><div class="value log">${resultado.pasos.length}</div><div class="label">Pasos</div></div>
+                <div class="stat-card"><div class="value onda">${operacion}</div><div class="label">Operación</div></div>
+            `;
+            
+            // Regla visual
+            mostrarReglaVisual(operacion, a, b, resultado);
+            
+            // Ocultar comparación
+            document.getElementById('comparacionContainer').style.display = 'none';
+            
+            window._ultimoRegla = resultado;
+            window._ultimaOperacion = operacion;
+            window._ultimoA = a;
+            window._ultimoB = b;
+        }
+        
+        function calcularOndas() {
+            const operacion = document.getElementById('operacion').value;
+            const a = parseFloat(document.getElementById('valorA').value);
+            const b = parseFloat(document.getElementById('valorB').value) || 0;
+            const freq = parseFloat(document.getElementById('frecuenciaWiFi').value);
+            
+            const resultado = inferenciaOndas(operacion, a, b, freq);
+            
+            document.getElementById('resultadosContainer').style.display = 'block';
+            document.getElementById('resultadoOndas').textContent = resultado.resultado.toFixed(6);
+            document.getElementById('datosOnda').textContent = JSON.stringify({
+                fase: resultado.fase.toFixed(4) + ' rad',
+                doppler: resultado.doppler.toFixed(4) + ' Hz',
+                distancia: resultado.distancia.toFixed(4) + ' m',
+                multicamino: resultado.multicamino.length + ' caminos'
+            }, null, 2);
+            
+            // Actualizar stats
+            document.getElementById('statsGrid').innerHTML = `
+                <div class="stat-card"><div class="value onda">${resultado.resultado.toFixed(4)}</div><div class="label">Resultado Ondas</div></div>
+                <div class="stat-card"><div class="value log">${freq} GHz</div><div class="label">Frecuencia</div></div>
+                <div class="stat-card"><div class="value resultado">${resultado.multicamino.length}</div><div class="label">Caminos</div></div>
+            `;
+            
+            window._ultimoOndas = resultado;
+        }
+        
+        function compararMetodos() {
+            if (!window._ultimoRegla || !window._ultimoOndas) {
+                alert('⚠️ Primero calcula con ambos métodos');
+                return;
+            }
+            
+            const regla = window._ultimoRegla;
+            const ondas = window._ultimoOndas;
+            
+            const diff = Math.abs(regla.resultado - ondas.resultado);
+            const porcentaje = (diff / Math.max(regla.resultado, 0.001)) * 100;
+            
+            document.getElementById('comparacionContainer').style.display = 'block';
+            document.getElementById('comparacionResultado').innerHTML = `
+                <strong>Regla de Cálculo:</strong> ${regla.resultado.toFixed(6)}<br>
+                <strong>Inferencia de Ondas:</strong> ${ondas.resultado.toFixed(6)}<br>
+                <strong>Diferencia:</strong> ${diff.toFixed(6)}<br>
+                <strong>Precisión:</strong> ${(100 - Math.min(porcentaje, 100)).toFixed(2)}%<br>
+                <br>
+                <span style="color:#64748b;font-size:0.8em;">
+                    La regla de cálculo es más precisa para operaciones exactas.<br>
+                    La inferencia de ondas usa entropía del mundo real.
+                </span>
+            `;
+        }
+        
+        function mostrarReglaVisual(operacion, a, b, resultado) {
+            const container = document.getElementById('reglaReal');
+            const cursor = document.getElementById('cursorRegla');
+            
+            // Crear escala logarítmica visual
+            let escala = '';
+            const logA = Math.log10(a);
+            const logB = Math.log10(b || 1);
+            
+            // Escala superior (logarítmica)
+            escala += 'Escala C (log):  ';
+            for (let i = 1; i <= 10; i++) {
+                const marca = i === 1 ? '|' : i === 5 ? '•' : '.';
+                escala += marca + ' ';
+            }
+            escala += '\n';
+            
+            // Escala inferior (lineal)
+            escala += 'Escala D (lin):  ';
+            for (let i = 1; i <= 10; i++) {
+                const marca = i === 1 ? '|' : i === 5 ? '•' : '.';
+                escala += marca + ' ';
+            }
+            escala += '\n';
+            
+            // Posición del cursor
+            const pos = Math.min(Math.max((logA / 2) * 100, 5), 95);
+            
+            // Operación mostrada
+            escala += `\n📐 ${operacion}: ${a} ${operacion === 'multiplicar' ? '×' : operacion === 'dividir' ? '÷' : ''} ${b || ''} = ${resultado.resultado.toFixed(4)}`;
+            
+            container.innerHTML = escala;
+            cursor.style.left = pos + '%';
+        }
+
+        // --- Inicializar ---
+        window.onload = function() {
+            calcularRegla();
+        };
+    </script>
+</body>
+</html>

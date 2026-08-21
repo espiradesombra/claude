@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Seguridad v9.0 - Ping & Metadatos 🌐</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #0a0a15;
+            color: #e2e8f0;
+        }
+        .container {
+            background: rgba(20, 20, 40, 0.9);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+            border: 1px solid rgba(100, 50, 200, 0.2);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #94a3b8;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        input,
+        select {
+            width: 100%;
+            padding: 8px 12px;
+            background: #0a0a15;
+            border: 1px solid #2a1a3e;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #e2e8f0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        input:focus,
+        select:focus {
+            border-color: #8b5cf6;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
+        }
+        button {
+            background: linear-gradient(135deg, #7c3aed, #3b82f6);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            margin: 5px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+        }
+        button.success {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+        }
+        button.warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        button.secondary {
+            background: linear-gradient(135deg, #64748b, #475569);
+        }
+        button.danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+        button.cyber {
+            background: linear-gradient(135deg, #06b6d4, #8b5cf6, #06b6d4);
+            background-size: 200% 200%;
+            animation: cyberPulse 3s ease infinite;
+        }
+        button.ping {
+            background: linear-gradient(135deg, #f59e0b, #ef4444, #f59e0b);
+            background-size: 200% 200%;
+            animation: pingPulse 2s ease infinite;
+        }
+        @keyframes cyberPulse {
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+        @keyframes pingPulse {
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+        .hash-box {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            margin: 15px 0;
+            border: 1px solid #2a1a3e;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .hash-box .label {
+            color: #64748b;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .hash-box .value {
+            font-size: 0.9em;
+            margin-top: 8px;
+            word-break: break-all;
+        }
+        .hash-box .value.hash {
+            color: #a78bfa;
+        }
+        .hash-box .value.ping {
+            color: #fbbf24;
+        }
+        .hash-box .value.funcion {
+            color: #34d399;
+        }
+        .hash-box .value.metadatos {
+            color: #60a5fa;
+        }
+        .info {
+            background: rgba(10, 10, 20, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #8b5cf6;
+            margin: 15px 0;
+        }
+        .info.success {
+            border-left-color: #22c55e;
+        }
+        .info.danger {
+            border-left-color: #ef4444;
+        }
+        .info.warning {
+            border-left-color: #f59e0b;
+        }
+        .info.ping {
+            border-left-color: #06b6d4;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 8px;
+            margin: 15px 0;
+        }
+        .stat-card {
+            background: rgba(10, 10, 20, 0.8);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #1a1a2e;
+        }
+        .stat-card .value {
+            font-size: 16px;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+        .stat-card .label {
+            font-size: 8px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 3px;
+        }
+        .stat-card .value.ping {
+            color: #fbbf24;
+        }
+        .stat-card .value.funcion {
+            color: #34d399;
+        }
+        .stat-card .value.hash {
+            color: #a78bfa;
+        }
+        .stat-card .value.metadatos {
+            color: #60a5fa;
+        }
+        .hidden {
+            display: none;
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 14px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .badge.ping {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+        .badge.funcion {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+        }
+        .badge.metadatos {
+            background: linear-gradient(135deg, #3b82f6, #7c3aed);
+            color: white;
+        }
+        .badge.hash {
+            background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+            color: white;
+        }
+        .funcion-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 10px 0;
+        }
+        .funcion-item {
+            background: #0a0a15;
+            padding: 6px 14px;
+            border-radius: 6px;
+            border: 1px solid #2a1a3e;
+            font-size: 12px;
+            font-family: 'Courier New', monospace;
+        }
+        .funcion-item .nombre {
+            color: #34d399;
+        }
+        .funcion-item .valor {
+            color: #fbbf24;
+        }
+        .funcion-item .seleccionada {
+            color: #f472b6;
+            font-weight: bold;
+        }
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+            border: 1px solid #1a1a2e;
+        }
+        .flow-diagram .box {
+            padding: 6px 12px;
+            background: #1a1a2e;
+            border-radius: 6px;
+            border: 1px solid #2a1a3e;
+            font-size: 10px;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+        }
+        .flow-diagram .arrow {
+            color: #64748b;
+            font-size: 14px;
+        }
+        .flow-diagram .box.ping {
+            border-color: #fbbf24;
+        }
+        .flow-diagram .box.metadatos {
+            border-color: #60a5fa;
+        }
+        .flow-diagram .box.funcion {
+            border-color: #34d399;
+        }
+        .flow-diagram .box.hash {
+            border-color: #a78bfa;
+        }
+        .carpeta-container {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #1a1a2e;
+            margin: 10px 0;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .carpeta-container .titulo {
+            color: #64748b;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .carpeta-container .funcion {
+            padding: 4px 8px;
+            margin: 3px 0;
+            border-radius: 4px;
+            font-size: 12px;
+            font-family: 'Courier New', monospace;
+            background: rgba(10, 10, 20, 0.5);
+        }
+        .carpeta-container .funcion .nombre {
+            color: #34d399;
+        }
+        .carpeta-container .funcion .tipo {
+            color: #64748b;
+            font-size: 10px;
+        }
+        .carpeta-container .funcion .seleccionada {
+            color: #f472b6;
+            font-weight: bold;
+        }
+        .ping-result {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 6px;
+            margin: 5px 0;
+            border: 1px solid #1a1a2e;
+            font-size: 12px;
+        }
+        .ping-result .servidor {
+            color: #60a5fa;
+        }
+        .ping-result .tiempo {
+            color: #fbbf24;
+        }
+        .ping-result .ttl {
+            color: #34d399;
+        }
+        .ping-result .metadatos {
+            color: #f472b6;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; background: linear-gradient(90deg, #fbbf24, #34d399, #60a5fa, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+        🌐 Sistema de Seguridad v9.0 - Ping & Metadatos
+    </h1>
+    <p style="text-align: center; color: #94a3b8; margin-top: -10px;">
+        <span class="badge ping">📡 PING + METADATOS</span>
+        <span class="badge funcion">📦 FUNCIONES ABSURDAS</span>
+        <span class="badge metadatos">🔢 SELECCIÓN NUMÉRICA</span>
+        <span class="badge hash">🔐 HASH FINAL</span>
+    </p>
+
+    <div class="flow-diagram">
+        <div class="box ping">📡 Ping<br><span style="color:#fbbf24;">{tiempo, TTL}</span></div>
+        <span class="arrow">→</span>
+        <div class="box metadatos">🔢 Metadatos<br><span style="color:#60a5fa;">{nums}</span></div>
+        <span class="arrow">→</span>
+        <div class="box funcion">📦 Función<br><span style="color:#34d399;">Seleccionada</span></div>
+        <span class="arrow">→</span>
+        <div class="box hash">🔐 Hash<br><span style="color:#a78bfa;">Final</span></div>
+    </div>
+
+    <div class="container">
+        <h2 style="color: #fbbf24;">⚙️ Configuración</h2>
+
+        <div class="grid">
+            <div>
+                <label>📡 Servidores (ping):</label>
+                <input id="servidores" value="google.com,github.com,cloudflare.com,amazon.com,microsoft.com" placeholder="Servidores separados por coma">
+            </div>
+            <div>
+                <label>🔄 Iteraciones:</label>
+                <input id="iteraciones" value="5" type="number" min="1" max="20">
+            </div>
+            <div>
+                <label>📦 Funciones en carpeta:</label>
+                <select id="numFunciones">
+                    <option value="5">5 funciones</option>
+                    <option value="8" selected>8 funciones</option>
+                    <option value="12">12 funciones</option>
+                    <option value="20">20 funciones</option>
+                </select>
+            </div>
+            <div>
+                <label>🎯 Método de selección:</label>
+                <select id="metodoSeleccion">
+                    <option value="ping">Por tiempo de ping</option>
+                    <option value="ttl">Por TTL</option>
+                    <option value="metadatos" selected>Por metadatos combinados</option>
+                    <option value="aleatorio">Aleatorio (simulado)</option>
+                </select>
+            </div>
+            <div>
+                <label>📊 Bits de hash:</label>
+                <select id="hashBits">
+                    <option value="32">32 bits</option>
+                    <option value="64" selected>64 bits</option>
+                    <option value="128">128 bits</option>
+                    <option value="256">256 bits</option>
+                </select>
+            </div>
+            <div>
+                <label>🌊 Chorro de bits:</label>
+                <select id="chorroActivo">
+                    <option value="true">✅ Activo</option>
+                    <option value="false">❌ Inactivo</option>
+                </select>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button class="ping" onclick="ejecutarSistema()">📡 Ejecutar con Ping Real</button>
+            <button class="cyber" onclick="ejecutarSimulado()">🎲 Ejecutar Simulado</button>
+            <button class="warning" onclick="generarAleatorio()">🎲 Configuración Aleatoria</button>
+            <button class="secondary" onclick="verCarpetaFunciones()">📦 Ver Carpeta</button>
+        </div>
+    </div>
+
+    <div class="container" id="resultados" style="display: none;">
+        <h2>📊 Resultados del Sistema</h2>
+
+        <div class="stats-grid" id="statsGrid"></div>
+
+        <div class="hash-box">
+            <div class="label">🔐 Hash Final</div>
+            <div class="value hash" id="hashValue">-</div>
+        </div>
+
+        <div class="hash-box" style="border-color: #fbbf24;">
+            <div class="label">📡 Resultados de Ping</div>
+            <div class="value ping" id="pingValue">-</div>
+        </div>
+
+        <div class="hash-box" style="border-color: #60a5fa;">
+            <div class="label">🔢 Metadatos y Selección</div>
+            <div class="value metadatos" id="metadatosValue">-</div>
+        </div>
+
+        <div class="hash-box" style="border-color: #34d399;">
+            <div class="label">📦 Funciones Seleccionadas</div>
+            <div class="value funcion" id="funcionesValue">-</div>
+        </div>
+
+        <div id="infoDisplay" class="info ping">
+            <strong style="color: #06b6d4;">📡 Proceso de Selección:</strong><br>
+            <span id="procesoInfo"></span>
+        </div>
+
+        <h3 style="color: #34d399;">📦 Carpeta de Funciones Absurdas</h3>
+        <div class="carpeta-container" id="carpetaContainer"></div>
+
+        <h3 style="color: #60a5fa;">📋 Detalle de Iteraciones</h3>
+        <div id="iteracionesContainer"></div>
+
+        <h3 style="color: #64748b;">🔬 Datos Completos</h3>
+        <div class="hash-box" style="border-color: #334155;">
+            <div class="label" style="color: #64748b;">📝 Datos en formato científico</div>
+            <div class="value" id="cientificoStr" style="font-size: 0.7em; color: #94a3b8; word-break: break-all;"></div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        //  SISTEMA DE SEGURIDAD v9.0
+        //  Ping + Metadatos + Funciones Absurdas
+        // ============================================
+
+        // --- Carpeta de funciones absurdas ---
+        const CARPETA_FUNCIONES = {
+            'funcion_1': {
+                nombre: 'Suma de primos',
+                tipo: 'numerica',
+                ejecutar: (input) => {
+                    let suma = 0;
+                    for (let i = 2; i < input.length * 10; i++) {
+                        let esPrimo = true;
+                        for (let j = 2; j < i; j++) {
+                            if (i % j === 0) { esPrimo = false; break; }
+                        }
+                        if (esPrimo) suma += i;
+                    }
+                    return suma;
+                }
+            },
+            'funcion_2': {
+                nombre: 'Factorial loco',
+                tipo: 'numerica',
+                ejecutar: (input) => {
+                    let n = input.length * 5 + 1;
+                    let fact = 1;
+                    for (let i = 1; i <= n; i++) fact *= i;
+                    return fact % 1000000;
+                }
+            },
+            'funcion_3': {
+                nombre: 'Fibonacci inverso',
+                tipo: 'numerica',
+                ejecutar: (input) => {
+                    let n = input.length * 3 + 2;
+                    let a = 0,
+                        b = 1;
+                    for (let i = 0; i < n; i++) {
+                        let c = a + b;
+                        a = b;
+                        b = c;
+                    }
+                    return a;
+                }
+            },
+            'funcion_4': {
+                nombre: 'Collatz loco',
+                tipo: 'numerica',
+                ejecutar: (input) => {
+                    let n = input.length * 7 + 3;
+                    let pasos = 0;
+                    while (n > 1) {
+                        if (n % 2 === 0) n = n / 2;
+                        else n = n * 3 + 1;
+                        pasos++;
+                        if (pasos > 1000) break;
+                    }
+                    return pasos;
+                }
+            },
+            'funcion_5': {
+                nombre: 'Suma de cuadrados',
+                tipo: 'numerica',
+                ejecutar: (input) => {
+                    let suma = 0;
+                    for (let i = 0; i < input.length; i++) {
+                        suma += input.charCodeAt(i % input.length) ** 2;
+                    }
+                    return suma;
+                }
+            },
+            'funcion_6': {
+                nombre: 'Producto de dígitos',
+                tipo: 'numerica',
+                ejecutar: (input) => {
+                    let prod = 1;
+                    for (let i = 0; i < input.length; i++) {
+                        prod *= (input.charCodeAt(i % input.length) % 10) + 1;
+                    }
+                    return prod % 1000000;
+                }
+            },
+            'funcion_7': {
+                nombre: 'Suma de senos',
+                tipo: 'numerica',
+                ejecutar: (input) => {
+                    let suma = 0;
+                    for (let i = 0; i < input.length; i++) {
+                        suma += Math.sin(input.charCodeAt(i % input.length));
+                    }
+                    return Math.floor(suma * 1000000);
+                }
+            },
+            'funcion_8': {
+                nombre: 'Logaritmo acumulado',
+                tipo: 'numerica',
+                ejecutar: (input) => {
+                    let suma = 0;
+                    for (let i = 1; i <= input.length * 2; i++) {
+                        suma += Math.log(i + 1);
+                    }
+                    return Math.floor(suma * 1000000);
+                }
+            },
+            'funcion_9': {
+                nombre: 'Potencia loca',
+                tipo: 'numerica',
+                ejecutar: (input) => {
+                    let base = input.length * 2 + 1;
+                    let exp = input.length * 3 + 2;
+                    let result = 1;
+                    for (let i = 0; i < exp; i++) {
+                        result = (result * base) % 1000000;
+                    }
+                    return result;
+                }
+            },
+            'funcion_10': {
+                nombre: 'Suma de factoriales',
+                tipo: 'numerica',
+                ejecutar: (input) => {
+                    let suma = 0;
+                    for (let i = 1; i <= input.length * 2; i++) {
+                        let fact = 1;
+                        for (let j = 1; j <= i; j++) fact *= j;
+                        suma += fact % 1000000;
+                    }
+                    return suma % 1000000;
+                }
+            },
+            'funcion_11': {
+                nombre: 'Raíces cuadradas',
+                tipo: 'numerica',
+                ejecutar: (input) => {
+                    let suma = 0;
+                    for (let i = 1; i <= input.length * 3; i++) {
+                        suma += Math.sqrt(i);
+                    }
+                    return Math.floor(suma * 1000000);
+                }
+            },
+            'funcion_12': {
+                nombre: 'Suma de euler',
+                tipo: 'numerica',
+                ejecutar: (input) => {
+                    let suma = 0;
+                    for (let i = 1; i <= input.length * 2; i++) {
+                        suma += Math.exp(-i / (input.length + 1));
+                    }
+                    return Math.floor(suma * 1000000);
+                }
+            },
+            'funcion_13': {
+                nombre: 'Serie armónica',
+                tipo: 'numerica',
+                ejecutar: (input) => {
+                    let suma = 0;
+                    for (let i = 1; i <= input.length * 3; i++) {
+                        suma += 1 / i;
+                    }
+                    return Math.floor(suma * 1000000);
+                }
+            },
+            'funcion_14': {
+                nombre: 'Suma de tangentes',
+                tipo: 'numerica',
+                ejecutar: (input) => {
+                    let suma = 0;
+                    for (let i = 0; i < input.length; i++) {
+                        suma += Math.tan(input.charCodeAt(i % input.length) / 100);
+                    }
+                    return Math.floor(suma * 1000000);
+                }
+            },
+            'funcion_15': {
+                nombre: 'Producto de primos',
+                tipo: 'numerica',
+                ejecutar: (input) => {
+                    let prod = 1;
+                    let cont = 0;
+                    for (let i = 2; cont < input.length * 2; i++) {
+                        let esPrimo = true;
+                        for (let j = 2; j < i; j++) {
+                            if (i % j === 0) { esPrimo = false; break; }
+                        }
+                        if (esPrimo) { prod = (prod * i) % 1000000;
+                            cont++; }
+                    }
+                    return prod;
+                }
+            },
+            'funcion_16': {
+                nombre: 'Suma de cosenos',
+                tipo: 'numerica',
+                ejecutar: (input) => {
+                    let suma = 0;
+                    for (let i = 0; i < input.length; i++) {
+                        suma += Math.cos(input.charCodeAt(i % input.length));
+                    }
+                    return Math.floor(suma * 1000000);
+                }
+            },
+            'funcion_17': {
+                nombre: 'Factorial doble',
+                tipo: 'numerica',
+                ejecutar: (input) => {
+                    let n = input.length * 2 + 1;
+                    let fact = 1;
+                    for (let i = n; i > 0; i -= 2) fact *= i;
+                    return fact % 1000000;
+                }
+            },
+            'funcion_18': {
+                nombre: 'Suma de binomios',
+                tipo: 'numerica',
+                ejecutar: (input) => {
+                    let suma = 0;
+                    let n = input.length * 2 + 1;
+                    for (let k = 0; k <= n; k++) {
+                        let comb = 1;
+                        for (let i = 1; i <= k; i++) comb = comb * (n - i + 1) / i;
+                        suma += comb % 1000000;
+                    }
+                    return suma % 1000000;
+                }
+            },
+            'funcion_19': {
+                nombre: 'Suma de logaritmos',
+                tipo: 'numerica',
+                ejecutar: (input) => {
+                    let suma = 0;
+                    for (let i = 1; i <= input.length * 2; i++) {
+                        suma += Math.log2(i + 1);
+                    }
+                    return Math.floor(suma * 1000000);
+                }
+            },
+            'funcion_20': {
+                nombre: 'Producto de senos',
+                tipo: 'numerica',
+                ejecutar: (input) => {
+                    let prod = 1;
+                    for (let i = 0; i < input.length; i++) {
+                        prod = (prod * Math.floor(Math.sin(input.charCodeAt(i % input.length)) * 100 + 100)) % 1000000;
+                    }
+                    return prod;
+                }
+            }
+        };
+
+        // --- Obtener funciones de la carpeta ---
+        function obtenerFuncionesDeCarpeta(num) {
+            const nombres = Object.keys(CARPETA_FUNCIONES);
+            const seleccionadas = [];
+            for (let i = 0; i < Math.min(num, nombres.length); i++) {
+                const nombre = nombres[i % nombres.length];
+                seleccionadas.push({
+                    id: nombre,
+                    ...CARPETA_FUNCIONES[nombre]
+                });
+            }
+            return seleccionadas;
+        }
+
+        // --- Simular ping a servidores ---
+        function simularPing(servidor) {
+            // Simular latencia de red
+            const latencia = 10 + Math.random() * 90;
+            const ttl = Math.floor(60 + Math.random() * 200);
+            const tamanio = Math.floor(64 + Math.random() * 1000);
+            const perdida = Math.random() > 0.9;
+
+            return {
+                servidor,
+                latencia: perdida ? -1 : latencia,
+                ttl,
+                tamanio,
+                perdida,
+                timestamp: Date.now(),
+                metadatos: {
+                    latencia: latencia,
+                    ttl: ttl,
+                    tamanio: tamanio,
+                    jitter: Math.random() * 20,
+                    rtt: latencia * (0.8 + Math.random() * 0.4)
+                }
+            };
+        }
+
+        // --- Ejecutar ping real (simulado por ahora) ---
+        function ejecutarPing(servidores) {
+            const resultados = [];
+            const lista = servidores.split(',').map(s => s.trim());
+            for (const servidor of lista) {
+                if (servidor) {
+                    resultados.push(simularPing(servidor));
+                }
+            }
+            return resultados;
+        }
+
+        // --- Seleccionar función basada en metadatos ---
+        function seleccionarFuncion(pingResults, funciones, metodo) {
+            // Extraer valores numéricos de los pings
+            const valores = [];
+            pingResults.forEach(p => {
+                if (!p.perdida) {
+                    valores.push(p.latencia);
+                    valores.push(p.ttl);
+                    valores.push(p.tamanio);
+                    valores.push(p.metadatos.jitter);
+                    valores.push(p.metadatos.rtt);
+                }
+            });
+
+            if (valores.length === 0) {
+                // Si no hay valores, usar aleatorio
+                const idx = Math.floor(Math.random() * funciones.length);
+                return funciones[idx];
+            }
+
+            // Calcular índice basado en metadatos
+            let indice = 0;
+            if (metodo === 'ping') {
+                // Usar latencia promedio
+                const avg = valores.reduce((a, b) => a + b, 0) / valores.length;
+                indice = Math.floor(avg) % funciones.length;
+            } else if (metodo === 'ttl') {
+                // Usar TTL
+                const ttlValues = pingResults.filter(p => !p.perdida).map(p => p.ttl);
+                const avg = ttlValues.reduce((a, b) => a + b, 0) / ttlValues.length;
+                indice = Math.floor(avg) % funciones.length;
+            } else if (metodo === 'metadatos') {
+                // Combinar varios metadatos
+                let suma = 0;
+                pingResults.forEach(p => {
+                    if (!p.perdida) {
+                        suma += p.latencia * 1.1;
+                        suma += p.ttl * 0.7;
+                        suma += p.tamanio * 0.3;
+                        suma += p.metadatos.jitter * 2;
+                    }
+                });
+                indice = Math.floor(suma) % funciones.length;
+            } else {
+                // Aleatorio
+                indice = Math.floor(Math.random() * funciones.length);
+            }
+
+            return funciones[indice];
+        }
+
+        // --- Ejecutar función seleccionada ---
+        function ejecutarFuncion(funcion, input) {
+            try {
+                const resultado = funcion.ejecutar(input);
+                return {
+                    exito: true,
+                    resultado: resultado,
+                    funcion: funcion
+                };
+            } catch (e) {
+                return {
+                    exito: false,
+                    error: e.message,
+                    funcion: funcion
+                };
+            }
+        }
+
+        // --- Generar bits desde resultados ---
+        function generarBitsDesdeResultados(resultados) {
+            let bits = '';
+            resultados.forEach(r => {
+                if (r.exito) {
+                    const str = r.resultado.toString();
+                    for (let i = 0; i < str.length; i++) {
+                        bits += (str.charCodeAt(i) % 2).toString();
+                    }
+                }
+            });
+            return bits;
+        }
+
+        // --- Sistema principal ---
+        function ejecutarSistema() {
+            const servidores = document.getElementById('servidores').value;
+            const iteraciones = parseInt(document.getElementById('iteraciones').value);
+            const numFunciones = parseInt(document.getElementById('numFunciones').value);
+            const metodo = document.getElementById('metodoSeleccion').value;
+            const hashBits = parseInt(document.getElementById('hashBits').value);
+            const chorroActivo = document.getElementById('chorroActivo').value === 'true';
+
+            // --- 1. Obtener funciones de la carpeta ---
+            const funcionesDisponibles = obtenerFuncionesDeCarpeta(numFunciones);
+
+            // --- 2. Ejecutar pings ---
+            const pingResults = ejecutarPing(servidores);
+
+            // --- 3. Iteraciones ---
+            let chorroBits = '';
+            let selecciones = [];
+            let todasIteraciones = [];
+            let metadatosAcumulados = [];
+
+            for (let it = 0; it < iteraciones; it++) {
+                // Seleccionar función basada en metadatos
+                const funcionSeleccionada = seleccionarFuncion(pingResults, funcionesDisponibles, metodo);
+
+                // Input para la función (chorro actual o semilla)
+                const input = chorroBits || '10011';
+
+                // Ejecutar función
+                const resultado = ejecutarFuncion(funcionSeleccionada, input);
+
+                // Generar bits del resultado
+                const nuevosBits = resultado.exito ? generarBitsDesdeResultados([resultado]) : '';
+
+                // Actualizar chorro
+                if (chorroActivo) {
+                    chorroBits += nuevosBits;
+                    // Limitar crecimiento
+                    if (chorroBits.length > 10000) {
+                        chorroBits = chorroBits.slice(0, 5000);
+                    }
+                } else {
+                    chorroBits = nuevosBits;
+                }
+
+                // Guardar metadatos
+                metadatosAcumulados.push({
+                    iteracion: it + 1,
+                    funcion: funcionSeleccionada.nombre,
+                    resultado: resultado,
+                    nuevosBits: nuevosBits,
+                    longitudChorro: chorroBits.length,
+                    ping: pingResults.map(p => ({
+                        servidor: p.servidor,
+                        latencia: p.latencia,
+                        ttl: p.ttl
+                    }))
+                });
+
+                selecciones.push({
+                    funcion: funcionSeleccionada,
+                    resultado: resultado,
+                    nuevosBits: nuevosBits
+                });
+            }
+
+            // --- 4. Hash final ---
+            const hashData = [
+                `servidores=${servidores}`,
+                `iteraciones=${iteraciones}`,
+                `numFunciones=${numFunciones}`,
+                `metodo=${metodo}`,
+                `chorro=${chorroBits}`,
+                `metadatos=${JSON.stringify(metadatosAcumulados)}`
+            ];
+
+            const fullStr = hashData.join('|');
+            const bigInt = stringToBigInt(fullStr);
+            const mod = 2n ** BigInt(hashBits);
+            const hashFinal = bigInt % mod;
+            const hashHex = bigIntToHex(hashFinal, hashBits);
+
+            // --- Mostrar resultados ---
+            mostrarResultados({
+                hash: hashHex,
+                chorro: chorroBits,
+                pingResults: pingResults,
+                selecciones: selecciones,
+                iteraciones: metadatosAcumulados,
+                funciones: funcionesDisponibles,
+                params: { servidores, iteraciones, numFunciones, metodo, hashBits, chorroActivo }
+            });
+
+            window._ultimosDatos = {
+                hash: hashHex,
+                chorro: chorroBits,
+                pingResults: pingResults,
+                selecciones: selecciones,
+                iteraciones: metadatosAcumulados,
+                funciones: funcionesDisponibles,
+                params: { servidores, iteraciones, numFunciones, metodo, hashBits, chorroActivo }
+            };
+        }
+
+        // --- Simulado (sin pings reales) ---
+        function ejecutarSimulado() {
+            // Usar servidores simulados
+            document.getElementById('servidores').value = 'sim1,sim2,sim3,sim4,sim5';
+            ejecutarSistema();
+        }
+
+        // --- UI ---
+        function mostrarResultados(datos) {
+            document.getElementById('resultados').style.display = 'block';
+            document.getElementById('hashValue').textContent = datos.hash;
+            document.getElementById('pingValue').textContent = JSON.stringify(datos.pingResults, null, 2);
+            document.getElementById('metadatosValue').textContent = JSON.stringify(datos.iteraciones.map(it => ({
+                iteracion: it.iteracion,
+                funcion: it.funcion,
+                resultado: it.resultado.exito ? it.resultado.resultado : 'error'
+            })), null, 2);
+            document.getElementById('funcionesValue').textContent = datos.selecciones.map(s =>
+                `${s.funcion.nombre} → ${s.resultado.exito ? s.resultado.resultado : 'error'}`
+            ).join('\n');
+            document.getElementById('cientificoStr').textContent = datos.chorro;
+
+            // Stats
+            const ultima = datos.iteraciones[datos.iteraciones.length - 1];
+            document.getElementById('statsGrid').innerHTML = `
+                <div class="stat-card"><div class="value hash">${datos.hash.slice(0,8)}...</div><div class="label">Hash</div></div>
+                <div class="stat-card"><div class="value ping">${datos.iteraciones.length}</div><div class="label">Iteraciones</div></div>
+                <div class="stat-card"><div class="value funcion">${datos.selecciones.length}</div><div class="label">Funciones</div></div>
+                <div class="stat-card"><div class="value metadatos">${datos.pingResults.length}</div><div class="label">Pings</div></div>
+                <div class="stat-card"><div class="value" style="color:#34d399;">${datos.chorro.length}</div><div class="label">Bits generados</div></div>
+                <div class="stat-card"><div class="value" style="color:#f472b6;">${datos.funciones.length}</div><div class="label">En carpeta</div></div>
+            `;
+
+            // Proceso info
+            document.getElementById('procesoInfo').innerHTML = `
+                Servidores: ${datos.params.servidores}<br>
+                Iteraciones: ${datos.params.iteraciones}<br>
+                Funciones disponibles: ${datos.funciones.length}<br>
+                Método de selección: ${datos.params.metodo}<br>
+                Chorro activo: ${datos.params.chorroActivo ? '✅ Sí' : '❌ No'}<br>
+                Pings exitosos: ${datos.pingResults.filter(p => !p.perdida).length}/${datos.pingResults.length}
+            `;
+
+            // Carpeta de funciones
+            mostrarCarpeta(datos.funciones, datos.selecciones);
+
+            // Iteraciones
+            const container = document.getElementById('iteracionesContainer');
+            container.innerHTML = '';
+            datos.iteraciones.forEach((it, idx) => {
+                const div = document.createElement('div');
+                div.className = 'ping-result';
+                div.innerHTML = `
+                    <span style="color:#60a5fa;">#${idx + 1}</span>
+                    <span style="color:#34d399;">📦 ${it.funcion}</span>
+                    <span style="color:#fbbf24;">🔢 ${it.resultado.exito ? it.resultado.resultado : '❌ error'}</span>
+                    <span style="color:#f472b6;">📊 ${it.nuevosBits.length} bits</span>
+                    <span style="color:#64748b;">| chorro: ${it.longitudChorro}</span>
+                    <br>
+                    <span style="color:#64748b;font-size:10px;">
+                        📡 ${it.ping.map(p => `${p.servidor}(${p.latencia.toFixed(0)}ms, TTL:${p.ttl})`).join(' | ')}
+                    </span>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function mostrarCarpeta(funciones, selecciones) {
+            const container = document.getElementById('carpetaContainer');
+            container.innerHTML = `
+                <div class="titulo">📦 ${funciones.length} funciones disponibles:</div>
+                ${funciones.map(f => {
+                    const seleccionada = selecciones.some(s => s.funcion.id === f.id);
+                    return `<div class="funcion ${seleccionada ? 'seleccionada' : ''}">
+                        <span class="nombre">${f.nombre}</span>
+                        <span class="tipo">(${f.tipo})</span>
+                        ${seleccionada ? ' <span class="seleccionada">✅ seleccionada</span>' : ''}
+                    </div>`;
+                }).join('')}
+            `;
+        }
+
+        function verCarpetaFunciones() {
+            const num = parseInt(document.getElementById('numFunciones').value);
+            const funciones = obtenerFuncionesDeCarpeta(num);
+            alert('📦 Funciones en carpeta:\n\n' +
+                funciones.map((f, i) =>
+                    `${i+1}. ${f.nombre} (${f.tipo})`
+                ).join('\n') +
+                '\n\n💡 Todas son funciones numéricas o de cálculo.');
+        }
+
+        function generarAleatorio() {
+            const servidores = ['google.com', 'github.com', 'cloudflare.com', 'amazon.com', 'microsoft.com', 'apple.com'];
+            const numServ = Math.floor(Math.random() * 3) + 3;
+            const seleccionados = servidores.slice(0, numServ);
+
+            const numFunciones = [5, 8, 12, 20][Math.floor(Math.random() * 4)];
+            const metodos = ['ping', 'ttl', 'metadatos', 'aleatorio'];
+            const metodo = metodos[Math.floor(Math.random() * metodos.length)];
+            const iteraciones = Math.floor(Math.random() * 8) + 2;
+            const hashBits = [32, 64, 128, 256][Math.floor(Math.random() * 4)];
+            const chorroActivo = Math.random() > 0.5;
+
+            document.getElementById('servidores').value = seleccionados.join(',');
+            document.getElementById('numFunciones').value = numFunciones;
+            document.getElementById('metodoSeleccion').value = metodo;
+            document.getElementById('iteraciones').value = iteraciones;
+            document.getElementById('hashBits').value = hashBits;
+            document.getElementById('chorroActivo').value = chorroActivo ? 'true' : 'false';
+
+            ejecutarSistema();
+
+            alert('🎲 Configuración aleatoria generada:\n' +
+                `Servidores: ${seleccionados.join(', ')}\n` +
+                `Funciones: ${numFunciones}\n` +
+                `Método: ${metodo}\n` +
+                `Iteraciones: ${iteraciones}\n` +
+                `Bits: ${hashBits}\n` +
+                `Chorro: ${chorroActivo ? '✅ Activo' : '❌ Inactivo'}`);
+        }
+
+        // --- Utilidades ---
+        function stringToBigInt(str) {
+            let result = 0n;
+            for (let i = 0; i < str.length; i++) {
+                result = (result * 256n) + BigInt(str.charCodeAt(i));
+            }
+            return result;
+        }
+
+        function bigIntToHex(num, bits) {
+            const hex = num.toString(16);
+            return hex.padStart(Math.ceil(bits / 4), '0');
+        }
+
+        window.onload = function() {
+            // Ejecutar con valores por defecto
+            ejecutarSistema();
+        };
+    </script>
+</body>
+</html>

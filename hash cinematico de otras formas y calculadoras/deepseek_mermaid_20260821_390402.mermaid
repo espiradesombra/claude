@@ -1,0 +1,12 @@
+graph TD
+    A[Señal WiFi 2.4 GHz] --> C[Medir CSI]
+    B[Señal WiFi 5 GHz] --> C
+    C --> D[Extraer fase y amplitud]
+    D --> E[Calcular distancia]
+    D --> F[Calcular Doppler]
+    D --> G[Multicamino]
+    E --> H[Generar parámetros]
+    F --> H
+    G --> H
+    H --> I[Hash Cinemático]
+    I --> J[Hash Final]

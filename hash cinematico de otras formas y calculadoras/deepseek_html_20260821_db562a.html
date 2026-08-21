@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Seguridad Híbrido v8.0 🔐</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #0a0a15;
+            color: #e2e8f0;
+        }
+        .container {
+            background: rgba(20, 20, 40, 0.9);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+            border: 1px solid rgba(100, 50, 200, 0.2);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #94a3b8;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        input,
+        select {
+            width: 100%;
+            padding: 8px 12px;
+            background: #0a0a15;
+            border: 1px solid #2a1a3e;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #e2e8f0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        input:focus,
+        select:focus {
+            border-color: #8b5cf6;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
+        }
+        button {
+            background: linear-gradient(135deg, #7c3aed, #3b82f6);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            margin: 5px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+        }
+        button.success {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+        }
+        button.warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        button.secondary {
+            background: linear-gradient(135deg, #64748b, #475569);
+        }
+        button.danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+        button.cyber {
+            background: linear-gradient(135deg, #06b6d4, #8b5cf6, #06b6d4);
+            background-size: 200% 200%;
+            animation: cyberPulse 3s ease infinite;
+        }
+        @keyframes cyberPulse {
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+        .hash-box {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            margin: 15px 0;
+            border: 1px solid #2a1a3e;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .hash-box .label {
+            color: #64748b;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .hash-box .value {
+            font-size: 0.9em;
+            margin-top: 8px;
+            word-break: break-all;
+            color: #a78bfa;
+        }
+        .hash-box .value.chorro {
+            color: #34d399;
+            font-size: 0.8em;
+        }
+        .hash-box .value.trozos {
+            color: #f472b6;
+            font-size: 0.8em;
+        }
+        .info {
+            background: rgba(10, 10, 20, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #8b5cf6;
+            margin: 15px 0;
+        }
+        .info.success {
+            border-left-color: #22c55e;
+        }
+        .info.danger {
+            border-left-color: #ef4444;
+        }
+        .info.warning {
+            border-left-color: #f59e0b;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 8px;
+            margin: 15px 0;
+        }
+        .stat-card {
+            background: rgba(10, 10, 20, 0.8);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #1a1a2e;
+        }
+        .stat-card .value {
+            font-size: 16px;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+        .stat-card .label {
+            font-size: 8px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 3px;
+        }
+        .stat-card .value.entropy {
+            color: #fbbf24;
+        }
+        .stat-card .value.chorro {
+            color: #34d399;
+        }
+        .stat-card .value.punteros {
+            color: #60a5fa;
+        }
+        .stat-card .value.trozos {
+            color: #f472b6;
+        }
+        .hidden {
+            display: none;
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 14px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .badge.entropy {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+        .badge.chorro {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+        }
+        .badge.punteros {
+            background: linear-gradient(135deg, #3b82f6, #7c3aed);
+            color: white;
+        }
+        .badge.trozos {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+        }
+        .program-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 10px 0;
+        }
+        .program-item {
+            background: #0a0a15;
+            padding: 6px 14px;
+            border-radius: 6px;
+            border: 1px solid #2a1a3e;
+            font-size: 12px;
+            font-family: 'Courier New', monospace;
+        }
+        .program-item .tiempo {
+            color: #fbbf24;
+        }
+        .program-item .seleccionado {
+            color: #34d399;
+            font-weight: bold;
+        }
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+            border: 1px solid #1a1a2e;
+        }
+        .flow-diagram .box {
+            padding: 6px 12px;
+            background: #1a1a2e;
+            border-radius: 6px;
+            border: 1px solid #2a1a3e;
+            font-size: 10px;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+        }
+        .flow-diagram .arrow {
+            color: #64748b;
+            font-size: 14px;
+        }
+        .flow-diagram .box.entropy {
+            border-color: #fbbf24;
+        }
+        .flow-diagram .box.chorro {
+            border-color: #34d399;
+        }
+        .flow-diagram .box.punteros {
+            border-color: #60a5fa;
+        }
+        .flow-diagram .box.trozos {
+            border-color: #f472b6;
+        }
+        .flow-diagram .box.hash {
+            border-color: #a78bfa;
+        }
+        .canvas-container {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #1a1a2e;
+            overflow-x: auto;
+        }
+        canvas {
+            width: 100%;
+            height: 200px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+        }
+        .iteracion-box {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 6px;
+            margin: 5px 0;
+            border: 1px solid #1a1a2e;
+            font-size: 11px;
+        }
+        .iteracion-box .n {
+            color: #60a5fa;
+            font-weight: bold;
+        }
+        .iteracion-box .tiempo {
+            color: #fbbf24;
+        }
+        .iteracion-box .programa {
+            color: #34d399;
+        }
+        .iteracion-box .bits {
+            color: #a78bfa;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; background: linear-gradient(90deg, #fbbf24, #34d399, #60a5fa, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+        🔐 Sistema de Seguridad Híbrido v8.0
+    </h1>
+    <p style="text-align: center; color: #94a3b8; margin-top: -10px;">
+        <span class="badge entropy">⏱️ ENTROPÍA DE TIEMPO</span>
+        <span class="badge chorro">🌊 CHORRO DE BITS</span>
+        <span class="badge punteros">🎯 PUNTEROS CRUZADOS</span>
+        <span class="badge trozos">✂️ PODA ALEATORIA</span>
+    </p>
+
+    <div class="flow-diagram">
+        <div class="box entropy">⏱️ Tiempos<br><span style="color:#fbbf24;">{t₁, t₂, t₃}</span></div>
+        <span class="arrow">→</span>
+        <div class="box entropy">🎲 Selección<br><span style="color:#fbbf24;">Programas + Inputs</span></div>
+        <span class="arrow">→</span>
+        <div class="box chorro">🌊 Chorro<br><span style="color:#34d399;">Bits crecientes</span></div>
+        <span class="arrow">→</span>
+        <div class="box punteros">🎯 Punteros<br><span style="color:#60a5fa;">A ↔ B</span></div>
+        <span class="arrow">→</span>
+        <div class="box trozos">✂️ Poda<br><span style="color:#f472b6;">Eliminación</span></div>
+        <span class="arrow">→</span>
+        <div class="box hash">🔐 Hash<br><span style="color:#a78bfa;">Final</span></div>
+    </div>
+
+    <div class="container">
+        <h2 style="color: #fbbf24;">⚙️ Configuración</h2>
+
+        <div class="grid">
+            <div>
+                <label>📝 Semilla inicial:</label>
+                <input id="semilla" value="10011" placeholder="Bits iniciales">
+            </div>
+            <div>
+                <label>🔄 Iteraciones:</label>
+                <input id="iteraciones" value="5" type="number" min="1" max="20">
+            </div>
+            <div>
+                <label>📊 Programas base:</label>
+                <select id="numProgramas">
+                    <option value="3">3 programas</option>
+                    <option value="5" selected>5 programas</option>
+                    <option value="7">7 programas</option>
+                    <option value="10">10 programas</option>
+                </select>
+            </div>
+            <div>
+                <label>🎯 Punteros:</label>
+                <select id="numPunteros">
+                    <option value="2">2 punteros</option>
+                    <option value="3" selected>3 punteros</option>
+                    <option value="4">4 punteros</option>
+                </select>
+            </div>
+            <div>
+                <label>✂️ Tasa de poda (%):</label>
+                <input id="tasaPoda" value="20" type="number" min="0" max="50">
+            </div>
+            <div>
+                <label>📊 Bits de hash:</label>
+                <select id="hashBits">
+                    <option value="32">32 bits</option>
+                    <option value="64" selected>64 bits</option>
+                    <option value="128">128 bits</option>
+                    <option value="256">256 bits</option>
+                </select>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button class="cyber" onclick="ejecutarSistema()">🔐 Ejecutar Sistema de Seguridad</button>
+            <button class="warning" onclick="generarAleatorio()">🎲 Configuración Aleatoria</button>
+            <button class="secondary" onclick="visualizarProceso()">📊 Visualizar</button>
+        </div>
+    </div>
+
+    <div class="container" id="resultados" style="display: none;">
+        <h2>📊 Resultados del Sistema</h2>
+
+        <div class="stats-grid" id="statsGrid"></div>
+
+        <div class="hash-box">
+            <div class="label">🔐 Hash Final</div>
+            <div class="value" id="hashValue" style="color: #a78bfa;">-</div>
+        </div>
+
+        <div class="hash-box" style="border-color: #34d399;">
+            <div class="label">🌊 Chorro de Bits Generado</div>
+            <div class="value chorro" id="chorroValue">-</div>
+        </div>
+
+        <div class="hash-box" style="border-color: #f472b6;">
+            <div class="label">✂️ Trozos Eliminados</div>
+            <div class="value trozos" id="trozosValue">-</div>
+        </div>
+
+        <div id="infoDisplay" class="info warning">
+            <strong style="color: #fbbf24;">⏱️ Proceso de Selección:</strong><br>
+            <span id="procesoInfo"></span>
+        </div>
+
+        <div class="canvas-container" id="canvasContainer" style="display:none;">
+            <canvas id="simCanvas"></canvas>
+        </div>
+
+        <h3 style="color: #60a5fa;">📋 Detalle de Iteraciones</h3>
+        <div id="iteracionesContainer"></div>
+
+        <h3 style="color: #64748b;">🔬 Datos Completos</h3>
+        <div class="hash-box" style="border-color: #334155;">
+            <div class="label" style="color: #64748b;">📝 Datos en formato científico</div>
+            <div class="value" id="cientificoStr" style="font-size: 0.7em; color: #94a3b8; word-break: break-all;"></div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        //  SISTEMA DE SEGURIDAD HÍBRIDO v8.0
+        //  Entropía de tiempo + Chorro de bits + Punteros + Poda
+        // ============================================
+
+        function stringToBigInt(str) {
+            let result = 0n;
+            for (let i = 0; i < str.length; i++) {
+                result = (result * 256n) + BigInt(str.charCodeAt(i));
+            }
+            return result;
+        }
+
+        function bigIntToHex(num, bits) {
+            const hex = num.toString(16);
+            return hex.padStart(Math.ceil(bits / 4), '0');
+        }
+
+        // --- Medir tiempo de ejecución de un programa ---
+        function medirTiempoPrograma(programa, input) {
+            const inicio = performance.now();
+            // Ejecutar el programa con el input
+            let resultado = '';
+            for (let i = 0; i < input.length; i++) {
+                const bit = input[i];
+                if (programa === 'hash_cinematica') {
+                    resultado += bit === '1' ? '1' : '0';
+                } else if (programa === 'hash_nuclear') {
+                    resultado += bit === '1' ? '0' : '1';
+                } else if (programa === 'hash_oceanico') {
+                    resultado += (parseInt(bit) + 1) % 2;
+                } else if (programa === 'hash_punteros') {
+                    resultado += bit;
+                } else if (programa === 'hash_metadatos') {
+                    resultado += bit === '1' ? '0' : '1';
+                }
+                // Simular carga
+                for (let j = 0; j < 1000; j++) { /* carga */ }
+            }
+            const fin = performance.now();
+            return fin - inicio;
+        }
+
+        // --- Seleccionar programas basados en tiempos ---
+        function seleccionarProgramas(tiempos, programas) {
+            // Ordenar por tiempo
+            const indices = tiempos.map((t, i) => i);
+            indices.sort((a, b) => tiempos[a] - tiempos[b]);
+
+            // Seleccionar los que están en el medio (entropía)
+            const seleccionados = [];
+            const numSeleccionar = Math.max(2, Math.floor(programas.length * 0.6));
+            const inicio = Math.floor((programas.length - numSeleccionar) / 2);
+
+            for (let i = 0; i < numSeleccionar; i++) {
+                const idx = indices[inicio + i];
+                seleccionados.push({
+                    programa: programas[idx],
+                    tiempo: tiempos[idx],
+                    indice: idx
+                });
+            }
+
+            return seleccionados;
+        }
+
+        // --- Generar input desde tiempos ---
+        function generarInputDesdeTiempos(tiempos) {
+            let bits = '';
+            tiempos.forEach(t => {
+                const str = t.toString();
+                for (let i = 0; i < str.length; i++) {
+                    bits += (str.charCodeAt(i) % 2).toString();
+                }
+            });
+            return bits;
+        }
+
+        // --- Simular un programa ---
+        function ejecutarPrograma(programa, input) {
+            const tiempo = medirTiempoPrograma(programa, input);
+            let output = '';
+            for (let i = 0; i < input.length; i++) {
+                const bit = input[i];
+                if (programa === 'hash_cinematica') {
+                    output += bit === '1' ? '1' : '0';
+                } else if (programa === 'hash_nuclear') {
+                    output += bit === '1' ? '0' : '1';
+                } else if (programa === 'hash_oceanico') {
+                    output += (parseInt(bit) + 1) % 2;
+                } else if (programa === 'hash_punteros') {
+                    output += bit;
+                } else if (programa === 'hash_metadatos') {
+                    output += bit === '1' ? '0' : '1';
+                }
+            }
+            return { output, tiempo };
+        }
+
+        // --- Chorro de bits con punteros ---
+        function generarChorroConPunteros(bits, numPunteros) {
+            let chorro = bits;
+            const punteros = [];
+
+            // Inicializar punteros
+            for (let p = 0; p < numPunteros; p++) {
+                const pos = Math.floor(Math.random() * chorro.length);
+                const dir = Math.random() > 0.5 ? 1 : -1;
+                punteros.push({ pos, dir, velocidad: 0.5 + Math.random() * 1.5 });
+            }
+
+            // Mover punteros y generar bits
+            const iteraciones = Math.min(50, chorro.length * 2);
+            for (let i = 0; i < iteraciones; i++) {
+                let nuevoBits = '';
+
+                // Mover cada puntero
+                punteros.forEach((p, idx) => {
+                    // Movimiento con aceleración aleatoria
+                    p.velocidad += (Math.random() - 0.5) * 0.3;
+                    p.velocidad = Math.max(0.2, Math.min(3, p.velocidad));
+                    p.pos += p.dir * p.velocidad;
+
+                    // Rebote en los bordes
+                    if (p.pos >= chorro.length) {
+                        p.pos = chorro.length - 1;
+                        p.dir = -1;
+                    } else if (p.pos < 0) {
+                        p.pos = 0;
+                        p.dir = 1;
+                    }
+
+                    // Generar bit en la posición
+                    const pos = Math.floor(p.pos);
+                    const bit = chorro[pos % chorro.length];
+                    nuevoBits += bit;
+
+                    // Si los punteros se cruzan, generar bits adicionales
+                    for (let q = idx + 1; q < punteros.length; q++) {
+                        if (Math.abs(p.pos - punteros[q].pos) < 2) {
+                            // Cruzamiento: generar bits extra
+                            const extra = (Math.random() > 0.5) ? '1' : '0';
+                            nuevoBits += extra;
+                            // Aumentar velocidad
+                            p.velocidad *= 1.1;
+                            punteros[q].velocidad *= 1.1;
+                        }
+                    }
+                });
+
+                // Añadir al chorro
+                if (nuevoBits.length > 0) {
+                    chorro += nuevoBits;
+                }
+
+                // Limitar crecimiento
+                if (chorro.length > 10000) {
+                    chorro = chorro.slice(0, 5000);
+                }
+            }
+
+            return { chorro, punteros };
+        }
+
+        // --- Podar trozos aleatorios ---
+        function podarChorro(chorro, tasaPoda) {
+            const trozosEliminados = [];
+            let chorroPoda = chorro;
+
+            const numEliminaciones = Math.max(1, Math.floor(chorroPoda.length * (tasaPoda / 100)));
+
+            for (let i = 0; i < numEliminaciones; i++) {
+                if (chorroPoda.length < 10) break;
+
+                // Elegir posición aleatoria
+                const pos = Math.floor(Math.random() * (chorroPoda.length - 5));
+                const longitud = Math.floor(Math.random() * 5) + 1;
+
+                const trozo = chorroPoda.slice(pos, pos + longitud);
+                trozosEliminados.push({
+                    pos: pos,
+                    longitud: longitud,
+                    trozo: trozo
+                });
+
+                chorroPoda = chorroPoda.slice(0, pos) + chorroPoda.slice(pos + longitud);
+            }
+
+            return { chorro: chorroPoda, trozosEliminados };
+        }
+
+        // --- Sistema Principal ---
+        function ejecutarSistema() {
+            const semilla = document.getElementById('semilla').value.trim();
+            const iteraciones = parseInt(document.getElementById('iteraciones').value);
+            const numProgramas = parseInt(document.getElementById('numProgramas').value);
+            const numPunteros = parseInt(document.getElementById('numPunteros').value);
+            const tasaPoda = parseInt(document.getElementById('tasaPoda').value);
+            const hashBits = parseInt(document.getElementById('hashBits').value);
+
+            if (!/^[01]+$/.test(semilla)) {
+                alert('❌ La semilla debe ser una cadena de bits');
+                return;
+            }
+
+            // --- 1. Programas base ---
+            const programas = ['hash_cinematica', 'hash_nuclear', 'hash_oceanico', 'hash_punteros', 'hash_metadatos'];
+            const programasSeleccionados = programas.slice(0, numProgramas);
+
+            let chorroBits = semilla;
+            let tiemposGlobales = [];
+            let selecciones = [];
+            let todasIteraciones = [];
+
+            // --- 2. Iteraciones ---
+            for (let it = 0; it < iteraciones; it++) {
+                // Medir tiempos de cada programa con el chorro actual
+                const tiempos = programasSeleccionados.map(p => {
+                    return medirTiempoPrograma(p, chorroBits);
+                });
+
+                tiemposGlobales.push(...tiempos);
+
+                // Seleccionar programas basados en tiempos
+                const seleccionados = seleccionarProgramas(tiempos, programasSeleccionados);
+
+                // Generar input desde tiempos
+                const inputTiempos = generarInputDesdeTiempos(tiempos);
+
+                // Ejecutar programas seleccionados
+                let nuevosBits = '';
+                seleccionados.forEach(sel => {
+                    const resultado = ejecutarPrograma(sel.programa, inputTiempos);
+                    nuevosBits += resultado.output;
+                    // Añadir tiempo como bits
+                    const tiempoBits = Math.floor(resultado.tiempo).toString(2);
+                    nuevosBits += tiempoBits;
+                });
+
+                // Mezclar con el chorro
+                chorroBits += nuevosBits;
+
+                // --- 3. Punteros en el chorro ---
+                const resultadoPunteros = generarChorroConPunteros(chorroBits, numPunteros);
+                chorroBits = resultadoPunteros.chorro;
+
+                // --- 4. Poda ---
+                const resultadoPoda = podarChorro(chorroBits, tasaPoda);
+                chorroBits = resultadoPoda.chorro;
+
+                // Guardar iteración
+                todasIteraciones.push({
+                    iteracion: it + 1,
+                    tiempos: tiempos,
+                    seleccionados: seleccionados,
+                    nuevosBits: nuevosBits,
+                    punteros: resultadoPunteros.punteros,
+                    trozosEliminados: resultadoPoda.trozosEliminados,
+                    longitudChorro: chorroBits.length
+                });
+            }
+
+            // --- 5. Hash final ---
+            const hashData = [
+                `semilla=${semilla}`,
+                `iteraciones=${iteraciones}`,
+                `programas=${programasSeleccionados.join(',')}`,
+                `numPunteros=${numPunteros}`,
+                `tasaPoda=${tasaPoda}`,
+                `chorro=${chorroBits}`,
+                `tiempos=${tiemposGlobales.map(t => t.toExponential()).join(',')}`
+            ];
+
+            const fullStr = hashData.join('|');
+            const bigInt = stringToBigInt(fullStr);
+            const mod = 2n ** BigInt(hashBits);
+            const hashFinal = bigInt % mod;
+            const hashHex = bigIntToHex(hashFinal, hashBits);
+
+            // --- Mostrar resultados ---
+            mostrarResultados({
+                hash: hashHex,
+                chorro: chorroBits,
+                trozosEliminados: todasIteraciones.flatMap(it => it.trozosEliminados),
+                iteraciones: todasIteraciones,
+                tiemposGlobales: tiemposGlobales,
+                programas: programasSeleccionados,
+                params: { semilla, iteraciones, numPunteros, tasaPoda, hashBits }
+            });
+
+            window._ultimosDatos = {
+                hash: hashHex,
+                chorro: chorroBits,
+                iteraciones: todasIteraciones,
+                programas: programasSeleccionados,
+                params: { semilla, iteraciones, numPunteros, tasaPoda, hashBits }
+            };
+        }
+
+        // --- UI ---
+        function mostrarResultados(datos) {
+            document.getElementById('resultados').style.display = 'block';
+            document.getElementById('hashValue').textContent = datos.hash;
+            document.getElementById('chorroValue').textContent = datos.chorro.slice(0, 500) + (datos.chorro.length > 500 ?
+                '...' : '');
+            document.getElementById('trozosValue').textContent = JSON.stringify(datos.trozosEliminados.slice(0, 10), null, 2) +
+                (datos.trozosEliminados.length > 10 ? '...' : '');
+            document.getElementById('cientificoStr').textContent = datos.chorro;
+
+            // Stats
+            const ultima = datos.iteraciones[datos.iteraciones.length - 1];
+            document.getElementById('statsGrid').innerHTML = `
+                <div class="stat-card"><div class="value hash">${datos.hash.slice(0,8)}...</div><div class="label">Hash</div></div>
+                <div class="stat-card"><div class="value entropy">${datos.iteraciones.length}</div><div class="label">Iteraciones</div></div>
+                <div class="stat-card"><div class="value chorro">${datos.chorro.length}</div><div class="label">Longitud Chorro</div></div>
+                <div class="stat-card"><div class="value punteros">${datos.params.numPunteros}</div><div class="label">Punteros</div></div>
+                <div class="stat-card"><div class="value trozos">${datos.trozosEliminados.length}</div><div class="label">Trozos Podados</div></div>
+                <div class="stat-card"><div class="value" style="color:#fbbf24;">${datos.tiemposGlobales.length}</div><div class="label">Mediciones</div></div>
+            `;
+
+            // Proceso info
+            document.getElementById('procesoInfo').innerHTML = `
+                Programas: ${datos.programas.join(', ')}<br>
+                Semilla: ${datos.params.semilla}<br>
+                Iteraciones: ${datos.params.iteraciones}<br>
+                Tasa de poda: ${datos.params.tasaPoda}%<br>
+                Punteros: ${datos.params.numPunteros}
+            `;
+
+            // Iteraciones
+            const container = document.getElementById('iteracionesContainer');
+            container.innerHTML = '';
+            datos.iteraciones.forEach((it, idx) => {
+                const div = document.createElement('div');
+                div.className = 'iteracion-box';
+                div.innerHTML = `
+                    <span class="n">#${idx + 1}</span>
+                    <span class="tiempo">⏱️ tiempos: [${it.tiempos.map(t => t.toFixed(2)).join(', ')}]</span>
+                    <span class="programa">📦 seleccionados: ${it.seleccionados.map(s => s.programa).join(', ')}</span>
+                    <span class="bits">📊 nuevo bits: ${it.nuevosBits.length} | chorro: ${it.longitudChorro}</span>
+                    <span style="color:#f472b6;">✂️ podados: ${it.trozosEliminados.length}</span>
+                `;
+                container.appendChild(div);
+            });
+
+            document.getElementById('canvasContainer').style.display = 'block';
+            dibujarVisualizacion(datos);
+        }
+
+        // --- Visualización ---
+        function dibujarVisualizacion(datos) {
+            const canvas = document.getElementById('simCanvas');
+            const ctx = canvas.getContext('2d');
+            const W = canvas.width = canvas.parentElement.clientWidth || 800;
+            const H = canvas.height = 200;
+
+            ctx.clearRect(0, 0, W, H);
+            ctx.fillStyle = '#0a0a15';
+            ctx.fillRect(0, 0, W, H);
+
+            // Dibujar evolución del chorro
+            const puntos = datos.iteraciones.map((it, i) => ({
+                x: i,
+                y: it.longitudChorro
+            }));
+
+            const maxY = Math.max(...puntos.map(p => p.y), 100);
+            const pad = 30;
+            const xScale = (W - 2 * pad) / Math.max(puntos.length - 1, 1);
+            const yScale = (H - 2 * pad) / maxY;
+
+            // Línea
+            ctx.strokeStyle = '#34d399';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            puntos.forEach((p, i) => {
+                const x = pad + i * xScale;
+                const y = H - pad - p.y * yScale;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            });
+            ctx.stroke();
+
+            // Puntos
+            puntos.forEach((p, i) => {
+                const x = pad + i * xScale;
+                const y = H - pad - p.y * yScale;
+                ctx.fillStyle = '#60a5fa';
+                ctx.beginPath();
+                ctx.arc(x, y, 4, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            // Etiquetas
+            ctx.fillStyle = '#64748b';
+            ctx.font = '9px monospace';
+            ctx.fillText('Iteraciones', W / 2 - 30, H - 5);
+            ctx.fillText('Longitud Chorro', pad - 50, pad - 5);
+
+            // Título
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = '10px sans-serif';
+            ctx.fillText('📈 Crecimiento del Chorro de Bits', W / 2 - 70, 15);
+        }
+
+        // --- Aleatorio ---
+        function generarAleatorio() {
+            const numProgramas = [3, 5, 7, 10][Math.floor(Math.random() * 4)];
+            const numPunteros = [2, 3, 4][Math.floor(Math.random() * 3)];
+            const tasaPoda = Math.floor(Math.random() * 30) + 5;
+            const iteraciones = Math.floor(Math.random() * 8) + 2;
+            const hashBits = [32, 64, 128, 256][Math.floor(Math.random() * 4)];
+
+            document.getElementById('numProgramas').value = numProgramas;
+            document.getElementById('numPunteros').value = numPunteros;
+            document.getElementById('tasaPoda').value = tasaPoda;
+            document.getElementById('iteraciones').value = iteraciones;
+            document.getElementById('hashBits').value = hashBits;
+
+            let semilla = '';
+            const len = Math.floor(Math.random() * 8) + 3;
+            for (let i = 0; i < len; i++) {
+                semilla += Math.random() > 0.5 ? '1' : '0';
+            }
+            document.getElementById('semilla').value = semilla;
+
+            ejecutarSistema();
+
+            alert('🎲 Configuración aleatoria generada:\n' +
+                `Semilla: ${semilla}\n` +
+                `Programas: ${numProgramas}\n` +
+                `Punteros: ${numPunteros}\n` +
+                `Tasa poda: ${tasaPoda}%\n` +
+                `Iteraciones: ${iteraciones}\n` +
+                `Bits: ${hashBits}`);
+        }
+
+        // --- Visualizar ---
+        function visualizarProceso() {
+            if (!window._ultimosDatos) {
+                alert('⚠️ Primero ejecuta el sistema');
+                return;
+            }
+            document.getElementById('canvasContainer').style.display = 'block';
+            dibujarVisualizacion(window._ultimosDatos);
+        }
+
+        window.onload = function() {
+            ejecutarSistema();
+        };
+
+        window.addEventListener('resize', () => {
+            if (document.getElementById('canvasContainer').style.display !== 'none' && window._ultimosDatos) {
+                dibujarVisualizacion(window._ultimosDatos);
+            }
+        });
+    </script>
+</body>
+</html>

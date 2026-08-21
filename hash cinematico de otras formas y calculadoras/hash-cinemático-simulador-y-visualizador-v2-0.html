@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hash Cinemático - Simulador</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f0f2f5;
+            color: #1e293b;
+        }
+        h1 { color: #0f172a; text-align: center; margin-bottom: 30px; }
+        h2 { color: #3b82f6; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; margin-top: 25px; }
+        h3 { color: #475569; margin-top: 20px; }
+        .container {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+        }
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 15px 0;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #475569;
+            font-size: 14px;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 14px;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        button {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(59, 130, 246, 0.4);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        .results {
+            margin-top: 30px;
+        }
+        .hash-box {
+            background: linear-gradient(135deg, #e0f2fe, #dbeafe);
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            margin: 15px 0;
+            border-left: 4px solid #3b82f6;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .hash-label {
+            font-weight: bold;
+            color: #1e40af;
+            display: block;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .chart-container {
+            position: relative;
+            height: 450px;
+            margin: 25px 0;
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .pasada {
+            margin-bottom: 25px;
+            border: 1px solid #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            background: #f8fafc;
+        }
+        .collision {
+            color: #ef4444;
+            font-weight: bold;
+            font-family: monospace;
+        }
+        .pointer-A {
+            color: #3b82f6;
+            font-weight: bold;
+        }
+        .pointer-B {
+            color: #10b981;
+            font-weight: bold;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+        .data-table th {
+            background: #3b82f6;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        .data-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .data-table tr:nth-child(even) {
+            background: #f8fafc;
+        }
+        .data-table tr:hover {
+            background: #f1f5f9;
+        }
+        .info-box {
+            background: #e0f2fe;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #3b82f6;
+        }
+        .info-box p {
+            margin: 8px 0;
+            color: #1e293b;
+        }
+        .info-box strong {
+            color: #0f172a;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #64748b;
+        }
+        .spinner {
+            border: 3px solid #f3f4f6;
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3b82f6;
+            margin: 10px 0;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎯 Hash Cinemático - Simulador y Visualizador v2.0</h1>
+    
+    <div class="container">
+        <h2>⚙️ Configuración</h2>
+        <p style="color: #64748b; font-size: 14px; margin-bottom: 20px;">
+            Simula el hash cinemático con dos punteros que recorren el input en sentidos opuestos.
+            Se registran <strong>tiempos floats</strong>, <strong>posiciones de choque</strong> y la <strong>velocidad</strong> en cada paso.
+        </p>
+        
+        <div class="input-grid">
+            <div class="input-group">
+                <label for="inputBits">Input (bits):</label>
+                <input type="text" id="inputBits" value="10011" placeholder="Ej: 10011, 1100101">
+            </div>
+            <div class="input-group">
+                <label for="pasadas">Pasadas:</label>
+                <input type="number" id="pasadas" value="2" min="1" max="10">
+            </div>
+            <div class="input-group">
+                <label for="factor1">Factor para 1:</label>
+                <input type="text" id="factor1" value="2" placeholder="Ej: 2, 3, 1.5">
+            </div>
+            <div class="input-group">
+                <label for="factor0">Factor para 0:</label>
+                <input type="text" id="factor0" value="0.6667" placeholder="Ej: 0.6667, 0.5">
+            </div>
+            <div class="input-group">
+                <label for="inicialV">Velocidad inicial:</label>
+                <input type="text" id="inicialV" value="1.0" placeholder="Ej: 1.0, 2.5">
+            </div>
+            <div class="input-group">
+                <label for="modo0">Modo para 0s consecutivos:</label>
+                <select id="modo0">
+                    <option value="primer_0">Solo primer 0</option>
+                    <option value="todos">Todos los 0s</option>
+                    <option value="ninguno">Ninguno</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="modoOperacion">Modo de operación:</label>
+                <select id="modoOperacion">
+                    <option value="1_acelera_0_decelera">1 acelera, 0 decelera</option>
+                    <option value="0_acelera_1_decelera">0 acelera, 1 decelera</option>
+                    <option value="ambos_aceleran">Ambos aceleran</option>
+                    <option value="ambos_deceleran">Ambos deceleran</option>
+                </select>
+            </div>
+        </div>
+        
+        <button onclick="simular()">🚀 Simular y Visualizar</button>
+    </div>
+    
+    <div class="container results" id="results" style="display: none;">
+        <div class="stats-grid" id="statsGrid"></div>
+        
+        <div class="hash-box">
+            <span class="hash-label">🔑 Hash Final (SHA-256):</span>
+            <span id="hashFinal"></span>
+        </div>
+        
+        <div class="chart-container">
+            <canvas id="velocityChart"></canvas>
+        </div>
+        
+        <div class="chart-container">
+            <canvas id="positionChart"></canvas>
+        </div>
+        
+        <h2>📋 Detalles por Pasada</h2>
+        <div id="pasadasContainer"></div>
+        
+        <h2>🔍 Datos para Hash (JSON)</h2>
+        <div class="hash-box">
+            <pre id="hashData" style="white-space: pre-wrap; word-break: break-all;"></pre>
+        </div>
+    </div>
+
+    <script>
+        // Almacenar el gráfico globalmente para destruirlo
+        let velocityChart = null;
+        let positionChart = null;
+
+        // Función para parsear un valor a float (soporta fracciones como "2/3")
+        function parseValue(str) {
+            if (typeof str === 'number') return str;
+            if (str.includes('/')) {
+                const parts = str.split('/');
+                return parseFloat(parts[0]) / parseFloat(parts[1]);
+            }
+            return parseFloat(str);
+        }
+
+        // Función para formatear un float como fracción si es posible
+        function formatNumber(num) {
+            // Si es entero, mostrar como entero
+            if (Number.isInteger(num)) {
+                return num.toString();
+            }
+            // Formatear con 4 decimales
+            return num.toFixed(4);
+        }
+
+        // Función principal de simulación
+        async function simular() {
+            const inputBits = document.getElementById('inputBits').value;
+            const pasadas = parseInt(document.getElementById('pasadas').value);
+            const factor1 = parseValue(document.getElementById('factor1').value);
+            const factor0 = parseValue(document.getElementById('factor0').value);
+            const inicialV = parseValue(document.getElementById('inicialV').value);
+            const modo0 = document.getElementById('modo0').value;
+            const modoOperacion = document.getElementById('modoOperacion').value;
+
+            // Validar input
+            if (!/^[01]+$/.test(inputBits)) {
+                alert('❌ El input debe ser una cadena de bits (solo 0s y 1s). Ejemplo: 10011');
+                return;
+            }
+
+            // Mostrar loading
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('pasadasContainer').innerHTML = '<div class="loading"><div class="spinner"></div>Simulando...</div>';
+            document.getElementById('hashFinal').textContent = '';
+            document.getElementById('hashData').textContent = '';
+
+            // Esperar un momento para que el DOM se actualice
+            await new Promise(resolve => setTimeout(resolve, 10));
+
+            const resultados = [];
+            const allVelocityData = [];
+            const allPositionDataA = [];
+            const allPositionDataB = [];
+            const allCollisions = [];
+            let maxVelocity = inicialV;
+            let minVelocity = inicialV;
+
+            for (let pasada = 0; pasada < pasadas; pasada++) {
+                let v = inicialV;
+                let i = 0, j = inputBits.length - 1;
+                let t = 0.0;  // Tiempo como float
+                const choques = [];
+                const tiempos_A = [];
+                const tiempos_B = [];
+                const posiciones_A = [];
+                const posiciones_B = [];
+                const bits_A = [];
+                const bits_B = [];
+                let ultimo_A = null;
+                let ultimo_B = null;
+                const velocityHistory = [];
+                const positionHistoryA = [];
+                const positionHistoryB = [];
+
+                // Registrar estado inicial
+                velocityHistory.push({t: t, v: v, type: 'start'});
+                positionHistoryA.push({t: t, pos: i, v: v});
+                positionHistoryB.push({t: t, pos: j, v: v});
+
+                while (i <= j) {
+                    // Incrementar tiempo como float
+                    t += 1.0;
+
+                    // Turno A (izquierda a derecha)
+                    if (i <= j) {
+                        const bit = inputBits[i];
+                        bits_A.push(bit);
+                        
+                        // Aplicar regla según modo_operacion
+                        if (modoOperacion === "1_acelera_0_decelera") {
+                            if (bit === '1') {
+                                v *= factor1;
+                            } else {
+                                if (modo0 === "primer_0" && ultimo_A !== '0') {
+                                    v *= factor0;
+                                } else if (modo0 === "todos") {
+                                    v *= factor0;
+                                }
+                            }
+                        } else if (modoOperacion === "0_acelera_1_decelera") {
+                            if (bit === '0') {
+                                v *= factor0;
+                            } else {
+                                if (modo0 === "primer_0" && ultimo_A !== '1') {
+                                    v *= factor1;
+                                } else if (modo0 === "todos") {
+                                    v *= factor1;
+                                }
+                            }
+                        } else if (modoOperacion === "ambos_aceleran") {
+                            v *= (bit === '1' ? factor1 : factor0);
+                        } else if (modoOperacion === "ambos_deceleran") {
+                            v *= (bit === '1' ? factor1 : factor0);
+                        }
+                        
+                        tiempos_A.push(t);
+                        posiciones_A.push(i);
+                        i++;
+                        ultimo_A = bit;
+                        
+                        // Registrar en historial
+                        velocityHistory.push({t: t, v: v, type: 'A'});
+                        positionHistoryA.push({t: t, pos: i-1, v: v});
+                    }
+
+                    // Turno B (derecha a izquierda)
+                    if (i <= j) {
+                        const bit = inputBits[j];
+                        bits_B.push(bit);
+                        
+                        if (modoOperacion === "1_acelera_0_decelera") {
+                            if (bit === '1') {
+                                v *= factor1;
+                            } else {
+                                if (modo0 === "primer_0" && ultimo_B !== '0') {
+                                    v *= factor0;
+                                } else if (modo0 === "todos") {
+                                    v *= factor0;
+                                }
+                            }
+                        } else if (modoOperacion === "0_acelera_1_decelera") {
+                            if (bit === '0') {
+                                v *= factor0;
+                            } else {
+                                if (modo0 === "primer_0" && ultimo_B !== '1') {
+                                    v *= factor1;
+                                } else if (modo0 === "todos") {
+                                    v *= factor1;
+                                }
+                            }
+                        } else if (modoOperacion === "ambos_aceleran") {
+                            v *= (bit === '1' ? factor1 : factor0);
+                        } else if (modoOperacion === "ambos_deceleran") {
+                            v *= (bit === '1' ? factor1 : factor0);
+                        }
+                        
+                        tiempos_B.push(t);
+                        posiciones_B.push(j);
+                        j--;
+                        ultimo_B = bit;
+                        
+                        // Registrar en historial
+                        velocityHistory.push({t: t, v: v, type: 'B'});
+                        positionHistoryB.push({t: t, pos: j+1, v: v});
+                    }
+
+                    // Registrar choque
+                    if (i > j) {
+                        choques.push([t, i-1, j+1]);
+                        allCollisions.push({
+                            t: t,
+                            i: i-1,
+                            j: j+1,
+                            pasada: pasada + 1,
+                            v: v
+                        });
+                    }
+                }
+
+                // Actualizar max/min velocity
+                velocityHistory.forEach(point => {
+                    if (point.v > maxVelocity) maxVelocity = point.v;
+                    if (point.v < minVelocity) minVelocity = point.v;
+                });
+
+                resultados.push({
+                    v_final: v,
+                    t_final: t,
+                    choques: choques,
+                    tiempos_A: tiempos_A,
+                    tiempos_B: tiempos_B,
+                    posiciones_A: posiciones_A,
+                    posiciones_B: posiciones_B,
+                    bits_A: bits_A.join(''),
+                    bits_B: bits_B.reverse().join(''),
+                    velocityHistory: velocityHistory,
+                    positionHistoryA: positionHistoryA,
+                    positionHistoryB: positionHistoryB
+                });
+
+                // Guardar datos para gráficos globales
+                velocityHistory.forEach(point => {
+                    allVelocityData.push({
+                        t: point.t,
+                        v: point.v,
+                        type: point.type,
+                        pasada: pasada + 1
+                    });
+                });
+                
+                positionHistoryA.forEach(point => {
+                    allPositionDataA.push({
+                        t: point.t,
+                        pos: point.pos,
+                        pasada: pasada + 1
+                    });
+                });
+                
+                positionHistoryB.forEach(point => {
+                    allPositionDataB.push({
+                        t: point.t,
+                        pos: point.pos,
+                        pasada: pasada + 1
+                    });
+                });
+            }
+
+            // Generar hash determinista usando Web Crypto API
+            const hashData = {
+                input: inputBits,
+                pasadas: pasadas,
+                params: {
+                    factor_0: factor0,
+                    factor_1: factor1,
+                    modo_0: modo0,
+                    modo_operacion: modoOperacion,
+                    inicial_v: inicialV
+                },
+                resultados: resultados.map(r => ({
+                    v_final: r.v_final,
+                    t_final: r.t_final,
+                    choques: r.choques,
+                    tiempos_A: r.tiempos_A,
+                    tiempos_B: r.tiempos_B,
+                    posiciones_A: r.posiciones_A,
+                    posiciones_B: r.posiciones_B,
+                    bits_A: r.bits_A,
+                    bits_B: r.bits_B
+                }))
+            };
+            
+            // Convertir a string JSON determinista (orden de claves)
+            const hashStr = JSON.stringify(hashData, Object.keys(hashData).sort());
+            
+            // Calcular SHA-256 usando Web Crypto API
+            const encoder = new TextEncoder();
+            const data = encoder.encode(hashStr);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+            // Mostrar hash
+            document.getElementById('hashFinal').textContent = hashHex;
+
+            // Mostrar datos JSON
+            document.getElementById('hashData').textContent = JSON.stringify(hashData, null, 2);
+
+            // Crear estadísticas
+            const statsGrid = document.getElementById('statsGrid');
+            statsGrid.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-label">Pasadas</div>
+                    <div class="stat-value">${pasadas}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Longitud Input</div>
+                    <div class="stat-value">${inputBits.length}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Choques Totales</div>
+                    <div class="stat-value">${allCollisions.length}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Velocidad Máx</div>
+                    <div class="stat-value">${formatNumber(maxVelocity)}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Velocidad Mín</div>
+                    <div class="stat-value">${formatNumber(minVelocity)}</div>
+                </div>
+            `;
+
+            // Mostrar detalles por pasada
+            const pasadasContainer = document.getElementById('pasadasContainer');
+            pasadasContainer.innerHTML = '';
+            
+            resultados.forEach((res, idx) => {
+                const pasadaDiv = document.createElement('div');
+                pasadaDiv.className = 'pasada';
+                
+                let choquesHtml = 'Ninguno';
+                if (res.choques.length > 0) {
+                    choquesHtml = res.choques.map(c => 
+                        `<span class="collision">(t=${formatNumber(c[0])}, i=${c[1]}, j=${c[2]})</span>`
+                    ).join(', ');
+                }
+
+                pasadaDiv.innerHTML = `
+                    <h3>Pasada ${idx + 1}</h3>
+                    <div class="info-box">
+                        <p><strong>Velocidad final:</strong> ${formatNumber(res.v_final)}</p>
+                        <p><strong>Tiempo final:</strong> ${formatNumber(res.t_final)}</p>
+                        <p><strong>Bits procesados por A:</strong> <span class="pointer-A">${res.bits_A}</span> (posiciones: [${res.posiciones_A.join(', ')}], tiempos: [${res.tiempos_A.map(t => formatNumber(t)).join(', ')}])</p>
+                        <p><strong>Bits procesados por B:</strong> <span class="pointer-B">${res.bits_B}</span> (posiciones: [${res.posiciones_B.join(', ')}], tiempos: [${res.tiempos_B.map(t => formatNumber(t)).join(', ')}])</p>
+                        <p><strong>Choques:</strong> ${choquesHtml}</p>
+                    </div>
+                    
+                    <h4>Historial de Velocidad</h4>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Tiempo (t)</th>
+                                <th>Velocidad (v)</th>
+                                <th>Tipo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${res.velocityHistory.map(vh => 
+                                `<tr>
+                                    <td>${formatNumber(vh.t)}</td>
+                                    <td>${formatNumber(vh.v)}</td>
+                                    <td>${vh.type === 'A' ? '<span class="pointer-A">A</span>' : vh.type === 'B' ? '<span class="pointer-B">B</span>' : 'Start'}</td>
+                                </tr>`
+                            ).join('')}
+                        </tbody>
+                    </table>
+                `;
+                pasadasContainer.appendChild(pasadaDiv);
+            });
+
+            // Crear gráficos
+            createVelocityChart(resultados, allCollisions);
+            createPositionChart(resultados, allPositionDataA, allPositionDataB, allCollisions);
+            
+            // Mostrar resultados
+            document.getElementById('results').style.display = 'block';
+        }
+
+        // Crear gráfico de velocidad
+        function createVelocityChart(resultados, collisions) {
+            const ctx = document.getElementById('velocityChart').getContext('2d');
+            
+            // Destruir gráfico anterior si existe
+            if (velocityChart) {
+                velocityChart.destroy();
+            }
+
+            const datasets = [];
+            const colors = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444'];
+
+            resultados.forEach((res, idx) => {
+                const dataPoints = res.velocityHistory.map(vh => ({
+                    x: vh.t,
+                    y: vh.v
+                }));
+                
+                datasets.push({
+                    label: `Pasada ${idx + 1} - Velocidad`,
+                    data: dataPoints,
+                    borderColor: colors[idx % colors.length],
+                    backgroundColor: colors[idx % colors.length] + '20',
+                    borderWidth: 2,
+                    pointRadius: 3,
+                    tension: 0.4,
+                    pointStyle: 'circle'
+                });
+            });
+
+            // Añadir puntos de choque
+            if (collisions.length > 0) {
+                datasets.push({
+                    label: 'Choques',
+                    data: collisions.map(c => ({
+                        x: c.t,
+                        y: c.v
+                    })),
+                    backgroundColor: '#ef4444',
+                    borderColor: '#dc2626',
+                    borderWidth: 1,
+                    pointRadius: 6,
+                    pointStyle: 'star',
+                    showLine: false
+                });
+            }
+
+            velocityChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Tiempo (t) - Float',
+                                font: { size: 14, weight: 'bold' }
+                            },
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Velocidad (v)',
+                                font: { size: 14, weight: 'bold' }
+                            },
+                            beginAtZero: false,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += `v = ${context.parsed.y.toFixed(4)}`;
+                                    }
+                                    if (context.dataset.label === 'Choques') {
+                                        const collision = collisions.find(c => c.t === context.parsed.x && Math.abs(c.v - context.parsed.y) < 0.0001);
+                                        if (collision) {
+                                            label += ` (i=${collision.i}, j=${collision.j})`;
+                                        }
+                                    }
+                                    return label;
+                                },
+                                afterLabel: function(context) {
+                                    if (context.dataset.label && !context.dataset.label.includes('Choques')) {
+                                        const idx = datasets.findIndex(d => d === context.dataset);
+                                        if (idx >= 0 && idx < resultados.length) {
+                                            const res = resultados[idx];
+                                            return `Bits A: ${res.bits_A}, B: ${res.bits_B}`;
+                                        }
+                                    }
+                                    return null;
+                                }
+                            }
+                        },
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                padding: 15,
+                                font: { size: 12 }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Crear gráfico de posiciones
+        function createPositionChart(resultados, positionDataA, positionDataB, collisions) {
+            const ctx = document.getElementById('positionChart').getContext('2d');
+            
+            // Destruir gráfico anterior si existe
+            if (positionChart) {
+                positionChart.destroy();
+            }
+
+            const datasets = [];
+            const colors = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444'];
+
+            // Datos para puntero A
+            resultados.forEach((res, idx) => {
+                const dataPoints = res.positionHistoryA.map(ph => ({
+                    x: ph.t,
+                    y: ph.pos
+                }));
+                
+                datasets.push({
+                    label: `Pasada ${idx + 1} - Puntero A`,
+                    data: dataPoints,
+                    borderColor: colors[idx % colors.length],
+                    backgroundColor: 'transparent',
+                    borderWidth: 2,
+                    pointRadius: 3,
+                    tension: 0.4,
+                    pointStyle: 'circle',
+                    yAxisID: 'y'
+                });
+            });
+
+            // Datos para puntero B
+            resultados.forEach((res, idx) => {
+                const dataPoints = res.positionHistoryB.map(ph => ({
+                    x: ph.t,
+                    y: ph.pos
+                }));
+                
+                datasets.push({
+                    label: `Pasada ${idx + 1} - Puntero B`,
+                    data: dataPoints,
+                    borderColor: colors[(idx + 1) % colors.length],
+                    backgroundColor: 'transparent',
+                    borderWidth: 2,
+                    pointRadius: 3,
+                    tension: 0.4,
+                    pointStyle: 'triangle',
+                    yAxisID: 'y'
+                });
+            });
+
+            // Añadir puntos de choque
+            if (collisions.length > 0) {
+                datasets.push({
+                    label: 'Choques (Posición)',
+                    data: collisions.map(c => ({
+                        x: c.t,
+                        y: (c.i + c.j) / 2  // Posición media del choque
+                    })),
+                    backgroundColor: '#ef4444',
+                    borderColor: '#dc2626',
+                    borderWidth: 1,
+                    pointRadius: 6,
+                    pointStyle: 'star',
+                    showLine: false,
+                    yAxisID: 'y'
+                });
+            }
+
+            positionChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Tiempo (t) - Float',
+                                font: { size: 14, weight: 'bold' }
+                            },
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        },
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: {
+                                display: true,
+                                text: 'Posición en el Input',
+                                font: { size: 14, weight: 'bold' }
+                            },
+                            min: -1,
+                            max: document.getElementById('inputBits').value.length,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += `pos = ${context.parsed.y.toFixed(1)}`;
+                                    }
+                                    if (context.dataset.label && context.dataset.label.includes('Choques')) {
+                                        const collision = collisions.find(c => c.t === context.parsed.x);
+                                        if (collision) {
+                                            label += ` (i=${collision.i}, j=${collision.j})`;
+                                        }
+                                    }
+                                    return label;
+                                }
+                            }
+                        },
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                padding: 15,
+                                font: { size: 12 }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Inicializar al cargar la página
+        window.onload = function() {
+            // Simular automáticamente con valores por defecto
+            // simular();
+        };
+    </script>
+</body>
+</html>

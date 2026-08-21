@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hash Reversible con Parámetros 🔐</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+        .container {
+            background: #1e293b;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+            border: 1px solid #334155;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #94a3b8;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px 14px;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #e2e8f0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        input:focus, select:focus {
+            border-color: #60a5fa;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+        }
+        button {
+            background: linear-gradient(135deg, #3b82f6, #7c3aed);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            margin: 5px;
+            transition: all 0.3s;
+        }
+        button:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3); }
+        button.success { background: linear-gradient(135deg, #22c55e, #16a34a); }
+        button.warning { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        button.danger { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        button.secondary { background: linear-gradient(135deg, #64748b, #475569); }
+        
+        .hash-box {
+            background: #0f172a;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            margin: 15px 0;
+            border: 1px solid #334155;
+        }
+        .hash-box .label {
+            color: #64748b;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .hash-box .value {
+            font-size: 1.1em;
+            color: #60a5fa;
+            margin-top: 8px;
+        }
+        .hash-box .value.reversible {
+            background: linear-gradient(90deg, #60a5fa, #34d399, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .info {
+            background: #0f172a;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
+            margin: 15px 0;
+        }
+        .info.success { border-left-color: #22c55e; }
+        .info.warning { border-left-color: #f59e0b; }
+        .info.danger { border-left-color: #ef4444; }
+        .info.reversible { border-left-color: #8b5cf6; }
+        
+        .param-card {
+            background: #0f172a;
+            padding: 6px 14px;
+            border-radius: 6px;
+            display: inline-block;
+            margin: 3px;
+            font-size: 12px;
+            border: 1px solid #334155;
+            font-family: 'Courier New', monospace;
+        }
+        .param-card .key { color: #60a5fa; }
+        .param-card .value { color: #34d399; }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .stat-card {
+            background: #0f172a;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #334155;
+        }
+        .stat-card .value {
+            font-size: 20px;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+        .stat-card .label {
+            font-size: 10px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+        .stat-card .value.hash { color: #60a5fa; }
+        .stat-card .value.input { color: #34d399; }
+        .stat-card .value.params { color: #f472b6; }
+        
+        .hidden { display: none; }
+        
+        .reversible-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+            padding: 2px 14px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            color: white;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+        }
+        
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            padding: 20px;
+            background: #0f172a;
+            border-radius: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+            border: 1px solid #334155;
+        }
+        .flow-diagram .box {
+            padding: 10px 20px;
+            background: #1e293b;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            font-size: 12px;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+        }
+        .flow-diagram .arrow {
+            color: #64748b;
+            font-size: 20px;
+        }
+        .flow-diagram .box.input { border-color: #34d399; }
+        .flow-diagram .box.params { border-color: #f472b6; }
+        .flow-diagram .box.hash { border-color: #60a5fa; }
+        .flow-diagram .box.reversible { border-color: #8b5cf6; }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; background: linear-gradient(90deg, #60a5fa, #8b5cf6, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+        🔐 Hash Reversible con Parámetros
+    </h1>
+    <p style="text-align: center; color: #94a3b8; margin-top: -10px;">
+        <span class="reversible-badge">🔁 REVERSIBLE CON CLAVE</span>
+        <span style="margin-left: 10px; font-size: 13px; color: #64748b;">
+            Hash = F(input, params) ↔ input = F⁻¹(hash, params)
+        </span>
+    </p>
+
+    <div class="flow-diagram">
+        <div class="box input">📝 Input<br><span style="color:#34d399;">"10011"</span></div>
+        <span class="arrow">+</span>
+        <div class="box params">🔑 Parámetros<br><span style="color:#f472b6;">{g, ρ, h, ...}</span></div>
+        <span class="arrow">→</span>
+        <div class="box hash">🔐 Hash<br><span style="color:#60a5fa;">a3f1c7...</span></div>
+        <span class="arrow">↔</span>
+        <div class="box reversible">🔁 Reversible<br><span style="color:#8b5cf6;">con parámetros</span></div>
+    </div>
+
+    <div class="container">
+        <h2 style="color: #60a5fa;">⚙️ Parámetros (Clave)</h2>
+        
+        <div class="grid">
+            <div>
+                <label>📝 Input (bits):</label>
+                <input id="inputBits" value="10011" placeholder="Ej: 10011">
+            </div>
+            <div>
+                <label>⏳ Pasadas:</label>
+                <input id="pasadas" value="3" type="number" min="1" max="20">
+            </div>
+            <div>
+                <label>🪐 Gravedad (planeta):</label>
+                <input id="gravedad" value="9.81" placeholder="Ej: 9.81">
+            </div>
+            <div>
+                <label>📏 Altura (metros):</label>
+                <input id="altura" value="100" placeholder="Ej: 100">
+            </div>
+            <div>
+                <label>🌊 Densidad fluido:</label>
+                <input id="densidad" value="1.027" placeholder="Ej: 1.027">
+            </div>
+            <div>
+                <label>🛟 Densidad objeto:</label>
+                <input id="densidadObjeto" value="0.800" placeholder="Ej: 0.800">
+            </div>
+            <div>
+                <label>🐠 Factor flotación:</label>
+                <input id="factorFlotacion" value="1.5" placeholder="Ej: 1.5">
+            </div>
+            <div>
+                <label>🔄 Reset velocidad:</label>
+                <select id="resetVelocidad">
+                    <option value="true">✅ Sí</option>
+                    <option value="false">❌ No</option>
+                </select>
+            </div>
+            <div>
+                <label>📊 Bits de hash:</label>
+                <select id="hashBits">
+                    <option value="32">32 bits</option>
+                    <option value="64" selected>64 bits</option>
+                    <option value="128">128 bits</option>
+                    <option value="256">256 bits</option>
+                </select>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button onclick="generarHash()">🔐 Generar Hash</button>
+            <button class="success" onclick="revertirHash()">🔁 Revertir Hash</button>
+            <button class="warning" onclick="generarClaveAleatoria()">🎲 Clave Aleatoria</button>
+            <button class="secondary" onclick="verificarHash()">✅ Verificar</button>
+        </div>
+    </div>
+
+    <div class="container" id="resultados" style="display: none;">
+        <h2>📊 Resultados</h2>
+        
+        <div class="stats-grid" id="statsGrid"></div>
+
+        <div class="hash-box">
+            <div class="label">🔐 Hash Generado</div>
+            <div class="value reversible" id="hashValue">-</div>
+        </div>
+
+        <div id="paramsDisplay" class="info reversible">
+            <strong style="color: #8b5cf6;">🔑 Parámetros (Clave):</strong><br>
+            <span id="paramsList"></span>
+        </div>
+
+        <div id="reversionDisplay" class="info hidden reversible">
+            <strong style="color: #34d399;">🔁 Reversión:</strong>
+            <span id="reversionMsg"></span>
+        </div>
+
+        <div id="verificacionDisplay" class="info hidden success">
+            <strong>✅ Verificación:</strong>
+            <span id="verificacionMsg"></span>
+        </div>
+
+        <h3 style="color: #64748b;">🔬 Datos Científicos</h3>
+        <div class="hash-box" style="border-color: #334155;">
+            <div class="label" style="color: #64748b;">📝 Datos en formato científico</div>
+            <div class="value" id="cientificoStr" style="font-size: 0.7em; color: #94a3b8; word-break: break-all;"></div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        //  HASH REVERSIBLE CON PARÁMETROS
+        //  Basado en v7.0 (Oceánico)
+        // ============================================
+
+        function stringToBigInt(str) {
+            let result = 0n;
+            for (let i = 0; i < str.length; i++) {
+                result = (result * 256n) + BigInt(str.charCodeAt(i));
+            }
+            return result;
+        }
+
+        function bigIntToHex(num, bits) {
+            const hex = num.toString(16);
+            return hex.padStart(Math.ceil(bits / 4), '0');
+        }
+
+        // --- Velocidad de flotación ---
+        function velocidadFlotacion(gravedad, altura, densidadFluido, densidadObjeto, factorFlotacion) {
+            const vBase = Math.sqrt(2 * gravedad * altura);
+            const relacion = (densidadFluido - densidadObjeto) / densidadFluido;
+            return vBase * relacion * factorFlotacion;
+        }
+
+        // --- Simulación Oceánica (reversible) ---
+        function simularOceanico(input, params) {
+            const { gravedad, altura, densidadFluido, densidadObjeto, factorFlotacion, resetVelocidad, pasadas } = params;
+            const resultados = [];
+
+            for (let p = 0; p < pasadas; p++) {
+                let vA = 0.0, vB = 0.0, vC = 0.0;
+                let t = 0.0;
+                let i = 0, j = input.length - 1;
+                let posC = Math.floor(input.length / 2);
+                let direccionC = 1;
+                const choques = [];
+                const tiempos_A = [], tiempos_B = [], tiempos_C = [];
+                const bits_A = [], bits_B = [], bits_C = [];
+                let ultimo_A = null, ultimo_B = null;
+
+                while (i <= j && t < 100) {
+                    t += 1.0;
+
+                    // Turno A
+                    if (i <= j) {
+                        const bit = input[i];
+                        bits_A.push(bit);
+                        const vFlotacion = velocidadFlotacion(gravedad, altura, densidadFluido, 
+                            densidadObjeto + (bit === '1' ? 0.1 : -0.1), factorFlotacion);
+                        vA = resetVelocidad ? vFlotacion : vA + vFlotacion * 0.1;
+                        tiempos_A.push(t);
+                        i++;
+                        ultimo_A = bit;
+                    }
+
+                    // Turno B
+                    if (i <= j) {
+                        const bit = input[j];
+                        bits_B.push(bit);
+                        const vFlotacion = velocidadFlotacion(gravedad, altura, densidadFluido, 
+                            densidadObjeto + (bit === '1' ? 0.05 : -0.05), factorFlotacion * 0.8);
+                        vB = resetVelocidad ? vFlotacion : vB + vFlotacion * 0.1;
+                        tiempos_B.push(t);
+                        j--;
+                        ultimo_B = bit;
+                    }
+
+                    // Movimiento de C
+                    const vFlotacionC = velocidadFlotacion(gravedad, altura * 0.5, densidadFluido * 0.9, 
+                        densidadObjeto * 1.2, factorFlotacion * 0.6);
+                    vC = resetVelocidad ? vFlotacionC : vC + vFlotacionC * 0.05;
+                    const pasoC = vC * 0.2 * direccionC * (1 + Math.sin(t * 0.05) * 0.05);
+                    posC += pasoC;
+
+                    if (posC < 0) { posC = 0; direccionC = 1; }
+                    else if (posC >= input.length) { posC = input.length - 1; direccionC = -1; }
+
+                    tiempos_C.push(t);
+                    const bitC = input[Math.min(Math.max(Math.round(posC), 0), input.length - 1)];
+                    bits_C.push(bitC);
+
+                    if (i > j) {
+                        choques.push({ t, i: i - 1, j: j + 1, posC, vA, vB, vC });
+                        direccionC *= -1;
+                    }
+                }
+
+                resultados.push({
+                    vA_final: vA,
+                    vB_final: vB,
+                    vC_final: vC,
+                    t_final: t,
+                    choques,
+                    tiempos_A,
+                    tiempos_B,
+                    tiempos_C,
+                    bits_A: bits_A.join(''),
+                    bits_B: bits_B.reverse().join(''),
+                    bits_C: bits_C.join(''),
+                    posC_final: posC
+                });
+            }
+
+            return resultados;
+        }
+
+        // --- Generar hash ---
+        function generarHashConClave(input, params) {
+            const { gravedad, altura, densidadFluido, densidadObjeto, factorFlotacion, resetVelocidad, pasadas, hashBits } = params;
+            
+            const resultados = simularOceanico(input, {
+                gravedad, altura, densidadFluido, densidadObjeto, factorFlotacion, resetVelocidad, pasadas
+            });
+
+            const dataParts = [
+                `input=${input}`,
+                `pasadas=${pasadas}`,
+                `gravedad=${gravedad}`,
+                `altura=${altura}`,
+                `densidadFluido=${densidadFluido}`,
+                `densidadObjeto=${densidadObjeto}`,
+                `factorFlotacion=${factorFlotacion}`,
+                `resetVelocidad=${resetVelocidad}`
+            ];
+
+            resultados.forEach((res, idx) => {
+                dataParts.push(`p${idx+1}_vA=${res.vA_final.toExponential()}`);
+                dataParts.push(`p${idx+1}_vB=${res.vB_final.toExponential()}`);
+                dataParts.push(`p${idx+1}_vC=${res.vC_final.toExponential()}`);
+                dataParts.push(`p${idx+1}_t=${res.t_final.toExponential()}`);
+                dataParts.push(`p${idx+1}_posC=${res.posC_final}`);
+                dataParts.push(`p${idx+1}_choques=${res.choques.map(c => 
+                    `t=${c.t.toExponential()},i=${c.i},j=${c.j},posC=${c.posC.toFixed(2)}`
+                ).join(';')}`);
+                dataParts.push(`p${idx+1}_tiemposA=${res.tiempos_A.map(t => t.toExponential()).join(',')}`);
+                dataParts.push(`p${idx+1}_tiemposB=${res.tiempos_B.map(t => t.toExponential()).join(',')}`);
+                dataParts.push(`p${idx+1}_tiemposC=${res.tiempos_C.map(t => t.toExponential()).join(',')}`);
+                dataParts.push(`p${idx+1}_bitsA=${res.bits_A}`);
+                dataParts.push(`p${idx+1}_bitsB=${res.bits_B}`);
+                dataParts.push(`p${idx+1}_bitsC=${res.bits_C}`);
+            });
+
+            const fullStr = dataParts.join('|');
+            const bigInt = stringToBigInt(fullStr);
+            const mod = 2n ** BigInt(hashBits);
+            const hashFinal = bigInt % mod;
+
+            return {
+                hash: bigIntToHex(hashFinal, hashBits),
+                hashBigInt: hashFinal,
+                stringCientifico: fullStr,
+                resultados,
+                params
+            };
+        }
+
+        // --- REVERSIÓN: encontrar input que produce el hash ---
+        function revertirHashConClave(hashObjetivo, params, maxBits = 20) {
+            // Buscamos todos los inputs posibles de 1 a maxBits
+            const inputsPosibles = [];
+            const resultados = [];
+
+            for (let len = 1; len <= maxBits; len++) {
+                const numInputs = Math.pow(2, len);
+                for (let n = 0; n < Math.min(numInputs, 10000); n++) { // Límite para no explotar
+                    const input = n.toString(2).padStart(len, '0');
+                    const resultado = generarHashConClave(input, params);
+                    if (resultado.hash === hashObjetivo) {
+                        inputsPosibles.push(input);
+                        resultados.push(resultado);
+                    }
+                }
+            }
+
+            return { inputs: inputsPosibles, resultados };
+        }
+
+        // --- UI ---
+        function generarHash() {
+            const input = document.getElementById('inputBits').value.trim();
+            const params = obtenerParams();
+
+            if (!/^[01]+$/.test(input)) {
+                alert('❌ El input debe ser una cadena de bits');
+                return;
+            }
+
+            const resultado = generarHashConClave(input, params);
+            mostrarResultados(resultado, params);
+
+            window._ultimoHash = resultado.hash;
+            window._ultimosParams = params;
+            window._ultimoInput = input;
+            window._ultimosResultados = resultado;
+        }
+
+        function obtenerParams() {
+            return {
+                gravedad: parseFloat(document.getElementById('gravedad').value),
+                altura: parseFloat(document.getElementById('altura').value),
+                densidadFluido: parseFloat(document.getElementById('densidad').value),
+                densidadObjeto: parseFloat(document.getElementById('densidadObjeto').value),
+                factorFlotacion: parseFloat(document.getElementById('factorFlotacion').value),
+                resetVelocidad: document.getElementById('resetVelocidad').value === 'true',
+                pasadas: parseInt(document.getElementById('pasadas').value),
+                hashBits: parseInt(document.getElementById('hashBits').value)
+            };
+        }
+
+        function mostrarResultados(resultado, params) {
+            document.getElementById('resultados').style.display = 'block';
+            document.getElementById('hashValue').textContent = resultado.hash;
+            document.getElementById('cientificoStr').textContent = resultado.stringCientifico;
+
+            const ultimo = resultado.resultados[resultado.resultados.length - 1];
+            document.getElementById('statsGrid').innerHTML = `
+                <div class="stat-card"><div class="value hash">${resultado.hash.slice(0,8)}...</div><div class="label">Hash</div></div>
+                <div class="stat-card"><div class="value input">${params.pasadas}</div><div class="label">Pasadas</div></div>
+                <div class="stat-card"><div class="value" style="color:#34d399;">${ultimo.vA_final.toFixed(2)}</div><div class="label">vA final</div></div>
+                <div class="stat-card"><div class="value" style="color:#f472b6;">${ultimo.vC_final.toFixed(2)}</div><div class="label">vC final</div></div>
+                <div class="stat-card"><div class="value" style="color:#f59e0b;">${ultimo.choques.length}</div><div class="label">Choques</div></div>
+            `;
+
+            document.getElementById('paramsList').innerHTML = `
+                <span class="param-card"><span class="key">g:</span> <span class="value">${params.gravedad}</span></span>
+                <span class="param-card"><span class="key">h:</span> <span class="value">${params.altura}</span></span>
+                <span class="param-card"><span class="key">ρ_fluido:</span> <span class="value">${params.densidadFluido}</span></span>
+                <span class="param-card"><span class="key">ρ_objeto:</span> <span class="value">${params.densidadObjeto}</span></span>
+                <span class="param-card"><span class="key">factor:</span> <span class="value">${params.factorFlotacion}</span></span>
+                <span class="param-card"><span class="key">reset:</span> <span class="value">${params.resetVelocidad}</span></span>
+                <span class="param-card"><span class="key">pasadas:</span> <span class="value">${params.pasadas}</span></span>
+                <span class="param-card"><span class="key">bits:</span> <span class="value">${params.hashBits}</span></span>
+            `;
+
+            document.getElementById('reversionDisplay').classList.add('hidden');
+            document.getElementById('verificacionDisplay').classList.add('hidden');
+        }
+
+        // --- REVERTIR HASH ---
+        function revertirHash() {
+            if (!window._ultimoHash || !window._ultimosParams) {
+                alert('⚠️ Primero genera un hash');
+                return;
+            }
+
+            document.getElementById('reversionDisplay').classList.remove('hidden');
+            const msg = document.getElementById('reversionMsg');
+            msg.innerHTML = '⏳ Buscando input que produzca el hash...';
+
+            // Búsqueda en segundo plano
+            setTimeout(() => {
+                const resultado = revertirHashConClave(
+                    window._ultimoHash,
+                    window._ultimosParams,
+                    12 // max 12 bits para búsqueda rápida
+                );
+
+                if (resultado.inputs.length > 0) {
+                    msg.innerHTML = `
+                        ✅ <strong>¡Encontrado!</strong> El input <code>${resultado.inputs[0]}</code> 
+                        produce el hash <code>${window._ultimoHash}</code> 
+                        con los parámetros actuales.
+                        <br><br>
+                        <span style="color:#64748b; font-size:12px;">
+                            (${resultado.inputs.length} inputs encontrados)
+                        </span>
+                    `;
+                    document.getElementById('reversionDisplay').className = 'info success';
+                } else {
+                    msg.innerHTML = `
+                        ❌ <strong>No encontrado.</strong> 
+                        No se encontró ningún input que produzca <code>${window._ultimoHash}</code>
+                        con los parámetros actuales.
+                        <br><br>
+                        <span style="color:#64748b; font-size:12px;">
+                            Prueba con un input más corto o ajusta los parámetros.
+                        </span>
+                    `;
+                    document.getElementById('reversionDisplay').className = 'info danger';
+                }
+            }, 100);
+        }
+
+        // --- VERIFICAR ---
+        function verificarHash() {
+            if (!window._ultimoHash || !window._ultimosParams) {
+                alert('⚠️ Primero genera un hash');
+                return;
+            }
+
+            const input = prompt('📝 Ingresa el input a verificar:', window._ultimoInput || '10011');
+            if (!input) return;
+
+            const resultado = generarHashConClave(input.trim(), window._ultimosParams);
+            
+            const display = document.getElementById('verificacionDisplay');
+            display.classList.remove('hidden');
+            
+            const msg = document.getElementById('verificacionMsg');
+            if (resultado.hash === window._ultimoHash) {
+                msg.innerHTML = `
+                    ✅ <strong>¡Coincide!</strong> El input "<code>${input}</code>" 
+                    genera el hash <code>${resultado.hash}</code> 
+                    con los parámetros actuales.
+                `;
+                display.className = 'info success';
+            } else {
+                msg.innerHTML = `
+                    ❌ <strong>No coincide.</strong> El input "<code>${input}</code>" 
+                    genera <code>${resultado.hash}</code>, 
+                    pero se esperaba <code>${window._ultimoHash}</code>.
+                `;
+                display.className = 'info danger';
+            }
+        }
+
+        // --- CLAVE ALEATORIA ---
+        function generarClaveAleatoria() {
+            const params = {
+                gravedad: (Math.random() * 25 + 1).toFixed(2),
+                altura: Math.floor(Math.random() * 2000 + 10),
+                densidadFluido: (0.998 + Math.random() * 0.04).toFixed(3),
+                densidadObjeto: (0.6 + Math.random() * 0.4).toFixed(3),
+                factorFlotacion: (0.5 + Math.random() * 2.5).toFixed(2),
+                resetVelocidad: Math.random() > 0.5,
+                pasadas: Math.floor(Math.random() * 5) + 2,
+                hashBits: [32, 64, 128, 256][Math.floor(Math.random() * 4)]
+            };
+
+            document.getElementById('gravedad').value = params.gravedad;
+            document.getElementById('altura').value = params.altura;
+            document.getElementById('densidad').value = params.densidadFluido;
+            document.getElementById('densidadObjeto').value = params.densidadObjeto;
+            document.getElementById('factorFlotacion').value = params.factorFlotacion;
+            document.getElementById('resetVelocidad').value = params.resetVelocidad ? 'true' : 'false';
+            document.getElementById('pasadas').value = params.pasadas;
+            document.getElementById('hashBits').value = params.hashBits;
+
+            // Generar input aleatorio
+            let input = '';
+            const len = Math.floor(Math.random() * 8) + 3;
+            for (let i = 0; i < len; i++) {
+                input += Math.random() > 0.5 ? '1' : '0';
+            }
+            document.getElementById('inputBits').value = input;
+
+            generarHash();
+
+            alert('🎲 Clave aleatoria generada:\n' +
+                `Input: ${input}\n` +
+                `g: ${params.gravedad} m/s²\n` +
+                `h: ${params.altura} m\n` +
+                `ρ_fluido: ${params.densidadFluido} g/cm³\n` +
+                `ρ_objeto: ${params.densidadObjeto} g/cm³\n` +
+                `factor: ${params.factorFlotacion}\n` +
+                `reset: ${params.resetVelocidad ? 'Sí' : 'No'}\n` +
+                `pasadas: ${params.pasadas}\n` +
+                `bits: ${params.hashBits}\n\n` +
+                `El hash se ha generado automáticamente.`);
+        }
+
+        window.onload = function() {
+            generarHash();
+        };
+    </script>
+</body>
+</html>

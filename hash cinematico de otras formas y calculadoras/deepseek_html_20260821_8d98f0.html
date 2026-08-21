@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Híbrida v3.0 - Factorización + Fase + Armónicos 📐</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #0a0a15;
+            color: #e2e8f0;
+        }
+        .container {
+            background: rgba(20, 20, 40, 0.9);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+            border: 1px solid rgba(100, 50, 200, 0.2);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin: 15px 0;
+        }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #94a3b8;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        input,
+        select {
+            width: 100%;
+            padding: 8px 12px;
+            background: #0a0a15;
+            border: 1px solid #2a1a3e;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #e2e8f0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        input:focus,
+        select:focus {
+            border-color: #8b5cf6;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            background: #0a0a15;
+            border: 1px solid #2a1a3e;
+            border-radius: 6px;
+            color: #e2e8f0;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            resize: vertical;
+            min-height: 80px;
+        }
+        button {
+            background: linear-gradient(135deg, #7c3aed, #3b82f6);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            margin: 4px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+        }
+        button.success {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+        }
+        button.warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        button.secondary {
+            background: linear-gradient(135deg, #64748b, #475569);
+        }
+        button.pink {
+            background: linear-gradient(135deg, #ec4899, #8b5cf6);
+        }
+        button.phase {
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+        }
+        button.harmonic {
+            background: linear-gradient(135deg, #f472b6, #ec4899);
+        }
+        .hash-box {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            margin: 15px 0;
+            border: 1px solid #2a1a3e;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .hash-box .label {
+            color: #64748b;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .hash-box .value {
+            font-size: 1em;
+            margin-top: 8px;
+            word-break: break-all;
+        }
+        .hash-box .value.resultado {
+            color: #34d399;
+        }
+        .hash-box .value.factor {
+            color: #fbbf24;
+        }
+        .hash-box .value.phase {
+            color: #60a5fa;
+        }
+        .hash-box .value.harmonic {
+            color: #f472b6;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 8px;
+            margin: 15px 0;
+        }
+        .stat-card {
+            background: rgba(10, 10, 20, 0.8);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #1a1a2e;
+        }
+        .stat-card .value {
+            font-size: 16px;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+        .stat-card .label {
+            font-size: 7px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 3px;
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 12px;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .badge.aritmetica {
+            background: linear-gradient(135deg, #3b82f6, #7c3aed);
+            color: white;
+        }
+        .badge.log {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+        .badge.trig {
+            background: linear-gradient(135deg, #ec4899, #8b5cf6);
+            color: white;
+        }
+        .badge.factor {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: white;
+        }
+        .badge.phase {
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+            color: white;
+        }
+        .badge.harmonic {
+            background: linear-gradient(135deg, #f472b6, #ec4899);
+            color: white;
+        }
+        .hidden {
+            display: none;
+        }
+        .categoria-tabs {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            margin: 10px 0;
+        }
+        .cat-tab {
+            padding: 4px 14px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            background: #1a1a2e;
+            border: 1px solid #2a1a3e;
+            cursor: pointer;
+            color: #94a3b8;
+            transition: all 0.3s;
+        }
+        .cat-tab:hover {
+            border-color: #8b5cf6;
+            color: #e2e8f0;
+        }
+        .cat-tab.active {
+            border-color: #8b5cf6;
+            background: rgba(139, 92, 246, 0.2);
+            color: #a78bfa;
+        }
+        .tabla-operaciones {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 4px;
+            margin: 10px 0;
+        }
+        .op-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-family: 'Courier New', monospace;
+            border: 1px solid #1a1a2e;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .op-item:hover {
+            border-color: #8b5cf6;
+            background: rgba(139, 92, 246, 0.1);
+        }
+        .op-item .simbolo {
+            color: #60a5fa;
+        }
+        .op-item .nombre {
+            color: #94a3b8;
+        }
+        .historial-item {
+            padding: 4px 10px;
+            margin: 3px 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+            font-size: 12px;
+            font-family: 'Courier New', monospace;
+        }
+        .historial-item .op {
+            color: #fbbf24;
+        }
+        .historial-item .res {
+            color: #34d399;
+        }
+        .regla-real {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #2a1a3e;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            overflow-x: auto;
+            white-space: pre;
+        }
+        .fase-visual {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            margin: 10px 0;
+            flex-wrap: wrap;
+        }
+        .fase-visual .onda {
+            flex: 1;
+            min-width: 200px;
+        }
+        .fase-visual .onda canvas {
+            width: 100%;
+            height: 80px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+        }
+        .armonico-visual {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 10px 0;
+        }
+        .armonico-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: 1px solid #1a1a2e;
+            font-size: 12px;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+        }
+        .armonico-item .freq {
+            color: #60a5fa;
+        }
+        .armonico-item .amp {
+            color: #f472b6;
+        }
+        .armonico-item .fase {
+            color: #fbbf24;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; background: linear-gradient(90deg, #60a5fa, #fbbf24, #34d399, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+        📐 Calculadora Híbrida v3.0 - Factorización + Fase + Armónicos
+    </h1>
+    <p style="text-align: center; color: #94a3b8; margin-top: -10px;">
+        <span class="badge factor">🔢 FACTORIZACIÓN</span>
+        <span class="badge phase">🌊 DETECCIÓN DE FASE</span>
+        <span class="badge harmonic">🎵 ANÁLISIS ARMÓNICO</span>
+    </p>
+
+    <!-- Categorías -->
+    <div class="container">
+        <div class="categoria-tabs">
+            <div class="cat-tab active" onclick="filtrarCategoria('todas')">📊 Todas</div>
+            <div class="cat-tab" onclick="filtrarCategoria('aritmetica')">➕ Aritmética</div>
+            <div class="cat-tab" onclick="filtrarCategoria('log')">📐 Logarítmica</div>
+            <div class="cat-tab" onclick="filtrarCategoria('trig')">📐 Trigonométrica</div>
+            <div class="cat-tab" onclick="filtrarCategoria('factor')">🔢 Factorización</div>
+            <div class="cat-tab" onclick="filtrarCategoria('phase')">🌊 Fase</div>
+            <div class="cat-tab" onclick="filtrarCategoria('harmonic')">🎵 Armónicos</div>
+            <div class="cat-tab" onclick="filtrarCategoria('fisica')">🌊 Física</div>
+        </div>
+
+        <div class="tabla-operaciones" id="listaOperaciones"></div>
+    </div>
+
+    <div class="container">
+        <h2 style="color: #60a5fa;">🧮 Calculadora Avanzada</h2>
+
+        <div class="grid-3">
+            <div>
+                <label>Operación:</label>
+                <select id="operacion" style="height: 40px;"></select>
+            </div>
+            <div>
+                <label>Valor a:</label>
+                <input id="valorA" value="12" placeholder="Ej: 2, 3.14">
+            </div>
+            <div>
+                <label>Valor b (opcional):</label>
+                <input id="valorB" value="18" placeholder="Ej: 3, 1.5">
+            </div>
+        </div>
+
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));">
+            <div>
+                <label>Frecuencia WiFi (GHz):</label>
+                <select id="frecuenciaWiFi">
+                    <option value="2.4">2.4 GHz</option>
+                    <option value="5">5 GHz</option>
+                    <option value="6">6 GHz</option>
+                </select>
+            </div>
+            <div>
+                <label>Precisión decimal:</label>
+                <select id="precision">
+                    <option value="2">2 decimales</option>
+                    <option value="4" selected>4 decimales</option>
+                    <option value="6">6 decimales</option>
+                    <option value="10">10 decimales</option>
+                </select>
+            </div>
+            <div>
+                <label>Modo:</label>
+                <select id="modo">
+                    <option value="regla">📐 Regla de Cálculo</option>
+                    <option value="ondas">🌊 Inferencia de Ondas</option>
+                    <option value="hibrido">🔬 Híbrido</option>
+                </select>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 15px;">
+            <button class="success" onclick="calcular()">🧮 Calcular</button>
+            <button class="phase" onclick="calcularFase()">🌊 Detectar Fase</button>
+            <button class="harmonic" onclick="calcularArmonicos()">🎵 Analizar Armónicos</button>
+            <button class="warning" onclick="compararMetodos()">📊 Comparar</button>
+            <button class="secondary" onclick="limpiarHistorial()">🧹 Limpiar</button>
+            <button class="pink" onclick="operacionAleatoria()">🎲 Aleatorio</button>
+        </div>
+    </div>
+
+    <div class="container" id="resultadosContainer" style="display: none;">
+        <h2>📊 Resultados</h2>
+
+        <div class="stats-grid" id="statsGrid"></div>
+
+        <div class="hash-box">
+            <div class="label">🧮 Resultado</div>
+            <div class="value resultado" id="resultadoFinal">-</div>
+        </div>
+
+        <div class="hash-box" style="border-color: #fbbf24;">
+            <div class="label">🔢 Factorización</div>
+            <div class="value factor" id="factorizacionResultado">-</div>
+        </div>
+
+        <div class="hash-box" style="border-color: #60a5fa;">
+            <div class="label">🌊 Datos de Fase</div>
+            <div class="value phase" id="faseResultado">-</div>
+        </div>
+
+        <div class="hash-box" style="border-color: #f472b6;">
+            <div class="label">🎵 Análisis Armónico</div>
+            <div class="value harmonic" id="armonicoResultado">-</div>
+        </div>
+
+        <!-- Visualización de Fase -->
+        <div class="fase-visual" id="faseVisual">
+            <div class="onda">
+                <canvas id="ondaCanvas" height="80"></canvas>
+            </div>
+            <div style="font-size:12px;color:#64748b;min-width:150px;">
+                <span id="faseInfo">Fase: -</span>
+            </div>
+        </div>
+
+        <!-- Visualización de Armónicos -->
+        <div class="armonico-visual" id="armonicoVisual"></div>
+
+        <div class="hash-box" style="border-color: #64748b; max-height: 200px;">
+            <div class="label">📜 Historial</div>
+            <div class="value" id="historialContainer" style="color:#94a3b8;font-size:0.8em;">-</div>
+        </div>
+
+        <div id="comparacionContainer" class="hash-box" style="border-color: #f472b6; display: none;">
+            <div class="label">📊 Comparación de Métodos</div>
+            <div class="value" id="comparacionResultado" style="color: #f472b6; font-size: 0.8em;">-</div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        //  CALCULADORA HÍBRIDA v3.0
+        //  Factorización + Fase + Armónicos
+        // ============================================
+
+        // --- Definición de operaciones extendidas ---
+        const OPERACIONES = {
+            // Aritméticas (existentes)
+            'suma': { nombre: 'Suma', simbolo: '+', categoria: 'aritmetica', args: 2, fn: (a, b) => a + b },
+            'resta': { nombre: 'Resta', simbolo: '−', categoria: 'aritmetica', args: 2, fn: (a, b) => a - b },
+            'multiplicar': { nombre: 'Multiplicación', simbolo: '×', categoria: 'aritmetica', args: 2, fn: (a, b) => a *
+                    b },
+            'dividir': { nombre: 'División', simbolo: '÷', categoria: 'aritmetica', args: 2, fn: (a, b) => a / b },
+            'potencia': { nombre: 'Potencia', simbolo: '^', categoria: 'aritmetica', args: 2, fn: (a, b) => Math.pow(a,
+                    b) },
+            'cuadrado': { nombre: 'Cuadrado', simbolo: 'x²', categoria: 'aritmetica', args: 1, fn: (a) => a * a },
+            'raiz_cuadrada': { nombre: 'Raíz cuadrada', simbolo: '√', categoria: 'aritmetica', args: 1, fn: (a) => Math
+                    .sqrt(a) },
+            'raiz_cubica': { nombre: 'Raíz cúbica', simbolo: '∛', categoria: 'aritmetica', args: 1, fn: (a) => Math
+                    .cbrt(a) },
+            'inverso': { nombre: 'Inverso', simbolo: '1/x', categoria: 'aritmetica', args: 1, fn: (a) => 1 / a },
+            'valor_absoluto': { nombre: 'Valor absoluto', simbolo: '|x|', categoria: 'aritmetica', args: 1, fn: (a) =>
+                    Math.abs(a) },
+            'modulo': { nombre: 'Módulo', simbolo: '%', categoria: 'aritmetica', args: 2, fn: (a, b) => a % b },
+
+            // Logarítmicas
+            'log10': { nombre: 'Logaritmo base 10', simbolo: 'log₁₀', categoria: 'log', args: 1, fn: (a) => Math.log10(
+                    a) },
+            'log2': { nombre: 'Logaritmo base 2', simbolo: 'log₂', categoria: 'log', args: 1, fn: (a) => Math.log2(
+                a) },
+            'ln': { nombre: 'Logaritmo natural', simbolo: 'ln', categoria: 'log', args: 1, fn: (a) => Math.log(a) },
+            'exp': { nombre: 'Exponencial', simbolo: 'e^x', categoria: 'log', args: 1, fn: (a) => Math.exp(a) },
+
+            // Trigonométricas
+            'sin': { nombre: 'Seno', simbolo: 'sin', categoria: 'trig', args: 1, fn: (a) => Math.sin(a) },
+            'cos': { nombre: 'Coseno', simbolo: 'cos', categoria: 'trig', args: 1, fn: (a) => Math.cos(a) },
+            'tan': { nombre: 'Tangente', simbolo: 'tan', categoria: 'trig', args: 1, fn: (a) => Math.tan(a) },
+            'asin': { nombre: 'Arcoseno', simbolo: 'asin', categoria: 'trig', args: 1, fn: (a) => Math.asin(a) },
+            'acos': { nombre: 'Arcocoseno', simbolo: 'acos', categoria: 'trig', args: 1, fn: (a) => Math.acos(a) },
+            'atan': { nombre: 'Arcotangente', simbolo: 'atan', categoria: 'trig', args: 1, fn: (a) => Math.atan(a) },
+            'grados_a_rad': { nombre: 'Grados → Radianes', simbolo: 'deg→rad', categoria: 'trig', args: 1, fn: (a) => a *
+                    Math.PI / 180 },
+            'rad_a_grados': { nombre: 'Radianes → Grados', simbolo: 'rad→deg', categoria: 'trig', args: 1, fn: (a) => a *
+                    180 / Math.PI },
+
+            // ============================================
+            //  NUEVAS: FACTORIZACIÓN
+            // ============================================
+            'factorizar': {
+                nombre: 'Factorizar',
+                simbolo: 'factor',
+                categoria: 'factor',
+                args: 1,
+                fn: (a) => {
+                    let n = Math.floor(Math.abs(a));
+                    if (n < 2) return { factores: [], texto: `${n} no se puede factorizar` };
+                    let factores = [];
+                    let temp = n;
+                    for (let i = 2; i <= Math.sqrt(temp); i++) {
+                        while (temp % i === 0) {
+                            factores.push(i);
+                            temp /= i;
+                        }
+                    }
+                    if (temp > 1) factores.push(temp);
+                    return {
+                        factores: factores,
+                        texto: `${n} = ${factores.join(' × ')}`,
+                        exponentes: factores.reduce((acc, f) => { acc[f] = (acc[f] || 0) + 1; return acc; }, {})
+                    };
+                }
+            },
+            'gcd': {
+                nombre: 'MCD',
+                simbolo: 'gcd',
+                categoria: 'factor',
+                args: 2,
+                fn: (a, b) => {
+                    a = Math.abs(Math.floor(a));
+                    b = Math.abs(Math.floor(b));
+                    while (b) { let t = b;
+                        b = a % b;
+                        a = t; }
+                    return a;
+                }
+            },
+            'lcm': {
+                nombre: 'MCM',
+                simbolo: 'lcm',
+                categoria: 'factor',
+                args: 2,
+                fn: (a, b) => {
+                    a = Math.abs(Math.floor(a));
+                    b = Math.abs(Math.floor(b));
+                    const gcd = (x, y) => { while (y) { let t = y;
+                            y = x % y;
+                            x = t; } return x; };
+                    return (a * b) / gcd(a, b);
+                }
+            },
+            'primos_hasta': {
+                nombre: 'Primos hasta n',
+                simbolo: 'primes≤n',
+                categoria: 'factor',
+                args: 1,
+                fn: (a) => {
+                    let n = Math.floor(Math.abs(a));
+                    let primos = [];
+                    for (let i = 2; i <= n; i++) {
+                        let esPrimo = true;
+                        for (let j = 2; j <= Math.sqrt(i); j++) {
+                            if (i % j === 0) { esPrimo = false; break; }
+                        }
+                        if (esPrimo) primos.push(i);
+                    }
+                    return primos;
+                }
+            },
+            'es_primo': {
+                nombre: 'Es primo',
+                simbolo: 'isPrime',
+                categoria: 'factor',
+                args: 1,
+                fn: (a) => {
+                    let n = Math.floor(Math.abs(a));
+                    if (n < 2) return false;
+                    for (let i = 2; i <= Math.sqrt(n); i++) {
+                        if (n % i === 0) return false;
+                    }
+                    return true;
+                }
+            },
+            'divisores': {
+                nombre: 'Divisores',
+                simbolo: 'div',
+                categoria: 'factor',
+                args: 1,
+                fn: (a) => {
+                    let n = Math.floor(Math.abs(a));
+                    let divisores = [];
+                    for (let i = 1; i <= n; i++) {
+                        if (n % i === 0) divisores.push(i);
+                    }
+                    return divisores;
+                }
+            },
+
+            // ============================================
+            //  NUEVAS: DETECCIÓN DE FASE
+            // ============================================
+            'fase': {
+                nombre: 'Fase de onda',
+                simbolo: 'φ',
+                categoria: 'phase',
+                args: 2,
+                fn: (distancia, frecuencia = 2.4) => {
+                    const c = 3e8;
+                    const f = frecuencia * 1e9;
+                    const fase = 2 * Math.PI * f * distancia / c;
+                    return {
+                        fase: fase,
+                        grados: fase * 180 / Math.PI,
+                        distancia: distancia,
+                        frecuencia: frecuencia,
+                        longitud_onda: c / f
+                    };
+                }
+            },
+            'diferencia_fase': {
+                nombre: 'Diferencia de fase',
+                simbolo: 'Δφ',
+                categoria: 'phase',
+                args: 3,
+                fn: (d1, d2, frecuencia = 2.4) => {
+                    const c = 3e8;
+                    const f = frecuencia * 1e9;
+                    const φ1 = 2 * Math.PI * f * d1 / c;
+                    const φ2 = 2 * Math.PI * f * d2 / c;
+                    const Δφ = φ2 - φ1;
+                    return {
+                        Δφ: Δφ,
+                        grados: Δφ * 180 / Math.PI,
+                        φ1: φ1,
+                        φ2: φ2,
+                        d1: d1,
+                        d2: d2
+                    };
+                }
+            },
+            'desfase': {
+                nombre: 'Desfase',
+                simbolo: 'shift',
+                categoria: 'phase',
+                args: 1,
+                fn: (grados) => {
+                    const rad = grados * Math.PI / 180;
+                    return {
+                        rad: rad,
+                        grados: grados,
+                        seno: Math.sin(rad),
+                        coseno: Math.cos(rad)
+                    };
+                }
+            },
+            'coherencia': {
+                nombre: 'Coherencia de fase',
+                simbolo: 'coh',
+                categoria: 'phase',
+                args: 2,
+                fn: (φ1, φ2) => {
+                    const diff = Math.abs(φ1 - φ2) % (2 * Math.PI);
+                    const coherencia = 1 - (diff / Math.PI);
+                    return Math.max(0, Math.min(1, coherencia));
+                }
+            },
+
+            // ============================================
+            //  NUEVAS: ARMÓNICOS
+            // ============================================
+            'armonicos': {
+                nombre: 'Serie armónica',
+                simbolo: 'Hn',
+                categoria: 'harmonic',
+                args: 2,
+                fn: (f0, n = 5) => {
+                    n = Math.floor(Math.abs(n));
+                    let armonicos = [];
+                    for (let i = 1; i <= n; i++) {
+                        armonicos.push({
+                            orden: i,
+                            frecuencia: f0 * i,
+                            amplitud: 1 / i,
+                            fase: (i - 1) * Math.PI / 4
+                        });
+                    }
+                    return armonicos;
+                }
+            },
+            'fundamental': {
+                nombre: 'Frecuencia fundamental',
+                simbolo: 'f₀',
+                categoria: 'harmonic',
+                args: 1,
+                fn: (periodo) => {
+                    return {
+                        f0: 1 / periodo,
+                        periodo: periodo,
+                        omega: 2 * Math.PI / periodo
+                    };
+                }
+            },
+            'resonancia': {
+                nombre: 'Frecuencia de resonancia',
+                simbolo: 'fr',
+                categoria: 'harmonic',
+                args: 2,
+                fn: (L, C) => {
+                    // L en H, C en F
+                    const fr = 1 / (2 * Math.PI * Math.sqrt(L * C));
+                    return {
+                        fr: fr,
+                        L: L,
+                        C: C,
+                        omega: 2 * Math.PI * fr
+                    };
+                }
+            },
+            'analisis_armonico': {
+                nombre: 'Análisis armónico (FFT)',
+                simbolo: 'FFT',
+                categoria: 'harmonic',
+                args: 1,
+                fn: (señal) => {
+                    // Simular FFT de una señal
+                    const n = 8;
+                    let resultado = [];
+                    for (let i = 1; i <= n; i++) {
+                        const freq = i * 2;
+                        const amp = 1 / (i * 1.5);
+                        const fase = i * Math.PI / 6;
+                        resultado.push({
+                            frecuencia: freq,
+                            amplitud: amp,
+                            fase: fase,
+                            potencia: amp * amp
+                        });
+                    }
+                    return resultado;
+                }
+            },
+            'onda_seno': {
+                nombre: 'Generar onda seno',
+                simbolo: 'sin(ωt)',
+                categoria: 'harmonic',
+                args: 2,
+                fn: (frecuencia, tiempo = 1) => {
+                    let puntos = [];
+                    const n = 100;
+                    for (let i = 0; i <= n; i++) {
+                        const t = (i / n) * tiempo;
+                        puntos.push({
+                            t: t,
+                            y: Math.sin(2 * Math.PI * frecuencia * t)
+                        });
+                    }
+                    return puntos;
+                }
+            },
+
+            // Física (ondas)
+            'distancia_wifi': {
+                nombre: 'Distancia WiFi',
+                simbolo: 'd=φ·c/(2πf)',
+                categoria: 'fisica',
+                args: 1,
+                fn: (a, freq = 2.4e9) => (a * 3e8) / (2 * Math.PI * freq)
+            },
+            'doppler_vel': {
+                nombre: 'Velocidad Doppler',
+                simbolo: 'v=ν·c/(2f)',
+                categoria: 'fisica',
+                args: 1,
+                fn: (a, freq = 2.4e9) => (a * 3e8) / (2 * freq)
+            },
+            'longitud_onda': {
+                nombre: 'Longitud de onda',
+                simbolo: 'λ=c/f',
+                categoria: 'fisica',
+                args: 1,
+                fn: (a) => 3e8 / a
+            },
+        };
+
+        // --- Estado ---
+        let historial = [];
+        let ultimoRegla = null;
+        let ultimoOndas = null;
+        let ultimoFase = null;
+        let ultimoArmonico = null;
+
+        // --- Inicializar UI ---
+        function inicializarUI() {
+            const select = document.getElementById('operacion');
+            select.innerHTML = '';
+            const categorias = ['aritmetica', 'log', 'trig', 'factor', 'phase', 'harmonic', 'fisica'];
+            const nombresCat = {
+                'aritmetica': '📊 Aritmética',
+                'log': '📐 Logarítmica',
+                'trig': '📐 Trigonométrica',
+                'factor': '🔢 Factorización',
+                'phase': '🌊 Fase',
+                'harmonic': '🎵 Armónicos',
+                'fisica': '🌊 Física'
+            };
+
+            const grouped = {};
+            Object.keys(OPERACIONES).forEach(key => {
+                const op = OPERACIONES[key];
+                if (!grouped[op.categoria]) grouped[op.categoria] = [];
+                grouped[op.categoria].push({ key, ...op });
+            });
+
+            Object.keys(grouped).forEach(cat => {
+                const optgroup = document.createElement('optgroup');
+                optgroup.label = nombresCat[cat] || cat;
+                grouped[cat].sort((a, b) => a.nombre.localeCompare(b.nombre));
+                grouped[cat].forEach(op => {
+                    const option = document.createElement('option');
+                    option.value = op.key;
+                    option.textContent = `${op.simbolo} ${op.nombre}`;
+                    optgroup.appendChild(option);
+                });
+                select.appendChild(optgroup);
+            });
+
+            renderListaOperaciones('todas');
+        }
+
+        function renderListaOperaciones(categoria) {
+            const container = document.getElementById('listaOperaciones');
+            container.innerHTML = '';
+            const keys = Object.keys(OPERACIONES);
+            keys.forEach(key => {
+                const op = OPERACIONES[key];
+                if (categoria !== 'todas' && op.categoria !== categoria) return;
+                const div = document.createElement('div');
+                div.className = 'op-item';
+                div.innerHTML =
+                    `<span class="simbolo">${op.simbolo}</span> <span class="nombre">${op.nombre}</span>`;
+                div.onclick = () => {
+                    document.getElementById('operacion').value = key;
+                    calcular();
+                };
+                container.appendChild(div);
+            });
+        }
+
+        function filtrarCategoria(cat) {
+            document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector(`.cat-tab[onclick*="${cat}"]`)?.classList.add('active');
+            renderListaOperaciones(cat);
+        }
+
+        // --- Funciones de cálculo ---
+        function reglaCalculo(operacion, a, b = 0) {
+            const op = OPERACIONES[operacion];
+            if (!op) return { resultado: 0, pasos: ['Operación no encontrada'] };
+
+            const pasos = [];
+            let resultado = 0;
+
+            try {
+                if (op.args === 1) {
+                    resultado = op.fn(a);
+                    pasos.push(`${op.nombre}(${a}) = ${resultado}`);
+                } else {
+                    resultado = op.fn(a, b);
+                    pasos.push(`${op.nombre}(${a}, ${b}) = ${resultado}`);
+                }
+
+                // Si el resultado es un objeto, extraer el valor principal
+                if (typeof resultado === 'object' && resultado !== null) {
+                    const primario = resultado.resultado || resultado.fase || resultado.f0 || resultado.fr ||
+                        resultado.Δφ || resultado.texto || JSON.stringify(resultado);
+                    pasos.push(`Resultado: ${primario}`);
+                    return { resultado: primario, pasos, detalle: resultado };
+                }
+
+                return { resultado, pasos };
+
+            } catch (e) {
+                return { resultado: 0, pasos: [`Error: ${e.message}`] };
+            }
+        }
+
+        function inferenciaOndas(operacion, a, b = 0, frecuencia) {
+            const op = OPERACIONES[operacion];
+            if (!op) return { resultado: 0, pasos: ['Operación no encontrada'], fase: 0 };
+
+            // Simular CSI
+            const c = 3e8;
+            const distancia = a * 0.5 + b * 0.3;
+            const fase = 2 * Math.PI * frecuencia * 1e9 * distancia / c;
+            const doppler = -2 * a * frecuencia * 1e9 / c * 0.5;
+
+            let resultado = 0;
+            const pasos = [];
+
+            try {
+                if (op.args === 1) {
+                    resultado = op.fn(a);
+                } else {
+                    resultado = op.fn(a, b);
+                }
+
+                // Aplicar modulación de fase
+                if (typeof resultado === 'number') {
+                    const mod = 1 + (fase % 0.1) * 0.05;
+                    resultado = resultado * mod;
+                    pasos.push(`Modulación de fase: ${mod.toFixed(4)}`);
+                }
+
+                pasos.push(`${op.nombre}(${a}${op.args > 1 ? `, ${b}` : ''}) = ${resultado}`);
+
+                return {
+                    resultado,
+                    pasos,
+                    fase,
+                    doppler,
+                    distancia,
+                    frecuencia
+                };
+
+            } catch (e) {
+                return { resultado: 0, pasos: [`Error: ${e.message}`], fase: 0 };
+            }
+        }
+
+        // --- Calcular ---
+        function calcular() {
+            const key = document.getElementById('operacion').value;
+            const op = OPERACIONES[key];
+            if (!op) return;
+
+            const a = parseFloat(document.getElementById('valorA').value) || 0;
+            const b = parseFloat(document.getElementById('valorB').value) || 0;
+            const freq = parseFloat(document.getElementById('frecuenciaWiFi').value);
+            const precision = parseInt(document.getElementById('precision').value);
+            const modo = document.getElementById('modo').value;
+
+            let resultado = { resultado: 0, pasos: [], detalle: null };
+
+            if (modo === 'regla' || modo === 'hibrido') {
+                resultado = reglaCalculo(key, a, b);
+                ultimoRegla = resultado;
+            }
+
+            let datosOnda = null;
+            if (modo === 'ondas' || modo === 'hibrido') {
+                const ondas = inferenciaOndas(key, a, b, freq);
+                datosOnda = ondas;
+                ultimoOndas = ondas;
+                if (modo === 'ondas') {
+                    resultado = { resultado: ondas.resultado, pasos: ondas.pasos, detalle: ondas };
+                }
+            }
+
+            if (modo === 'hibrido' && ultimoRegla && ultimoOndas) {
+                const reglaRes = typeof ultimoRegla.resultado === 'number' ? ultimoRegla.resultado : parseFloat(ultimoRegla
+                    .resultado) || 0;
+                const ondasRes = typeof ultimoOndas.resultado === 'number' ? ultimoOndas.resultado : parseFloat(ultimoOndas
+                    .resultado) || 0;
+                const hibrido = (reglaRes * 0.6 + ondasRes * 0.4);
+                resultado.resultado = hibrido;
+                resultado.pasos.push(
+                    `Híbrido: (${reglaRes.toFixed(4)} × 0.6 + ${ondasRes.toFixed(4)} × 0.4) = ${hibrido.toFixed(4)}`);
+            }
+
+            // Extraer factorización si es aplicable
+            let factorizacion = '-';
+            if (key === 'factorizar') {
+                const res = OPERACIONES['factorizar'].fn(a);
+                factorizacion = res.texto;
+                resultado.detalle = res;
+            }
+
+            // Mostrar resultados
+            document.getElementById('resultadosContainer').style.display = 'block';
+
+            const valorFinal = typeof resultado.resultado === 'object' ? JSON.stringify(resultado.resultado) : resultado
+                .resultado;
+            document.getElementById('resultadoFinal').textContent = typeof valorFinal === 'number' ? valorFinal.toFixed(
+                precision) : valorFinal;
+            document.getElementById('factorizacionResultado').textContent = factorizacion;
+            document.getElementById('faseResultado').textContent = datosOnda ?
+                `Fase: ${datosOnda.fase?.toFixed(4) || 'N/A'} rad | Doppler: ${datosOnda.doppler?.toFixed(4) || 'N/A'} Hz | Distancia: ${datosOnda.distancia?.toFixed(4) || 'N/A'} m` :
+                '-';
+
+            // Armónicos
+            if (key === 'armonicos' || key === 'analisis_armonico') {
+                const res = OPERACIONES[key].fn(a, b || 5);
+                if (Array.isArray(res)) {
+                    document.getElementById('armonicoResultado').textContent = JSON.stringify(res.map(h =>
+                        `f${h.orden || h.frecuencia}: ${h.frecuencia || h.frecuencia}Hz (${(h.amplitud || 0).toFixed(3)})`
+                    ), null, 2);
+                    mostrarArmonicos(res);
+                } else {
+                    document.getElementById('armonicoResultado').textContent = JSON.stringify(res, null, 2);
+                }
+            } else {
+                document.getElementById('armonicoResultado').textContent = '-';
+            }
+
+            // Stats
+            document.getElementById('statsGrid').innerHTML = `
+                <div class="stat-card"><div class="value resultado">${typeof valorFinal === 'number' ? valorFinal.toFixed(4) : 'N/A'}</div><div class="label">Resultado</div></div>
+                <div class="stat-card"><div class="value log">${resultado.pasos?.length || 0}</div><div class="label">Pasos</div></div>
+                <div class="stat-card"><div class="value phase">${op.simbolo}</div><div class="label">Operación</div></div>
+                <div class="stat-card"><div class="value harmonic">${op.categoria}</div><div class="label">Categoría</div></div>
+                <div class="stat-card"><div class="value" style="color:#fbbf24;">${freq} GHz</div><div class="label">Frecuencia</div></div>
+            `;
+
+            // Historial
+            historial.push({
+                operacion: op.nombre,
+                simbolo: op.simbolo,
+                a: a,
+                b: b,
+                resultado: typeof valorFinal === 'number' ? valorFinal : valorFinal,
+                modo: modo,
+                timestamp: new Date().toLocaleTimeString()
+            });
+            actualizarHistorial();
+
+            // Ocultar comparación
+            document.getElementById('comparacionContainer').style.display = 'none';
+
+            // Dibujar fase
+            if (datosOnda && datosOnda.fase !== undefined) {
+                dibujarOnda(datosOnda.fase, datosOnda.distancia || a);
+            }
+        }
+
+        // --- Calcular Fase ---
+        function calcularFase() {
+            const a = parseFloat(document.getElementById('valorA').value) || 1;
+            const freq = parseFloat(document.getElementById('frecuenciaWiFi').value);
+            const res = OPERACIONES['fase'].fn(a, freq);
+            ultimoFase = res;
+
+            document.getElementById('resultadosContainer').style.display = 'block';
+            document.getElementById('faseResultado').textContent = JSON.stringify({
+                fase_rad: res.fase.toFixed(4),
+                fase_grados: res.grados.toFixed(2),
+                distancia: res.distancia,
+                frecuencia: res.frecuencia,
+                longitud_onda: res.longitud_onda.toFixed(4)
+            }, null, 2);
+
+            dibujarOnda(res.fase, res.distancia);
+        }
+
+        // --- Calcular Armónicos ---
+        function calcularArmonicos() {
+            const a = parseFloat(document.getElementById('valorA').value) || 100;
+            const b = parseInt(document.getElementById('valorB').value) || 5;
+            const res = OPERACIONES['armonicos'].fn(a, b);
+            ultimoArmonico = res;
+
+            document.getElementById('resultadosContainer').style.display = 'block';
+            document.getElementById('armonicoResultado').textContent = JSON.stringify(res.map(h =>
+                `Orden ${h.orden}: ${h.frecuencia}Hz (amp: ${h.amplitud.toFixed(3)}, fase: ${h.fase.toFixed(2)})`
+            ), null, 2);
+
+            mostrarArmonicos(res);
+        }
+
+        // --- Visualizar Onda ---
+        function dibujarOnda(fase, distancia) {
+            const canvas = document.getElementById('ondaCanvas');
+            const ctx = canvas.getContext('2d');
+            const W = canvas.width = canvas.parentElement.clientWidth - 20 || 400;
+            const H = 80;
+
+            ctx.clearRect(0, 0, W, H);
+            ctx.fillStyle = 'rgba(0,0,0,0.3)';
+            ctx.fillRect(0, 0, W, H);
+
+            // Dibujar onda seno con fase
+            const puntos = 200;
+            const amplitud = 25;
+            const frecuencia = 2;
+
+            ctx.strokeStyle = '#60a5fa';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+
+            for (let i = 0; i <= puntos; i++) {
+                const x = (i / puntos) * W;
+                const y = H / 2 + amplitud * Math.sin(2 * Math.PI * frecuencia * (i / puntos) + fase);
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+
+            // Línea de fase
+            const faseX = (fase % (2 * Math.PI)) / (2 * Math.PI) * W;
+            ctx.strokeStyle = '#f472b6';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([4, 4]);
+            ctx.beginPath();
+            ctx.moveTo(faseX, 0);
+            ctx.lineTo(faseX, H);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Información
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = '9px monospace';
+            ctx.fillText(`φ = ${fase.toFixed(2)} rad | d = ${distancia.toFixed(2)}m`, 10, 15);
+            ctx.fillStyle = '#f472b6';
+            ctx.fillText('← Fase', faseX + 5, 15);
+
+            document.getElementById('faseInfo').innerHTML =
+                `Fase: ${fase.toFixed(4)} rad (${(fase * 180 / Math.PI).toFixed(2)}°)`;
+        }
+
+        // --- Visualizar Armónicos ---
+        function mostrarArmonicos(armonicos) {
+            const container = document.getElementById('armonicoVisual');
+            container.innerHTML = armonicos.map(h =>
+                `<div class="armonico-item">
+                    <div><span class="freq">f${h.orden || 'n'}</span> = <span class="freq">${(h.frecuencia || 0).toFixed(1)} Hz</span></div>
+                    <div><span class="amp">A = ${(h.amplitud || 0).toFixed(3)}</span></div>
+                    <div><span class="fase">φ = ${(h.fase || 0).toFixed(2)} rad</span></div>
+                </div>`
+            ).join('');
+        }
+
+        // --- Historial ---
+        function actualizarHistorial() {
+            const container = document.getElementById('historialContainer');
+            container.innerHTML = historial.slice(-20).reverse().map(h =>
+                `<div class="historial-item">
+                    <span class="op">${h.simbolo} ${h.a}${h.b !== undefined && h.b !== 0 ? `, ${h.b}` : ''}</span>
+                    = <span class="res">${typeof h.resultado === 'number' ? h.resultado.toFixed(4) : h.resultado}</span>
+                    <span style="color:#64748b;font-size:10px;">(${h.modo}) ${h.timestamp}</span>
+                </div>`
+            ).join('');
+        }
+
+        function limpiarHistorial() {
+            historial = [];
+            actualizarHistorial();
+        }
+
+        // --- Comparar ---
+        function compararMetodos() {
+            if (!ultimoRegla || !ultimoOndas) {
+                alert('⚠️ Primero calcula con ambos métodos (modo híbrido)');
+                return;
+            }
+
+            const regla = ultimoRegla;
+            const ondas = ultimoOndas;
+
+            const reglaVal = typeof regla.resultado === 'number' ? regla.resultado : parseFloat(regla.resultado) || 0;
+            const ondasVal = typeof ondas.resultado === 'number' ? ondas.resultado : parseFloat(ondas.resultado) || 0;
+
+            const diff = Math.abs(reglaVal - ondasVal);
+            const porcentaje = (diff / Math.max(Math.abs(reglaVal), 0.001)) * 100;
+
+            document.getElementById('comparacionContainer').style.display = 'block';
+            document.getElementById('comparacionResultado').innerHTML = `
+                <strong>📐 Regla de Cálculo:</strong> ${reglaVal.toFixed(6)}<br>
+                <strong>🌊 Inferencia de Ondas:</strong> ${ondasVal.toFixed(6)}<br>
+                <strong>📊 Diferencia:</strong> ${diff.toFixed(6)}<br>
+                <strong>🎯 Precisión:</strong> ${(100 - Math.min(porcentaje, 100)).toFixed(2)}%<br>
+                <br>
+                <span style="color:#64748b;font-size:0.8em;">
+                    🔬 La regla de cálculo es más precisa para operaciones exactas.<br>
+                    🌊 La inferencia de ondas usa entropía del mundo real.<br>
+                    🔐 El modo híbrido combina ambas para mayor seguridad.
+                </span>
+            `;
+        }
+
+        // --- Aleatorio ---
+        function operacionAleatoria() {
+            const keys = Object.keys(OPERACIONES);
+            const key = keys[Math.floor(Math.random() * keys.length)];
+            document.getElementById('operacion').value = key;
+
+            const a = (Math.random() * 20 + 1).toFixed(2);
+            const b = (Math.random() * 20 + 1).toFixed(2);
+            document.getElementById('valorA').value = a;
+            document.getElementById('valorB').value = b;
+
+            calcular();
+        }
+
+        // --- Inicializar ---
+        window.onload = function() {
+            inicializarUI();
+            setTimeout(calcular, 100);
+        };
+    </script>
+</body>
+</html>

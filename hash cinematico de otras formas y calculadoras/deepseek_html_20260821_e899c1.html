@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hash Parametrizable Reversible v4.0-R</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+        .container {
+            background: #1e293b;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+            border: 1px solid #334155;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #94a3b8;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        input,
+        select {
+            width: 100%;
+            padding: 8px 12px;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #e2e8f0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        input:focus,
+        select:focus {
+            border-color: #60a5fa;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+        }
+        button {
+            background: linear-gradient(135deg, #3b82f6, #7c3aed);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            margin: 5px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+        }
+        button.success {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+        }
+        button.warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        button.secondary {
+            background: linear-gradient(135deg, #64748b, #475569);
+        }
+        button.reversible {
+            background: linear-gradient(135deg, #06b6d4, #22c55e);
+        }
+        .hash-box {
+            background: #0f172a;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            margin: 15px 0;
+            border: 1px solid #334155;
+            position: relative;
+            overflow: hidden;
+        }
+        .hash-box .label {
+            color: #64748b;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .hash-box .value {
+            font-size: 1em;
+            margin-top: 8px;
+            word-break: break-all;
+        }
+        .hash-box .value.hash {
+            color: #60a5fa;
+        }
+        .hash-box .value.metadata {
+            color: #34d399;
+            font-size: 0.8em;
+        }
+        .hash-box .value.reversible {
+            background: linear-gradient(90deg, #60a5fa, #34d399, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .info {
+            background: #0f172a;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
+            margin: 15px 0;
+        }
+        .info.success {
+            border-left-color: #22c55e;
+        }
+        .info.danger {
+            border-left-color: #ef4444;
+        }
+        .info.reversible {
+            border-left-color: #06b6d4;
+        }
+        .param-card {
+            background: #0f172a;
+            padding: 5px 12px;
+            border-radius: 6px;
+            display: inline-block;
+            margin: 3px;
+            font-size: 11px;
+            border: 1px solid #334155;
+            font-family: 'Courier New', monospace;
+        }
+        .param-card .key {
+            color: #60a5fa;
+        }
+        .param-card .value {
+            color: #34d399;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 8px;
+            margin: 15px 0;
+        }
+        .stat-card {
+            background: #0f172a;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #334155;
+        }
+        .stat-card .value {
+            font-size: 16px;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+        .stat-card .label {
+            font-size: 8px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 3px;
+        }
+        .stat-card .value.hash {
+            color: #60a5fa;
+        }
+        .stat-card .value.metadata {
+            color: #34d399;
+        }
+        .hidden {
+            display: none;
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 14px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .badge.reversible {
+            background: linear-gradient(135deg, #06b6d4, #22c55e);
+            color: white;
+        }
+        .badge.hash {
+            background: linear-gradient(135deg, #3b82f6, #7c3aed);
+            color: white;
+        }
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px;
+            background: #0f172a;
+            border-radius: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+            border: 1px solid #334155;
+        }
+        .flow-diagram .box {
+            padding: 8px 16px;
+            background: #1e293b;
+            border-radius: 6px;
+            border: 1px solid #334155;
+            font-size: 11px;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+        }
+        .flow-diagram .arrow {
+            color: #64748b;
+            font-size: 16px;
+        }
+        .flow-diagram .box.input {
+            border-color: #34d399;
+        }
+        .flow-diagram .box.params {
+            border-color: #f472b6;
+        }
+        .flow-diagram .box.hash {
+            border-color: #60a5fa;
+        }
+        .flow-diagram .box.metadata {
+            border-color: #06b6d4;
+        }
+        .flow-diagram .box.reversible {
+            border-color: #22c55e;
+        }
+        .metadata-container {
+            background: #0a0a15;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #1a1a3e;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .metadata-container .label {
+            color: #64748b;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .metadata-container .data {
+            color: #34d399;
+            margin-top: 5px;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; background: linear-gradient(90deg, #60a5fa, #34d399, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+        🔐 Hash Parametrizable Reversible v4.0-R
+    </h1>
+    <p style="text-align: center; color: #94a3b8; margin-top: -10px;">
+        <span class="badge reversible">🔁 REVERSIBLE CON METADATOS</span>
+        <span class="badge hash" style="margin-left: 10px;">🔐 PARAMETRIZABLE</span>
+    </p>
+
+    <div class="flow-diagram">
+        <div class="box input">📝 Input<br><span style="color:#34d399;">"10011"</span></div>
+        <span class="arrow">+</span>
+        <div class="box params">🔑 Parámetros<br><span style="color:#f472b6;">{factor1, factor0}</span></div>
+        <span class="arrow">→</span>
+        <div class="box hash">🔐 Hash<br><span style="color:#60a5fa;">a3f1c7...</span></div>
+        <span class="arrow">+</span>
+        <div class="box metadata">📊 Metadatos<br><span style="color:#06b6d4;">{tiempos, choques}</span></div>
+        <span class="arrow">→</span>
+        <div class="box reversible">🔁 Reversible<br><span style="color:#22c55e;">con parámetros</span></div>
+    </div>
+
+    <div class="container">
+        <h2 style="color: #60a5fa;">⚙️ Parámetros (Clave)</h2>
+
+        <div class="grid">
+            <div>
+                <label>📝 Input (bits):</label>
+                <input id="inputBits" value="10011" placeholder="Ej: 10011">
+            </div>
+            <div>
+                <label>⏳ Pasadas:</label>
+                <input id="pasadas" value="2" type="number" min="1" max="10">
+            </div>
+            <div>
+                <label>🔵 Factor 1:</label>
+                <input id="factor1" value="2" placeholder="Ej: 2, 100">
+            </div>
+            <div>
+                <label>🟢 Factor 0:</label>
+                <input id="factor0" value="0.6667" placeholder="Ej: 0.6667">
+            </div>
+            <div>
+                <label>📊 Bits de hash:</label>
+                <select id="hashBits">
+                    <option value="32">32 bits</option>
+                    <option value="64" selected>64 bits</option>
+                    <option value="128">128 bits</option>
+                    <option value="256">256 bits</option>
+                </select>
+            </div>
+            <div>
+                <label>🔄 Modo 0:</label>
+                <select id="modo0">
+                    <option value="primer_0">Solo primer 0</option>
+                    <option value="todos">Todos los 0s</option>
+                    <option value="ninguno">Ninguno</option>
+                </select>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button onclick="generarHash()">🔐 Generar Hash</button>
+            <button class="reversible" onclick="revertirHash()">🔁 Revertir con Metadatos</button>
+            <button class="warning" onclick="generarClaveAleatoria()">🎲 Clave Aleatoria</button>
+            <button class="secondary" onclick="verificarHash()">✅ Verificar</button>
+        </div>
+    </div>
+
+    <div class="container" id="resultados" style="display: none;">
+        <h2>📊 Resultados</h2>
+
+        <div class="stats-grid" id="statsGrid"></div>
+
+        <div class="hash-box">
+            <div class="label">🔐 Hash Generado</div>
+            <div class="value hash" id="hashValue">-</div>
+        </div>
+
+        <div class="hash-box" style="border-color: #06b6d4;">
+            <div class="label">📊 Metadatos (clave para reversión)</div>
+            <div class="value metadata" id="metadataValue">-</div>
+        </div>
+
+        <div id="paramsDisplay" class="info reversible">
+            <strong style="color: #06b6d4;">🔑 Parámetros (Clave):</strong><br>
+            <span id="paramsList"></span>
+        </div>
+
+        <div id="reversionDisplay" class="info hidden reversible">
+            <strong style="color: #22c55e;">🔁 Reversión con Metadatos:</strong>
+            <span id="reversionMsg"></span>
+        </div>
+
+        <div id="verificacionDisplay" class="info hidden success">
+            <strong>✅ Verificación:</strong>
+            <span id="verificacionMsg"></span>
+        </div>
+
+        <h3 style="color: #64748b;">🔬 Datos Completos</h3>
+        <div class="hash-box" style="border-color: #334155;">
+            <div class="label" style="color: #64748b;">📝 Datos en formato científico</div>
+            <div class="value" id="cientificoStr" style="font-size: 0.7em; color: #94a3b8; word-break: break-all;"></div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        //  HASH PARAMETRIZABLE REVERSIBLE v4.0-R
+        //  CON METADATOS
+        // ============================================
+
+        function stringToBigInt(str) {
+            let result = 0n;
+            for (let i = 0; i < str.length; i++) {
+                result = (result * 256n) + BigInt(str.charCodeAt(i));
+            }
+            return result;
+        }
+
+        function bigIntToHex(num, bits) {
+            const hex = num.toString(16);
+            return hex.padStart(Math.ceil(bits / 4), '0');
+        }
+
+        // --- Simulación cinemática con 2 punteros ---
+        function simularCinematica(input, params) {
+            const { factor1, factor0, pasadas, modo0 } = params;
+            const resultados = [];
+
+            for (let p = 0; p < pasadas; p++) {
+                let v = 1.0;
+                let i = 0,
+                    j = input.length - 1;
+                let t = 0.0;
+                const choques = [];
+                const tiempos_A = [];
+                const tiempos_B = [];
+                const bits_A = [];
+                const bits_B = [];
+                let ultimo_A = null,
+                    ultimo_B = null;
+
+                while (i <= j) {
+                    t += 1.0;
+
+                    // Turno A
+                    if (i <= j) {
+                        const bit = input[i];
+                        bits_A.push(bit);
+                        if (bit === '1') {
+                            v *= factor1;
+                        } else {
+                            if (modo0 === 'primer_0' && ultimo_A !== '0') {
+                                v *= factor0;
+                            } else if (modo0 === 'todos') {
+                                v *= factor0;
+                            }
+                        }
+                        tiempos_A.push(t);
+                        i++;
+                        ultimo_A = bit;
+                    }
+
+                    // Turno B
+                    if (i <= j) {
+                        const bit = input[j];
+                        bits_B.push(bit);
+                        if (bit === '1') {
+                            v *= factor1;
+                        } else {
+                            if (modo0 === 'primer_0' && ultimo_B !== '0') {
+                                v *= factor0;
+                            } else if (modo0 === 'todos') {
+                                v *= factor0;
+                            }
+                        }
+                        tiempos_B.push(t);
+                        j--;
+                        ultimo_B = bit;
+                    }
+
+                    if (i > j) {
+                        choques.push({ t: t, i: i - 1, j: j + 1, v: v });
+                    }
+                }
+
+                resultados.push({
+                    v_final: v,
+                    t_final: t,
+                    choques: choques,
+                    tiempos_A: tiempos_A,
+                    tiempos_B: tiempos_B,
+                    bits_A: bits_A.join(''),
+                    bits_B: bits_B.reverse().join('')
+                });
+            }
+
+            return resultados;
+        }
+
+        // --- Generar hash con metadatos ---
+        function generarHashConMetadatos(input, params) {
+            const { factor1, factor0, pasadas, modo0, hashBits } = params;
+
+            const resultados = simularCinematica(input, {
+                factor1,
+                factor0,
+                pasadas,
+                modo0
+            });
+
+            // --- Parte 1: Hash (irreversible sin metadatos) ---
+            const hashData = [
+                `input=${input}`,
+                `pasadas=${pasadas}`,
+                `factor1=${factor1}`,
+                `factor0=${factor0}`,
+                `modo0=${modo0}`
+            ];
+
+            resultados.forEach((res, idx) => {
+                hashData.push(`p${idx+1}_v=${res.v_final.toExponential()}`);
+                hashData.push(`p${idx+1}_t=${res.t_final.toExponential()}`);
+                hashData.push(`p${idx+1}_choques=${res.choques.map(c =>
+                    `t=${c.t.toExponential()},i=${c.i},j=${c.j}`
+                ).join(';')}`);
+                hashData.push(`p${idx+1}_tiemposA=${res.tiempos_A.map(t => t.toExponential()).join(',')}`);
+                hashData.push(`p${idx+1}_tiemposB=${res.tiempos_B.map(t => t.toExponential()).join(',')}`);
+                hashData.push(`p${idx+1}_bitsA=${res.bits_A}`);
+                hashData.push(`p${idx+1}_bitsB=${res.bits_B}`);
+            });
+
+            const fullStr = hashData.join('|');
+            const bigInt = stringToBigInt(fullStr);
+            const mod = 2n ** BigInt(hashBits);
+            const hashFinal = bigInt % mod;
+
+            // --- Parte 2: Metadatos (para reversión) ---
+            // Guardamos la estructura de la simulación, no el input
+            const metadatos = {
+                pasadas: pasadas,
+                factor1: factor1,
+                factor0: factor0,
+                modo0: modo0,
+                hashBits: hashBits,
+                // Datos de la simulación SIN el input
+                estructura: resultados.map(res => ({
+                    v_final: res.v_final,
+                    t_final: res.t_final,
+                    numChoques: res.choques.length,
+                    numBitsA: res.bits_A.length,
+                    numBitsB: res.bits_B.length,
+                    tiempos_A: res.tiempos_A,
+                    tiempos_B: res.tiempos_B,
+                    // Patrón de choques
+                    choques: res.choques.map(c => ({
+                        t: c.t,
+                        i: c.i,
+                        j: c.j
+                    }))
+                }))
+            };
+
+            // Los metadatos se codifican como string
+            const metadatosStr = JSON.stringify(metadatos);
+
+            return {
+                hash: bigIntToHex(hashFinal, hashBits),
+                hashBigInt: hashFinal,
+                stringCientifico: fullStr,
+                metadatos: metadatosStr,
+                metadatosObj: metadatos,
+                resultados: resultados,
+                params: params
+            };
+        }
+
+        // --- REVERSIÓN: usar metadatos para reconstruir el input ---
+        function revertirConMetadatos(hashObjetivo, metadatosStr, params) {
+            try {
+                const metadatos = JSON.parse(metadatosStr);
+
+                // Verificar que los parámetros coinciden
+                if (metadatos.pasadas !== params.pasadas ||
+                    metadatos.factor1 !== params.factor1 ||
+                    metadatos.factor0 !== params.factor0 ||
+                    metadatos.modo0 !== params.modo0 ||
+                    metadatos.hashBits !== params.hashBits) {
+                    return {
+                        exito: false,
+                        error: 'Los parámetros no coinciden con los metadatos'
+                    };
+                }
+
+                // Reconstruir el input usando la estructura de la simulación
+                // Buscamos todos los inputs posibles que producen la misma estructura
+                const inputsPosibles = [];
+                const maxBits = 12;
+
+                for (let len = 1; len <= maxBits; len++) {
+                    const numInputs = Math.min(Math.pow(2, len), 2000);
+                    for (let n = 0; n < numInputs; n++) {
+                        const input = n.toString(2).padStart(len, '0');
+                        const resultado = generarHashConMetadatos(input, params);
+
+                        // Comparar la estructura de la simulación
+                        const estructuraIgual = JSON.stringify(resultado.metadatosObj.estructura) ===
+                            JSON.stringify(metadatos.estructura);
+
+                        if (estructuraIgual && resultado.hash === hashObjetivo) {
+                            inputsPosibles.push({
+                                input: input,
+                                hash: resultado.hash
+                            });
+                        }
+                    }
+                }
+
+                return {
+                    exito: true,
+                    inputs: inputsPosibles,
+                    metadatos: metadatos
+                };
+
+            } catch (e) {
+                return {
+                    exito: false,
+                    error: 'Error al procesar metadatos: ' + e.message
+                };
+            }
+        }
+
+        // --- UI ---
+        function obtenerParams() {
+            return {
+                factor1: parseFloat(document.getElementById('factor1').value),
+                factor0: parseFloat(document.getElementById('factor0').value),
+                pasadas: parseInt(document.getElementById('pasadas').value),
+                hashBits: parseInt(document.getElementById('hashBits').value),
+                modo0: document.getElementById('modo0').value
+            };
+        }
+
+        function generarHash() {
+            const input = document.getElementById('inputBits').value.trim();
+            const params = obtenerParams();
+
+            if (!/^[01]+$/.test(input)) {
+                alert('❌ El input debe ser una cadena de bits');
+                return;
+            }
+
+            const resultado = generarHashConMetadatos(input, params);
+            mostrarResultados(resultado, params, input);
+
+            window._ultimoHash = resultado.hash;
+            window._ultimosParams = params;
+            window._ultimoInput = input;
+            window._ultimosMetadatos = resultado.metadatos;
+            window._ultimosResultados = resultado;
+        }
+
+        function mostrarResultados(resultado, params, input) {
+            document.getElementById('resultados').style.display = 'block';
+            document.getElementById('hashValue').textContent = resultado.hash;
+            document.getElementById('metadataValue').textContent = resultado.metadatos;
+            document.getElementById('cientificoStr').textContent = resultado.stringCientifico;
+
+            const ultimo = resultado.resultados[resultado.resultados.length - 1];
+            document.getElementById('statsGrid').innerHTML = `
+                <div class="stat-card"><div class="value hash">${resultado.hash.slice(0,8)}...</div><div class="label">Hash</div></div>
+                <div class="stat-card"><div class="value metadata">${params.pasadas}</div><div class="label">Pasadas</div></div>
+                <div class="stat-card"><div class="value" style="color:#34d399;">${ultimo.v_final.toExponential(4)}</div><div class="label">v final</div></div>
+                <div class="stat-card"><div class="value" style="color:#f472b6;">${ultimo.choques.length}</div><div class="label">Choques</div></div>
+                <div class="stat-card"><div class="value" style="color:#06b6d4;">${resultado.metadatos.length}</div><div class="label">Metadatos (bytes)</div></div>
+            `;
+
+            document.getElementById('paramsList').innerHTML = `
+                <span class="param-card"><span class="key">Input:</span> <span class="value">${input}</span></span>
+                <span class="param-card"><span class="key">factor1:</span> <span class="value">${params.factor1}</span></span>
+                <span class="param-card"><span class="key">factor0:</span> <span class="value">${params.factor0}</span></span>
+                <span class="param-card"><span class="key">pasadas:</span> ${params.pasadas}</span>
+                <span class="param-card"><span class="key">modo0:</span> ${params.modo0}</span>
+                <span class="param-card"><span class="key">bits:</span> ${params.hashBits}</span>
+            `;
+
+            document.getElementById('reversionDisplay').classList.add('hidden');
+            document.getElementById('verificacionDisplay').classList.add('hidden');
+        }
+
+        // --- REVERTIR CON METADATOS ---
+        function revertirHash() {
+            if (!window._ultimoHash || !window._ultimosParams || !window._ultimosMetadatos) {
+                alert('⚠️ Primero genera un hash con metadatos');
+                return;
+            }
+
+            document.getElementById('reversionDisplay').classList.remove('hidden');
+            const msg = document.getElementById('reversionMsg');
+            msg.innerHTML = '⏳ Reconstruyendo input con metadatos...';
+
+            setTimeout(() => {
+                const resultado = revertirConMetadatos(
+                    window._ultimoHash,
+                    window._ultimosMetadatos,
+                    window._ultimosParams
+                );
+
+                if (resultado.exito && resultado.inputs.length > 0) {
+                    const encontrado = resultado.inputs[0];
+                    msg.innerHTML = `
+                        ✅ <strong>¡Reconstruido con metadatos!</strong> 
+                        El input original es <code>${encontrado.input}</code> 
+                        que produce el hash <code>${encontrado.hash}</code>.
+                        <br><br>
+                        <span style="color:#64748b; font-size:12px;">
+                            (${resultado.inputs.length} inputs coincidentes encontrados)
+                            <br>
+                            Metadatos utilizados: ${JSON.stringify(resultado.metadatos, null, 2).slice(0, 200)}...
+                        </span>
+                    `;
+                    document.getElementById('reversionDisplay').className = 'info success';
+                } else if (resultado.exito && resultado.inputs.length === 0) {
+                    msg.innerHTML = `
+                        ❌ <strong>No se encontró el input.</strong> 
+                        Los metadatos no permiten reconstruir el input exacto.
+                        <br><br>
+                        <span style="color:#64748b; font-size:12px;">
+                            Posiblemente el input es demasiado largo para la búsqueda.
+                            <br>
+                            Metadatos: ${JSON.stringify(resultado.metadatos, null, 2).slice(0, 200)}...
+                        </span>
+                    `;
+                    document.getElementById('reversionDisplay').className = 'info danger';
+                } else {
+                    msg.innerHTML = `
+                        ❌ <strong>Error:</strong> ${resultado.error}
+                    `;
+                    document.getElementById('reversionDisplay').className = 'info danger';
+                }
+            }, 100);
+        }
+
+        // --- VERIFICAR ---
+        function verificarHash() {
+            if (!window._ultimoHash || !window._ultimosParams) {
+                alert('⚠️ Primero genera un hash');
+                return;
+            }
+
+            const input = prompt('📝 Ingresa el input a verificar:', window._ultimoInput || '10011');
+            if (!input) return;
+
+            const resultado = generarHashConMetadatos(input.trim(), window._ultimosParams);
+
+            const display = document.getElementById('verificacionDisplay');
+            display.classList.remove('hidden');
+
+            const msg = document.getElementById('verificacionMsg');
+            if (resultado.hash === window._ultimoHash) {
+                msg.innerHTML = `
+                    ✅ <strong>¡Coincide!</strong> El input "<code>${input}</code>" 
+                    genera el hash <code>${resultado.hash}</code> 
+                    con los parámetros actuales.
+                `;
+                display.className = 'info success';
+            } else {
+                msg.innerHTML = `
+                    ❌ <strong>No coincide.</strong> El input "<code>${input}</code>" 
+                    genera <code>${resultado.hash}</code>, 
+                    pero se esperaba <code>${window._ultimoHash}</code>.
+                `;
+                display.className = 'info danger';
+            }
+        }
+
+        // --- CLAVE ALEATORIA ---
+        function generarClaveAleatoria() {
+            const params = {
+                factor1: (1 + Math.random() * 4).toFixed(2),
+                factor0: (0.1 + Math.random() * 0.9).toFixed(4),
+                pasadas: Math.floor(Math.random() * 5) + 1,
+                hashBits: [32, 64, 128, 256][Math.floor(Math.random() * 4)],
+                modo0: ['primer_0', 'todos', 'ninguno'][Math.floor(Math.random() * 3)]
+            };
+
+            document.getElementById('factor1').value = params.factor1;
+            document.getElementById('factor0').value = params.factor0;
+            document.getElementById('pasadas').value = params.pasadas;
+            document.getElementById('hashBits').value = params.hashBits;
+            document.getElementById('modo0').value = params.modo0;
+
+            let input = '';
+            const len = Math.floor(Math.random() * 8) + 3;
+            for (let i = 0; i < len; i++) {
+                input += Math.random() > 0.5 ? '1' : '0';
+            }
+            document.getElementById('inputBits').value = input;
+
+            generarHash();
+
+            alert('🎲 Clave aleatoria generada:\n' +
+                `Input: ${input}\n` +
+                `factor1: ${params.factor1}\n` +
+                `factor0: ${params.factor0}\n` +
+                `pasadas: ${params.pasadas}\n` +
+                `modo0: ${params.modo0}\n` +
+                `bits: ${params.hashBits}\n\n` +
+                `El hash con metadatos se ha generado.`);
+        }
+
+        window.onload = function() {
+            generarHash();
+        };
+    </script>
+</body>
+</html>

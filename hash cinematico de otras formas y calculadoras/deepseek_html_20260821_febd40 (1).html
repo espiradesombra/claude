@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Híbrida Extendida 📐</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #0a0a15;
+            color: #e2e8f0;
+        }
+        .container {
+            background: rgba(20, 20, 40, 0.9);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+            border: 1px solid rgba(100, 50, 200, 0.2);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin: 15px 0;
+        }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 12px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #94a3b8;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        input,
+        select {
+            width: 100%;
+            padding: 8px 12px;
+            background: #0a0a15;
+            border: 1px solid #2a1a3e;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #e2e8f0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        input:focus,
+        select:focus {
+            border-color: #8b5cf6;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
+        }
+        button {
+            background: linear-gradient(135deg, #7c3aed, #3b82f6);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            margin: 4px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+        }
+        button.success {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+        }
+        button.warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        button.secondary {
+            background: linear-gradient(135deg, #64748b, #475569);
+        }
+        button.danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+        button.pink {
+            background: linear-gradient(135deg, #ec4899, #8b5cf6);
+        }
+        .hash-box {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            margin: 15px 0;
+            border: 1px solid #2a1a3e;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .hash-box .label {
+            color: #64748b;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .hash-box .value {
+            font-size: 1em;
+            margin-top: 8px;
+            word-break: break-all;
+        }
+        .hash-box .value.resultado {
+            color: #34d399;
+        }
+        .hash-box .value.log {
+            color: #fbbf24;
+        }
+        .hash-box .value.onda {
+            color: #60a5fa;
+        }
+        .hash-box .value.historia {
+            color: #f472b6;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 8px;
+            margin: 15px 0;
+        }
+        .stat-card {
+            background: rgba(10, 10, 20, 0.8);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #1a1a2e;
+        }
+        .stat-card .value {
+            font-size: 16px;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+        .stat-card .label {
+            font-size: 7px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 3px;
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 12px;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .badge.aritmetica {
+            background: linear-gradient(135deg, #3b82f6, #7c3aed);
+            color: white;
+        }
+        .badge.log {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+        .badge.trig {
+            background: linear-gradient(135deg, #ec4899, #8b5cf6);
+            color: white;
+        }
+        .badge.estadistica {
+            background: linear-gradient(135deg, #06b6d4, #22c55e);
+            color: white;
+        }
+        .badge.fisica {
+            background: linear-gradient(135deg, #ef4444, #f59e0b);
+            color: white;
+        }
+        .badge.combinatoria {
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            color: white;
+        }
+        .hidden {
+            display: none;
+        }
+        .regla-real {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #2a1a3e;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            overflow-x: auto;
+            white-space: pre;
+        }
+        .regla-real .destacar {
+            color: #f472b6;
+            font-weight: bold;
+        }
+        .tabla-operaciones {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 4px;
+            margin: 10px 0;
+        }
+        .op-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-family: 'Courier New', monospace;
+            border: 1px solid #1a1a2e;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .op-item:hover {
+            border-color: #8b5cf6;
+            background: rgba(139, 92, 246, 0.1);
+        }
+        .op-item .simbolo {
+            color: #60a5fa;
+        }
+        .op-item .nombre {
+            color: #94a3b8;
+        }
+        .historial-item {
+            padding: 4px 10px;
+            margin: 3px 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+            font-size: 12px;
+            font-family: 'Courier New', monospace;
+        }
+        .historial-item .op {
+            color: #fbbf24;
+        }
+        .historial-item .res {
+            color: #34d399;
+        }
+        .categoria-tabs {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            margin: 10px 0;
+        }
+        .cat-tab {
+            padding: 4px 14px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            background: #1a1a2e;
+            border: 1px solid #2a1a3e;
+            cursor: pointer;
+            color: #94a3b8;
+            transition: all 0.3s;
+        }
+        .cat-tab:hover {
+            border-color: #8b5cf6;
+            color: #e2e8f0;
+        }
+        .cat-tab.active {
+            border-color: #8b5cf6;
+            background: rgba(139, 92, 246, 0.2);
+            color: #a78bfa;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; background: linear-gradient(90deg, #60a5fa, #fbbf24, #34d399, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+        📐 Calculadora Híbrida Extendida v2.0
+    </h1>
+    <p style="text-align: center; color: #94a3b8; margin-top: -10px;">
+        <span class="badge aritmetica">📊 50+ OPERACIONES</span>
+        <span class="badge log">📐 REGLA DE CÁLCULO</span>
+        <span class="badge fisica">🌊 INFERENCIA DE ONDAS</span>
+    </p>
+
+    <!-- Categorías -->
+    <div class="container">
+        <div class="categoria-tabs">
+            <div class="cat-tab active" onclick="filtrarCategoria('todas')">📊 Todas</div>
+            <div class="cat-tab" onclick="filtrarCategoria('aritmetica')">➕ Aritmética</div>
+            <div class="cat-tab" onclick="filtrarCategoria('log')">📐 Logarítmica</div>
+            <div class="cat-tab" onclick="filtrarCategoria('trig')">📐 Trigonométrica</div>
+            <div class="cat-tab" onclick="filtrarCategoria('estadistica')">📊 Estadística</div>
+            <div class="cat-tab" onclick="filtrarCategoria('combinatoria')">🎯 Combinatoria</div>
+            <div class="cat-tab" onclick="filtrarCategoria('fisica')">🌊 Física (Ondas)</div>
+        </div>
+
+        <div class="tabla-operaciones" id="listaOperaciones"></div>
+    </div>
+
+    <div class="container">
+        <h2 style="color: #60a5fa;">🧮 Calculadora</h2>
+
+        <div class="grid-3">
+            <div>
+                <label>Operación:</label>
+                <select id="operacion" style="height: 40px;"></select>
+            </div>
+            <div>
+                <label>Valor a:</label>
+                <input id="valorA" value="2" placeholder="Ej: 2, 3.14">
+            </div>
+            <div>
+                <label>Valor b (opcional):</label>
+                <input id="valorB" value="3" placeholder="Ej: 3, 1.5">
+            </div>
+        </div>
+
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));">
+            <div>
+                <label>Frecuencia WiFi:</label>
+                <select id="frecuenciaWiFi">
+                    <option value="2.4">2.4 GHz</option>
+                    <option value="5">5 GHz</option>
+                    <option value="6">6 GHz</option>
+                </select>
+            </div>
+            <div>
+                <label>Precisión decimal:</label>
+                <select id="precision">
+                    <option value="2">2 decimales</option>
+                    <option value="4" selected>4 decimales</option>
+                    <option value="6">6 decimales</option>
+                    <option value="10">10 decimales</option>
+                </select>
+            </div>
+            <div>
+                <label>Modo:</label>
+                <select id="modo">
+                    <option value="regla">📐 Regla de Cálculo</option>
+                    <option value="ondas">🌊 Inferencia de Ondas</option>
+                    <option value="hibrido">🔬 Híbrido</option>
+                </select>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 15px;">
+            <button class="success" onclick="calcular()">🧮 Calcular</button>
+            <button class="warning" onclick="compararMetodos()">📊 Comparar Métodos</button>
+            <button class="secondary" onclick="limpiarHistorial()">🧹 Limpiar Historial</button>
+            <button class="pink" onclick="operacionAleatoria()">🎲 Operación Aleatoria</button>
+        </div>
+    </div>
+
+    <div class="container" id="resultadosContainer" style="display: none;">
+        <h2>📊 Resultados</h2>
+
+        <div class="stats-grid" id="statsGrid"></div>
+
+        <div class="hash-box">
+            <div class="label">🧮 Resultado</div>
+            <div class="value resultado" id="resultadoFinal">-</div>
+        </div>
+
+        <div class="hash-box" style="border-color: #fbbf24;">
+            <div class="label">📐 Pasos Logarítmicos</div>
+            <div class="value log" id="pasosLog">-</div>
+        </div>
+
+        <div class="hash-box" style="border-color: #60a5fa;">
+            <div class="label">🌊 Datos de Ondas</div>
+            <div class="value onda" id="datosOnda">-</div>
+        </div>
+
+        <div class="hash-box" style="border-color: #f472b6; max-height: 200px;">
+            <div class="label">📜 Historial</div>
+            <div class="value historia" id="historialContainer">-</div>
+        </div>
+
+        <!-- Regla de Cálculo Visual -->
+        <div class="regla-real" id="reglaVisual">
+            <span style="color:#64748b;">📐 Regla de Cálculo Visual</span>
+            <span id="reglaContenido" style="display:block;margin-top:8px;"></span>
+        </div>
+
+        <div id="comparacionContainer" class="hash-box" style="border-color: #f472b6; display: none;">
+            <div class="label">📊 Comparación de Métodos</div>
+            <div class="value" id="comparacionResultado" style="color: #f472b6; font-size: 0.8em;">-</div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        //  CALCULADORA HÍBRIDA EXTENDIDA v2.0
+        //  +50 Operaciones
+        // ============================================
+
+        // --- Definición de operaciones ---
+        const OPERACIONES = {
+            // Aritméticas
+            'suma': { nombre: 'Suma', simbolo: '+', categoria: 'aritmetica', args: 2,
+                fn: (a, b) => a + b },
+            'resta': { nombre: 'Resta', simbolo: '−', categoria: 'aritmetica', args: 2,
+                fn: (a, b) => a - b },
+            'multiplicar': { nombre: 'Multiplicación', simbolo: '×', categoria: 'aritmetica', args: 2,
+                fn: (a, b) => a * b },
+            'dividir': { nombre: 'División', simbolo: '÷', categoria: 'aritmetica', args: 2,
+                fn: (a, b) => a / b },
+            'potencia': { nombre: 'Potencia', simbolo: '^', categoria: 'aritmetica', args: 2,
+                fn: (a, b) => Math.pow(a, b) },
+            'cuadrado': { nombre: 'Cuadrado', simbolo: 'x²', categoria: 'aritmetica', args: 1,
+                fn: (a) => a * a },
+            'cubo': { nombre: 'Cubo', simbolo: 'x³', categoria: 'aritmetica', args: 1,
+                fn: (a) => a * a * a },
+            'raiz_cuadrada': { nombre: 'Raíz cuadrada', simbolo: '√', categoria: 'aritmetica', args: 1,
+                fn: (a) => Math.sqrt(a) },
+            'raiz_cubica': { nombre: 'Raíz cúbica', simbolo: '∛', categoria: 'aritmetica', args: 1,
+                fn: (a) => Math.cbrt(a) },
+            'raiz_n': { nombre: 'Raíz n-ésima', simbolo: 'ⁿ√', categoria: 'aritmetica', args: 2,
+                fn: (a, b) => Math.pow(a, 1 / b) },
+            'inverso': { nombre: 'Inverso', simbolo: '1/x', categoria: 'aritmetica', args: 1,
+                fn: (a) => 1 / a },
+            'valor_absoluto': { nombre: 'Valor absoluto', simbolo: '|x|', categoria: 'aritmetica', args: 1,
+                fn: (a) => Math.abs(a) },
+            'redondear': { nombre: 'Redondear', simbolo: 'round', categoria: 'aritmetica', args: 1,
+                fn: (a) => Math.round(a) },
+            'techo': { nombre: 'Techo', simbolo: 'ceil', categoria: 'aritmetica', args: 1,
+                fn: (a) => Math.ceil(a) },
+            'piso': { nombre: 'Piso', simbolo: 'floor', categoria: 'aritmetica', args: 1,
+                fn: (a) => Math.floor(a) },
+            'modulo': { nombre: 'Módulo', simbolo: '%', categoria: 'aritmetica', args: 2,
+                fn: (a, b) => a % b },
+
+            // Logarítmicas
+            'log10': { nombre: 'Logaritmo base 10', simbolo: 'log₁₀', categoria: 'log', args: 1,
+                fn: (a) => Math.log10(a) },
+            'log2': { nombre: 'Logaritmo base 2', simbolo: 'log₂', categoria: 'log', args: 1,
+                fn: (a) => Math.log2(a) },
+            'ln': { nombre: 'Logaritmo natural', simbolo: 'ln', categoria: 'log', args: 1,
+                fn: (a) => Math.log(a) },
+            'log_n': { nombre: 'Logaritmo base n', simbolo: 'logₙ', categoria: 'log', args: 2,
+                fn: (a, b) => Math.log(a) / Math.log(b) },
+            'exp': { nombre: 'Exponencial', simbolo: 'e^x', categoria: 'log', args: 1,
+                fn: (a) => Math.exp(a) },
+            'exp2': { nombre: '2^x', simbolo: '2^x', categoria: 'log', args: 1,
+                fn: (a) => Math.pow(2, a) },
+            'exp10': { nombre: '10^x', simbolo: '10^x', categoria: 'log', args: 1,
+                fn: (a) => Math.pow(10, a) },
+
+            // Trigonométricas
+            'sin': { nombre: 'Seno', simbolo: 'sin', categoria: 'trig', args: 1,
+                fn: (a) => Math.sin(a) },
+            'cos': { nombre: 'Coseno', simbolo: 'cos', categoria: 'trig', args: 1,
+                fn: (a) => Math.cos(a) },
+            'tan': { nombre: 'Tangente', simbolo: 'tan', categoria: 'trig', args: 1,
+                fn: (a) => Math.tan(a) },
+            'asin': { nombre: 'Arcoseno', simbolo: 'asin', categoria: 'trig', args: 1,
+                fn: (a) => Math.asin(a) },
+            'acos': { nombre: 'Arcocoseno', simbolo: 'acos', categoria: 'trig', args: 1,
+                fn: (a) => Math.acos(a) },
+            'atan': { nombre: 'Arcotangente', simbolo: 'atan', categoria: 'trig', args: 1,
+                fn: (a) => Math.atan(a) },
+            'sec': { nombre: 'Secante', simbolo: 'sec', categoria: 'trig', args: 1,
+                fn: (a) => 1 / Math.cos(a) },
+            'csc': { nombre: 'Cosecante', simbolo: 'csc', categoria: 'trig', args: 1,
+                fn: (a) => 1 / Math.sin(a) },
+            'cot': { nombre: 'Cotangente', simbolo: 'cot', categoria: 'trig', args: 1,
+                fn: (a) => 1 / Math.tan(a) },
+            'grados_a_rad': { nombre: 'Grados → Radianes', simbolo: 'deg→rad', categoria: 'trig', args: 1,
+                fn: (a) => a * Math.PI / 180 },
+            'rad_a_grados': { nombre: 'Radianes → Grados', simbolo: 'rad→deg', categoria: 'trig', args: 1,
+                fn: (a) => a * 180 / Math.PI },
+
+            // Estadísticas
+            'media': { nombre: 'Media', simbolo: 'avg', categoria: 'estadistica', args: 2,
+                fn: (a, b) => (a + b) / 2 },
+            'mediana': { nombre: 'Mediana', simbolo: 'median', categoria: 'estadistica', args: 2,
+                fn: (a, b) => (a + b) / 2 },
+            'varianza': { nombre: 'Varianza', simbolo: 'var', categoria: 'estadistica', args: 2,
+                fn: (a, b) => Math.pow((a - b) / 2, 2) + Math.pow((b - a) / 2, 2) },
+            'desviacion': { nombre: 'Desviación', simbolo: 'std', categoria: 'estadistica', args: 2,
+                fn: (a, b) => Math.sqrt(Math.pow((a - b) / 2, 2) + Math.pow((b - a) / 2, 2)) },
+            'rango': { nombre: 'Rango', simbolo: 'range', categoria: 'estadistica', args: 2,
+                fn: (a, b) => Math.abs(a - b) },
+            'maximo': { nombre: 'Máximo', simbolo: 'max', categoria: 'estadistica', args: 2,
+                fn: (a, b) => Math.max(a, b) },
+            'minimo': { nombre: 'Mínimo', simbolo: 'min', categoria: 'estadistica', args: 2,
+                fn: (a, b) => Math.min(a, b) },
+            'producto': { nombre: 'Producto', simbolo: '∏', categoria: 'estadistica', args: 2,
+                fn: (a, b) => a * b },
+            'suma_cuadrados': { nombre: 'Suma cuadrados', simbolo: 'Σx²', categoria: 'estadistica', args: 2,
+                fn: (a, b) => a * a + b * b },
+
+            // Combinatoria
+            'factorial': { nombre: 'Factorial', simbolo: '!', categoria: 'combinatoria', args: 1,
+                fn: (a) => { let r = 1; for (let i = 2; i <= Math.floor(a); i++) r *= i; return r; } },
+            'combinacion': { nombre: 'Combinación C(n,k)', simbolo: 'C', categoria: 'combinatoria', args: 2,
+                fn: (n, k) => {
+                    const fact = (x) => { let r = 1; for (let i = 2; i <= x; i++) r *= i; return r; };
+                    return fact(n) / (fact(k) * fact(n - k));
+                } },
+            'permutacion': { nombre: 'Permutación P(n,k)', simbolo: 'P', categoria: 'combinatoria', args: 2,
+                fn: (n, k) => {
+                    const fact = (x) => { let r = 1; for (let i = 2; i <= x; i++) r *= i; return r; };
+                    return fact(n) / fact(n - k);
+                } },
+            'fibonacci': { nombre: 'Fibonacci', simbolo: 'fib', categoria: 'combinatoria', args: 1,
+                fn: (a) => {
+                    let n = Math.floor(a);
+                    let a0 = 0,
+                        a1 = 1;
+                    for (let i = 2; i <= n; i++) { let t = a0 + a1;
+                        a0 = a1;
+                        a1 = t; }
+                    return n <= 1 ? n : a1;
+                } },
+            'es_primo': { nombre: 'Es primo', simbolo: 'isPrime', categoria: 'combinatoria', args: 1,
+                fn: (a) => {
+                    let n = Math.floor(Math.abs(a));
+                    if (n < 2) return 0;
+                    for (let i = 2; i <= Math.sqrt(n); i++) { if (n % i === 0) return 0; }
+                    return 1;
+                } },
+            'gcd': { nombre: 'MCD', simbolo: 'gcd', categoria: 'combinatoria', args: 2,
+                fn: (a, b) => {
+                    a = Math.abs(Math.floor(a));
+                    b = Math.abs(Math.floor(b));
+                    while (b) { let t = b;
+                        b = a % b;
+                        a = t; }
+                    return a;
+                } },
+            'lcm': { nombre: 'MCM', simbolo: 'lcm', categoria: 'combinatoria', args: 2,
+                fn: (a, b) => {
+                    a = Math.abs(Math.floor(a));
+                    b = Math.abs(Math.floor(b));
+                    const gcd = (x, y) => { while (y) { let t = y;
+                            y = x % y;
+                            x = t; } return x; };
+                    return (a * b) / gcd(a, b);
+                } },
+
+            // Física (Ondas)
+            'distancia_wifi': { nombre: 'Distancia WiFi', simbolo: 'd=φ·c/(2πf)', categoria: 'fisica', args: 1,
+                fn: (a, freq = 2.4e9) => (a * 3e8) / (2 * Math.PI * freq) },
+            'doppler_vel': { nombre: 'Velocidad Doppler', simbolo: 'v=ν·c/(2f)', categoria: 'fisica', args: 1,
+                fn: (a, freq = 2.4e9) => (a * 3e8) / (2 * freq) },
+            'tof': { nombre: 'Tiempo de vuelo', simbolo: 'ToF=d/c', categoria: 'fisica', args: 1,
+                fn: (a) => a / 3e8 },
+            'rssi_dist': { nombre: 'RSSI → Distancia', simbolo: 'd=10^((P₀-P)/10n)', categoria: 'fisica', args: 1,
+                fn: (a) => Math.pow(10, (-40 - a) / 20) },
+            'frecuencia_doppler': { nombre: 'Frecuencia Doppler', simbolo: 'ν=2v·f/c', categoria: 'fisica', args: 2,
+                fn: (v, f = 2.4e9) => 2 * v * f / 3e8 },
+            'longitud_onda': { nombre: 'Longitud de onda', simbolo: 'λ=c/f', categoria: 'fisica', args: 1,
+                fn: (a) => 3e8 / a },
+            'energia_foton': { nombre: 'Energía fotón', simbolo: 'E=h·f', categoria: 'fisica', args: 1,
+                fn: (a) => 6.626e-34 * a },
+        };
+
+        // --- Estado ---
+        let historial = [];
+        let ultimoRegla = null;
+        let ultimoOndas = null;
+        let ultimaOperacion = null;
+
+        // --- Inicializar UI ---
+        function inicializarUI() {
+            const select = document.getElementById('operacion');
+            select.innerHTML = '';
+            const categorias = ['aritmetica', 'log', 'trig', 'estadistica', 'combinatoria', 'fisica'];
+            const nombresCat = {
+                'aritmetica': '📊 Aritmética',
+                'log': '📐 Logarítmica',
+                'trig': '📐 Trigonométrica',
+                'estadistica': '📊 Estadística',
+                'combinatoria': '🎯 Combinatoria',
+                'fisica': '🌊 Física'
+            };
+
+            // Agrupar por categoría
+            const grouped = {};
+            Object.keys(OPERACIONES).forEach(key => {
+                const op = OPERACIONES[key];
+                if (!grouped[op.categoria]) grouped[op.categoria] = [];
+                grouped[op.categoria].push({ key, ...op });
+            });
+
+            Object.keys(grouped).forEach(cat => {
+                const optgroup = document.createElement('optgroup');
+                optgroup.label = nombresCat[cat] || cat;
+                grouped[cat].sort((a, b) => a.nombre.localeCompare(b.nombre));
+                grouped[cat].forEach(op => {
+                    const option = document.createElement('option');
+                    option.value = op.key;
+                    option.textContent = `${op.simbolo} ${op.nombre}`;
+                    optgroup.appendChild(option);
+                });
+                select.appendChild(optgroup);
+            });
+
+            // Lista de operaciones
+            renderListaOperaciones('todas');
+        }
+
+        function renderListaOperaciones(categoria) {
+            const container = document.getElementById('listaOperaciones');
+            container.innerHTML = '';
+
+            const keys = Object.keys(OPERACIONES);
+            keys.forEach(key => {
+                const op = OPERACIONES[key];
+                if (categoria !== 'todas' && op.categoria !== categoria) return;
+
+                const div = document.createElement('div');
+                div.className = 'op-item';
+                div.innerHTML =
+                    `<span class="simbolo">${op.simbolo}</span> <span class="nombre">${op.nombre}</span>`;
+                div.onclick = () => {
+                    document.getElementById('operacion').value = key;
+                    calcular();
+                };
+                container.appendChild(div);
+            });
+        }
+
+        function filtrarCategoria(cat) {
+            document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector(`.cat-tab[onclick*="${cat}"]`)?.classList.add('active');
+            renderListaOperaciones(cat);
+        }
+
+        // --- Regla de Cálculo ---
+        function reglaCalculo(operacion, a, b = 0) {
+            const log10 = Math.log10;
+            const pasos = [];
+
+            switch (operacion) {
+                case 'suma':
+                    pasos.push(`Suma directa: ${a} + ${b}`);
+                    return { resultado: a + b, pasos };
+
+                case 'resta':
+                    pasos.push(`Resta directa: ${a} - ${b}`);
+                    return { resultado: a - b, pasos };
+
+                case 'multiplicar':
+                    pasos.push(`log₁₀(${a}) = ${log10(a).toFixed(6)}`);
+                    pasos.push(`log₁₀(${b}) = ${log10(b).toFixed(6)}`);
+                    const sumaLog = log10(a) + log10(b);
+                    pasos.push(`log₁₀(${a} × ${b}) = ${sumaLog.toFixed(6)}`);
+                    const res = Math.pow(10, sumaLog);
+                    pasos.push(`Resultado: ${a} × ${b} = ${res.toFixed(6)}`);
+                    return { resultado: res, pasos };
+
+                case 'dividir':
+                    pasos.push(`log₁₀(${a}) = ${log10(a).toFixed(6)}`);
+                    pasos.push(`log₁₀(${b}) = ${log10(b).toFixed(6)}`);
+                    const restaLog = log10(a) - log10(b);
+                    pasos.push(`log₁₀(${a} ÷ ${b}) = ${restaLog.toFixed(6)}`);
+                    const resDiv = Math.pow(10, restaLog);
+                    pasos.push(`Resultado: ${a} ÷ ${b} = ${resDiv.toFixed(6)}`);
+                    return { resultado: resDiv, pasos };
+
+                case 'potencia':
+                    pasos.push(`log₁₀(${a}) = ${log10(a).toFixed(6)}`);
+                    pasos.push(`${b} × log₁₀(${a}) = ${(b * log10(a)).toFixed(6)}`);
+                    const resPow = Math.pow(10, b * log10(a));
+                    pasos.push(`Resultado: ${a}^${b} = ${resPow.toFixed(6)}`);
+                    return { resultado: resPow, pasos };
+
+                case 'cuadrado':
+                    pasos.push(`log₁₀(${a}) = ${log10(a).toFixed(6)}`);
+                    pasos.push(`2 × log₁₀(${a}) = ${(2 * log10(a)).toFixed(6)}`);
+                    const resCuad = Math.pow(10, 2 * log10(a));
+                    pasos.push(`Resultado: ${a}² = ${resCuad.toFixed(6)}`);
+                    return { resultado: resCuad, pasos };
+
+                case 'raiz_cuadrada':
+                    pasos.push(`log₁₀(${a}) = ${log10(a).toFixed(6)}`);
+                    pasos.push(`log₁₀(${a}) / 2 = ${(log10(a) / 2).toFixed(6)}`);
+                    const resRaiz = Math.pow(10, log10(a) / 2);
+                    pasos.push(`Resultado: √${a} = ${resRaiz.toFixed(6)}`);
+                    return { resultado: resRaiz, pasos };
+
+                default:
+                    // Para el resto, usar la función directa
+                    const op = OPERACIONES[operacion];
+                    if (op) {
+                        const result = op.fn(a, b);
+                        pasos.push(`${op.nombre}(${a}${op.args > 1 ? `, ${b}` : ''}) = ${result}`);
+                        return { resultado: result, pasos };
+                    }
+                    return { resultado: 0, pasos: ['Operación no soportada'] };
+            }
+        }
+
+        // --- Inferencia de Ondas ---
+        function inferenciaOndas(operacion, a, b = 0, frecuencia) {
+            const c = 3e8;
+            const pasos = [];
+
+            // Simular CSI
+            const distancia = a * 0.5 + b * 0.3;
+            const fase = 2 * Math.PI * frecuencia * 1e9 * distancia / c;
+            const doppler = -2 * a * frecuencia * 1e9 / c * 0.5;
+            const multicamino = Array.from({ length: 3 }, (_, i) => ({
+                distancia: distancia * (0.5 + i * 0.2),
+                atenuacion: 0.3 + i * 0.2,
+                fase: fase * (0.7 + i * 0.15)
+            }));
+
+            let resultado = 0;
+
+            switch (operacion) {
+                case 'multiplicar':
+                    const logA = Math.log(a + 1);
+                    const logB = Math.log(b + 1);
+                    resultado = Math.exp(logA + logB) - 1;
+                    pasos.push(`Fase como log: ln(${a}+1) + ln(${b}+1) = ${(logA + logB).toFixed(6)}`);
+                    break;
+                case 'dividir':
+                    const logA2 = Math.log(a + 1);
+                    const logB2 = Math.log(b + 1);
+                    resultado = Math.exp(logA2 - logB2) - 1;
+                    pasos.push(`Fase como log: ln(${a}+1) - ln(${b}+1) = ${(logA2 - logB2).toFixed(6)}`);
+                    break;
+                case 'potencia':
+                    const logA3 = Math.log(a + 1);
+                    resultado = Math.exp(b * logA3) - 1;
+                    pasos.push(`Fase como log: ${b} × ln(${a}+1) = ${(b * logA3).toFixed(6)}`);
+                    break;
+                case 'cuadrado':
+                    const logA4 = Math.log(a + 1);
+                    resultado = Math.exp(2 * logA4) - 1;
+                    pasos.push(`Fase como log: 2 × ln(${a}+1) = ${(2 * logA4).toFixed(6)}`);
+                    break;
+                case 'raiz_cuadrada':
+                    const logA5 = Math.log(a + 1);
+                    resultado = Math.exp(logA5 / 2) - 1;
+                    pasos.push(`Fase como log: ln(${a}+1)/2 = ${(logA5 / 2).toFixed(6)}`);
+                    break;
+                default:
+                    const op = OPERACIONES[operacion];
+                    if (op) {
+                        // Usar fase como escala logarítmica para cualquier operación
+                        const val = op.fn(a, b);
+                        resultado = val * (1 + (fase % 1) * 0.01);
+                        pasos.push(`Fase como modulador: ${val} × (1 + ${(fase % 1).toFixed(4)}) = ${resultado}`);
+                    } else {
+                        resultado = a + b;
+                    }
+            }
+
+            return {
+                resultado: Math.max(-1e10, Math.min(1e10, resultado)),
+                pasos,
+                fase,
+                doppler,
+                multicamino,
+                distancia,
+                frecuencia
+            };
+        }
+
+        // --- Calcular ---
+        function calcular() {
+            const key = document.getElementById('operacion').value;
+            const op = OPERACIONES[key];
+            if (!op) return;
+
+            const a = parseFloat(document.getElementById('valorA').value) || 0;
+            const b = parseFloat(document.getElementById('valorB').value) || 0;
+            const freq = parseFloat(document.getElementById('frecuenciaWiFi').value);
+            const precision = parseInt(document.getElementById('precision').value);
+            const modo = document.getElementById('modo').value;
+
+            let resultado = { resultado: 0, pasos: [] };
+            let datosOnda = null;
+
+            if (modo === 'regla' || modo === 'hibrido') {
+                resultado = reglaCalculo(key, a, b);
+                ultimoRegla = resultado;
+            }
+
+            if (modo === 'ondas' || modo === 'hibrido') {
+                const ondas = inferenciaOndas(key, a, b, freq);
+                datosOnda = ondas;
+                ultimoOndas = ondas;
+                if (modo === 'ondas') {
+                    resultado = { resultado: ondas.resultado, pasos: ondas.pasos };
+                }
+            }
+
+            if (modo === 'hibrido') {
+                // Promedio ponderado
+                const reglaRes = ultimoRegla?.resultado || 0;
+                const ondasRes = ultimoOndas?.resultado || 0;
+                resultado.resultado = (reglaRes * 0.6 + ondasRes * 0.4);
+                resultado.pasos.push(`Híbrido: (${reglaRes.toFixed(4)} × 0.6 + ${ondasRes.toFixed(4)} × 0.4) = ${resultado.resultado.toFixed(4)}`);
+            }
+
+            // Mostrar resultados
+            document.getElementById('resultadosContainer').style.display = 'block';
+            document.getElementById('resultadoFinal').textContent = resultado.resultado.toFixed(precision);
+            document.getElementById('pasosLog').textContent = resultado.pasos.join(' → ');
+
+            if (datosOnda) {
+                document.getElementById('datosOnda').textContent = JSON.stringify({
+                    fase: datosOnda.fase.toFixed(4) + ' rad',
+                    doppler: datosOnda.doppler.toFixed(4) + ' Hz',
+                    distancia: datosOnda.distancia.toFixed(4) + ' m',
+                    multicamino: datosOnda.multicamino.length + ' caminos'
+                }, null, 2);
+            } else {
+                document.getElementById('datosOnda').textContent = 'No disponible (modo regla)';
+            }
+
+            // Stats
+            document.getElementById('statsGrid').innerHTML = `
+                <div class="stat-card"><div class="value resultado">${resultado.resultado.toFixed(4)}</div><div class="label">Resultado</div></div>
+                <div class="stat-card"><div class="value log">${resultado.pasos.length}</div><div class="label">Pasos</div></div>
+                <div class="stat-card"><div class="value onda">${op.simbolo}</div><div class="label">Operación</div></div>
+                <div class="stat-card"><div class="value" style="color:#f472b6;">${modo}</div><div class="label">Modo</div></div>
+                <div class="stat-card"><div class="value" style="color:#fbbf24;">${freq} GHz</div><div class="label">Frecuencia</div></div>
+            `;
+
+            // Regla visual
+            const reglaVisual = document.getElementById('reglaContenido');
+            const logA = Math.log10(Math.abs(a) + 1);
+            const logB = Math.log10(Math.abs(b) + 1);
+            reglaVisual.innerHTML = `
+                <span style="color:#64748b;">Escala C (log):</span> ${Array.from({length: 20}, (_, i) => 
+                    i === Math.floor(logA * 10) ? '<span style="color:#fbbf24;">|</span>' : 
+                    i === Math.floor(logB * 10) ? '<span style="color:#60a5fa;">|</span>' : '.'
+                ).join('')}
+                <br>
+                <span style="color:#64748b;">Escala D (lin):</span> ${Array.from({length: 20}, (_, i) => 
+                    i === Math.floor((resultado.resultado / 10) * 10) ? '<span style="color:#34d399;">|</span>' : '.'
+                ).join('')}
+                <br>
+                <span style="color:#64748b;">📐 ${op.simbolo} ${a}${op.args > 1 ? `, ${b}` : ''} = </span>
+                <span style="color:#34d399;">${resultado.resultado.toFixed(precision)}</span>
+            `;
+
+            // Historial
+            historial.push({
+                operacion: op.nombre,
+                simbolo: op.simbolo,
+                a: a,
+                b: b,
+                resultado: resultado.resultado,
+                modo: modo,
+                timestamp: new Date().toLocaleTimeString()
+            });
+
+            actualizarHistorial();
+            ultimaOperacion = key;
+
+            // Ocultar comparación
+            document.getElementById('comparacionContainer').style.display = 'none';
+        }
+
+        // --- Comparar métodos ---
+        function compararMetodos() {
+            if (!ultimoRegla || !ultimoOndas) {
+                alert('⚠️ Primero calcula con ambos métodos (modo híbrido)');
+                return;
+            }
+
+            const regla = ultimoRegla;
+            const ondas = ultimoOndas;
+
+            const diff = Math.abs(regla.resultado - ondas.resultado);
+            const porcentaje = (diff / Math.max(Math.abs(regla.resultado), 0.001)) * 100;
+
+            document.getElementById('comparacionContainer').style.display = 'block';
+            document.getElementById('comparacionResultado').innerHTML = `
+                <strong>📐 Regla de Cálculo:</strong> ${regla.resultado.toFixed(6)}<br>
+                <strong>🌊 Inferencia de Ondas:</strong> ${ondas.resultado.toFixed(6)}<br>
+                <strong>📊 Diferencia:</strong> ${diff.toFixed(6)}<br>
+                <strong>🎯 Precisión:</strong> ${(100 - Math.min(porcentaje, 100)).toFixed(2)}%<br>
+                <br>
+                <span style="color:#64748b;font-size:0.8em;">
+                    🔬 La regla de cálculo es más precisa para operaciones exactas.<br>
+                    🌊 La inferencia de ondas usa entropía del mundo real.<br>
+                    🔐 El modo híbrido combina ambas para mayor seguridad.
+                </span>
+            `;
+        }
+
+        // --- Historial ---
+        function actualizarHistorial() {
+            const container = document.getElementById('historialContainer');
+            container.innerHTML = historial.slice(-20).reverse().map(h =>
+                `<div class="historial-item">
+                    <span class="op">${h.simbolo} ${h.a}${h.b !== undefined && h.b !== 0 ? `, ${h.b}` : ''}</span>
+                    = <span class="res">${h.resultado.toFixed(4)}</span>
+                    <span style="color:#64748b;font-size:10px;">(${h.modo}) ${h.timestamp}</span>
+                </div>`
+            ).join('');
+        }
+
+        function limpiarHistorial() {
+            historial = [];
+            actualizarHistorial();
+        }
+
+        // --- Operación Aleatoria ---
+        function operacionAleatoria() {
+            const keys = Object.keys(OPERACIONES);
+            const key = keys[Math.floor(Math.random() * keys.length)];
+            document.getElementById('operacion').value = key;
+
+            // Valores aleatorios
+            const a = (Math.random() * 20 + 1).toFixed(2);
+            const b = (Math.random() * 20 + 1).toFixed(2);
+            document.getElementById('valorA').value = a;
+            document.getElementById('valorB').value = b;
+
+            calcular();
+        }
+
+        // --- Inicializar ---
+        window.onload = function() {
+            inicializarUI();
+            // Calcular por defecto
+            setTimeout(calcular, 100);
+        };
+    </script>
+</body>
+</html>

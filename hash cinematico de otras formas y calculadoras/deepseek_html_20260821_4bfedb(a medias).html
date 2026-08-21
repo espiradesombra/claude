@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Híbrida Espacial v4.0 🚀</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #0a0a15;
+            color: #e2e8f0;
+            background-image: radial-gradient(ellipse at 50% 50%, #0a0a2e 0%, #0a0a15 70%);
+        }
+        .container {
+            background: rgba(10, 10, 30, 0.92);
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+            margin-bottom: 20px;
+            border: 1px solid rgba(59, 130, 246, 0.15);
+            backdrop-filter: blur(8px);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 12px;
+            margin: 15px 0;
+        }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #94a3b8;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+        input,
+        select {
+            width: 100%;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid #1a1a3e;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #e2e8f0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        input:focus,
+        select:focus {
+            border-color: #60a5fa;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.15);
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid #1a1a3e;
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            resize: vertical;
+            min-height: 80px;
+        }
+        button {
+            background: linear-gradient(135deg, #3b82f6, #7c3aed);
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            margin: 4px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.15);
+        }
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(59, 130, 246, 0.25);
+        }
+        button.success {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+        }
+        button.warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        button.secondary {
+            background: linear-gradient(135deg, #475569, #334155);
+        }
+        button.pink {
+            background: linear-gradient(135deg, #ec4899, #8b5cf6);
+        }
+        button.space {
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+            background-size: 200% 200%;
+            animation: spacePulse 4s ease infinite;
+        }
+        @keyframes spacePulse {
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+        button.orbit {
+            background: linear-gradient(135deg, #f472b6, #ec4899);
+        }
+        button.asteroid {
+            background: linear-gradient(135deg, #f59e0b, #ef4444);
+        }
+        .hash-box {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            margin: 15px 0;
+            border: 1px solid #1a1a3e;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .hash-box .label {
+            color: #64748b;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .hash-box .value {
+            font-size: 0.95em;
+            margin-top: 8px;
+            word-break: break-all;
+        }
+        .hash-box .value.resultado {
+            color: #34d399;
+        }
+        .hash-box .value.orbit {
+            color: #60a5fa;
+        }
+        .hash-box .value.asteroid {
+            color: #fbbf24;
+        }
+        .hash-box .value.space {
+            color: #f472b6;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 8px;
+            margin: 15px 0;
+        }
+        .stat-card {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #1a1a3e;
+        }
+        .stat-card .value {
+            font-size: 16px;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+        .stat-card .label {
+            font-size: 7px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 3px;
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 14px;
+            border-radius: 12px;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .badge.orbit {
+            background: linear-gradient(135deg, #3b82f6, #7c3aed);
+            color: white;
+        }
+        .badge.asteroid {
+            background: linear-gradient(135deg, #f59e0b, #ef4444);
+            color: white;
+        }
+        .badge.space {
+            background: linear-gradient(135deg, #06b6d4, #ec4899);
+            color: white;
+        }
+        .badge.planet {
+            background: linear-gradient(135deg, #22c55e, #3b82f6);
+            color: white;
+        }
+        .categoria-tabs {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            margin: 10px 0;
+        }
+        .cat-tab {
+            padding: 4px 14px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #1a1a3e;
+            cursor: pointer;
+            color: #94a3b8;
+            transition: all 0.3s;
+        }
+        .cat-tab:hover {
+            border-color: #60a5fa;
+            color: #e2e8f0;
+        }
+        .cat-tab.active {
+            border-color: #60a5fa;
+            background: rgba(96, 165, 250, 0.1);
+            color: #60a5fa;
+        }
+        .tabla-operaciones {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 4px;
+            margin: 10px 0;
+        }
+        .op-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-family: 'Courier New', monospace;
+            border: 1px solid #1a1a3e;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .op-item:hover {
+            border-color: #60a5fa;
+            background: rgba(96, 165, 250, 0.05);
+        }
+        .op-item .simbolo {
+            color: #60a5fa;
+        }
+        .op-item .nombre {
+            color: #94a3b8;
+        }
+        .historial-item {
+            padding: 4px 10px;
+            margin: 3px 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 6px;
+            font-size: 12px;
+            font-family: 'Courier New', monospace;
+        }
+        .historial-item .op {
+            color: #fbbf24;
+        }
+        .historial-item .res {
+            color: #34d399;
+        }
+        .orbita-visual {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #1a1a3e;
+            margin: 10px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .orbita-visual canvas {
+            width: 100%;
+            height: 250px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+        }
+        .asteroid-data {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 8px;
+            margin: 10px 0;
+        }
+        .asteroid-card {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #1a1a3e;
+            text-align: center;
+        }
+        .asteroid-card .valor {
+            font-size: 18px;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+        .asteroid-card .label {
+            font-size: 8px;
+            color: #64748b;
+            text-transform: uppercase;
+            margin-top: 3px;
+        }
+        .hidden {
+            display: none;
+        }
+        .space-bg {
+            background: radial-gradient(ellipse at 50% 50%, #0a0a2e 0%, #0a0a15 100%);
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; background: linear-gradient(90deg, #60a5fa, #fbbf24, #f472b6, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 2.2em;">
+        🚀 Calculadora Híbrida Espacial v4.0
+    </h1>
+    <p style="text-align: center; color: #94a3b8; margin-top: -10px;">
+        <span class="badge orbit">🪐 ÓRBITAS</span>
+        <span class="badge asteroid">☄️ ASTEROIDES</span>
+        <span class="badge space">🛰️ MANIOBRAS</span>
+        <span class="badge planet">🌍 PLANETAS</span>
+    </p>
+
+    <!-- Categorías -->
+    <div class="container">
+        <div class="categoria-tabs">
+            <div class="cat-tab active" onclick="filtrarCategoria('todas')">📊 Todas</div>
+            <div class="cat-tab" onclick="filtrarCategoria('aritmetica')">➕ Aritmética</div>
+            <div class="cat-tab" onclick="filtrarCategoria('log')">📐 Logarítmica</div>
+            <div class="cat-tab" onclick="filtrarCategoria('trig')">📐 Trigonométrica</div>
+            <div class="cat-tab" onclick="filtrarCategoria('factor')">🔢 Factorización</div>
+            <div class="cat-tab" onclick="filtrarCategoria('phase')">🌊 Fase</div>
+            <div class="cat-tab" onclick="filtrarCategoria('harmonic')">🎵 Armónicos</div>
+            <div class="cat-tab" onclick="filtrarCategoria('orbit')">🪐 Órbitas</div>
+            <div class="cat-tab" onclick="filtrarCategoria('asteroid')">☄️ Asteroides</div>
+            <div class="cat-tab" onclick="filtrarCategoria('space')">🛰️ Espacial</div>
+            <div class="cat-tab" onclick="filtrarCategoria('fisica')">🌊 Física</div>
+        </div>
+
+        <div class="tabla-operaciones" id="listaOperaciones"></div>
+    </div>
+
+    <div class="container">
+        <h2 style="color: #60a5fa;">🧮 Calculadora Espacial</h2>
+
+        <div class="grid-3">
+            <div>
+                <label>Operación:</label>
+                <select id="operacion" style="height: 40px;"></select>
+            </div>
+            <div>
+                <label>Valor a:</label>
+                <input id="valorA" value="1.5e11" placeholder="Ej: 1.5e11 (distancia)">
+            </div>
+            <div>
+                <label>Valor b (opcional):</label>
+                <input id="valorB" value="5.97e24" placeholder="Ej: 5.97e24 (masa)">
+            </div>
+        </div>
+
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));">
+            <div>
+                <label>Frecuencia WiFi:</label>
+                <select id="frecuenciaWiFi">
+                    <option value="2.4">2.4 GHz</option>
+                    <option value="5">5 GHz</option>
+                    <option value="6">6 GHz</option>
+                </select>
+            </div>
+            <div>
+                <label>Precisión:</label>
+                <select id="precision">
+                    <option value="2">2 decimales</option>
+                    <option value="4" selected>4 decimales</option>
+                    <option value="6">6 decimales</option>
+                    <option value="10">10 decimales</option>
+                </select>
+            </div>
+            <div>
+                <label>Modo:</label>
+                <select id="modo">
+                    <option value="regla">📐 Regla</option>
+                    <option value="ondas">🌊 Ondas</option>
+                    <option value="hibrido">🔬 Híbrido</option>
+                </select>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 15px;">
+            <button class="success" onclick="calcular()">🧮 Calcular</button>
+            <button class="orbit" onclick="calcularOrbita()">🪐 Calcular Órbita</button>
+            <button class="asteroid" onclick="calcularAsteroide()">☄️ Calcular Asteroide</button>
+            <button class="space" onclick="calcularManiobra()">🛰️ Maniobra</button>
+            <button class="warning" onclick="compararMetodos()">📊 Comparar</button>
+            <button class="secondary" onclick="limpiarHistorial()">🧹 Limpiar</button>
+            <button class="pink" onclick="operacionAleatoria()">🎲 Aleatorio</button>
+        </div>
+    </div>
+
+    <div class="container" id="resultadosContainer" style="display: none;">
+        <h2>📊 Resultados Espaciales</h2>
+
+        <div class="stats-grid" id="statsGrid"></div>
+
+        <div class="hash-box">
+            <div class="label">🧮 Resultado</div>
+            <div class="value resultado" id="resultadoFinal">-</div>
+        </div>
+
+        <div class="hash-box" style="border-color: #60a5fa;">
+            <div class="label">🪐 Datos Orbitales</div>
+            <div class="value orbit" id="orbitaResultado">-</div>
+        </div>
+
+        <div class="hash-box" style="border-color: #fbbf24;">
+            <div class="label">☄️ Datos del Asteroide</div>
+            <div class="value asteroid" id="asteroideResultado">-</div>
+        </div>
+
+        <div class="hash-box" style="border-color: #f472b6;">
+            <div class="label">🛰️ Maniobras Espaciales</div>
+            <div class="value space" id="maniobraResultado">-</div>
+        </div>
+
+        <!-- Visualización de Órbita -->
+        <div class="orbita-visual" id="orbitaVisual">
+            <canvas id="orbitaCanvas"></canvas>
+            <div style="display:flex; gap:20px; justify-content:center; margin-top:10px; font-size:11px; color:#64748b; flex-wrap:wrap;">
+                <span id="orbitaInfo">🪐 Datos orbitales: -</span>
+            </div>
+        </div>
+
+        <!-- Datos del Asteroide -->
+        <div class="asteroid-data" id="asteroidData"></div>
+
+        <div class="hash-box" style="border-color: #64748b; max-height: 200px;">
+            <div class="label">📜 Historial</div>
+            <div class="value" id="historialContainer" style="color:#94a3b8;font-size:0.8em;">-</div>
+        </div>
+
+        <div id="comparacionContainer" class="hash-box" style="border-color: #f472b6; display: none;">
+            <div class="label">📊 Comparación de Métodos</div>
+            <div class="value" id="comparacionResultado" style="color: #f472b6; font-size: 0.8em;">-</div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        //  CALCULADORA HÍBRIDA ESPACIAL v4.0
+        //  Órbitas + Asteroides + Maniobras
+        // ============================================
+
+        // --- Constantes Espaciales ---
+        const CONSTANTES = {
+            G: 6.67430e-11,
+            c: 299792458,
+            M_sol: 1.98847e30,
+            M_tierra: 5.97237e24,
+            R_tierra: 6.371e6,
+            R_sol: 6.957e8,
+            UA: 1.495978707e11,
+            año: 31557600,
+            dia: 86400,
+            h: 6.62607015e-34,
+            k: 1.380649e-23,
+            sigma: 5.670374419e-8,
+            p: 0.14, // albedo típico de asteroides
+            rho_asteroide: 2000 // densidad típica kg/m³
+        };
+
+        // --- Datos de Planetas ---
+        const PLANETAS = {
+            'mercurio': { masa: 3.285e23, radio: 2.4397e6, gravedad: 3.7, densidad: 5427 },
+            'venus': { masa: 4.867e24, radio: 6.0518e6, gravedad: 8.87, densidad: 5243 },
+            'tierra': { masa: 5.972e24, radio: 6.371e6, gravedad: 9.81, densidad: 5515 },
+            'marte': { masa: 6.39e23, radio: 3.3895e6, gravedad: 3.71, densidad: 3933 },
+            'jupiter': { masa: 1.898e27, radio: 6.9911e7, gravedad: 24.79, densidad: 1326 },
+            'saturno': { masa: 5.683e26, radio: 5.8232e7, gravedad: 10.44, densidad: 687 },
+            'urano': { masa: 8.681e25, radio: 2.5362e7, gravedad: 8.69, densidad: 1270 },
+            'neptuno': { masa: 1.024e26, radio: 2.4622e7, gravedad: 11.15, densidad: 1638 },
+            'luna': { masa: 7.342e22, radio: 1.7374e6, gravedad: 1.62, densidad: 3344 },
+        };
+
+        // --- Operaciones Espaciales ---
+        const OPERACIONES = {
+            // ============================================
+            //  ÓRBITAS
+            // ============================================
+            'velocidad_orbital': {
+                nombre: 'Velocidad orbital',
+                simbolo: 'v_orb',
+                categoria: 'orbit',
+                args: 2,
+                desc: 'v = √(GM/r)',
+                fn: (r, M = CONSTANTES.M_tierra) => {
+                    const G = CONSTANTES.G;
+                    return Math.sqrt(G * M / r);
+                }
+            },
+            'periodo_orbital': {
+                nombre: 'Periodo orbital',
+                simbolo: 'T_orb',
+                categoria: 'orbit',
+                args: 2,
+                desc: 'T = 2π√(r³/GM)',
+                fn: (r, M = CONSTANTES.M_tierra) => {
+                    const G = CONSTANTES.G;
+                    return 2 * Math.PI * Math.sqrt(Math.pow(r, 3) / (G * M));
+                }
+            },
+            'energia_orbital': {
+                nombre: 'Energía orbital',
+                simbolo: 'E_orb',
+                categoria: 'orbit',
+                args: 3,
+                desc: 'E = -GMm/(2r)',
+                fn: (r, M = CONSTANTES.M_tierra, m = 1000) => {
+                    const G = CONSTANTES.G;
+                    return -G * M * m / (2 * r);
+                }
+            },
+            'kepler3': {
+                nombre: 'Tercera ley de Kepler',
+                simbolo: 'T²∝a³',
+                categoria: 'orbit',
+                args: 2,
+                desc: 'T² = (4π²/GM)·a³',
+                fn: (a, M = CONSTANTES.M_sol) => {
+                    const G = CONSTANTES.G;
+                    const T = 2 * Math.PI * Math.sqrt(Math.pow(a, 3) / (G * M));
+                    return { T: T, T_dias: T / CONSTANTES.dia, T_anos: T / CONSTANTES.año };
+                }
+            },
+            'elipse': {
+                nombre: 'Órbita elíptica',
+                simbolo: 'elipse',
+                categoria: 'orbit',
+                args: 2,
+                desc: 'a, e → b, c, p',
+                fn: (a, e) => {
+                    const b = a * Math.sqrt(1 - e * e);
+                    const c = a * e;
+                    const p = a * (1 - e * e);
+                    return { a, e, b, c, p, perihelio: a - c, afelio: a + c };
+                }
+            },
+            'velocidad_escape': {
+                nombre: 'Velocidad de escape',
+                simbolo: 'v_esc',
+                categoria: 'orbit',
+                args: 2,
+                desc: 'v_esc = √(2GM/r)',
+                fn: (r, M = CONSTANTES.M_tierra) => {
+                    const G = CONSTANTES.G;
+                    return Math.sqrt(2 * G * M / r);
+                }
+            },
+
+            // ============================================
+            //  ASTEROIDES
+            // ============================================
+            'diametro_asteroide': {
+                nombre: 'Diámetro asteroide',
+                simbolo: 'D_ast',
+                categoria: 'asteroid',
+                args: 2,
+                desc: 'D = 1329·10^(-H/5)·√(p)',
+                fn: (H, p = CONSTANTES.p) => {
+                    // H = magnitud absoluta
+                    return 1329 * Math.pow(10, -H / 5) * Math.sqrt(p);
+                }
+            },
+            'masa_asteroide': {
+                nombre: 'Masa asteroide',
+                simbolo: 'M_ast',
+                categoria: 'asteroid',
+                args: 2,
+                desc: 'M = (4/3)π·r³·ρ',
+                fn: (D, rho = CONSTANTES.rho_asteroide) => {
+                    const r = D / 2;
+                    return (4 / 3) * Math.PI * Math.pow(r, 3) * rho;
+                }
+            },
+            'gravedad_asteroide': {
+                nombre: 'Gravedad superficial',
+                simbolo: 'g_ast',
+                categoria: 'asteroid',
+                args: 3,
+                desc: 'g = GM/r²',
+                fn: (D, M, r = null) => {
+                    const G = CONSTANTES.G;
+                    const radio = r || D / 2;
+                    return G * M / Math.pow(radio, 2);
+                }
+            },
+            'velocidad_impacto': {
+                nombre: 'Velocidad de impacto',
+                simbolo: 'v_imp',
+                categoria: 'asteroid',
+                args: 2,
+                desc: 'v = √(v_esc² + v_inf²)',
+                fn: (v_esc, v_inf = 0) => {
+                    return Math.sqrt(Math.pow(v_esc, 2) + Math.pow(v_inf, 2));
+                }
+            },
+            'energia_impacto': {
+                nombre: 'Energía de impacto',
+                simbolo: 'E_imp',
+                categoria: 'asteroid',
+                args: 2,
+                desc: 'E = ½·m·v²',
+                fn: (m, v) => {
+                    return 0.5 * m * Math.pow(v, 2);
+                }
+            },
+            'crater': {
+                nombre: 'Tamaño de cráter',
+                simbolo: 'D_crater',
+                categoria: 'asteroid',
+                args: 1,
+                desc: 'D_crater ≈ 10·(D_impactor)^0.75',
+                fn: (D_impactor) => {
+                    return 10 * Math.pow(D_impactor, 0.75);
+                }
+            },
+
+            // ============================================
+            //  MANIOBRAS ESPACIALES
+            // ============================================
+            'delta_v': {
+                nombre: 'Delta-V (Tsiolkovsky)',
+                simbolo: 'Δv',
+                categoria: 'space',
+                args: 3,
+                desc: 'Δv = v_e·ln(m₀/m_f)',
+                fn: (v_e, m0, mf) => {
+                    return v_e * Math.log(m0 / mf);
+                }
+            },
+            'hohmann': {
+                nombre: 'Transferencia Hohmann',
+                simbolo: 'Hohmann',
+                categoria: 'space',
+                args: 2,
+                desc: 'Δv_total = Δv₁ + Δv₂',
+                fn: (r1, r2) => {
+                    const G = CONSTANTES.G;
+                    const M = CONSTANTES.M_sol;
+                    const v1 = Math.sqrt(G * M / r1);
+                    const v2 = Math.sqrt(G * M / r2);
+                    const v_trans = Math.sqrt(G * M * (2 / r1 - 2 / (r1 + r2)));
+                    const Δv1 = v_trans - v1;
+                    const Δv2 = v2 - v_trans;
+                    return { Δv1, Δv2, Δv_total: Δv1 + Δv2 };
+                }
+            },
+            'slingshot': {
+                nombre: 'Asistencia gravitatoria',
+                simbolo: 'sling',
+                categoria: 'space',
+                args: 2,
+                desc: 'Δv = 2v·sin(θ/2)',
+                fn: (v, angulo) => {
+                    const θ = angulo * Math.PI / 180;
+                    return 2 * v * Math.sin(θ / 2);
+                }
+            },
+            'event_horizon': {
+                nombre: 'Radio de Schwarzschild',
+                simbolo: 'R_s',
+                categoria: 'space',
+                args: 1,
+                desc: 'R_s = 2GM/c²',
+                fn: (M) => {
+                    const G = CONSTANTES.G;
+                    const c = CONSTANTES.c;
+                    return 2 * G * M / Math.pow(c, 2);
+                }
+            },
+            'time_dilation': {
+                nombre: 'Dilatación temporal',
+                simbolo: 'Δt\'',
+                categoria: 'space',
+                args: 1,
+                desc: "Δt' = Δt/√(1-v²/c²)",
+                fn: (v) => {
+                    const c = CONSTANTES.c;
+                    return 1 / Math.sqrt(1 - Math.pow(v, 2) / Math.pow(c, 2));
+                }
+            },
+
+            // ============================================
+            //  PLANETAS
+            // ============================================
+            'planet_data': {
+                nombre: 'Datos del planeta',
+                simbolo: '🌍',
+                categoria: 'space',
+                args: 1,
+                desc: 'Masa, radio, gravedad',
+                fn: (nombre) => {
+                    const p = PLANETAS[nombre.toLowerCase()];
+                    if (!p) return { error: 'Planeta no encontrado' };
+                    return p;
+                }
+            },
+            'surface_gravity': {
+                nombre: 'Gravedad superficial',
+                simbolo: 'g',
+                categoria: 'space',
+                args: 3,
+                desc: 'g = GM/r²',
+                fn: (r, M = CONSTANTES.M_tierra) => {
+                    const G = CONSTANTES.G;
+                    return G * M / Math.pow(r, 2);
+                }
+            },
+            'avg_density': {
+                nombre: 'Densidad media',
+                simbolo: 'ρ',
+                categoria: 'space',
+                args: 3,
+                desc: 'ρ = M/V',
+                fn: (M, r) => {
+                    const V = (4 / 3) * Math.PI * Math.pow(r, 3);
+                    return M / V;
+                }
+            },
+
+            // ============================================
+            //  OPERACIONES BASE

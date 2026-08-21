@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hash Nuclear Reversible ☢️🔁</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #0a0a0f;
+            color: #e2e8f0;
+            background-image: radial-gradient(circle at 20% 50%, #1a0a2e 0%, #0a0a0f 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: rgba(20, 20, 40, 0.9);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+            border: 1px solid rgba(100, 50, 200, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        .nuclear-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ef4444, #7c3aed);
+            padding: 2px 16px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+        .reversible-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #22c55e, #06b6d4);
+            padding: 2px 14px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            color: white;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(0.98); }
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+            margin: 15px 0;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #94a3b8;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px 12px;
+            background: #0a0a15;
+            border: 1px solid #2a1a3e;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #e2e8f0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        input:focus, select:focus {
+            border-color: #8b5cf6;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
+        }
+        button {
+            background: linear-gradient(135deg, #7c3aed, #ef4444);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            margin: 5px;
+            transition: all 0.3s;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+        button:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4); }
+        button.secondary { background: linear-gradient(135deg, #475569, #1e293b); }
+        button.success { background: linear-gradient(135deg, #22c55e, #16a34a); }
+        button.reversible { background: linear-gradient(135deg, #06b6d4, #22c55e); }
+        button.warning { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        
+        .hash-box {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            margin: 15px 0;
+            border: 1px solid #2a1a3e;
+            position: relative;
+            overflow: hidden;
+        }
+        .hash-box::before {
+            content: '☢️';
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            font-size: 28px;
+            opacity: 0.15;
+        }
+        .hash-box .label {
+            color: #64748b;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .hash-box .value {
+            font-size: 1.1em;
+            color: #a78bfa;
+            margin-top: 8px;
+            word-break: break-all;
+        }
+        .hash-box .value.nuclear-glow {
+            background: linear-gradient(90deg, #f472b6, #a78bfa, #60a5fa, #f472b6);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glowShift 4s ease infinite;
+        }
+        .hash-box .value.reversible {
+            background: linear-gradient(90deg, #34d399, #06b6d4, #22c55e);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glowShift 4s ease infinite;
+        }
+        @keyframes glowShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .info {
+            background: rgba(10, 10, 20, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #8b5cf6;
+            margin: 15px 0;
+        }
+        .info.nuclear { border-left-color: #ef4444; }
+        .info.reversible { border-left-color: #22c55e; }
+        .info.success { border-left-color: #22c55e; }
+        .info.danger { border-left-color: #ef4444; }
+        
+        .param-card {
+            background: rgba(10, 10, 20, 0.8);
+            padding: 5px 12px;
+            border-radius: 6px;
+            display: inline-block;
+            margin: 3px;
+            font-size: 11px;
+            border: 1px solid #1a1a2e;
+            font-family: 'Courier New', monospace;
+        }
+        .param-card .nuclear { color: #f472b6; }
+        .param-card .decay { color: #fbbf24; }
+        .param-card .key { color: #60a5fa; }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 8px;
+            margin: 15px 0;
+        }
+        .stat-card {
+            background: rgba(10, 10, 20, 0.8);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #1a1a2e;
+        }
+        .stat-card .value {
+            font-size: 16px;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+        .stat-card .label {
+            font-size: 8px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 3px;
+        }
+        .stat-card .value.hash { color: #a78bfa; }
+        .stat-card .value.input { color: #34d399; }
+        .stat-card .value.nuclear { color: #f472b6; }
+        
+        .hidden { display: none; }
+        
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+            border: 1px solid #1a1a2e;
+        }
+        .flow-diagram .box {
+            padding: 8px 16px;
+            background: #1a1a2e;
+            border-radius: 6px;
+            border: 1px solid #2a1a3e;
+            font-size: 11px;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+        }
+        .flow-diagram .arrow {
+            color: #64748b;
+            font-size: 16px;
+        }
+        .flow-diagram .box.input { border-color: #34d399; }
+        .flow-diagram .box.params { border-color: #f472b6; }
+        .flow-diagram .box.hash { border-color: #a78bfa; }
+        .flow-diagram .box.reversible { border-color: #22c55e; }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; font-size: 2em; background: linear-gradient(90deg, #ef4444, #f472b6, #a78bfa, #22c55e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+        ☢️ Hash Nuclear Reversible v6.0-R
+    </h1>
+    <p style="text-align: center; color: #94a3b8; margin-top: -10px;">
+        <span class="nuclear-badge">☢️ DECAIMIENTO RADIACTIVO</span>
+        <span class="reversible-badge" style="margin-left: 10px;">🔁 REVERSIBLE CON PARÁMETROS</span>
+    </p>
+
+    <div class="flow-diagram">
+        <div class="box input">📝 Input<br><span style="color:#34d399;">"10011"</span></div>
+        <span class="arrow">+</span>
+        <div class="box params">🔑 Parámetros<br><span style="color:#f472b6;">{λ, T½, ...}</span></div>
+        <span class="arrow">→</span>
+        <div class="box hash">🔐 Hash<br><span style="color:#a78bfa;">a3f1c7...</span></div>
+        <span class="arrow">↔</span>
+        <div class="box reversible">🔁 Reversible<br><span style="color:#22c55e;">con parámetros</span></div>
+    </div>
+
+    <div class="container">
+        <h2 style="color: #fbbf24;">⚛️ Parámetros Nucleares (Clave)</h2>
+
+        <div class="grid">
+            <div>
+                <label>☢️ Input (bits):</label>
+                <input id="inputBits" value="10011" placeholder="Ej: 10011">
+            </div>
+            <div>
+                <label>⏳ Pasadas:</label>
+                <input id="pasadas" value="3" type="number" min="1" max="20">
+            </div>
+            <div>
+                <label>🔵 λ para 1:</label>
+                <input id="lambda1" value="0.693" placeholder="Ej: 0.693">
+            </div>
+            <div>
+                <label>🟢 λ para 0:</label>
+                <input id="lambda0" value="0.231" placeholder="Ej: 0.231">
+            </div>
+            <div>
+                <label>🟣 λ para C:</label>
+                <input id="lambdaC" value="1.386" placeholder="Ej: 1.386">
+            </div>
+            <div>
+                <label>🧪 Vida media C:</label>
+                <input id="vidaMediaC" value="0.5" placeholder="Ej: 0.5">
+            </div>
+            <div>
+                <label>🔬 Factor fisión:</label>
+                <input id="fisionFactor" value="2.718" placeholder="Ej: 2.718">
+            </div>
+            <div>
+                <label>📊 Bits de hash:</label>
+                <select id="hashBits">
+                    <option value="32">32 bits</option>
+                    <option value="64" selected>64 bits</option>
+                    <option value="128">128 bits</option>
+                    <option value="256">256 bits</option>
+                </select>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button onclick="generarHashNuclear()">☢️ Generar Hash Nuclear</button>
+            <button class="reversible" onclick="revertirHashNuclear()">🔁 Revertir Hash</button>
+            <button class="warning" onclick="generarClaveNuclear()">🎲 Clave Aleatoria</button>
+            <button class="secondary" onclick="verificarHashNuclear()">✅ Verificar</button>
+        </div>
+    </div>
+
+    <div class="container" id="resultados" style="display: none;">
+        <h2>📊 Resultados Nucleares</h2>
+
+        <div class="stats-grid" id="statsGrid"></div>
+
+        <div class="hash-box">
+            <div class="label">☢️ Hash Nuclear</div>
+            <div class="value nuclear-glow" id="hashValue">-</div>
+        </div>
+
+        <div id="paramsDisplay" class="info nuclear">
+            <strong style="color: #f472b6;">🧪 Parámetros Nucleares (Clave):</strong><br>
+            <span id="paramsList"></span>
+        </div>
+
+        <div id="reversionDisplay" class="info hidden reversible">
+            <strong style="color: #22c55e;">🔁 Reversión:</strong>
+            <span id="reversionMsg"></span>
+        </div>
+
+        <div id="verificacionDisplay" class="info hidden success">
+            <strong>✅ Verificación:</strong>
+            <span id="verificacionMsg"></span>
+        </div>
+
+        <h3 style="color: #64748b;">🔬 Datos de Decaimiento</h3>
+        <div class="hash-box" style="border-color: #2a1a3e;">
+            <div class="label" style="color: #64748b;">📝 Datos en formato científico</div>
+            <div class="value" id="cientificoStr" style="font-size: 0.7em; color: #94a3b8; word-break: break-all;"></div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        //  HASH NUCLEAR REVERSIBLE v6.0-R
+        //  Basado en v6.0 pero SIN SHA-256
+        // ============================================
+
+        function stringToBigInt(str) {
+            let result = 0n;
+            for (let i = 0; i < str.length; i++) {
+                result = (result * 256n) + BigInt(str.charCodeAt(i));
+            }
+            return result;
+        }
+
+        function bigIntToHex(num, bits) {
+            const hex = num.toString(16);
+            return hex.padStart(Math.ceil(bits / 4), '0');
+        }
+
+        // --- Decaimiento exponencial ---
+        function decay(v, lambda, t) {
+            return v * Math.exp(-lambda * t);
+        }
+
+        // --- Simulación Nuclear ---
+        function simularNuclear(input, params) {
+            const { lambda1, lambda0, lambdaC, vidaMediaC, fisionFactor, pasadas } = params;
+            const resultados = [];
+
+            for (let p = 0; p < pasadas; p++) {
+                let vA = 1.0, vB = 1.0, vC = vidaMediaC;
+                let t = 0.0, tAcumulado = 0.0;
+                let i = 0, j = input.length - 1;
+                let posC = Math.floor(input.length / 2);
+                let direccionC = 1;
+                const choques = [];
+                const tiempos_A = [], tiempos_B = [], tiempos_C = [];
+                const bits_A = [], bits_B = [], bits_C = [];
+                let ultimo_A = null, ultimo_B = null;
+                let rebotes = 0, fisiones = 0;
+
+                while (i <= j && tAcumulado < 100) {
+                    t += 1.0;
+                    tAcumulado += 1.0;
+
+                    // Decaimiento continuo
+                    vA = decay(vA, lambda1 * 0.1, 1);
+                    vB = decay(vB, lambda0 * 0.1, 1);
+                    vC = decay(vC, lambdaC * 0.1, 1);
+
+                    // Turno A
+                    if (i <= j) {
+                        const bit = input[i];
+                        bits_A.push(bit);
+                        if (bit === '1') {
+                            vA *= (1 + fisionFactor * 0.1);
+                            vC *= (1 + (fisionFactor - 1) * 0.05);
+                            fisiones++;
+                        } else {
+                            if (ultimo_A !== '0') {
+                                vA *= (1 - (1 - 1/fisionFactor) * 0.1);
+                            }
+                        }
+                        tiempos_A.push(t);
+                        i++;
+                        ultimo_A = bit;
+                    }
+
+                    // Turno B
+                    if (i <= j) {
+                        const bit = input[j];
+                        bits_B.push(bit);
+                        if (bit === '1') {
+                            vB *= (1 + fisionFactor * 0.1);
+                            vC *= (1 + (fisionFactor - 1) * 0.05);
+                            fisiones++;
+                        } else {
+                            if (ultimo_B !== '0') {
+                                vB *= (1 - (1 - 1/fisionFactor) * 0.1);
+                            }
+                        }
+                        tiempos_B.push(t);
+                        j--;
+                        ultimo_B = bit;
+                    }
+
+                    // Movimiento de C
+                    const pasoC = vC * 0.3 * direccionC * (1 + Math.sin(t * 0.1) * 0.1);
+                    posC += pasoC;
+
+                    if (posC < 0) { posC = 0; direccionC = 1; rebotes++; vC *= (1 + fisionFactor * 0.05); }
+                    else if (posC >= input.length) { posC = input.length - 1; direccionC = -1; rebotes++; vC *= (1 + fisionFactor * 0.05); }
+
+                    tiempos_C.push(t);
+                    const bitC = input[Math.min(Math.max(Math.round(posC), 0), input.length - 1)];
+                    bits_C.push(bitC);
+                    if (bitC === '1') {
+                        vC *= (1 + fisionFactor * 0.08);
+                    } else {
+                        vC *= (1 - (1 - 1/fisionFactor) * 0.05);
+                    }
+
+                    if (i > j) {
+                        choques.push({
+                            t: t,
+                            i: i - 1,
+                            j: j + 1,
+                            posC: posC,
+                            vA: vA,
+                            vB: vB,
+                            vC: vC,
+                            rebotes: rebotes,
+                            fisiones: fisiones,
+                            decayA: Math.exp(-lambda1 * tAcumulado),
+                            decayB: Math.exp(-lambda0 * tAcumulado),
+                            decayC: Math.exp(-lambdaC * tAcumulado)
+                        });
+                        direccionC *= -1;
+                        vC *= fisionFactor * 0.2;
+                        rebotes++;
+                    }
+                }
+
+                resultados.push({
+                    vA_final: vA,
+                    vB_final: vB,
+                    vC_final: vC,
+                    t_final: t,
+                    tAcumulado: tAcumulado,
+                    choques: choques,
+                    tiempos_A: tiempos_A,
+                    tiempos_B: tiempos_B,
+                    tiempos_C: tiempos_C,
+                    bits_A: bits_A.join(''),
+                    bits_B: bits_B.reverse().join(''),
+                    bits_C: bits_C.join(''),
+                    rebotes_totales: rebotes,
+                    fisiones_totales: fisiones,
+                    posC_final: posC,
+                    decayA_final: Math.exp(-lambda1 * tAcumulado),
+                    decayB_final: Math.exp(-lambda0 * tAcumulado),
+                    decayC_final: Math.exp(-lambdaC * tAcumulado)
+                });
+            }
+
+            return resultados;
+        }
+
+        // --- Generar hash nuclear ---
+        function generarHashNuclear(input, params) {
+            const { lambda1, lambda0, lambdaC, vidaMediaC, fisionFactor, pasadas, hashBits } = params;
+            
+            const resultados = simularNuclear(input, {
+                lambda1, lambda0, lambdaC, vidaMediaC, fisionFactor, pasadas
+            });
+
+            const dataParts = [
+                `input=${input}`,
+                `pasadas=${pasadas}`,
+                `lambda1=${lambda1}`,
+                `lambda0=${lambda0}`,
+                `lambdaC=${lambdaC}`,
+                `vidaMediaC=${vidaMediaC}`,
+                `fisionFactor=${fisionFactor}`
+            ];
+
+            resultados.forEach((res, idx) => {
+                dataParts.push(`p${idx+1}_vA=${res.vA_final.toExponential()}`);
+                dataParts.push(`p${idx+1}_vB=${res.vB_final.toExponential()}`);
+                dataParts.push(`p${idx+1}_vC=${res.vC_final.toExponential()}`);
+                dataParts.push(`p${idx+1}_t=${res.t_final.toExponential()}`);
+                dataParts.push(`p${idx+1}_tAcum=${res.tAcumulado.toExponential()}`);
+                dataParts.push(`p${idx+1}_decayA=${res.decayA_final.toExponential()}`);
+                dataParts.push(`p${idx+1}_decayB=${res.decayB_final.toExponential()}`);
+                dataParts.push(`p${idx+1}_decayC=${res.decayC_final.toExponential()}`);
+                dataParts.push(`p${idx+1}_rebotes=${res.rebotes_totales}`);
+                dataParts.push(`p${idx+1}_fisiones=${res.fisiones_totales}`);
+                dataParts.push(`p${idx+1}_posC=${res.posC_final}`);
+                dataParts.push(`p${idx+1}_choques=${res.choques.map(c => 
+                    `t=${c.t.toExponential()},i=${c.i},j=${c.j},posC=${c.posC.toFixed(2)},decayA=${c.decayA.toExponential()}`
+                ).join(';')}`);
+                dataParts.push(`p${idx+1}_tiemposA=${res.tiempos_A.map(t => t.toExponential()).join(',')}`);
+                dataParts.push(`p${idx+1}_tiemposB=${res.tiempos_B.map(t => t.toExponential()).join(',')}`);
+                dataParts.push(`p${idx+1}_tiemposC=${res.tiempos_C.map(t => t.toExponential()).join(',')}`);
+                dataParts.push(`p${idx+1}_bitsA=${res.bits_A}`);
+                dataParts.push(`p${idx+1}_bitsB=${res.bits_B}`);
+                dataParts.push(`p${idx+1}_bitsC=${res.bits_C}`);
+            });
+
+            const fullStr = dataParts.join('|');
+            const bigInt = stringToBigInt(fullStr);
+            const mod = 2n ** BigInt(hashBits);
+            const hashFinal = bigInt % mod;
+
+            return {
+                hash: bigIntToHex(hashFinal, hashBits),
+                hashBigInt: hashFinal,
+                stringCientifico: fullStr,
+                resultados,
+                params
+            };
+        }
+
+        // --- REVERSIÓN: encontrar input que produce el hash ---
+        function revertirHashNuclear(hashObjetivo, params, maxBits = 16) {
+            const inputsPosibles = [];
+
+            for (let len = 1; len <= maxBits; len++) {
+                const numInputs = Math.min(Math.pow(2, len), 5000);
+                for (let n = 0; n < numInputs; n++) {
+                    const input = n.toString(2).padStart(len, '0');
+                    const resultado = generarHashNuclear(input, params);
+                    if (resultado.hash === hashObjetivo) {
+                        inputsPosibles.push({ input, resultado });
+                    }
+                }
+            }
+
+            return { inputs: inputsPosibles };
+        }
+
+        // --- UI ---
+        function obtenerParams() {
+            return {
+                lambda1: parseFloat(document.getElementById('lambda1').value),
+                lambda0: parseFloat(document.getElementById('lambda0').value),
+                lambdaC: parseFloat(document.getElementById('lambdaC').value),
+                vidaMediaC: parseFloat(document.getElementById('vidaMediaC').value),
+                fisionFactor: parseFloat(document.getElementById('fisionFactor').value),
+                pasadas: parseInt(document.getElementById('pasadas').value),
+                hashBits: parseInt(document.getElementById('hashBits').value)
+            };
+        }
+
+        function generarHashNuclear() {
+            const input = document.getElementById('inputBits').value.trim();
+            const params = obtenerParams();
+
+            if (!/^[01]+$/.test(input)) {
+                alert('❌ El input debe ser una cadena de bits');
+                return;
+            }
+
+            const resultado = generarHashNuclear(input, params);
+            mostrarResultados(resultado, params);
+
+            window._ultimoHash = resultado.hash;
+            window._ultimosParams = params;
+            window._ultimoInput = input;
+        }
+
+        function mostrarResultados(resultado, params) {
+            document.getElementById('resultados').style.display = 'block';
+            document.getElementById('hashValue').textContent = resultado.hash;
+            document.getElementById('cientificoStr').textContent = resultado.stringCientifico;
+
+            const ultimo = resultado.resultados[resultado.resultados.length - 1];
+            document.getElementById('statsGrid').innerHTML = `
+                <div class="stat-card"><div class="value hash">${resultado.hash.slice(0,8)}...</div><div class="label">Hash</div></div>
+                <div class="stat-card"><div class="value input">${params.pasadas}</div><div class="label">Pasadas</div></div>
+                <div class="stat-card"><div class="value nuclear">${ultimo.vA_final.toExponential(4)}</div><div class="label">vA final</div></div>
+                <div class="stat-card"><div class="value nuclear">${ultimo.vB_final.toExponential(4)}</div><div class="label">vB final</div></div>
+                <div class="stat-card"><div class="value nuclear">${ultimo.vC_final.toExponential(4)}</div><div class="label">vC final</div></div>
+                <div class="stat-card"><div class="value" style="color:#fbbf24;">${ultimo.rebotes_totales + ultimo.fisiones_totales}</div><div class="label">Eventos</div></div>
+            `;
+
+            document.getElementById('paramsList').innerHTML = `
+                <span class="param-card"><span class="key">λ1:</span> <span class="nuclear">${params.lambda1}</span></span>
+                <span class="param-card"><span class="key">λ0:</span> <span class="nuclear">${params.lambda0}</span></span>
+                <span class="param-card"><span class="key">λC:</span> <span class="nuclear">${params.lambdaC}</span></span>
+                <span class="param-card"><span class="key">vida media C:</span> <span class="decay">${params.vidaMediaC}</span></span>
+                <span class="param-card"><span class="key">fisión:</span> <span class="nuclear">${params.fisionFactor}</span></span>
+                <span class="param-card"><span class="key">pasadas:</span> ${params.pasadas}</span>
+                <span class="param-card"><span class="key">bits:</span> ${params.hashBits}</span>
+            `;
+
+            document.getElementById('reversionDisplay').classList.add('hidden');
+            document.getElementById('verificacionDisplay').classList.add('hidden');
+        }
+
+        // --- REVERTIR HASH ---
+        function revertirHashNuclear() {
+            if (!window._ultimoHash || !window._ultimosParams) {
+                alert('⚠️ Primero genera un hash nuclear');
+                return;
+            }
+
+            document.getElementById('reversionDisplay').classList.remove('hidden');
+            const msg = document.getElementById('reversionMsg');
+            msg.innerHTML = '⏳ Buscando input que produzca el hash nuclear...';
+
+            setTimeout(() => {
+                const resultado = revertirHashNuclear(
+                    window._ultimoHash,
+                    window._ultimosParams,
+                    10 // max 10 bits para búsqueda rápida
+                );
+
+                if (resultado.inputs.length > 0) {
+                    const encontrado = resultado.inputs[0];
+                    msg.innerHTML = `
+                        ✅ <strong>¡Fisión exitosa!</strong> El input <code>${encontrado.input}</code> 
+                        produce el hash <code>${window._ultimoHash}</code> 
+                        con los parámetros nucleares.
+                        <br><br>
+                        <span style="color:#64748b; font-size:12px;">
+                            (${resultado.inputs.length} inputs encontrados)
+                        </span>
+                    `;
+                    document.getElementById('reversionDisplay').className = 'info success';
+                } else {
+                    msg.innerHTML = `
+                        ❌ <strong>No encontrado.</strong> 
+                        No se encontró ningún input que produzca <code>${window._ultimoHash}</code>
+                        con los parámetros nucleares.
+                        <br><br>
+                        <span style="color:#64748b; font-size:12px;">
+                            Prueba con un input más corto o ajusta los parámetros.
+                        </span>
+                    `;
+                    document.getElementById('reversionDisplay').className = 'info danger';
+                }
+            }, 100);
+        }
+
+        // --- VERIFICAR ---
+        function verificarHashNuclear() {
+            if (!window._ultimoHash || !window._ultimosParams) {
+                alert('⚠️ Primero genera un hash nuclear');
+                return;
+            }
+
+            const input = prompt('📝 Ingresa el input a verificar:', window._ultimoInput || '10011');
+            if (!input) return;
+
+            const resultado = generarHashNuclear(input.trim(), window._ultimosParams);
+            
+            const display = document.getElementById('verificacionDisplay');
+            display.classList.remove('hidden');
+            
+            const msg = document.getElementById('verificacionMsg');
+            if (resultado.hash === window._ultimoHash) {
+                msg.innerHTML = `
+                    ✅ <strong>¡Coincide!</strong> El input "<code>${input}</code>" 
+                    genera el hash <code>${resultado.hash}</code> 
+                    con los parámetros nucleares.
+                `;
+                display.className = 'info success';
+            } else {
+                msg.innerHTML = `
+                    ❌ <strong>No coincide.</strong> El input "<code>${input}</code>" 
+                    genera <code>${resultado.hash}</code>, 
+                    pero se esperaba <code>${window._ultimoHash}</code>.
+                `;
+                display.className = 'info danger';
+            }
+        }
+
+        // --- CLAVE ALEATORIA ---
+        function generarClaveNuclear() {
+            const params = {
+                lambda1: (0.1 + Math.random() * 3).toFixed(3),
+                lambda0: (0.05 + Math.random() * 1).toFixed(3),
+                lambdaC: (0.5 + Math.random() * 3.5).toFixed(3),
+                vidaMediaC: (0.1 + Math.random() * 2).toFixed(2),
+                fisionFactor: (1.2 + Math.random() * 3).toFixed(3),
+                pasadas: Math.floor(Math.random() * 5) + 2,
+                hashBits: [32, 64, 128, 256][Math.floor(Math.random() * 4)]
+            };
+
+            document.getElementById('lambda1').value = params.lambda1;
+            document.getElementById('lambda0').value = params.lambda0;
+            document.getElementById('lambdaC').value = params.lambdaC;
+            document.getElementById('vidaMediaC').value = params.vidaMediaC;
+            document.getElementById('fisionFactor').value = params.fisionFactor;
+            document.getElementById('pasadas').value = params.pasadas;
+            document.getElementById('hashBits').value = params.hashBits;
+
+            let input = '';
+            const len = Math.floor(Math.random() * 8) + 3;
+            for (let i = 0; i < len; i++) {
+                input += Math.random() > 0.5 ? '1' : '0';
+            }
+            document.getElementById('inputBits').value = input;
+
+            generarHashNuclear();
+
+            alert('☢️ Clave nuclear generada:\n' +
+                `Input: ${input}\n` +
+                `λ1: ${params.lambda1}\n` +
+                `λ0: ${params.lambda0}\n` +
+                `λC: ${params.lambdaC}\n` +
+                `vida media C: ${params.vidaMediaC}\n` +
+                `fisión: ${params.fisionFactor}\n` +
+                `pasadas: ${params.pasadas}\n` +
+                `bits: ${params.hashBits}\n\n` +
+                `El hash nuclear reversible se ha generado.`);
+        }
+
+        window.onload = function() {
+            generarHashNuclear();
+        };
+    </script>
+</body>
+</html>

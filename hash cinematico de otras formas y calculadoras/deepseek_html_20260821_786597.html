@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Hash Cinemático v3.0 - Chorro de Bits</title>
+</head>
+<body>
+    <h1>🎯 Hash Cinemático v3.0</h1>
+    <div>
+        <label>Input (bits): <input id="inputBits" value="10011"></label>
+        <label>Pasadas: <input id="pasadas" value="2" type="number"></label>
+        <label>Factor 1: <input id="factor1" value="100"></label>
+        <label>Factor 0: <input id="factor0" value="0.01"></label>
+        <label>Bits de hash: <input id="hashBits" value="64" type="number"></label>
+        <button onclick="simular()">🚀 Simular</button>
+    </div>
+    <div id="resultado"></div>
+
+    <script>
+        // --- Conversión de string a BigInt ---
+        function stringToBigInt(str) {
+            let result = 0n;
+            for (let i = 0; i < str.length; i++) {
+                result = (result * 256n) + BigInt(str.charCodeAt(i));
+            }
+            return result;
+        }
+
+        // --- Simulación del hash cinemático (sin mod intermedio) ---
+        function simular() {
+            const input = document.getElementById('inputBits').value;
+            const pasadas = parseInt(document.getElementById('pasadas').value);
+            const factor1 = parseFloat(document.getElementById('factor1').value);
+            const factor0 = parseFloat(document.getElementById('factor0').value);
+            const hashBits = parseInt(document.getElementById('hashBits').value);
+
+            const resultados = [];
+
+            for (let p = 0; p < pasadas; p++) {
+                let v = 1.0;
+                let i = 0, j = input.length - 1;
+                let t = 0.0;
+                const choques = [];
+                const tiempos_A = [];
+                const tiempos_B = [];
+                let ultimo_A = null, ultimo_B = null;
+
+                while (i <= j) {
+                    t += 1.0;
+
+                    // Turno A
+                    if (i <= j) {
+                        const bit = input[i];
+                        if (bit === '1') {
+                            v *= factor1;
+                        } else {
+                            if (ultimo_A !== '0') {
+                                v *= factor0;
+                            }
+                        }
+                        tiempos_A.push(t);
+                        i++;
+                        ultimo_A = bit;
+                    }
+
+                    // Turno B
+                    if (i <= j) {
+                        const bit = input[j];
+                        if (bit === '1') {
+                            v *= factor1;
+                        } else {
+                            if (ultimo_B !== '0') {
+                                v *= factor0;
+                            }
+                        }
+                        tiempos_B.push(t);
+                        j--;
+                        ultimo_B = bit;
+                    }
+
+                    if (i > j) {
+                        choques.push([t, i - 1, j + 1]);
+                    }
+                }
+
+                resultados.push({ v, t, choques, tiempos_A, tiempos_B });
+            }
+
+            // --- Generar hash con notación científica ---
+            const dataParts = [];
+
+            // Parámetros
+            dataParts.push(`input=${input}`);
+            dataParts.push(`pasadas=${pasadas}`);
+            dataParts.push(`factor1=${factor1}`);
+            dataParts.push(`factor0=${factor0}`);
+
+            // Resultados de cada pasada en notación científica
+            resultados.forEach((res, idx) => {
+                dataParts.push(`pasada${idx+1}_v=${res.v.toExponential()}`);
+                dataParts.push(`pasada${idx+1}_t=${res.t.toExponential()}`);
+                dataParts.push(`pasada${idx+1}_choques=${res.choques.map(c => c.map(x => x.toExponential()).join(',')).join(';')}`);
+                dataParts.push(`pasada${idx+1}_tiemposA=${res.tiempos_A.map(t => t.toExponential()).join(',')}`);
+                dataParts.push(`pasada${idx+1}_tiemposB=${res.tiempos_B.map(t => t.toExponential()).join(',')}`);
+            });
+
+            // String completo
+            const fullStr = dataParts.join('|');
+
+            // Convertir a BigInt y aplicar mod
+            const bigInt = stringToBigInt(fullStr);
+            const mod = 2n ** BigInt(hashBits);
+            const hashFinal = bigInt % mod;
+
+            // Convertir a hexadecimal
+            const hexHash = hashFinal.toString(16).padStart(Math.ceil(hashBits / 4), '0');
+
+            // Mostrar resultados
+            const resultado = document.getElementById('resultado');
+            resultado.innerHTML = `
+                <h2>📊 Resultados</h2>
+                <p><strong>Input:</strong> ${input}</p>
+                <p><strong>Pasadas:</strong> ${pasadas}</p>
+                <p><strong>Hash (${hashBits} bits):</strong> <code style="font-size:1.2em; background:#f0f0f0; padding:4px 8px;">${hexHash}</code></p>
+                <p><strong>String científico completo:</strong><br>
+                <code style="font-size:0.8em; word-break:break-all; background:#f8f8f8; padding:8px; display:block;">${fullStr}</code></p>
+                <h3>📋 Detalles por pasada</h3>
+                ${resultados.map((res, idx) => `
+                    <div style="border:1px solid #ccc; padding:10px; margin:10px 0; border-radius:8px;">
+                        <h4>Pasada ${idx + 1}</h4>
+                        <p><strong>v_final:</strong> ${res.v.toExponential()}</p>
+                        <p><strong>t_final:</strong> ${res.t.toExponential()}</p>
+                        <p><strong>Choques:</strong> ${res.choques.map(c => `(t=${c[0].toExponential()}, i=${c[1]}, j=${c[2]})`).join(', ')}</p>
+                        <p><strong>tiempos_A:</strong> [${res.tiempos_A.map(t => t.toExponential()).join(', ')}]</p>
+                        <p><strong>tiempos_B:</strong> [${res.tiempos_B.map(t => t.toExponential()).join(', ')}]</p>
+                    </div>
+                `).join('')}
+            `;
+        }
+    </script>
+</body>
+</html>

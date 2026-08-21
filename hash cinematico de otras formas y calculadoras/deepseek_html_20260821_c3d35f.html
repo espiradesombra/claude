@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hash Cinemático v5.0 - 3 Punteros (Post-Cuántico)</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+        .container {
+            background: #1e293b;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+            border: 1px solid #334155;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #94a3b8;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px 12px;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #e2e8f0;
+            box-sizing: border-box;
+        }
+        input:focus, select:focus {
+            border-color: #60a5fa;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+        }
+        button {
+            background: linear-gradient(135deg, #3b82f6, #7c3aed);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            margin: 5px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4); }
+        button.secondary { background: linear-gradient(135deg, #64748b, #475569); }
+        button.success { background: linear-gradient(135deg, #22c55e, #16a34a); }
+        button.quantum { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
+        
+        .hash-box {
+            background: #0f172a;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            margin: 15px 0;
+            border: 1px solid #334155;
+        }
+        .hash-box .label {
+            color: #64748b;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .hash-box .value {
+            font-size: 1.2em;
+            color: #60a5fa;
+            margin-top: 8px;
+        }
+        .hash-box .value.quantum-color {
+            background: linear-gradient(90deg, #60a5fa, #a78bfa, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .info {
+            background: #0f172a;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
+            margin: 15px 0;
+        }
+        .info.quantum { border-left-color: #8b5cf6; }
+        .info.collision { border-left-color: #ef4444; }
+        
+        .collision { color: #f472b6; font-weight: bold; }
+        .pointer-A { color: #60a5fa; font-weight: bold; }
+        .pointer-B { color: #34d399; font-weight: bold; }
+        .pointer-C { color: #f472b6; font-weight: bold; }
+        
+        .param-card {
+            background: #0f172a;
+            padding: 8px 14px;
+            border-radius: 6px;
+            display: inline-block;
+            margin: 4px;
+            font-size: 13px;
+            border: 1px solid #334155;
+        }
+        .param-card strong { color: #60a5fa; }
+        .param-card .quantum { color: #a78bfa; }
+        
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th { background: #0f172a; color: #94a3b8; padding: 10px; text-align: left; border-bottom: 2px solid #334155; }
+        td { padding: 8px 10px; border-bottom: 1px solid #1e293b; }
+        tr:hover { background: #1e293b; }
+        
+        .quantum-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+            padding: 2px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: white;
+        }
+        
+        .canvas-container {
+            background: #0f172a;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            border: 1px solid #334155;
+            overflow-x: auto;
+        }
+        canvas {
+            width: 100%;
+            height: 300px;
+            background: #0f172a;
+            border-radius: 4px;
+        }
+        
+        .hidden { display: none; }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .stat-card {
+            background: #0f172a;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #334155;
+        }
+        .stat-card .value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #60a5fa;
+        }
+        .stat-card .label {
+            font-size: 11px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>⚛️ Hash Cinemático v5.0 - 3 Punteros</h1>
+    <p style="color: #94a3b8; text-align: center; margin-top: -10px;">
+        <span class="quantum-badge">POST-CUÁNTICO</span>
+        Sistema de 3 partículas con rebotes y velocidades independientes
+    </p>
+    
+    <div class="container">
+        <h2 style="color: #a78bfa;">⚙️ Parámetros (Clave Cuántica)</h2>
+        
+        <div class="grid">
+            <div>
+                <label>Input (bits):</label>
+                <input id="inputBits" value="10011" placeholder="Ej: 10011">
+            </div>
+            <div>
+                <label>Pasadas:</label>
+                <input id="pasadas" value="3" type="number" min="1" max="20">
+            </div>
+            <div>
+                <label>🔵 Factor A (1 acelera):</label>
+                <input id="factorA" value="2" placeholder="Ej: 2, 100">
+            </div>
+            <div>
+                <label>🟢 Factor B (0 decelera):</label>
+                <input id="factorB" value="0.5" placeholder="Ej: 0.5, 0.01">
+            </div>
+            <div>
+                <label>🟣 Factor C (rebote):</label>
+                <input id="factorC" value="1.618" placeholder="Ej: 1.618, 0.618">
+            </div>
+            <div>
+                <label>Velocidad inicial C:</label>
+                <input id="vCInicial" value="0.5" placeholder="Ej: 0.5">
+            </div>
+            <div>
+                <label>Bits de hash:</label>
+                <select id="hashBits">
+                    <option value="32">32 bits</option>
+                    <option value="64" selected>64 bits</option>
+                    <option value="128">128 bits</option>
+                    <option value="256">256 bits</option>
+                </select>
+            </div>
+            <div>
+                <label>Modo 0s:</label>
+                <select id="modo0">
+                    <option value="primer_0">Solo primer 0</option>
+                    <option value="todos">Todos los 0s</option>
+                    <option value="ninguno">Ninguno</option>
+                </select>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 15px;">
+            <button onclick="generarHash()">⚛️ Generar Hash Cuántico</button>
+            <button class="secondary" onclick="verificarHash()">✅ Verificar Hash</button>
+            <button class="quantum" onclick="generarClaveCuantica()">🎲 Clave Cuántica Aleatoria</button>
+            <button class="success" onclick="simularVisual()">📊 Visualizar Simulación</button>
+        </div>
+    </div>
+
+    <div class="container" id="resultados" style="display: none;">
+        <h2>📊 Resultados Cuánticos</h2>
+        
+        <div class="hash-box">
+            <div class="label">🔑 Hash Final (Post-Cuántico)</div>
+            <div class="value quantum-color" id="hashValue">-</div>
+        </div>
+
+        <div class="stats-grid" id="statsGrid"></div>
+
+        <div id="paramsDisplay" class="info quantum">
+            <strong>🧩 Clave Cuántica:</strong><br>
+            <span id="paramsList"></span>
+        </div>
+
+        <div id="verificacionDisplay" class="info hidden" style="border-left-color: #22c55e;">
+            <strong>✅ Verificación:</strong>
+            <span id="verificacionMsg"></span>
+        </div>
+
+        <div class="canvas-container" id="canvasContainer" style="display:none;">
+            <canvas id="simCanvas"></canvas>
+        </div>
+
+        <h3>📋 Detalles de la Simulación</h3>
+        <div id="detallesContainer"></div>
+
+        <h3>🔬 String Científico Cuántico</h3>
+        <div class="hash-box" style="border-color: #8b5cf6;">
+            <div class="label" style="color: #64748b;">📝 Datos en formato científico</div>
+            <div class="value" id="cientificoStr" style="font-size: 0.7em; color: #94a3b8; word-break: break-all;"></div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        //  NÚCLEO DEL HASH CINEMÁTICO CON 3 PUNTEROS
+        // ============================================
+
+        function stringToBigInt(str) {
+            let result = 0n;
+            for (let i = 0; i < str.length; i++) {
+                result = (result * 256n) + BigInt(str.charCodeAt(i));
+            }
+            return result;
+        }
+
+        function bigIntToHex(num, bits) {
+            const hex = num.toString(16);
+            return hex.padStart(Math.ceil(bits / 4), '0');
+        }
+
+        // --- Simulación con 3 punteros ---
+        function simular3Punteros(input, pasadas, factorA, factorB, factorC, vCInicial, modo0) {
+            const resultados = [];
+
+            for (let p = 0; p < pasadas; p++) {
+                let vA = 1.0;      // Velocidad de A (izq → der)
+                let vB = 1.0;      // Velocidad de B (der → izq)
+                let vC = vCInicial; // Velocidad de C (rebota entre choques)
+                
+                let i = 0, j = input.length - 1;
+                let posC = Math.floor(input.length / 2); // Posición inicial de C (centro)
+                let direccionC = 1; // 1 = derecha, -1 = izquierda
+                let t = 0.0;
+                
+                const choques = [];
+                const tiempos_A = [];
+                const tiempos_B = [];
+                const tiempos_C = [];
+                const bits_A = [];
+                const bits_B = [];
+                const bits_C = [];
+                let ultimo_A = null, ultimo_B = null, ultimo_C = null;
+                
+                let rebotes = 0;
+
+                while (i <= j) {
+                    t += 1.0;
+
+                    // --- Turno A (izquierda → derecha) ---
+                    if (i <= j) {
+                        const bit = input[i];
+                        bits_A.push(bit);
+                        if (bit === '1') {
+                            vA *= factorA;
+                            // A afecta a C con factorC
+                            vC *= (1 + (factorC - 1) * 0.5);
+                        } else {
+                            if (modo0 === 'primer_0' && ultimo_A !== '0') {
+                                vA *= factorB;
+                                vC *= (1 + (factorC - 1) * 0.3);
+                            } else if (modo0 === 'todos') {
+                                vA *= factorB;
+                                vC *= (1 + (factorC - 1) * 0.3);
+                            }
+                        }
+                        tiempos_A.push(t);
+                        i++;
+                        ultimo_A = bit;
+                    }
+
+                    // --- Turno B (derecha → izquierda) ---
+                    if (i <= j) {
+                        const bit = input[j];
+                        bits_B.push(bit);
+                        if (bit === '1') {
+                            vB *= factorA;
+                            vC *= (1 + (factorC - 1) * 0.5);
+                        } else {
+                            if (modo0 === 'primer_0' && ultimo_B !== '0') {
+                                vB *= factorB;
+                                vC *= (1 + (factorC - 1) * 0.3);
+                            } else if (modo0 === 'todos') {
+                                vB *= factorB;
+                                vC *= (1 + (factorC - 1) * 0.3);
+                            }
+                        }
+                        tiempos_B.push(t);
+                        j--;
+                        ultimo_B = bit;
+                    }
+
+                    // --- Movimiento de C (rebota entre choques) ---
+                    // C se mueve según su velocidad y dirección
+                    const pasoC = vC * 0.3 * direccionC;
+                    posC += pasoC;
+
+                    // Si C llega a los extremos, rebota
+                    if (posC < 0) {
+                        posC = 0;
+                        direccionC = 1;
+                        rebotes++;
+                    } else if (posC >= input.length) {
+                        posC = input.length - 1;
+                        direccionC = -1;
+                        rebotes++;
+                    }
+
+                    // Registrar posición de C
+                    tiempos_C.push(t);
+                    const bitC = input[Math.round(posC)];
+                    bits_C.push(bitC);
+                    if (bitC === '1') {
+                        vC *= (1 + (factorC - 1) * 0.7);
+                    } else {
+                        vC *= (1 - (1 - factorB) * 0.5);
+                    }
+                    ultimo_C = bitC;
+
+                    // --- Detectar choques entre A y B ---
+                    if (i > j) {
+                        const choque = {
+                            t: t,
+                            i: i - 1,
+                            j: j + 1,
+                            posC: posC,
+                            vA: vA,
+                            vB: vB,
+                            vC: vC,
+                            rebotes: rebotes
+                        };
+                        choques.push(choque);
+                        
+                        // En el choque, C cambia de dirección y velocidad
+                        direccionC *= -1;
+                        vC *= factorC;
+                        rebotes++;
+                    }
+                }
+
+                resultados.push({
+                    vA_final: vA,
+                    vB_final: vB,
+                    vC_final: vC,
+                    t_final: t,
+                    choques: choques,
+                    tiempos_A: tiempos_A,
+                    tiempos_B: tiempos_B,
+                    tiempos_C: tiempos_C,
+                    bits_A: bits_A.join(''),
+                    bits_B: bits_B.reverse().join(''),
+                    bits_C: bits_C.join(''),
+                    rebotes_totales: rebotes,
+                    posC_final: posC,
+                    direccionC_final: direccionC
+                });
+            }
+
+            return resultados;
+        }
+
+        // --- Generar hash con 3 punteros ---
+        function generarHashCuantico(input, pasadas, factorA, factorB, factorC, vCInicial, modo0, hashBits) {
+            const resultados = simular3Punteros(input, pasadas, factorA, factorB, factorC, vCInicial, modo0);
+
+            // Construir string científico con TODOS los datos
+            const dataParts = [];
+            dataParts.push(`input=${input}`);
+            dataParts.push(`pasadas=${pasadas}`);
+            dataParts.push(`factorA=${factorA}`);
+            dataParts.push(`factorB=${factorB}`);
+            dataParts.push(`factorC=${factorC}`);
+            dataParts.push(`vCInicial=${vCInicial}`);
+            dataParts.push(`modo0=${modo0}`);
+
+            resultados.forEach((res, idx) => {
+                dataParts.push(`p${idx+1}_vA=${res.vA_final.toExponential()}`);
+                dataParts.push(`p${idx+1}_vB=${res.vB_final.toExponential()}`);
+                dataParts.push(`p${idx+1}_vC=${res.vC_final.toExponential()}`);
+                dataParts.push(`p${idx+1}_t=${res.t_final.toExponential()}`);
+                dataParts.push(`p${idx+1}_rebotes=${res.rebotes_totales}`);
+                dataParts.push(`p${idx+1}_posC=${res.posC_final}`);
+                dataParts.push(`p${idx+1}_choques=${res.choques.map(c => 
+                    `t=${c.t.toExponential()},i=${c.i},j=${c.j},posC=${c.posC.toFixed(2)},rebotes=${c.rebotes}`
+                ).join(';')}`);
+                dataParts.push(`p${idx+1}_tiemposA=${res.tiempos_A.map(t => t.toExponential()).join(',')}`);
+                dataParts.push(`p${idx+1}_tiemposB=${res.tiempos_B.map(t => t.toExponential()).join(',')}`);
+                dataParts.push(`p${idx+1}_tiemposC=${res.tiempos_C.map(t => t.toExponential()).join(',')}`);
+                dataParts.push(`p${idx+1}_bitsA=${res.bits_A}`);
+                dataParts.push(`p${idx+1}_bitsB=${res.bits_B}`);
+                dataParts.push(`p${idx+1}_bitsC=${res.bits_C}`);
+            });
+
+            const fullStr = dataParts.join('|');
+            
+            const bigInt = stringToBigInt(fullStr);
+            const mod = 2n ** BigInt(hashBits);
+            const hashFinal = bigInt % mod;
+
+            return {
+                hash: bigIntToHex(hashFinal, hashBits),
+                hashBigInt: hashFinal,
+                stringCientifico: fullStr,
+                resultados: resultados,
+                params: { input, pasadas, factorA, factorB, factorC, vCInicial, modo0, hashBits }
+            };
+        }
+
+        // --- Verificar ---
+        function verificarHashCuantico(input, hashEsperado, params) {
+            const resultado = generarHashCuantico(
+                input,
+                params.pasadas,
+                params.factorA,
+                params.factorB,
+                params.factorC,
+                params.vCInicial,
+                params.modo0,
+                params.hashBits
+            );
+            
+            return {
+                coincide: resultado.hash === hashEsperado,
+                hashGenerado: resultado.hash,
+                datos: resultado
+            };
+        }
+
+        // ============================================
+        //  UI
+        // ============================================
+
+        function generarHash() {
+            const input = document.getElementById('inputBits').value.trim();
+            const pasadas = parseInt(document.getElementById('pasadas').value);
+            const factorA = parseFloat(document.getElementById('factorA').value);
+            const factorB = parseFloat(document.getElementById('factorB').value);
+            const factorC = parseFloat(document.getElementById('factorC').value);
+            const vCInicial = parseFloat(document.getElementById('vCInicial').value);
+            const hashBits = parseInt(document.getElementById('hashBits').value);
+            const modo0 = document.getElementById('modo0').value;
+
+            if (!/^[01]+$/.test(input)) {
+                alert('❌ El input debe ser una cadena de bits (solo 0s y 1s)');
+                return;
+            }
+
+            const resultado = generarHashCuantico(input, pasadas, factorA, factorB, factorC, vCInicial, modo0, hashBits);
+
+            document.getElementById('resultados').style.display = 'block';
+            document.getElementById('hashValue').textContent = resultado.hash;
+            document.getElementById('cientificoStr').textContent = resultado.stringCientifico;
+
+            // Stats
+            const ultimo = resultado.resultados[resultado.resultados.length - 1];
+            document.getElementById('statsGrid').innerHTML = `
+                <div class="stat-card"><div class="value">${pasadas}</div><div class="label">Pasadas</div></div>
+                <div class="stat-card"><div class="value">${input.length}</div><div class="label">Longitud</div></div>
+                <div class="stat-card"><div class="value" style="color:#60a5fa;">${ultimo.vA_final.toExponential()}</div><div class="label">vA final</div></div>
+                <div class="stat-card"><div class="value" style="color:#34d399;">${ultimo.vB_final.toExponential()}</div><div class="label">vB final</div></div>
+                <div class="stat-card"><div class="value" style="color:#f472b6;">${ultimo.vC_final.toExponential()}</div><div class="label">vC final</div></div>
+                <div class="stat-card"><div class="value">${ultimo.rebotes_totales}</div><div class="label">Rebotes totales</div></div>
+                <div class="stat-card"><div class="value">${resultado.resultados.reduce((s,r) => s + r.choques.length, 0)}</div><div class="label">Choques totales</div></div>
+            `;
+
+            document.getElementById('paramsList').innerHTML = `
+                <span class="param-card"><strong>Input:</strong> ${input}</span>
+                <span class="param-card"><strong>Pasadas:</strong> ${pasadas}</span>
+                <span class="param-card"><strong>🔵 factorA:</strong> ${factorA}</span>
+                <span class="param-card"><strong>🟢 factorB:</strong> ${factorB}</span>
+                <span class="param-card"><strong>🟣 factorC:</strong> ${factorC}</span>
+                <span class="param-card"><strong>vC inicial:</strong> ${vCInicial}</span>
+                <span class="param-card"><strong>Modo 0:</strong> ${modo0}</span>
+                <span class="param-card"><strong>Bits:</strong> ${hashBits}</span>
+            `;
+
+            document.getElementById('verificacionDisplay').classList.add('hidden');
+
+            mostrarDetalles(resultado.resultados, input);
+
+            window._ultimoHash = resultado.hash;
+            window._ultimosParams = { input, pasadas, factorA, factorB, factorC, vCInicial, modo0, hashBits };
+            window._ultimosResultados = resultado.resultados;
+        }
+
+        function verificarHash() {
+            if (!window._ultimoHash || !window._ultimosParams) {
+                alert('⚠️ Primero genera un hash con "Generar Hash Cuántico"');
+                return;
+            }
+
+            const input = prompt('📝 Ingresa el input a verificar:', window._ultimosParams.input);
+            if (input === null) return;
+
+            const verificacion = verificarHashCuantico(
+                input.trim(),
+                window._ultimoHash,
+                window._ultimosParams
+            );
+
+            const display = document.getElementById('verificacionDisplay');
+            display.classList.remove('hidden');
+            
+            const msg = document.getElementById('verificacionMsg');
+            if (verificacion.coincide) {
+                msg.innerHTML = `
+                    ✅ <strong>¡Coincide!</strong> El input "<code>${input}</code>" 
+                    genera el hash <code>${verificacion.hashGenerado}</code> 
+                    con los parámetros cuánticos.
+                `;
+                display.style.borderLeftColor = '#22c55e';
+            } else {
+                msg.innerHTML = `
+                    ❌ <strong>No coincide.</strong> El input "<code>${input}</code>" 
+                    genera <code>${verificacion.hashGenerado}</code>, 
+                    pero se esperaba <code>${window._ultimoHash}</code>.
+                `;
+                display.style.borderLeftColor = '#ef4444';
+            }
+        }
+
+        function generarClaveCuantica() {
+            const factoresA = [2, 3, 5, 10, 100, 1.618, 2.718];
+            const factoresB = [0.5, 0.333, 0.2, 0.1, 0.01, 0.618, 0.367];
+            const factoresC = [1.618, 0.618, 2, 0.5, 1.5, 0.8, 1.2];
+            const vCs = [0.1, 0.3, 0.5, 0.7, 1.0, 1.5, 2.0];
+            
+            const idx = Math.floor(Math.random() * factoresA.length);
+            const fA = factoresA[idx];
+            const fB = factoresB[idx];
+            const fC = factoresC[Math.floor(Math.random() * factoresC.length)];
+            const vC = vCs[Math.floor(Math.random() * vCs.length)];
+            const pasadas = Math.floor(Math.random() * 5) + 2;
+            const bits = [32, 64, 128, 256][Math.floor(Math.random() * 4)];
+            const modos = ['primer_0', 'todos', 'ninguno'];
+            const modo = modos[Math.floor(Math.random() * modos.length)];
+
+            document.getElementById('factorA').value = fA;
+            document.getElementById('factorB').value = fB;
+            document.getElementById('factorC').value = fC;
+            document.getElementById('vCInicial').value = vC;
+            document.getElementById('pasadas').value = pasadas;
+            document.getElementById('hashBits').value = bits;
+            document.getElementById('modo0').value = modo;
+
+            let input = '';
+            const len = Math.floor(Math.random() * 8) + 5;
+            for (let i = 0; i < len; i++) {
+                input += Math.random() > 0.5 ? '1' : '0';
+            }
+            document.getElementById('inputBits').value = input;
+
+            generarHash();
+
+            alert('⚛️ Clave Cuántica generada:\n' +
+                `Input: ${input}\n` +
+                `Pasadas: ${pasadas}\n` +
+                `factorA: ${fA}\n` +
+                `factorB: ${fB}\n` +
+                `factorC: ${fC}\n` +
+                `vC inicial: ${vC}\n` +
+                `Bits: ${bits}\n` +
+                `Modo 0: ${modo}\n\n` +
+                `El hash cuántico se ha generado automáticamente.`);
+        }
+
+        function mostrarDetalles(resultados, input) {
+            const container = document.getElementById('detallesContainer');
+            container.innerHTML = '';
+
+            resultados.forEach((res, idx) => {
+                const div = document.createElement('div');
+                div.style.cssText = 'border:1px solid #334155; padding:15px; margin:10px 0; border-radius:8px; background:#0f172a;';
+                
+                div.innerHTML = `
+                    <h4 style="margin:0 0 10px 0; color:#a78bfa;">⚛️ Pasada ${idx + 1}</h4>
+                    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px,1fr)); gap:10px; font-size:14px;">
+                        <div><strong style="color:#60a5fa;">vA:</strong> ${res.vA_final.toExponential()}</div>
+                        <div><strong style="color:#34d399;">vB:</strong> ${res.vB_final.toExponential()}</div>
+                        <div><strong style="color:#f472b6;">vC:</strong> ${res.vC_final.toExponential()}</div>
+                        <div><strong>t_final:</strong> ${res.t_final.toExponential()}</div>
+                        <div><strong>Rebotes:</strong> ${res.rebotes_totales}</div>
+                        <div><strong>posC final:</strong> ${res.posC_final.toFixed(2)}</div>
+                    </div>
+                    <div style="margin-top:8px;">
+                        <strong>Bits A:</strong> <span class="pointer-A">${res.bits_A}</span>
+                        <span style="margin-left:15px;"><strong>Bits B:</strong> <span class="pointer-B">${res.bits_B}</span></span>
+                        <span style="margin-left:15px;"><strong>Bits C:</strong> <span class="pointer-C">${res.bits_C}</span></span>
+                    </div>
+                    <div style="margin-top:8px;">
+                        <strong>Choques:</strong> 
+                        ${res.choques.length > 0 ? 
+                            res.choques.map(c => 
+                                `<span class="collision">(t=${c.t.toExponential()}, i=${c.i}, j=${c.j}, posC=${c.posC.toFixed(2)}, rebotes=${c.rebotes})</span>`
+                            ).join(' ') : 
+                            'Ninguno'
+                        }
+                    </div>
+                    <div style="margin-top:4px; font-size:12px; color:#64748b;">
+                        <strong>tiempos_A:</strong> [${res.tiempos_A.map(t => t.toExponential()).join(', ')}]
+                        <span style="margin-left:10px;"><strong>tiempos_B:</strong> [${res.tiempos_B.map(t => t.toExponential()).join(', ')}]</span>
+                        <span style="margin-left:10px;"><strong>tiempos_C:</strong> [${res.tiempos_C.map(t => t.toExponential()).join(', ')}]</span>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // --- Visualización en Canvas ---
+        function simularVisual() {
+            if (!window._ultimosResultados) {
+                alert('⚠️ Primero genera un hash con "Generar Hash Cuántico"');
+                return;
+            }
+
+            const container = document.getElementById('canvasContainer');
+            container.style.display = 'block';
+            
+            const canvas = document.getElementById('simCanvas');
+            const ctx = canvas.getContext('2d');
+            const W = canvas.width = canvas.parentElement.clientWidth || 900;
+            const H = canvas.height = 300;
+
+            ctx.clearRect(0, 0, W, H);
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(0, 0, W, H);
+
+            const res = window._ultimosResultados[0];
+            const input = document.getElementById('inputBits').value;
+            const n = input.length;
+
+            // Dibujar líneas de tiempo para cada puntero
+            const maxT = res.t_final;
+            const maxPos = Math.max(n, 10);
+
+            // Escalas
+            const pad = 40;
+            const xScale = (W - 2 * pad) / maxT;
+            const yScale = (H - 2 * pad) / maxPos;
+
+            // Colores
+            const colors = {
+                A: '#60a5fa',
+                B: '#34d399',
+                C: '#f472b6'
+            };
+
+            // Dibujar ejes
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(pad, pad);
+            ctx.lineTo(pad, H - pad);
+            ctx.lineTo(W - pad, H - pad);
+            ctx.stroke();
+
+            // Etiquetas
+            ctx.fillStyle = '#64748b';
+            ctx.font = '11px monospace';
+            ctx.fillText('t', W - pad + 5, H - pad + 5);
+            ctx.fillText('pos', pad - 30, pad - 5);
+
+            // Dibujar trayectorias
+            const datasets = [
+                { data: res.tiempos_A.map((t, i) => ({t, pos: i})), color: colors.A, label: 'A' },
+                { data: res.tiempos_B.map((t, i) => ({t, pos: n - 1 - i})), color: colors.B, label: 'B' },
+                { data: res.tiempos_C.map((t, i) => {
+                    // Simular posición de C basada en rebotes
+                    const pos = (i / res.tiempos_C.length) * n;
+                    return {t, pos};
+                }), color: colors.C, label: 'C' }
+            ];
+
+            datasets.forEach(ds => {
+                ctx.strokeStyle = ds.color;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ds.data.forEach((p, i) => {
+                    const x = pad + p.t * xScale;
+                    const y = H - pad - p.pos * yScale;
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                });
+                ctx.stroke();
+
+                // Puntos
+                ds.data.forEach((p, i) => {
+                    if (i % 2 === 0) { // Mostrar menos puntos
+                        const x = pad + p.t * xScale;
+                        const y = H - pad - p.pos * yScale;
+                        ctx.fillStyle = ds.color;
+                        ctx.beginPath();
+                        ctx.arc(x, y, 3, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                });
+
+                // Etiqueta
+                const last = ds.data[ds.data.length - 1];
+                if (last) {
+                    const x = pad + last.t * xScale;
+                    const y = H - pad - last.pos * yScale;
+                    ctx.fillStyle = ds.color;
+                    ctx.font = '12px sans-serif';
+                    ctx.fillText(ds.label, x + 5, y);
+                }
+            });
+
+            // Dibujar choques
+            res.choques.forEach(c => {
+                const x = pad + c.t * xScale;
+                const y = H - pad - (c.i + c.j) / 2 * yScale;
+                ctx.fillStyle = '#f472b6';
+                ctx.strokeStyle = '#ef4444';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(x, y, 8, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+                ctx.fillStyle = '#fff';
+                ctx.font = '10px sans-serif';
+                ctx.fillText('⚡', x - 5, y + 4);
+            });
+
+            // Leyenda
+            let legendY = 15;
+            ctx.font = '12px sans-serif';
+            Object.entries(colors).forEach(([key, color]) => {
+                ctx.fillStyle = color;
+                ctx.fillRect(W - 120, legendY, 15, 15);
+                ctx.fillStyle = '#e2e8f0';
+                ctx.fillText(`Puntero ${key}`, W - 100, legendY + 12);
+                legendY += 25;
+            });
+            ctx.fillStyle = '#f472b6';
+            ctx.fillRect(W - 120, legendY, 15, 15);
+            ctx.fillStyle = '#e2e8f0';
+            ctx.fillText('Choque ⚡', W - 100, legendY + 12);
+        }
+
+        window.onload = function() {
+            generarHash();
+        };
+
+        window.addEventListener('resize', () => {
+            if (document.getElementById('canvasContainer').style.display !== 'none') {
+                simularVisual();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+1. Usuario hace clic en "Generar Hash Parametrizable"
+2. Sistema hace ping a 5 servidores
+3. Obtiene: latencias, TTL, tamaños
+4. Genera parámetros automáticos
+5. Ejecuta hash con esos parámetros
+6. Muestra el hash final
+
+Resultado:
+  Hash: a3f1c78f2b5e4d9c
+  Parámetros: {gravedad: 9.81, altura: 150, ...}
+  Pings: google.com (23ms), github.com (45ms), ...

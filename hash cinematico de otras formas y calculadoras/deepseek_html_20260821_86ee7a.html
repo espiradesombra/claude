@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Sistema de Seguridad por Ondas WiFi 🌊</title>
+    <style>
+        body { 
+            background: #0a0a15; 
+            color: #e2e8f0; 
+            font-family: 'Segoe UI', monospace;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .container {
+            background: rgba(20, 20, 40, 0.9);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid rgba(100, 50, 200, 0.3);
+            margin-bottom: 20px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .stat-card {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #1a1a2e;
+        }
+        .stat-card .value {
+            font-size: 20px;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+        .stat-card .label {
+            font-size: 10px;
+            color: #64748b;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+        .hash-box {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #2a1a3e;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+        }
+        .hash-box .value {
+            font-size: 1.1em;
+            color: #a78bfa;
+            word-break: break-all;
+            margin-top: 8px;
+        }
+        button {
+            background: linear-gradient(135deg, #7c3aed, #3b82f6);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+        }
+        .frecuencia-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            margin: 2px;
+        }
+        .frecuencia-24 { background: rgba(251, 191, 36, 0.2); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.3); }
+        .frecuencia-5 { background: rgba(96, 165, 250, 0.2); color: #60a5fa; border: 1px solid rgba(96, 165, 250, 0.3); }
+        .multicamino {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin: 10px 0;
+        }
+        .camino {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-family: 'Courier New', monospace;
+            border: 1px solid #1a1a2e;
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 14px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .badge.ondas { background: linear-gradient(135deg, #06b6d4, #8b5cf6); color: white; }
+        .badge.hash { background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: white; }
+        .badge.seguridad { background: linear-gradient(135deg, #22c55e, #16a34a); color: white; }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; background: linear-gradient(90deg, #06b6d4, #8b5cf6, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+        🌊 Sistema de Seguridad por Inferencias de Ondas WiFi
+    </h1>
+    <p style="text-align: center; color: #94a3b8; margin-top: -10px;">
+        <span class="badge ondas">📡 INFERENCIA DE ONDAS</span>
+        <span class="badge hash">🔐 HASH FÍSICO</span>
+        <span class="badge seguridad">🛡️ SEGURIDAD AUTOMÁTICA</span>
+    </p>
+
+    <div class="container">
+        <h2 style="color: #06b6d4;">📡 Captura de Ondas WiFi</h2>
+        
+        <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;">
+            <button onclick="capturarOndas()">🌊 Capturar Ondas</button>
+            <button onclick="generarHashSeguridad()" style="background: linear-gradient(135deg, #22c55e, #16a34a);">🔐 Generar Hash de Seguridad</button>
+            <button onclick="verificarEntorno()" style="background: linear-gradient(135deg, #f59e0b, #d97706);">📊 Verificar Entorno</button>
+            <button onclick="limpiar()" style="background: linear-gradient(135deg, #64748b, #475569);">🧹 Limpiar</button>
+        </div>
+
+        <div class="grid" id="statsGrid">
+            <div class="stat-card">
+                <div class="value" id="estadoOndas">-</div>
+                <div class="label">Estado</div>
+            </div>
+            <div class="stat-card">
+                <div class="value" id="distanciaValor">-</div>
+                <div class="label">Distancia (m)</div>
+            </div>
+            <div class="stat-card">
+                <div class="value" id="velocidadValor">-</div>
+                <div class="label">Velocidad (m/s)</div>
+            </div>
+            <div class="stat-card">
+                <div class="value" id="dopplerValor">-</div>
+                <div class="label">Doppler (Hz)</div>
+            </div>
+            <div class="stat-card">
+                <div class="value" id="multicaminoValor">-</div>
+                <div class="label">Caminos</div>
+            </div>
+            <div class="stat-card">
+                <div class="value" id="timestampValor">-</div>
+                <div class="label">Timestamp</div>
+            </div>
+        </div>
+
+        <div id="frecuenciasContainer">
+            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 200px;">
+                    <span class="frecuencia-badge frecuencia-24">📡 2.4 GHz</span>
+                    <div id="frecuencia24Info" style="margin-top: 5px; font-size: 12px; color: #94a3b8;">-</div>
+                </div>
+                <div style="flex: 1; min-width: 200px;">
+                    <span class="frecuencia-badge frecuencia-5">📡 5 GHz</span>
+                    <div id="frecuencia5Info" style="margin-top: 5px; font-size: 12px; color: #94a3b8;">-</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="multicaminoContainer" style="margin-top: 15px;">
+            <div style="font-size: 12px; color: #64748b;">🔀 Perfil de Multicamino:</div>
+            <div class="multicamino" id="multicaminoList"></div>
+        </div>
+    </div>
+
+    <div class="container" id="hashContainer" style="display: none;">
+        <h2 style="color: #a78bfa;">🔐 Hash de Seguridad</h2>
+        
+        <div class="hash-box">
+            <div style="color: #64748b; font-size: 10px; text-transform: uppercase; letter-spacing: 1px;">🔐 Hash Final</div>
+            <div class="value" id="hashFinal">-</div>
+        </div>
+
+        <div class="hash-box" style="border-color: #34d399;">
+            <div style="color: #64748b; font-size: 10px; text-transform: uppercase; letter-spacing: 1px;">🔢 Parámetros Físicos Extraídos</div>
+            <div class="value" id="parametrosFisicos" style="color: #34d399; font-size: 0.8em;">-</div>
+        </div>
+
+        <div class="hash-box" style="border-color: #fbbf24;">
+            <div style="color: #64748b; font-size: 10px; text-transform: uppercase; letter-spacing: 1px;">🔑 Parámetros para Hash</div>
+            <div class="value" id="parametrosHash" style="color: #fbbf24; font-size: 0.8em;">-</div>
+        </div>
+
+        <div id="entornoInfo" style="margin-top: 15px; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 8px; border-left: 4px solid #22c55e;">
+            <strong style="color: #22c55e;">📊 Verificación de Entorno:</strong>
+            <span id="entornoMensaje">-</span>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        //  SISTEMA DE INFERENCIAS DE ONDAS
+        //  Versión: 1.0 - Simulación
+        // ============================================
+
+        // --- Utilidades ---
+        function stringToBigInt(str) {
+            let result = 0n;
+            for (let i = 0; i < str.length; i++) {
+                result = (result * 256n) + BigInt(str.charCodeAt(i));
+            }
+            return result;
+        }
+
+        function bigIntToHex(num, bits) {
+            const hex = num.toString(16);
+            return hex.padStart(Math.ceil(bits / 4), '0');
+        }
+
+        // --- Simulación de CSI ---
+        function capturarCSI(frecuencia) {
+            // Parámetros físicos realistas
+            const distanciaBase = 1 + Math.random() * 4;
+            const velocidadBase = Math.random() * 1.5;
+            const angulo = Math.random() * 360;
+            
+            // Pequeña variación para simular cambios reales
+            const variacion = 0.05;
+            
+            const distancia = distanciaBase * (1 + (Math.random() - 0.5) * variacion);
+            const velocidad = velocidadBase * (1 + (Math.random() - 0.5) * variacion);
+            
+            // Fase: φ = 2π * f * d / c
+            const fase = 2 * Math.PI * frecuencia * distancia / 3e8;
+            
+            // Doppler: ν = -2 * v * f / c * cos(θ)
+            const doppler = -2 * velocidad * frecuencia / 3e8 * Math.cos(angulo * Math.PI / 180);
+            
+            // Multicamino (5 caminos)
+            const multicamino = Array.from({length: 4 + Math.floor(Math.random() * 3)}, (_, i) => ({
+                distancia: distancia * (0.5 + Math.random()),
+                atenuacion: 0.1 + Math.random() * 0.8,
+                fase: Math.random() * 2 * Math.PI,
+                retardo: Math.random() * 20 // nanosegundos
+            }));
+            
+            return {
+                frecuencia,
+                distancia,
+                velocidad,
+                angulo,
+                fase,
+                doppler,
+                multicamino,
+                timestamp: Date.now()
+            };
+        }
+
+        // --- Extraer parámetros físicos ---
+        function extraerParametros(csi2_4, csi5) {
+            // Resolver distancia usando CRT simplificado
+            function resolverDistancia(f1, f2, phi1, phi2) {
+                const c = 3e8;
+                const d1 = (phi1 * c) / (2 * Math.PI * f1);
+                const d2 = (phi2 * c) / (2 * Math.PI * f2);
+                
+                // Buscar distancia que satisface ambas
+                let mejorDist = d1;
+                let mejorError = Infinity;
+                
+                for (let k = -5; k <= 5; k++) {
+                    const d = d1 + k * c / (f2 - f1);
+                    const error = Math.abs((2 * Math.PI * f2 * d / c) % (2 * Math.PI) - phi2 % (2 * Math.PI));
+                    if (error < mejorError && d > 0) {
+                        mejorError = error;
+                        mejorDist = d;
+                    }
+                }
+                
+                return mejorDist;
+            }
+            
+            const distancia = resolverDistancia(
+                csi2_4.frecuencia,
+                csi5.frecuencia,
+                csi2_4.fase,
+                csi5.fase
+            );
+            
+            // Velocidad combinada
+            const velocidad = (csi2_4.velocidad + csi5.velocidad) / 2;
+            
+            // Doppler combinado
+            const doppler = (csi2_4.doppler + csi5.doppler) / 2;
+            
+            // Multicamino combinado
+            const multicamino = csi2_4.multicamino.map((m, i) => ({
+                ...m,
+                atenuacion: (m.atenuacion + (csi5.multicamino[i]?.atenuacion || m.atenuacion)) / 2
+            }));
+            
+            return {
+                distancia,
+                velocidad,
+                doppler,
+                multicamino,
+                timestamp: Date.now()
+            };
+        }
+
+        // --- Generar parámetros para hash desde ondas ---
+        function generarParametrosDesdeOndas(datosFisicos) {
+            const { distancia, velocidad, doppler, multicamino } = datosFisicos;
+            
+            // Usar valores físicos para parametrizar
+            const params = {
+                // Para hash cinemático
+                factor1: 1 + (Math.abs(distancia) % 10) / 5,
+                factor0: 0.1 + (Math.abs(velocidad) % 10) / 20,
+                pasadas: Math.max(1, Math.floor(Math.abs(distancia) * 2)),
+                
+                // Para hash nuclear
+                lambda1: 0.1 + (Math.abs(doppler) % 5) / 5,
+                lambda0: 0.05 + (Math.abs(velocidad) % 5) / 10,
+                lambdaC: 0.5 + (Math.abs(distancia) % 10) / 5,
+                vidaMediaC: 0.1 + (Math.abs(doppler) % 100) / 100,
+                fisionFactor: 1.2 + (Math.abs(distancia) % 10) / 5,
+                
+                // Para hash oceánico
+                gravedad: 1 + (Math.abs(distancia) % 20) / 2,
+                altura: 10 + (Math.abs(velocidad) % 100) * 10,
+                densidadFluido: 0.998 + (Math.abs(doppler) % 100) / 1000,
+                densidadObjeto: 0.6 + (Math.abs(distancia) % 50) / 100,
+                factorFlotacion: 0.5 + (Math.abs(velocidad) % 20) / 10,
+                resetVelocidad: (Math.abs(distancia) % 2 === 0),
+                
+                // Para 3 punteros
+                factorA: 1 + (Math.abs(velocidad) % 10) / 5,
+                factorB: 0.1 + (Math.abs(doppler) % 10) / 20,
+                factorC: 0.5 + (Math.abs(distancia) % 10) / 5,
+                vCInicial: 0.1 + (Math.abs(velocidad) % 100) / 100,
+                
+                // Metadatos de ondas
+                frecuencia2_4: 2.4e9,
+                frecuencia5: 5e9,
+                distancia_medida: distancia,
+                velocidad_medida: velocidad,
+                doppler_medido: doppler,
+                num_caminos: multicamino.length,
+                timestamp: datosFisicos.timestamp
+            };
+            
+            return params;
+        }
+
+        // --- Sistema Principal ---
+        const sistema = {
+            historial: [],
+            ultimosDatos: null,
+            ultimosParametros: null,
+            ultimoHash: null,
+            
+            capturarOndas() {
+                const csi2_4 = capturarCSI(2.4e9);
+                const csi5 = capturarCSI(5e9);
+                
+                const datosFisicos = extraerParametros(csi2_4, csi5);
+                
+                this.historial.push({
+                    timestamp: Date.now(),
+                    datos: datosFisicos,
+                    csi2_4,
+                    csi5
+                });
+                
+                this.ultimosDatos = datosFisicos;
+                return datosFisicos;
+            },
+            
+            generarHash() {
+                const datos = this.capturarOndas();
+                const params = generarParametrosDesdeOndas(datos);
+                
+                this.ultimosParametros = params;
+                
+                const hashData = [
+                    `distancia=${datos.distancia}`,
+                    `velocidad=${datos.velocidad}`,
+                    `doppler=${datos.doppler}`,
+                    `multicamino=${JSON.stringify(datos.multicamino)}`,
+                    `timestamp=${datos.timestamp}`,
+                    `parametros=${JSON.stringify(params)}`
+                ];
+                
+                const fullStr = hashData.join('|');
+                const bigInt = stringToBigInt(fullStr);
+                const mod = 2n ** BigInt(64);
+                const hashFinal = bigInt % mod;
+                const hashHex = bigIntToHex(hashFinal, 64);
+                
+                this.ultimoHash = hashHex;
+                
+                return {
+                    hash: hashHex,
+                    datosFisicos: datos,
+                    parametros: params
+                };
+            },
+            
+            verificarEntorno() {
+                if (this.historial.length < 2) {
+                    return { 
+                        estable: false, 
+                        mensaje: 'Se necesitan más mediciones (mínimo 2)' 
+                    };
+                }
+                
+                const ultimo = this.historial[this.historial.length - 1];
+                const anterior = this.historial[this.historial.length - 2];
+                
+                const cambioDistancia = Math.abs(ultimo.datos.distancia - anterior.datos.distancia);
+                const cambioVelocidad = Math.abs(ultimo.datos.velocidad - anterior.datos.velocidad);
+                
+                return {
+                    estable: cambioDistancia < 0.5 && cambioVelocidad < 0.3,
+                    cambioDistancia,
+                    cambioVelocidad,
+                    mensaje: cambioDistancia < 0.5 && cambioVelocidad < 0.3 ? 
+                        '✅ Entorno estable' : '⚠️ Cambios detectados en el entorno'
+                };
+            }
+        };
+
+        // --- UI ---
+        function capturarOndas() {
+            const datos = sistema.capturarOndas();
+            actualizarUI(datos);
+        }
+
+        function generarHashSeguridad() {
+            const resultado = sistema.generarHash();
+            
+            document.getElementById('hashContainer').style.display = 'block';
+            document.getElementById('hashFinal').textContent = resultado.hash;
+            document.getElementById('parametrosFisicos').textContent = JSON.stringify({
+                distancia: resultado.datosFisicos.distancia,
+                velocidad: resultado.datosFisicos.velocidad,
+                doppler: resultado.datosFisicos.doppler,
+                multicamino: resultado.datosFisicos.multicamino.length
+            }, null, 2);
+            document.getElementById('parametrosHash').textContent = JSON.stringify(resultado.parametros, null, 2);
+            
+            // Verificar entorno automáticamente
+            const entorno = sistema.verificarEntorno();
+            const msg = document.getElementById('entornoMensaje');
+            msg.textContent = entorno.mensaje;
+            document.getElementById('entornoInfo').style.borderLeftColor = entorno.estable ? '#22c55e' : '#f59e0b';
+            
+            actualizarUI(sistema.ultimosDatos);
+        }
+
+        function verificarEntorno() {
+            const entorno = sistema.verificarEntorno();
+            const msg = document.getElementById('entornoMensaje');
+            msg.textContent = `${entorno.mensaje} | Δdistancia: ${entorno.cambioDistancia?.toFixed(3) || 'N/A'}m | Δvelocidad: ${entorno.cambioVelocidad?.toFixed(3) || 'N/A'}m/s`;
+            document.getElementById('entornoInfo').style.borderLeftColor = entorno.estable ? '#22c55e' : '#f59e0b';
+            document.getElementById('entornoInfo').style.display = 'block';
+        }
+
+        function actualizarUI(datos) {
+            if (!datos) return;
+            
+            document.getElementById('estadoOndas').textContent = '✅ Capturado';
+            document.getElementById('distanciaValor').textContent = datos.distancia.toFixed(3);
+            document.getElementById('velocidadValor').textContent = datos.velocidad.toFixed(3);
+            document.getElementById('dopplerValor').textContent = datos.doppler.toFixed(3);
+            document.getElementById('multicaminoValor').textContent = datos.multicamino.length;
+            document.getElementById('timestampValor').textContent = new Date(datos.timestamp).toLocaleTimeString();
+            
+            // Frecuencias
+            const ultimo = sistema.historial[sistema.historial.length - 1];
+            if (ultimo) {
+                document.getElementById('frecuencia24Info').innerHTML = `
+                    Fase: ${ultimo.csi2_4.fase.toFixed(3)} rad<br>
+                    Distancia: ${ultimo.csi2_4.distancia.toFixed(3)} m<br>
+                    Doppler: ${ultimo.csi2_4.doppler.toFixed(3)} Hz
+                `;
+                document.getElementById('frecuencia5Info').innerHTML = `
+                    Fase: ${ultimo.csi5.fase.toFixed(3)} rad<br>
+                    Distancia: ${ultimo.csi5.distancia.toFixed(3)} m<br>
+                    Doppler: ${ultimo.csi5.doppler.toFixed(3)} Hz
+                `;
+            }
+            
+            // Multicamino
+            const container = document.getElementById('multicaminoList');
+            container.innerHTML = datos.multicamino.map((m, i) => `
+                <div class="camino">
+                    <strong>Camino ${i+1}:</strong> 
+                    ${m.distancia.toFixed(2)}m | 
+                    ${(m.atenuacion * 100).toFixed(0)}% | 
+                    φ: ${m.fase.toFixed(2)}
+                </div>
+            `).join('');
+        }
+
+        function limpiar() {
+            sistema.historial = [];
+            sistema.ultimosDatos = null;
+            sistema.ultimosParametros = null;
+            sistema.ultimoHash = null;
+            document.getElementById('hashContainer').style.display = 'none';
+            document.getElementById('estadoOndas').textContent = '-';
+            document.getElementById('distanciaValor').textContent = '-';
+            document.getElementById('velocidadValor').textContent = '-';
+            document.getElementById('dopplerValor').textContent = '-';
+            document.getElementById('multicaminoValor').textContent = '-';
+            document.getElementById('timestampValor').textContent = '-';
+            document.getElementById('frecuencia24Info').textContent = '-';
+            document.getElementById('frecuencia5Info').textContent = '-';
+            document.getElementById('multicaminoList').innerHTML = '';
+            document.getElementById('entornoMensaje').textContent = '-';
+        }
+
+        // --- Inicializar ---
+        window.onload = function() {
+            capturarOndas();
+        };
+    </script>
+</body>
+</html>

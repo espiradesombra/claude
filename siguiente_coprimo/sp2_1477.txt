@@ -1,0 +1,114 @@
+import math
+import time
+
+def siguiente_primo(inicio: int) -> int:
+    if inicio < 2:
+        return 2
+    paso7_new = False
+    paso6_new = False
+    paso5_new = False
+    paso4_new = False
+    paso3_new = False
+    paso2_new = False
+    paso1_new = False
+    n = inicio
+    m = n + 1
+    s=n+2
+    l=m+2
+    v=s+2
+    f=l+2
+    L=v+2
+    ny = n - 1
+   
+    t = ny * ny
+    
+    ny += 1
+    n += 1
+    m += 1
+    s += 1
+    l += 1
+    v += 1
+    f += 1
+    L += 1
+    t *= ny
+   
+    for _ in range(10000):
+        # ── COMPROBAR COPRIMALIDAD ──
+        # Si t es coprimo con ny, n y m, entonces ny es primo
+        t1=math.gcd(t, ny) == 1 
+        t2=math.gcd(t, n) == 1 
+        t3=math.gcd(t, m) == 1 
+        t4=math.gcd(t, s) == 1
+        t5=math.gcd(t, l) == 1
+        t6=math.gcd(t, v) == 1
+        t7=math.gcd(t, f) == 1
+        t8=math.gcd(t, L) == 1
+        
+        
+        # PASO 8 
+        paso8_new = (t1 > 0 ) and paso7_new
+        # ── PASO 7 ──
+        paso7_new = (t2 > 0 ) and paso6_new
+        
+        paso6_new = (t3 > 0 ) and paso5_new
+         # ── PASO 1 ──
+        
+        paso5_new = (t4 > 0 ) and paso4_new
+        # ── PASO 6 ──
+        
+        paso4_new = (t5 > 0 ) and paso3_new
+        # ── PASO 5 ──
+        
+        paso3_new = (t6 > 0 ) and paso2_new
+        # ── PASO 4 ──
+        
+        paso2_new = (t7 > 0 )and paso1_new
+        # ── PASO 3 ──
+        
+        paso1_new = (t8 > 0  )
+        # ── PASO 2 ──
+        
+        if paso8_new:
+            print(ny) 
+        if paso7_new:
+            print(n)
+        if paso6_new:
+            print(m)
+        if paso5_new:
+            print(s)
+        if paso4_new:
+            print(l)
+        if paso3_new:
+            print(v)
+        if paso2_new:
+            print(f)
+        if paso1_new:
+            print(L)
+        if paso8_new:
+            return ny
+        # ── ACTUALIZAR ACUMULADORES ──
+        t *= ny
+        
+        
+        ny += 1
+        n += 1
+        m += 1
+        s += 1
+        l += 1
+        v += 1
+        f += 1
+        L += 1
+
+    # Fallback (por si acaso)
+  
+
+
+# ── PRUEBA ──
+if __name__ == "__main__":
+    tests = [3, 5, 7, 11, 13, 17, 31, 37, 47,59, 61, 71, 89, 97, 100000, 1000003]
+    for n in tests:
+        t0 = time.perf_counter()
+        sp = siguiente_primo(n)
+        t1 = time.perf_counter()
+        print(f"N = {n}  → {sp}  ({(t1-t0)*1000:.3f} ms)")
+#comprobador de coprimalidad entre entrada y 8 consecutivos->falla como test de primalidad

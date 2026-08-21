@@ -1,0 +1,21 @@
+Hash = {
+  hash: "a3f1c7...",           // irreversible sin parámetros
+  metadatos: {                  // clave para reversión
+    pasadas: 2,
+    factor1: 2,
+    factor0: 0.6667,
+    modo0: "primer_0",
+    estructura: [               // patrón de la simulación
+      {
+        v_final: 5.333,
+        t_final: 5,
+        numChoques: 1,
+        numBitsA: 3,
+        numBitsB: 2,
+        tiempos_A: [1,3,5],
+        tiempos_B: [2,4],
+        choques: [{t:5, i:3, j:2}]
+      }
+    ]
+  }
+}

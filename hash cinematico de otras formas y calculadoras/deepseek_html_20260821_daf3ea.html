@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hash Cinemático Nuclear v6.0 - Decaimiento Radiactivo ☢️</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #0a0a0f;
+            color: #e2e8f0;
+            background-image: radial-gradient(circle at 20% 50%, #1a0a2e 0%, #0a0a0f 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: rgba(20, 20, 40, 0.9);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+            border: 1px solid rgba(100, 50, 200, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        .nuclear-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ef4444, #7c3aed);
+            padding: 2px 14px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(0.98); }
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+            margin: 15px 0;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #94a3b8;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px 12px;
+            background: #0a0a15;
+            border: 1px solid #2a1a3e;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #e2e8f0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        input:focus, select:focus {
+            border-color: #8b5cf6;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
+        }
+        button {
+            background: linear-gradient(135deg, #7c3aed, #ef4444);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            margin: 5px;
+            transition: all 0.3s;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+        button:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4); }
+        button.secondary { background: linear-gradient(135deg, #475569, #1e293b); }
+        button.success { background: linear-gradient(135deg, #22c55e, #16a34a); }
+        button.nuclear { 
+            background: linear-gradient(135deg, #ef4444, #7c3aed, #ef4444);
+            background-size: 200% 200%;
+            animation: nuclearPulse 3s ease infinite;
+        }
+        @keyframes nuclearPulse {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .hash-box {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            margin: 15px 0;
+            border: 1px solid #2a1a3e;
+            position: relative;
+            overflow: hidden;
+        }
+        .hash-box::before {
+            content: '☢️';
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            font-size: 24px;
+            opacity: 0.2;
+        }
+        .hash-box .label {
+            color: #64748b;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .hash-box .value {
+            font-size: 1.1em;
+            color: #a78bfa;
+            margin-top: 8px;
+            word-break: break-all;
+        }
+        .hash-box .value.nuclear-glow {
+            background: linear-gradient(90deg, #f472b6, #a78bfa, #60a5fa, #f472b6);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glowShift 4s ease infinite;
+        }
+        @keyframes glowShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .info {
+            background: rgba(10, 10, 20, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #8b5cf6;
+            margin: 15px 0;
+        }
+        .info.nuclear { border-left-color: #ef4444; }
+        .info.decay { border-left-color: #f59e0b; }
+        
+        .param-card {
+            background: rgba(10, 10, 20, 0.8);
+            padding: 6px 12px;
+            border-radius: 6px;
+            display: inline-block;
+            margin: 3px;
+            font-size: 12px;
+            border: 1px solid #1a1a2e;
+            font-family: 'Courier New', monospace;
+        }
+        .param-card .nuclear { color: #f472b6; }
+        .param-card .decay { color: #fbbf24; }
+        .param-card .half-life { color: #34d399; }
+        
+        .collision { color: #f472b6; font-weight: bold; }
+        .pointer-A { color: #60a5fa; font-weight: bold; }
+        .pointer-B { color: #34d399; font-weight: bold; }
+        .pointer-C { color: #f472b6; font-weight: bold; }
+        .decay-text { color: #fbbf24; font-weight: bold; }
+        
+        table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        th { 
+            background: rgba(10, 10, 20, 0.9); 
+            color: #94a3b8; 
+            padding: 8px 10px; 
+            text-align: left; 
+            border-bottom: 2px solid #2a1a3e;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        td { padding: 6px 10px; border-bottom: 1px solid #1a1a2e; font-size: 12px; }
+        tr:hover { background: rgba(139, 92, 246, 0.05); }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 8px;
+            margin: 15px 0;
+        }
+        .stat-card {
+            background: rgba(10, 10, 20, 0.8);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #1a1a2e;
+        }
+        .stat-card .value {
+            font-size: 18px;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+        .stat-card .label {
+            font-size: 9px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 3px;
+        }
+        .stat-card .value.decay { color: #fbbf24; }
+        .stat-card .value.half { color: #34d399; }
+        .stat-card .value.nuclear { color: #f472b6; }
+        
+        .hidden { display: none; }
+        
+        .decay-formula {
+            font-family: 'Times New Roman', serif;
+            font-style: italic;
+            color: #fbbf24;
+            font-size: 1.1em;
+            text-align: center;
+            padding: 10px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            margin: 10px 0;
+            letter-spacing: 1px;
+        }
+        
+        .half-life-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 700;
+            background: rgba(251, 191, 36, 0.2);
+            color: #fbbf24;
+            border: 1px solid rgba(251, 191, 36, 0.3);
+        }
+        
+        .canvas-container {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            border: 1px solid #1a1a2e;
+            overflow-x: auto;
+        }
+        canvas {
+            width: 100%;
+            height: 300px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+        }
+        
+        .glow-text {
+            text-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; font-size: 2em; background: linear-gradient(90deg, #ef4444, #f472b6, #a78bfa, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+        ☢️ Hash Cinemático Nuclear v6.0
+    </h1>
+    <p style="text-align: center; color: #94a3b8; margin-top: -10px;">
+        <span class="nuclear-badge">☢️ DECAIMIENTO RADIACTIVO</span>
+        <span style="margin-left: 10px; font-size: 12px; color: #64748b;">
+            v(t) = v₀ · e<sup>-λ·t</sup>
+        </span>
+    </p>
+    
+    <div class="container">
+        <h2 style="color: #fbbf24;">⚛️ Parámetros Nucleares (Clave de Isótopos)</h2>
+        
+        <div class="decay-formula">
+            N(t) = N₀ · e<sup>-λ·t</sup> &nbsp;|&nbsp; λ = ln(2) / T<sub>½</sub>
+        </div>
+        
+        <div class="grid">
+            <div>
+                <label>☢️ Input (bits radiactivos):</label>
+                <input id="inputBits" value="10011" placeholder="Ej: 10011">
+            </div>
+            <div>
+                <label>⏳ Pasadas (semividas):</label>
+                <input id="pasadas" value="3" type="number" min="1" max="20">
+            </div>
+            <div>
+                <label>🔵 λ para 1 (decaimento rápido):</label>
+                <input id="lambda1" value="0.693" placeholder="Ej: 0.693">
+            </div>
+            <div>
+                <label>🟢 λ para 0 (decaimento lento):</label>
+                <input id="lambda0" value="0.231" placeholder="Ej: 0.231">
+            </div>
+            <div>
+                <label>🟣 λ para C (isótopo inestable):</label>
+                <input id="lambdaC" value="1.386" placeholder="Ej: 1.386">
+            </div>
+            <div>
+                <label>🧪 Vida media inicial C:</label>
+                <input id="vidaMediaC" value="0.5" placeholder="Ej: 0.5">
+            </div>
+            <div>
+                <label>🔬 Factor de fisión:</label>
+                <input id="fisionFactor" value="2.718" placeholder="Ej: 2.718">
+            </div>
+            <div>
+                <label>Bits de hash:</label>
+                <select id="hashBits">
+                    <option value="32">32 bits</option>
+                    <option value="64" selected>64 bits</option>
+                    <option value="128">128 bits</option>
+                    <option value="256">256 bits</option>
+                </select>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 15px;">
+            <button class="nuclear" onclick="generarHashNuclear()">☢️ Generar Hash Nuclear</button>
+            <button class="secondary" onclick="verificarHashNuclear()">✅ Verificar</button>
+            <button onclick="generarClaveNuclear()">🎲 Isótopo Aleatorio</button>
+            <button class="success" onclick="simularDecaimiento()">📊 Decaimiento</button>
+        </div>
+    </div>
+
+    <div class="container" id="resultados" style="display: none;">
+        <h2 style="color: #a78bfa;">📊 Resultados Nucleares</h2>
+        
+        <div class="hash-box">
+            <div class="label">☢️ Hash Nuclear Final</div>
+            <div class="value nuclear-glow" id="hashValue">-</div>
+        </div>
+
+        <div class="stats-grid" id="statsGrid"></div>
+
+        <div id="paramsDisplay" class="info nuclear">
+            <strong style="color: #f472b6;">🧪 Clave de Isótopos:</strong><br>
+            <span id="paramsList"></span>
+        </div>
+
+        <div id="verificacionDisplay" class="info hidden" style="border-left-color: #22c55e;">
+            <strong>✅ Verificación:</strong>
+            <span id="verificacionMsg"></span>
+        </div>
+
+        <div class="canvas-container" id="canvasContainer" style="display:none;">
+            <canvas id="simCanvas"></canvas>
+        </div>
+
+        <h3 style="color: #fbbf24;">📋 Desintegración por Pasada</h3>
+        <div id="detallesContainer"></div>
+
+        <h3 style="color: #64748b;">🔬 Datos de Decaimiento</h3>
+        <div class="hash-box" style="border-color: #fbbf24;">
+            <div class="label" style="color: #64748b;">📝 Datos en formato científico</div>
+            <div class="value" id="cientificoStr" style="font-size: 0.7em; color: #94a3b8; word-break: break-all;"></div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        //  NÚCLEO NUCLEAR - DECAIMIENTO RADIACTIVO
+        // ============================================
+
+        function stringToBigInt(str) {
+            let result = 0n;
+            for (let i = 0; i < str.length; i++) {
+                result = (result * 256n) + BigInt(str.charCodeAt(i));
+            }
+            return result;
+        }
+
+        function bigIntToHex(num, bits) {
+            const hex = num.toString(16);
+            return hex.padStart(Math.ceil(bits / 4), '0');
+        }
+
+        // --- Decaimiento exponencial ---
+        function decay(v, lambda, t) {
+            return v * Math.exp(-lambda * t);
+        }
+
+        // --- Simulación Nuclear con 3 punteros y decaimiento ---
+        function simularNuclear(input, pasadas, lambda1, lambda0, lambdaC, vidaMediaC, fisionFactor, modo0) {
+            const resultados = [];
+
+            for (let p = 0; p < pasadas; p++) {
+                let vA = 1.0;
+                let vB = 1.0;
+                let vC = vidaMediaC;
+                let t = 0.0;
+                let tAcumulado = 0.0;
+                
+                let i = 0, j = input.length - 1;
+                let posC = Math.floor(input.length / 2);
+                let direccionC = 1;
+                
+                const choques = [];
+                const tiempos_A = [];
+                const tiempos_B = [];
+                const tiempos_C = [];
+                const bits_A = [];
+                const bits_B = [];
+                const bits_C = [];
+                let ultimo_A = null, ultimo_B = null, ultimo_C = null;
+                let rebotes = 0;
+                let fisiones = 0;
+
+                while (i <= j && tAcumulado < 100) { // Límite de tiempo para evitar loops infinitos
+                    t += 1.0;
+                    tAcumulado += 1.0;
+
+                    // --- Decaimiento continuo de todas las velocidades ---
+                    vA = decay(vA, lambda1 * 0.1, 1);
+                    vB = decay(vB, lambda0 * 0.1, 1);
+                    vC = decay(vC, lambdaC * 0.1, 1);
+
+                    // --- Turno A ---
+                    if (i <= j) {
+                        const bit = input[i];
+                        bits_A.push(bit);
+                        if (bit === '1') {
+                            vA *= (1 + fisionFactor * 0.1);
+                            // Fisión: C recibe energía
+                            vC *= (1 + (fisionFactor - 1) * 0.05);
+                            fisiones++;
+                        } else {
+                            if (modo0 === 'primer_0' && ultimo_A !== '0') {
+                                vA *= (1 - (1 - 1/fisionFactor) * 0.1);
+                            } else if (modo0 === 'todos') {
+                                vA *= (1 - (1 - 1/fisionFactor) * 0.1);
+                            }
+                        }
+                        tiempos_A.push(t);
+                        i++;
+                        ultimo_A = bit;
+                    }
+
+                    // --- Turno B ---
+                    if (i <= j) {
+                        const bit = input[j];
+                        bits_B.push(bit);
+                        if (bit === '1') {
+                            vB *= (1 + fisionFactor * 0.1);
+                            vC *= (1 + (fisionFactor - 1) * 0.05);
+                            fisiones++;
+                        } else {
+                            if (modo0 === 'primer_0' && ultimo_B !== '0') {
+                                vB *= (1 - (1 - 1/fisionFactor) * 0.1);
+                            } else if (modo0 === 'todos') {
+                                vB *= (1 - (1 - 1/fisionFactor) * 0.1);
+                            }
+                        }
+                        tiempos_B.push(t);
+                        j--;
+                        ultimo_B = bit;
+                    }
+
+                    // --- Movimiento de C con decaimiento ---
+                    const pasoC = vC * 0.3 * direccionC * (1 + Math.sin(t * 0.1) * 0.1);
+                    posC += pasoC;
+
+                    if (posC < 0) {
+                        posC = 0;
+                        direccionC = 1;
+                        rebotes++;
+                        // Efecto de rebote: aumenta decaimiento
+                        vC *= (1 + fisionFactor * 0.05);
+                    } else if (posC >= input.length) {
+                        posC = input.length - 1;
+                        direccionC = -1;
+                        rebotes++;
+                        vC *= (1 + fisionFactor * 0.05);
+                    }
+
+                    tiempos_C.push(t);
+                    const bitC = input[Math.min(Math.max(Math.round(posC), 0), input.length - 1)];
+                    bits_C.push(bitC);
+                    
+                    // Efecto del bit en C
+                    if (bitC === '1') {
+                        vC *= (1 + fisionFactor * 0.08);
+                    } else {
+                        vC *= (1 - (1 - 1/fisionFactor) * 0.05);
+                    }
+                    ultimo_C = bitC;
+
+                    // --- Choque A-B ---
+                    if (i > j) {
+                        const choque = {
+                            t: t,
+                            tAcumulado: tAcumulado,
+                            i: i - 1,
+                            j: j + 1,
+                            posC: posC,
+                            vA: vA,
+                            vB: vB,
+                            vC: vC,
+                            rebotes: rebotes,
+                            fisiones: fisiones,
+                            // Decaimiento en el choque
+                            decayA: Math.exp(-lambda1 * tAcumulado),
+                            decayB: Math.exp(-lambda0 * tAcumulado),
+                            decayC: Math.exp(-lambdaC * tAcumulado)
+                        };
+                        choques.push(choque);
+                        
+                        // Efecto del choque: aumenta decaimiento
+                        direccionC *= -1;
+                        vC *= fisionFactor * 0.2;
+                        rebotes++;
+                    }
+                }
+
+                resultados.push({
+                    vA_final: vA,
+                    vB_final: vB,
+                    vC_final: vC,
+                    t_final: t,
+                    tAcumulado: tAcumulado,
+                    choques: choques,
+                    tiempos_A: tiempos_A,
+                    tiempos_B: tiempos_B,
+                    tiempos_C: tiempos_C,
+                    bits_A: bits_A.join(''),
+                    bits_B: bits_B.reverse().join(''),
+                    bits_C: bits_C.join(''),
+                    rebotes_totales: rebotes,
+                    fisiones_totales: fisiones,
+                    posC_final: posC,
+                    direccionC_final: direccionC,
+                    // Datos de decaimiento
+                    decayA_final: Math.exp(-lambda1 * tAcumulado),
+                    decayB_final: Math.exp(-lambda0 * tAcumulado),
+                    decayC_final: Math.exp(-lambdaC * tAcumulado)
+                });
+            }
+
+            return resultados;
+        }
+
+        // --- Generar hash nuclear ---
+        function generarHashNuclear(input, pasadas, lambda1, lambda0, lambdaC, vidaMediaC, fisionFactor, modo0, hashBits) {
+            const resultados = simularNuclear(input, pasadas, lambda1, lambda0, lambdaC, vidaMediaC, fisionFactor, modo0);
+
+            const dataParts = [];
+            dataParts.push(`input=${input}`);
+            dataParts.push(`pasadas=${pasadas}`);
+            dataParts.push(`lambda1=${lambda1}`);
+            dataParts.push(`lambda0=${lambda0}`);
+            dataParts.push(`lambdaC=${lambdaC}`);
+            dataParts.push(`vidaMediaC=${vidaMediaC}`);
+            dataParts.push(`fisionFactor=${fisionFactor}`);
+            dataParts.push(`modo0=${modo0}`);
+
+            resultados.forEach((res, idx) => {
+                dataParts.push(`p${idx+1}_vA=${res.vA_final.toExponential()}`);
+                dataParts.push(`p${idx+1}_vB=${res.vB_final.toExponential()}`);
+                dataParts.push(`p${idx+1}_vC=${res.vC_final.toExponential()}`);
+                dataParts.push(`p${idx+1}_t=${res.t_final.toExponential()}`);
+                dataParts.push(`p${idx+1}_tAcum=${res.tAcumulado.toExponential()}`);
+                dataParts.push(`p${idx+1}_decayA=${res.decayA_final.toExponential()}`);
+                dataParts.push(`p${idx+1}_decayB=${res.decayB_final.toExponential()}`);
+                dataParts.push(`p${idx+1}_decayC=${res.decayC_final.toExponential()}`);
+                dataParts.push(`p${idx+1}_rebotes=${res.rebotes_totales}`);
+                dataParts.push(`p${idx+1}_fisiones=${res.fisiones_totales}`);
+                dataParts.push(`p${idx+1}_posC=${res.posC_final}`);
+                dataParts.push(`p${idx+1}_choques=${res.choques.map(c => 
+                    `t=${c.t.toExponential()},i=${c.i},j=${c.j},posC=${c.posC.toFixed(2)},decayA=${c.decayA.toExponential()},decayB=${c.decayB.toExponential()},decayC=${c.decayC.toExponential()}`
+                ).join(';')}`);
+                dataParts.push(`p${idx+1}_tiemposA=${res.tiempos_A.map(t => t.toExponential()).join(',')}`);
+                dataParts.push(`p${idx+1}_tiemposB=${res.tiempos_B.map(t => t.toExponential()).join(',')}`);
+                dataParts.push(`p${idx+1}_tiemposC=${res.tiempos_C.map(t => t.toExponential()).join(',')}`);
+                dataParts.push(`p${idx+1}_bitsA=${res.bits_A}`);
+                dataParts.push(`p${idx+1}_bitsB=${res.bits_B}`);
+                dataParts.push(`p${idx+1}_bitsC=${res.bits_C}`);
+            });
+
+            const fullStr = dataParts.join('|');
+            
+            const bigInt = stringToBigInt(fullStr);
+            const mod = 2n ** BigInt(hashBits);
+            const hashFinal = bigInt % mod;
+
+            return {
+                hash: bigIntToHex(hashFinal, hashBits),
+                hashBigInt: hashFinal,
+                stringCientifico: fullStr,
+                resultados: resultados,
+                params: { input, pasadas, lambda1, lambda0, lambdaC, vidaMediaC, fisionFactor, modo0, hashBits }
+            };
+        }
+
+        // --- Verificar ---
+        function verificarHashNuclear(input, hashEsperado, params) {
+            const resultado = generarHashNuclear(
+                input,
+                params.pasadas,
+                params.lambda1,
+                params.lambda0,
+                params.lambdaC,
+                params.vidaMediaC,
+                params.fisionFactor,
+                params.modo0,
+                params.hashBits
+            );
+            
+            return {
+                coincide: resultado.hash === hashEsperado,
+                hashGenerado: resultado.hash,
+                datos: resultado
+            };
+        }
+
+        // ============================================
+        //  UI
+        // ============================================
+
+        function generarHashNuclear() {
+            const input = document.getElementById('inputBits').value.trim();
+            const pasadas = parseInt(document.getElementById('pasadas').value);
+            const lambda1 = parseFloat(document.getElementById('lambda1').value);
+            const lambda0 = parseFloat(document.getElementById('lambda0').value);
+            const lambdaC = parseFloat(document.getElementById('lambdaC').value);
+            const vidaMediaC = parseFloat(document.getElementById('vidaMediaC').value);
+            const fisionFactor = parseFloat(document.getElementById('fisionFactor').value);
+            const hashBits = parseInt(document.getElementById('hashBits').value);
+            const modo0 = document.getElementById('modo0').value;
+
+            if (!/^[01]+$/.test(input)) {
+                alert('❌ El input debe ser una cadena de bits (solo 0s y 1s)');
+                return;
+            }
+
+            const resultado = generarHashNuclear(input, pasadas, lambda1, lambda0, lambdaC, vidaMediaC, fisionFactor, modo0, hashBits);
+
+            document.getElementById('resultados').style.display = 'block';
+            document.getElementById('hashValue').textContent = resultado.hash;
+            document.getElementById('cientificoStr').textContent = resultado.stringCientifico;
+
+            const ultimo = resultado.resultados[resultado.resultados.length - 1];
+            document.getElementById('statsGrid').innerHTML = `
+                <div class="stat-card"><div class="value">${pasadas}</div><div class="label">Semividas</div></div>
+                <div class="stat-card"><div class="value">${input.length}</div><div class="label">Isótopos</div></div>
+                <div class="stat-card"><div class="value" style="color:#60a5fa;">${ultimo.vA_final.toExponential()}</div><div class="label">vA (decay)</div></div>
+                <div class="stat-card"><div class="value" style="color:#34d399;">${ultimo.vB_final.toExponential()}</div><div class="label">vB (decay)</div></div>
+                <div class="stat-card"><div class="value" style="color:#f472b6;">${ultimo.vC_final.toExponential()}</div><div class="label">vC (decay)</div></div>
+                <div class="stat-card"><div class="value decay">${ultimo.decayA_final.toExponential()}</div><div class="label">Decay A</div></div>
+                <div class="stat-card"><div class="value decay">${ultimo.decayB_final.toExponential()}</div><div class="label">Decay B</div></div>
+                <div class="stat-card"><div class="value nuclear">${ultimo.rebotes_totales + ultimo.fisiones_totales}</div><div class="label">Eventos nucleares</div></div>
+            `;
+
+            document.getElementById('paramsList').innerHTML = `
+                <span class="param-card"><strong>Input:</strong> ${input}</span>
+                <span class="param-card"><strong>Pasadas:</strong> ${pasadas}</span>
+                <span class="param-card"><strong>λ1:</strong> <span class="nuclear">${lambda1}</span></span>
+                <span class="param-card"><strong>λ0:</strong> <span class="nuclear">${lambda0}</span></span>
+                <span class="param-card"><strong>λC:</strong> <span class="nuclear">${lambdaC}</span></span>
+                <span class="param-card"><strong>vida media C:</strong> <span class="half-life">${vidaMediaC}</span></span>
+                <span class="param-card"><strong>Fisión:</strong> <span class="decay">${fisionFactor}</span></span>
+                <span class="param-card"><strong>Modo 0:</strong> ${modo0}</span>
+                <span class="param-card"><strong>Bits:</strong> ${hashBits}</span>
+            `;
+
+            document.getElementById('verificacionDisplay').classList.add('hidden');
+
+            mostrarDetallesNuclear(resultado.resultados, input);
+
+            window._ultimoHash = resultado.hash;
+            window._ultimosParams = { input, pasadas, lambda1, lambda0, lambdaC, vidaMediaC, fisionFactor, modo0, hashBits };
+            window._ultimosResultados = resultado.resultados;
+        }
+
+        function verificarHashNuclear() {
+            if (!window._ultimoHash || !window._ultimosParams) {
+                alert('⚠️ Primero genera un hash nuclear');
+                return;
+            }
+
+            const input = prompt('📝 Ingresa el input a verificar:', window._ultimosParams.input);
+            if (input === null) return;
+
+            const verificacion = verificarHashNuclear(
+                input.trim(),
+                window._ultimoHash,
+                window._ultimosParams
+            );
+
+            const display = document.getElementById('verificacionDisplay');
+            display.classList.remove('hidden');
+            
+            const msg = document.getElementById('verificacionMsg');
+            if (verificacion.coincide) {
+                msg.innerHTML = `
+                    ✅ <strong>¡Fisión exitosa!</strong> El input "<code>${input}</code>" 
+                    genera el hash <code>${verificacion.hashGenerado}</code> 
+                    con los parámetros nucleares.
+                `;
+                display.style.borderLeftColor = '#22c55e';
+            } else {
+                msg.innerHTML = `
+                    ❌ <strong>¡Decaimiento!</strong> El input "<code>${input}</code>" 
+                    genera <code>${verificacion.hashGenerado}</code>, 
+                    pero se esperaba <code>${window._ultimoHash}</code>.
+                `;
+                display.style.borderLeftColor = '#ef4444';
+            }
+        }
+
+        function generarClaveNuclear() {
+            const lambdas1 = [0.693, 1.386, 2.079, 0.231, 0.462, 3.0];
+            const lambdas0 = [0.231, 0.462, 0.693, 0.115, 0.154, 0.5];
+            const lambdasC = [1.386, 2.079, 3.0, 0.693, 0.462, 4.0];
+            const vidas = [0.1, 0.3, 0.5, 0.7, 1.0, 1.5, 2.0];
+            const fisiones = [1.618, 2.718, 3.141, 1.5, 2.0, 2.5];
+            
+            const idx = Math.floor(Math.random() * lambdas1.length);
+            const l1 = lambdas1[idx];
+            const l0 = lambdas0[idx];
+            const lC = lambdasC[idx % lambdasC.length];
+            const vC = vidas[Math.floor(Math.random() * vidas.length)];
+            const fF = fisiones[Math.floor(Math.random() * fisiones.length)];
+            const pasadas = Math.floor(Math.random() * 5) + 2;
+            const bits = [32, 64, 128, 256][Math.floor(Math.random() * 4)];
+            const modos = ['primer_0', 'todos', 'ninguno'];
+            const modo = modos[Math.floor(Math.random() * modos.length)];
+
+            document.getElementById('lambda1').value = l1;
+            document.getElementById('lambda0').value = l0;
+            document.getElementById('lambdaC').value = lC;
+            document.getElementById('vidaMediaC').value = vC;
+            document.getElementById('fisionFactor').value = fF;
+            document.getElementById('pasadas').value = pasadas;
+            document.getElementById('hashBits').value = bits;
+            document.getElementById('modo0').value = modo;
+
+            let input = '';
+            const len = Math.floor(Math.random() * 8) + 5;
+            for (let i = 0; i < len; i++) {
+                input += Math.random() > 0.5 ? '1' : '0';
+            }
+            document.getElementById('inputBits').value = input;
+
+            generarHashNuclear();
+
+            alert('☢️ Isótopo generado:\n' +
+                `Input: ${input}\n` +
+                `Pasadas: ${pasadas}\n` +
+                `λ1: ${l1}\n` +
+                `λ0: ${l0}\n` +
+                `λC: ${lC}\n` +
+                `vida media C: ${vC}\n` +
+                `Fisión: ${fF}\n` +
+                `Bits: ${bits}\n` +
+                `Modo 0: ${modo}\n\n` +
+                `El hash nuclear se ha generado.`);
+        }
+
+        function mostrarDetallesNuclear(resultados, input) {
+            const container = document.getElementById('detallesContainer');
+            container.innerHTML = '';
+
+            resultados.forEach((res, idx) => {
+                const div = document.createElement('div');
+                div.style.cssText = 'border:1px solid #1a1a2e; padding:15px; margin:10px 0; border-radius:8px; background:rgba(10,10,20,0.5);';
+                
+                const choquesStr = res.choques.length > 0 ? 
+                    res.choques.map(c => 
+                        `<span class="collision">☢️ (t=${c.t.toExponential()}, i=${c.i}, j=${c.j}, posC=${c.posC.toFixed(2)}, decayA=${c.decayA.toExponential()})</span>`
+                    ).join(' ') : 
+                    'Ninguno';
+
+                div.innerHTML = `
+                    <h4 style="margin:0 0 10px 0; color:#f472b6;">☢️ Pasada ${idx + 1}</h4>
+                    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px,1fr)); gap:8px; font-size:13px;">
+                        <div><strong style="color:#60a5fa;">vA:</strong> ${res.vA_final.toExponential()}</div>
+                        <div><strong style="color:#34d399;">vB:</strong> ${res.vB_final.toExponential()}</div>
+                        <div><strong style="color:#f472b6;">vC:</strong> ${res.vC_final.toExponential()}</div>
+                        <div><strong style="color:#fbbf24;">Decay A:</strong> ${res.decayA_final.toExponential()}</div>
+                        <div><strong style="color:#fbbf24;">Decay B:</strong> ${res.decayB_final.toExponential()}</div>
+                        <div><strong style="color:#fbbf24;">Decay C:</strong> ${res.decayC_final.toExponential()}</div>
+                        <div><strong>t_final:</strong> ${res.t_final.toExponential()}</div>
+                        <div><strong>Rebotes:</strong> ${res.rebotes_totales}</div>
+                        <div><strong>Fisiones:</strong> ${res.fisiones_totales}</div>
+                        <div><strong>posC final:</strong> ${res.posC_final.toFixed(2)}</div>
+                    </div>
+                    <div style="margin-top:8px;">
+                        <strong>Bits A:</strong> <span class="pointer-A">${res.bits_A}</span>
+                        <span style="margin-left:12px;"><strong>Bits B:</strong> <span class="pointer-B">${res.bits_B}</span></span>
+                        <span style="margin-left:12px;"><strong>Bits C:</strong> <span class="pointer-C">${res.bits_C}</span></span>
+                    </div>
+                    <div style="margin-top:8px;">
+                        <strong>Choques:</strong> ${choquesStr}
+                    </div>
+                    <div style="margin-top:4px; font-size:11px; color:#64748b;">
+                        <strong>tiempos_A:</strong> [${res.tiempos_A.map(t => t.toExponential()).join(', ')}]
+                    </div>
+                    <div style="font-size:11px; color:#64748b;">
+                        <strong>tiempos_B:</strong> [${res.tiempos_B.map(t => t.toExponential()).join(', ')}]
+                    </div>
+                    <div style="font-size:11px; color:#64748b;">
+                        <strong>tiempos_C:</strong> [${res.tiempos_C.map(t => t.toExponential()).join(', ')}]
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function simularDecaimiento() {
+            if (!window._ultimosResultados) {
+                alert('⚠️ Primero genera un hash nuclear');
+                return;
+            }
+
+            const container = document.getElementById('canvasContainer');
+            container.style.display = 'block';
+            
+            const canvas = document.getElementById('simCanvas');
+            const ctx = canvas.getContext('2d');
+            const W = canvas.width = canvas.parentElement.clientWidth || 900;
+            const H = canvas.height = 300;
+
+            ctx.clearRect(0, 0, W, H);
+            
+            // Fondo
+            const grad = ctx.createRadialGradient(W/2, H/2, 0, W/2, H/2, W/2);
+            grad.addColorStop(0, '#1a0a2e');
+            grad.addColorStop(1, '#0a0a0f');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, W, H);
+
+            const res = window._ultimosResultados[0];
+            const maxT = Math.max(res.t_final, 10);
+            const pad = 40;
+            const xScale = (W - 2 * pad) / maxT;
+
+            // Dibujar decaimiento
+            const colors = {
+                A: '#60a5fa',
+                B: '#34d399', 
+                C: '#f472b6',
+                decay: '#fbbf24'
+            };
+
+            // Decaimiento exponencial teórico
+            const lambda1 = window._ultimosParams.lambda1 || 0.693;
+            const lambda0 = window._ultimosParams.lambda0 || 0.231;
+            const lambdaC = window._ultimosParams.lambdaC || 1.386;
+
+            // Dibujar curvas de decaimiento teóricas
+            const teorico = [
+                { label: 'λ1', lambda: lambda1, color: colors.A },
+                { label: 'λ0', lambda: lambda0, color: colors.B },
+                { label: 'λC', lambda: lambdaC, color: colors.C }
+            ];
+
+            teorico.forEach(t => {
+                ctx.strokeStyle = t.color;
+                ctx.globalAlpha = 0.3;
+                ctx.setLineDash([5, 5]);
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                for (let x = 0; x <= maxT; x += 0.1) {
+                    const y = Math.exp(-t.lambda * x);
+                    const px = pad + x * xScale;
+                    const py = H - pad - y * (H - 2 * pad);
+                    if (x === 0) ctx.moveTo(px, py);
+                    else ctx.lineTo(px, py);
+                }
+                ctx.stroke();
+                ctx.setLineDash([]);
+                ctx.globalAlpha = 1;
+            });
+
+            // Datos reales de decaimiento
+            const dataPoints = res.tiempos_A.map((t, i) => ({
+                x: t,
+                y: Math.exp(-lambda1 * t),
+                label: 'A'
+            }));
+
+            // Dibujar puntos de decaimiento
+            dataPoints.forEach((p, i) => {
+                if (i % 2 === 0) {
+                    const px = pad + p.x * xScale;
+                    const py = H - pad - p.y * (H - 2 * pad);
+                    ctx.fillStyle = colors.A;
+                    ctx.beginPath();
+                    ctx.arc(px, py, 3, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            });
+
+            // Dibujar líneas de decaimiento de C (más caótico)
+            ctx.strokeStyle = colors.C;
+            ctx.lineWidth = 1.5;
+            ctx.globalAlpha = 0.7;
+            ctx.beginPath();
+            res.tiempos_C.forEach((t, i) => {
+                const decayC = Math.exp(-lambdaC * t);
+                const px = pad + t * xScale;
+                const py = H - pad - decayC * (H - 2 * pad);
+                if (i === 0) ctx.moveTo(px, py);
+                else ctx.lineTo(px, py);
+            });
+            ctx.stroke();
+            ctx.globalAlpha = 1;
+
+            // Marcar choques
+            res.choques.forEach(c => {
+                const px = pad + c.t * xScale;
+                const decayC = Math.exp(-lambdaC * c.t);
+                const py = H - pad - decayC * (H - 2 * pad);
+                
+                ctx.fillStyle = '#ef4444';
+                ctx.shadowColor = '#ef4444';
+                ctx.shadowBlur = 20;
+                ctx.beginPath();
+                ctx.arc(px, py, 8, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowBlur = 0;
+                
+                ctx.fillStyle = '#fff';
+                ctx.font = '10px sans-serif';
+                ctx.fillText('☢️', px - 6, py + 4);
+            });
+
+            // Leyenda
+            let ly = 15;
+            ctx.font = '11px monospace';
+            const legendItems = [
+                { label: 'Decaimiento λ1', color: colors.A },
+                { label: 'Decaimiento λ0', color: colors.B },
+                { label: 'Decaimiento λC', color: colors.C },
+                { label: 'Choque ☢️', color: '#ef4444' }
+            ];
+            legendItems.forEach(item => {
+                ctx.fillStyle = item.color;
+                ctx.fillRect(W - 140, ly, 12, 12);
+                ctx.fillStyle = '#94a3b8';
+                ctx.fillText(item.label, W - 120, ly + 10);
+                ly += 22;
+            });
+
+            // Etiquetas
+            ctx.fillStyle = '#64748b';
+            ctx.font = '10px monospace';
+            ctx.fillText('t', W - pad + 5, H - pad + 15);
+            ctx.fillText('N(t)/N₀', pad - 50, pad - 5);
+        }
+
+        // Limpiar modos
+        document.getElementById('modo0')?.remove();
+
+        window.onload = function() {
+            generarHashNuclear();
+        };
+
+        window.addEventListener('resize', () => {
+            if (document.getElementById('canvasContainer').style.display !== 'none') {
+                simularDecaimiento();
+            }
+        });
+    </script>
+</body>
+</html>

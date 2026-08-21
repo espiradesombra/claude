@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador Automático de Hashes Parametrizables 🔐</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #0a0a15;
+            color: #e2e8f0;
+        }
+        .container {
+            background: rgba(20, 20, 40, 0.9);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+            border: 1px solid rgba(100, 50, 200, 0.2);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #94a3b8;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        input,
+        select {
+            width: 100%;
+            padding: 8px 12px;
+            background: #0a0a15;
+            border: 1px solid #2a1a3e;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #e2e8f0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        input:focus,
+        select:focus {
+            border-color: #8b5cf6;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
+        }
+        button {
+            background: linear-gradient(135deg, #7c3aed, #3b82f6);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            margin: 5px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+        }
+        button.success {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+        }
+        button.warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        button.secondary {
+            background: linear-gradient(135deg, #64748b, #475569);
+        }
+        button.cyber {
+            background: linear-gradient(135deg, #06b6d4, #8b5cf6, #06b6d4);
+            background-size: 200% 200%;
+            animation: cyberPulse 3s ease infinite;
+        }
+        @keyframes cyberPulse {
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+        .hash-box {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            margin: 15px 0;
+            border: 1px solid #2a1a3e;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .hash-box .label {
+            color: #64748b;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .hash-box .value {
+            font-size: 0.9em;
+            margin-top: 8px;
+            word-break: break-all;
+        }
+        .hash-box .value.hash {
+            color: #a78bfa;
+        }
+        .hash-box .value.params {
+            color: #34d399;
+        }
+        .hash-box .value.ping {
+            color: #fbbf24;
+        }
+        .info {
+            background: rgba(10, 10, 20, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #8b5cf6;
+            margin: 15px 0;
+        }
+        .info.success {
+            border-left-color: #22c55e;
+        }
+        .info.warning {
+            border-left-color: #f59e0b;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 8px;
+            margin: 15px 0;
+        }
+        .stat-card {
+            background: rgba(10, 10, 20, 0.8);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #1a1a2e;
+        }
+        .stat-card .value {
+            font-size: 16px;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+        .stat-card .label {
+            font-size: 8px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 3px;
+        }
+        .stat-card .value.hash {
+            color: #a78bfa;
+        }
+        .stat-card .value.params {
+            color: #34d399;
+        }
+        .stat-card .value.ping {
+            color: #fbbf24;
+        }
+        .hidden {
+            display: none;
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 14px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .badge.ping {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+        .badge.params {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+        }
+        .badge.hash {
+            background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+            color: white;
+        }
+        .param-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 10px 0;
+        }
+        .param-item {
+            background: rgba(10, 10, 20, 0.8);
+            padding: 6px 14px;
+            border-radius: 6px;
+            border: 1px solid #2a1a3e;
+            font-size: 12px;
+            font-family: 'Courier New', monospace;
+        }
+        .param-item .nombre {
+            color: #60a5fa;
+        }
+        .param-item .valor {
+            color: #34d399;
+        }
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+            border: 1px solid #1a1a2e;
+        }
+        .flow-diagram .box {
+            padding: 6px 12px;
+            background: #1a1a2e;
+            border-radius: 6px;
+            border: 1px solid #2a1a3e;
+            font-size: 10px;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+        }
+        .flow-diagram .arrow {
+            color: #64748b;
+            font-size: 14px;
+        }
+        .flow-diagram .box.ping {
+            border-color: #fbbf24;
+        }
+        .flow-diagram .box.params {
+            border-color: #34d399;
+        }
+        .flow-diagram .box.hash {
+            border-color: #a78bfa;
+        }
+        .flow-diagram .box.funcion {
+            border-color: #60a5fa;
+        }
+        .version-selector {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 15px 0;
+        }
+        .version-btn {
+            padding: 6px 16px;
+            border-radius: 6px;
+            border: 1px solid #2a1a3e;
+            background: #0a0a15;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+        .version-btn:hover {
+            border-color: #8b5cf6;
+            color: #e2e8f0;
+        }
+        .version-btn.active {
+            border-color: #8b5cf6;
+            background: rgba(139, 92, 246, 0.2);
+            color: #a78bfa;
+        }
+        .ping-result {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin: 4px 0;
+            border: 1px solid #1a1a2e;
+            font-size: 11px;
+        }
+        .ping-result .servidor {
+            color: #60a5fa;
+        }
+        .ping-result .tiempo {
+            color: #fbbf24;
+        }
+        .ping-result .ttl {
+            color: #34d399;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; background: linear-gradient(90deg, #fbbf24, #34d399, #60a5fa, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+        🔐 Generador Automático de Hashes Parametrizables
+    </h1>
+    <p style="text-align: center; color: #94a3b8; margin-top: -10px;">
+        <span class="badge ping">📡 PING + METADATOS</span>
+        <span class="badge params">🔢 PARÁMETROS AUTOMÁTICOS</span>
+        <span class="badge hash">🔐 HASH SEGURO</span>
+    </p>
+
+    <div class="flow-diagram">
+        <div class="box ping">📡 Ping<br><span style="color:#fbbf24;">{tiempo, TTL}</span></div>
+        <span class="arrow">→</span>
+        <div class="box funcion">📦 Función<br><span style="color:#60a5fa;">Seleccionada</span></div>
+        <span class="arrow">→</span>
+        <div class="box params">🔢 Parámetros<br><span style="color:#34d399;">Automáticos</span></div>
+        <span class="arrow">→</span>
+        <div class="box hash">🔐 Hash<br><span style="color:#a78bfa;">Parametrizado</span></div>
+    </div>
+
+    <div class="container">
+        <h2 style="color: #fbbf24;">⚙️ Configuración</h2>
+
+        <div class="grid">
+            <div>
+                <label>📡 Servidores:</label>
+                <input id="servidores" value="google.com,github.com,cloudflare.com,amazon.com,microsoft.com" placeholder="Servidores">
+            </div>
+            <div>
+                <label>🔄 Iteraciones:</label>
+                <input id="iteraciones" value="5" type="number" min="1" max="20">
+            </div>
+            <div>
+                <label>📦 Tipo de parámetros:</label>
+                <select id="tipoParams">
+                    <option value="hash_cinematica">Hash Cinemática (v2.0)</option>
+                    <option value="hash_nuclear">Hash Nuclear (v6.0)</option>
+                    <option value="hash_oceanico" selected>Hash Oceánico (v7.0)</option>
+                    <option value="hash_3punteros">Hash 3 Punteros (v5.0)</option>
+                    <option value="hash_metadatos">Hash Metadatos (v4.0-R)</option>
+                </select>
+            </div>
+            <div>
+                <label>📊 Bits de hash:</label>
+                <select id="hashBits">
+                    <option value="32">32 bits</option>
+                    <option value="64" selected>64 bits</option>
+                    <option value="128">128 bits</option>
+                    <option value="256">256 bits</option>
+                </select>
+            </div>
+            <div>
+                <label>🌊 Chorro de bits:</label>
+                <select id="chorroActivo">
+                    <option value="true">✅ Activo</option>
+                    <option value="false">❌ Inactivo</option>
+                </select>
+            </div>
+            <div>
+                <label>🔑 Semilla manual:</label>
+                <input id="semillaManual" value="" placeholder="Opcional">
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button class="cyber" onclick="ejecutarSistema()">🔐 Generar Hash Parametrizable</button>
+            <button class="warning" onclick="generarAleatorio()">🎲 Aleatorio</button>
+            <button class="secondary" onclick="mostrarParametros()">🔢 Ver Parámetros</button>
+        </div>
+
+        <div class="version-selector">
+            <span style="color:#64748b;font-size:11px;margin-right:10px;">Versión de hash:</span>
+            <button class="version-btn active" onclick="cambiarVersion('hash_cinematica')">v2.0 Cinemática</button>
+            <button class="version-btn" onclick="cambiarVersion('hash_nuclear')">v6.0 Nuclear</button>
+            <button class="version-btn" onclick="cambiarVersion('hash_oceanico')">v7.0 Oceánico</button>
+            <button class="version-btn" onclick="cambiarVersion('hash_3punteros')">v5.0 3 Punteros</button>
+            <button class="version-btn" onclick="cambiarVersion('hash_metadatos')">v4.0-R Metadatos</button>
+        </div>
+    </div>
+
+    <div class="container" id="resultados" style="display: none;">
+        <h2>📊 Resultados</h2>
+
+        <div class="stats-grid" id="statsGrid"></div>
+
+        <div class="hash-box">
+            <div class="label">🔐 Hash Final (Parametrizado)</div>
+            <div class="value hash" id="hashValue">-</div>
+        </div>
+
+        <div class="hash-box" style="border-color: #34d399;">
+            <div class="label">🔢 Parámetros Generados</div>
+            <div class="value params" id="paramsValue">-</div>
+        </div>
+
+        <div class="hash-box" style="border-color: #fbbf24;">
+            <div class="label">📡 Datos de Ping y Selección</div>
+            <div class="value ping" id="pingValue">-</div>
+        </div>
+
+        <div id="infoDisplay" class="info warning">
+            <strong style="color: #fbbf24;">📡 Proceso de Generación:</strong><br>
+            <span id="procesoInfo"></span>
+        </div>
+
+        <h3 style="color: #34d399;">🔢 Parámetros Detallados</h3>
+        <div id="paramsDetalle"></div>
+
+        <h3 style="color: #64748b;">🔬 Datos Completos</h3>
+        <div class="hash-box" style="border-color: #334155;">
+            <div class="label" style="color: #64748b;">📝 Datos en formato científico</div>
+            <div class="value" id="cientificoStr" style="font-size: 0.7em; color: #94a3b8; word-break: break-all;"></div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        //  GENERADOR AUTOMÁTICO DE HASHES PARAMETRIZABLES
+        //  Versión: v10.0 - AutoParam
+        // ============================================
+
+        // --- Carpeta de funciones absurdas (para generar parámetros) ---
+        const FUNCIONES_PARAM = {
+            'funcion_1': {
+                nombre: 'Suma de primos',
+                ejecutar: (input) => {
+                    let suma = 0;
+                    for (let i = 2; i < input.length * 10; i++) {
+                        let esPrimo = true;
+                        for (let j = 2; j < i; j++) {
+                            if (i % j === 0) { esPrimo = false; break; }
+                        }
+                        if (esPrimo) suma += i;
+                    }
+                    return suma;
+                }
+            },
+            'funcion_2': {
+                nombre: 'Factorial loco',
+                ejecutar: (input) => {
+                    let n = input.length * 5 + 1;
+                    let fact = 1;
+                    for (let i = 1; i <= n; i++) fact *= i;
+                    return fact % 1000000;
+                }
+            },
+            'funcion_3': {
+                nombre: 'Fibonacci inverso',
+                ejecutar: (input) => {
+                    let n = input.length * 3 + 2;
+                    let a = 0,
+                        b = 1;
+                    for (let i = 0; i < n; i++) {
+                        let c = a + b;
+                        a = b;
+                        b = c;
+                    }
+                    return a;
+                }
+            },
+            'funcion_4': {
+                nombre: 'Collatz loco',
+                ejecutar: (input) => {
+                    let n = input.length * 7 + 3;
+                    let pasos = 0;
+                    while (n > 1) {
+                        if (n % 2 === 0) n = n / 2;
+                        else n = n * 3 + 1;
+                        pasos++;
+                        if (pasos > 1000) break;
+                    }
+                    return pasos;
+                }
+            },
+            'funcion_5': {
+                nombre: 'Suma de cuadrados',
+                ejecutar: (input) => {
+                    let suma = 0;
+                    for (let i = 0; i < input.length; i++) {
+                        suma += input.charCodeAt(i % input.length) ** 2;
+                    }
+                    return suma;
+                }
+            },
+            'funcion_6': {
+                nombre: 'Producto de dígitos',
+                ejecutar: (input) => {
+                    let prod = 1;
+                    for (let i = 0; i < input.length; i++) {
+                        prod *= (input.charCodeAt(i % input.length) % 10) + 1;
+                    }
+                    return prod % 1000000;
+                }
+            },
+            'funcion_7': {
+                nombre: 'Suma de senos',
+                ejecutar: (input) => {
+                    let suma = 0;
+                    for (let i = 0; i < input.length; i++) {
+                        suma += Math.sin(input.charCodeAt(i % input.length));
+                    }
+                    return Math.floor(suma * 1000000);
+                }
+            },
+            'funcion_8': {
+                nombre: 'Logaritmo acumulado',
+                ejecutar: (input) => {
+                    let suma = 0;
+                    for (let i = 1; i <= input.length * 2; i++) {
+                        suma += Math.log(i + 1);
+                    }
+                    return Math.floor(suma * 1000000);
+                }
+            },
+            'funcion_9': {
+                nombre: 'Potencia loca',
+                ejecutar: (input) => {
+                    let base = input.length * 2 + 1;
+                    let exp = input.length * 3 + 2;
+                    let result = 1;
+                    for (let i = 0; i < exp; i++) {
+                        result = (result * base) % 1000000;
+                    }
+                    return result;
+                }
+            },
+            'funcion_10': {
+                nombre: 'Raíces cuadradas',
+                ejecutar: (input) => {
+                    let suma = 0;
+                    for (let i = 1; i <= input.length * 3; i++) {
+                        suma += Math.sqrt(i);
+                    }
+                    return Math.floor(suma * 1000000);
+                }
+            },
+            'funcion_11': {
+                nombre: 'Suma de euler',
+                ejecutar: (input) => {
+                    let suma = 0;
+                    for (let i = 1; i <= input.length * 2; i++) {
+                        suma += Math.exp(-i / (input.length + 1));
+                    }
+                    return Math.floor(suma * 1000000);
+                }
+            },
+            'funcion_12': {
+                nombre: 'Serie armónica',
+                ejecutar: (input) => {
+                    let suma = 0;
+                    for (let i = 1; i <= input.length * 3; i++) {
+                        suma += 1 / i;
+                    }
+                    return Math.floor(suma * 1000000);
+                }
+            }
+        };
+
+        // --- Simular ping ---
+        function simularPing(servidor) {
+            const latencia = 10 + Math.random() * 90;
+            const ttl = Math.floor(60 + Math.random() * 200);
+            const tamanio = Math.floor(64 + Math.random() * 1000);
+            const perdida = Math.random() > 0.95;
+
+            return {
+                servidor,
+                latencia: perdida ? -1 : latencia,
+                ttl,
+                tamanio,
+                perdida,
+                timestamp: Date.now(),
+                metadatos: {
+                    latencia: latencia,
+                    ttl: ttl,
+                    tamanio: tamanio,
+                    jitter: Math.random() * 20,
+                    rtt: latencia * (0.8 + Math.random() * 0.4)
+                }
+            };
+        }
+
+        function ejecutarPing(servidores) {
+            const resultados = [];
+            const lista = servidores.split(',').map(s => s.trim());
+            for (const servidor of lista) {
+                if (servidor) {
+                    resultados.push(simularPing(servidor));
+                }
+            }
+            return resultados;
+        }
+
+        // --- Generar parámetros desde pings ---
+        function generarParametrosDesdePings(pingResults, iteraciones, tipoHash) {
+            // Extraer valores numéricos
+            const valores = [];
+            pingResults.forEach(p => {
+                if (!p.perdida) {
+                    valores.push(p.latencia);
+                    valores.push(p.ttl);
+                    valores.push(p.tamanio);
+                    valores.push(p.metadatos.jitter);
+                    valores.push(p.metadatos.rtt);
+                }
+            });
+
+            if (valores.length === 0) {
+                // Si no hay valores, usar aleatorio
+                return generarParametrosAleatorios(tipoHash);
+            }
+
+            // Combinar valores para generar parámetros
+            let suma = valores.reduce((a, b) => a + b, 0);
+            let promedio = suma / valores.length;
+            let producto = valores.reduce((a, b) => a * b, 1);
+            let maximo = Math.max(...valores);
+            let minimo = Math.min(...valores);
+
+            // Generar parámetros según tipo de hash
+            const params = {
+                tipo: tipoHash,
+                iteraciones: iteraciones,
+                hashBits: parseInt(document.getElementById('hashBits').value),
+                modo0: ['primer_0', 'todos', 'ninguno'][Math.floor(Math.random() * 3)]
+            };
+
+            switch (tipoHash) {
+                case 'hash_cinematica':
+                    params.factor1 = 1 + (promedio % 10) / 5;
+                    params.factor0 = 0.1 + (minimo % 10) / 20;
+                    params.pasadas = Math.max(1, Math.floor(iteraciones * (promedio % 5) / 5) + 1);
+                    break;
+
+                case 'hash_nuclear':
+                    params.lambda1 = 0.1 + (promedio % 5) / 5;
+                    params.lambda0 = 0.05 + (minimo % 5) / 10;
+                    params.lambdaC = 0.5 + (maximo % 10) / 5;
+                    params.vidaMediaC = 0.1 + (producto % 100) / 100;
+                    params.fisionFactor = 1.2 + (suma % 10) / 5;
+                    params.pasadas = Math.max(1, Math.floor(iteraciones * (promedio % 5) / 5) + 1);
+                    break;
+
+                case 'hash_oceanico':
+                    params.gravedad = 1 + (promedio % 20) / 2;
+                    params.altura = 10 + (maximo % 100) * 10;
+                    params.densidadFluido = 0.998 + (minimo % 100) / 1000;
+                    params.densidadObjeto = 0.6 + (maximo % 50) / 100;
+                    params.factorFlotacion = 0.5 + (suma % 20) / 10;
+                    params.resetVelocidad = (promedio % 2 === 0);
+                    params.pasadas = Math.max(1, Math.floor(iteraciones * (promedio % 5) / 5) + 1);
+                    break;
+
+                case 'hash_3punteros':
+                    params.factorA = 1 + (promedio % 10) / 5;
+                    params.factorB = 0.1 + (minimo % 10) / 20;
+                    params.factorC = 0.5 + (maximo % 10) / 5;
+                    params.vCInicial = 0.1 + (producto % 100) / 100;
+                    params.pasadas = Math.max(1, Math.floor(iteraciones * (promedio % 5) / 5) + 1);
+                    break;
+
+                case 'hash_metadatos':
+                    params.factor1 = 1 + (promedio % 10) / 5;
+                    params.factor0 = 0.1 + (minimo % 10) / 20;
+                    params.pasadas = Math.max(1, Math.floor(iteraciones * (promedio % 5) / 5) + 1);
+                    params.modo0 = ['primer_0', 'todos', 'ninguno'][Math.floor(maximo % 3)];
+                    break;
+
+                default:
+                    // Fallback
+                    params.factor1 = 2;
+                    params.factor0 = 0.5;
+                    params.pasadas = iteraciones;
+            }
+
+            return params;
+        }
+
+        function generarParametrosAleatorios(tipoHash) {
+            const params = {
+                tipo: tipoHash,
+                iteraciones: Math.floor(Math.random() * 5) + 2,
+                hashBits: parseInt(document.getElementById('hashBits').value),
+                modo0: ['primer_0', 'todos', 'ninguno'][Math.floor(Math.random() * 3)]
+            };
+
+            switch (tipoHash) {
+                case 'hash_cinematica':
+                    params.factor1 = 1 + Math.random() * 4;
+                    params.factor0 = 0.1 + Math.random() * 0.9;
+                    params.pasadas = Math.floor(Math.random() * 5) + 2;
+                    break;
+                case 'hash_nuclear':
+                    params.lambda1 = 0.1 + Math.random() * 3;
+                    params.lambda0 = 0.05 + Math.random() * 1;
+                    params.lambdaC = 0.5 + Math.random() * 3.5;
+                    params.vidaMediaC = 0.1 + Math.random() * 2;
+                    params.fisionFactor = 1.2 + Math.random() * 3;
+                    params.pasadas = Math.floor(Math.random() * 5) + 2;
+                    break;
+                case 'hash_oceanico':
+                    params.gravedad = 1 + Math.random() * 20;
+                    params.altura = 10 + Math.random() * 1000;
+                    params.densidadFluido = 0.998 + Math.random() * 0.04;
+                    params.densidadObjeto = 0.6 + Math.random() * 0.4;
+                    params.factorFlotacion = 0.5 + Math.random() * 2.5;
+                    params.resetVelocidad = Math.random() > 0.5;
+                    params.pasadas = Math.floor(Math.random() * 5) + 2;
+                    break;
+                case 'hash_3punteros':
+                    params.factorA = 1 + Math.random() * 4;
+                    params.factorB = 0.1 + Math.random() * 0.9;
+                    params.factorC = 0.5 + Math.random() * 2;
+                    params.vCInicial = 0.1 + Math.random() * 2;
+                    params.pasadas = Math.floor(Math.random() * 5) + 2;
+                    break;
+                case 'hash_metadatos':
+                    params.factor1 = 1 + Math.random() * 4;
+                    params.factor0 = 0.1 + Math.random() * 0.9;
+                    params.pasadas = Math.floor(Math.random() * 5) + 2;
+                    break;
+                default:
+                    params.factor1 = 2;
+                    params.factor0 = 0.5;
+                    params.pasadas = 3;
+            }
+            return params;
+        }
+
+        // --- Hash Cinemática (v2.0) ---
+        function hashCinematica(input, params) {
+            let v = 1.0;
+            let i = 0,
+                j = input.length - 1;
+            let t = 0.0;
+            const choques = [];
+            let ultimo_A = null;
+
+            while (i <= j) {
+                t += 1.0;
+                if (i <= j) {
+                    const bit = input[i];
+                    if (bit === '1') {
+                        v *= params.factor1;
+                    } else {
+                        if (ultimo_A !== '0') {
+                            v *= params.factor0;
+                        }
+                    }
+                    i++;
+                    ultimo_A = bit;
+                }
+                if (i <= j) {
+                    const bit = input[j];
+                    if (bit === '1') {
+                        v *= params.factor1;
+                    } else {
+                        if (ultimo_A !== '0') {
+                            v *= params.factor0;
+                        }
+                    }
+                    j--;
+                }
+                if (i > j) {
+                    choques.push({ t, i: i - 1, j: j + 1, v });
+                }
+            }
+            return { v_final: v, t_final: t, choques };
+        }
+
+        // --- Hash Nuclear (v6.0) ---
+        function hashNuclear(input, params) {
+            let vA = 1.0,
+                vB = 1.0,
+                vC = params.vidaMediaC || 0.5;
+            let i = 0,
+                j = input.length - 1;
+            let t = 0.0;
+            const choques = [];
+
+            while (i <= j && t < 100) {
+                t += 1.0;
+                // Decaimiento
+                vA *= Math.exp(-params.lambda1 * 0.1);
+                vB *= Math.exp(-params.lambda0 * 0.1);
+                vC *= Math.exp(-params.lambdaC * 0.1);
+
+                if (i <= j) {
+                    const bit = input[i];
+                    if (bit === '1') {
+                        vA *= (1 + params.fisionFactor * 0.1);
+                    }
+                    i++;
+                }
+                if (i <= j) {
+                    const bit = input[j];
+                    if (bit === '1') {
+                        vB *= (1 + params.fisionFactor * 0.1);
+                    }
+                    j--;
+                }
+                if (i > j) {
+                    choques.push({ t, i: i - 1, j: j + 1, vA, vB, vC });
+                }
+            }
+            return { vA_final: vA, vB_final: vB, vC_final: vC, t_final: t, choques };
+        }
+
+        // --- Hash Oceánico (v7.0) ---
+        function hashOceanico(input, params) {
+            let vA = 0,
+                vB = 0,
+                vC = 0;
+            let i = 0,
+                j = input.length - 1;
+            let t = 0.0;
+            const choques = [];
+
+            while (i <= j && t < 100) {
+                t += 1.0;
+                const vFlotacion = Math.sqrt(2 * params.gravedad * params.altura) *
+                    (params.densidadFluido - params.densidadObjeto) / params.densidadFluido *
+                    params.factorFlotacion;
+
+                if (i <= j) {
+                    vA = params.resetVelocidad ? vFlotacion : vA + vFlotacion * 0.1;
+                    i++;
+                }
+                if (i <= j) {
+                    vB = params.resetVelocidad ? vFlotacion * 0.8 : vB + vFlotacion * 0.08;
+                    j--;
+                }
+                if (i > j) {
+                    choques.push({ t, i: i - 1, j: j + 1, vA, vB, vC });
+                }
+            }
+            return { vA_final: vA, vB_final: vB, vC_final: vC, t_final: t, choques };
+        }
+
+        // --- Hash 3 Punteros (v5.0) ---
+        function hash3Punteros(input, params) {
+            let vA = 1.0,
+                vB = 1.0,
+                vC = params.vCInicial || 0.5;
+            let i = 0,
+                j = input.length - 1;
+            let t = 0.0;
+            const choques = [];
+
+            while (i <= j && t < 100) {
+                t += 1.0;
+                if (i <= j) {
+                    const bit = input[i];
+                    if (bit === '1') {
+                        vA *= params.factorA;
+                        vC *= (1 + (params.factorC - 1) * 0.5);
+                    }
+                    i++;
+                }
+                if (i <= j) {
+                    const bit = input[j];
+                    if (bit === '1') {
+                        vB *= params.factorA;
+                        vC *= (1 + (params.factorC - 1) * 0.5);
+                    }
+                    j--;
+                }
+                if (i > j) {
+                    choques.push({ t, i: i - 1, j: j + 1, vA, vB, vC });
+                }
+            }
+            return { vA_final: vA, vB_final: vB, vC_final: vC, t_final: t, choques };
+        }
+
+        // --- Hash Metadatos (v4.0-R) ---
+        function hashMetadatos(input, params) {
+            let v = 1.0;
+            let i = 0,
+                j = input.length - 1;
+            let t = 0.0;
+            const choques = [];
+            let ultimo_A = null;
+
+            while (i <= j) {
+                t += 1.0;
+                if (i <= j) {
+                    const bit = input[i];
+                    if (bit === '1') {
+                        v *= params.factor1;
+                    } else {
+                        if (ultimo_A !== '0') {
+                            v *= params.factor0;
+                        }
+                    }
+                    i++;
+                    ultimo_A = bit;
+                }
+                if (i <= j) {
+                    const bit = input[j];
+                    if (bit === '1') {
+                        v *= params.factor1;
+                    } else {
+                        if (ultimo_A !== '0') {
+                            v *= params.factor0;
+                        }
+                    }
+                    j--;
+                }
+                if (i > j) {
+                    choques.push({ t, i: i - 1, j: j + 1, v });
+                }
+            }
+            return { v_final: v, t_final: t, choques };
+        }
+
+        // --- Ejecutar hash según tipo ---
+        function ejecutarHashSegunTipo(input, params) {
+            const hashFunctions = {
+                'hash_cinematica': hashCinematica,
+                'hash_nuclear': hashNuclear,
+                'hash_oceanico': hashOceanico,
+                'hash_3punteros': hash3Punteros,
+                'hash_metadatos': hashMetadatos
+            };
+
+            const func = hashFunctions[params.tipo];
+            if (!func) {
+                throw new Error('Tipo de hash no soportado: ' + params.tipo);
+            }
+
+            return func(input, params);
+        }
+
+        // --- Sistema principal ---
+        function ejecutarSistema() {
+            const servidores = document.getElementById('servidores').value;
+            const iteraciones = parseInt(document.getElementById('iteraciones').value);
+            const tipoHash = document.getElementById('tipoParams').value;
+            const hashBits = parseInt(document.getElementById('hashBits').value);
+            const chorroActivo = document.getElementById('chorroActivo').value === 'true';
+            const semillaManual = document.getElementById('semillaManual').value.trim();
+
+            // --- 1. Ping ---
+            const pingResults = ejecutarPing(servidores);
+
+            // --- 2. Generar parámetros desde pings ---
+            let params = generarParametrosDesdePings(pingResults, iteraciones, tipoHash);
+            params.hashBits = hashBits;
+
+            // --- 3. Generar bits de entrada ---
+            let inputBits = semillaManual || '10011';
+
+            // --- 4. Si hay chorro activo, generar más bits ---
+            if (chorroActivo) {
+                let chorro = inputBits;
+                for (let i = 0; i < iteraciones; i++) {
+                    // Ejecutar función absurda para generar bits
+                    const funcionKeys = Object.keys(FUNCIONES_PARAM);
+                    const key = funcionKeys[i % funcionKeys.length];
+                    const func = FUNCIONES_PARAM[key];
+                    const resultado = func.ejecutar(chorro);
+                    const bits = Math.abs(resultado).toString(2);
+                    chorro += bits;
+                    if (chorro.length > 5000) chorro = chorro.slice(0, 2500);
+                }
+                inputBits = chorro;
+            }
+
+            // --- 5. Ejecutar hash parametrizado ---
+            const resultadoHash = ejecutarHashSegunTipo(inputBits, params);
+
+            // --- 6. Generar hash final ---
+            const hashData = [
+                `input=${inputBits}`,
+                `tipo=${tipoHash}`,
+                `params=${JSON.stringify(params)}`,
+                `resultado=${JSON.stringify(resultadoHash)}`,
+                `pings=${JSON.stringify(pingResults)}`
+            ];
+
+            const fullStr = hashData.join('|');
+            const bigInt = stringToBigInt(fullStr);
+            const mod = 2n ** BigInt(hashBits);
+            const hashFinal = bigInt % mod;
+            const hashHex = bigIntToHex(hashFinal, hashBits);
+
+            // --- Mostrar resultados ---
+            mostrarResultados({
+                hash: hashHex,
+                inputBits: inputBits,
+                params: params,
+                resultadoHash: resultadoHash,
+                pingResults: pingResults,
+                tipo: tipoHash,
+                iteraciones: iteraciones,
+                chorroActivo: chorroActivo
+            });
+
+            window._ultimosDatos = {
+                hash: hashHex,
+                inputBits: inputBits,
+                params: params,
+                resultadoHash: resultadoHash,
+                pingResults: pingResults,
+                tipo: tipoHash
+            };
+        }
+
+        // --- UI ---
+        function mostrarResultados(datos) {
+            document.getElementById('resultados').style.display = 'block';
+            document.getElementById('hashValue').textContent = datos.hash;
+            document.getElementById('paramsValue').textContent = JSON.stringify(datos.params, null, 2);
+            document.getElementById('pingValue').textContent = JSON.stringify(datos.pingResults.map(p => ({
+                servidor: p.servidor,
+                latencia: p.latencia,
+                ttl: p.ttl,
+                perdida: p.perdida
+            })), null, 2);
+            document.getElementById('cientificoStr').textContent = datos.inputBits;
+
+            // Stats
+            const ultimoResultado = datos.resultadoHash;
+            document.getElementById('statsGrid').innerHTML = `
+                <div class="stat-card"><div class="value hash">${datos.hash.slice(0,8)}...</div><div class="label">Hash</div></div>
+                <div class="stat-card"><div class="value params">${datos.params.pasadas || datos.params.iteraciones}</div><div class="label">Pasadas</div></div>
+                <div class="stat-card"><div class="value ping">${datos.pingResults.filter(p => !p.perdida).length}</div><div class="label">Pings OK</div></div>
+                <div class="stat-card"><div class="value" style="color:#34d399;">${datos.inputBits.length}</div><div class="label">Bits input</div></div>
+                <div class="stat-card"><div class="value" style="color:#f472b6;">${Object.keys(datos.resultadoHash).length}</div><div class="label">Variables</div></div>
+            `;
+
+            // Proceso info
+            const versiones = {
+                'hash_cinematica': 'v2.0 - Cinemática',
+                'hash_nuclear': 'v6.0 - Nuclear',
+                'hash_oceanico': 'v7.0 - Oceánico',
+                'hash_3punteros': 'v5.0 - 3 Punteros',
+                'hash_metadatos': 'v4.0-R - Metadatos'
+            };
+
+            document.getElementById('procesoInfo').innerHTML = `
+                Versión: ${versiones[datos.tipo] || datos.tipo}<br>
+                Iteraciones: ${datos.iteraciones}<br>
+                Chorro activo: ${datos.chorroActivo ? '✅ Sí' : '❌ No'}<br>
+                Pings exitosos: ${datos.pingResults.filter(p => !p.perdida).length}/${datos.pingResults.length}<br>
+                Parámetros generados automáticamente desde pings
+            `;
+
+            // Parámetros detallados
+            const detalle = document.getElementById('paramsDetalle');
+            detalle.innerHTML = `
+                <div class="param-list">
+                    ${Object.entries(datos.params).map(([key, value]) =>
+                        `<span class="param-item">
+                            <span class="nombre">${key}:</span>
+                            <span class="valor">${typeof value === 'boolean' ? (value ? '✅ Sí' : '❌ No') : value}</span>
+                        </span>`
+                    ).join('')}
+                </div>
+                <div style="margin-top:10px;font-size:12px;color:#64748b;">
+                    <strong>Resultado del hash:</strong>
+                    ${Object.entries(datos.resultadoHash).map(([key, value]) =>
+                        `<span style="margin-left:10px;">${key}: ${typeof value === 'number' ? value.toExponential(4) : JSON.stringify(value)}</span>`
+                    ).join('')}
+                </div>
+            `;
+        }
+
+        // --- Utilidades ---
+        function stringToBigInt(str) {
+            let result = 0n;
+            for (let i = 0; i < str.length; i++) {
+                result = (result * 256n) + BigInt(str.charCodeAt(i));
+            }
+            return result;
+        }
+
+        function bigIntToHex(num, bits) {
+            const hex = num.toString(16);
+            return hex.padStart(Math.ceil(bits / 4), '0');
+        }
+
+        function cambiarVersion(version) {
+            document.getElementById('tipoParams').value = version;
+            // Actualizar botones
+            document.querySelectorAll('.version-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.includes(version.replace('hash_', ''))) {
+                    btn.classList.add('active');
+                }
+            });
+            // Si hay datos, regenerar
+            if (document.getElementById('resultados').style.display !== 'none') {
+                ejecutarSistema();
+            }
+        }
+
+        function generarAleatorio() {
+            const servidores = ['google.com', 'github.com', 'cloudflare.com', 'amazon.com', 'microsoft.com', 'apple.com'];
+            const numServ = Math.floor(Math.random() * 3) + 3;
+            const seleccionados = servidores.slice(0, numServ);
+
+            const versiones = ['hash_cinematica', 'hash_nuclear', 'hash_oceanico', 'hash_3punteros', 'hash_metadatos'];
+            const version = versiones[Math.floor(Math.random() * versiones.length)];
+            const iteraciones = Math.floor(Math.random() * 8) + 2;
+            const hashBits = [32, 64, 128, 256][Math.floor(Math.random() * 4)];
+            const chorroActivo = Math.random() > 0.5;
+
+            document.getElementById('servidores').value = seleccionados.join(',');
+            document.getElementById('iteraciones').value = iteraciones;
+            document.getElementById('hashBits').value = hashBits;
+            document.getElementById('chorroActivo').value = chorroActivo ? 'true' : 'false';
+            document.getElementById('tipoParams').value = version;
+
+            // Actualizar botones
+            document.querySelectorAll('.version-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.includes(version.replace('hash_', ''))) {
+                    btn.classList.add('active');
+                }
+            });
+
+            ejecutarSistema();
+
+            alert('🎲 Configuración aleatoria generada:\n' +
+                `Servidores: ${seleccionados.join(', ')}\n` +
+                `Versión: ${version}\n` +
+                `Iteraciones: ${iteraciones}\n` +
+                `Bits: ${hashBits}\n` +
+                `Chorro: ${chorroActivo ? '✅ Activo' : '❌ Inactivo'}`);
+        }
+
+        function mostrarParametros() {
+            if (!window._ultimosDatos) {
+                alert('⚠️ Primero ejecuta el sistema');
+                return;
+            }
+            const datos = window._ultimosDatos;
+            alert('🔢 Parámetros generados:\n\n' +
+                JSON.stringify(datos.params, null, 2) +
+                '\n\n🔐 Hash: ' + datos.hash +
+                '\n\n📡 Pings: ' + datos.pingResults.length);
+        }
+
+        window.onload = function() {
+            ejecutarSistema();
+        };
+    </script>
+</body>
+</html>

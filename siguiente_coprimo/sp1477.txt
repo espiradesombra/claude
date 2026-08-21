@@ -1,0 +1,84 @@
+import math
+import time
+
+def siguiente_primo(inicio: int) -> int:
+    if inicio < 2:
+        return 2
+
+    n = inicio
+    m = n + 1
+    ny = n - 1
+    paso1_1,paso1_new = 0==0,0==0
+    paso2_1,paso2_new = 0==0,0==0
+    t = ny * ny
+    tt = n * n
+    nt = m * m
+    ny += 1
+    n += 1
+    m += 1
+    t *= ny
+    tt *= n
+    nt *= m
+    for _ in range(10000):
+        # ── COMPROBAR COPRIMALIDAD ──
+        # Si t es coprimo con ny, n y m, entonces ny es primo
+        t1=math.gcd(t, ny) == 1 
+        t2=math.gcd(t, n) == 1 
+        t3=math.gcd(t, m) == 1 
+        tt2= math.gcd(tt, n) == 1 
+        tt1= math.gcd(tt, ny) == 1
+        tt3= math.gcd(tt, m) == 1
+        nt3= math.gcd(nt, m) == 1
+        nt2= math.gcd(nt, n) == 1
+        nt1= math.gcd(nt, ny) == 1
+        # ── PASO 1 ──
+        paso1_2=paso1_1
+        paso1_1 = paso1_new 
+        paso1_new = (t3 > 0  )
+        # ── PASO 2 ──
+        paso2_1 = paso1_new 
+        paso2_new = (t2 > 0 )
+        # ── PASO 2 ──
+        paso3_new = (t1 > 0 ) and paso2_1 and paso1_2
+        if paso3_new:
+            return ny
+        # ── ACTUALIZAR ACUMULADORES ──
+        t *= ny
+        tt *= n
+        nt *= m
+
+        ny += 1
+        n += 1
+        m += 1
+
+    # Fallback (por si acaso)
+  
+
+
+# ── PRUEBA ──
+if __name__ == "__main__":
+    tests = [3, 5, 7, 11, 13, 17, 31, 37, 47, 61, 71, 89, 97, 100003, 10**7]
+    for n in tests:
+        t0 = time.perf_counter()
+        sp = siguiente_primo(n)
+        t1 = time.perf_counter()
+        print(f"N = {n}  → {sp}  ({(t1-t0)*1000:.3f} ms)")
+
+
+
+
+##N = 3  → 5  (0.015 ms)
+N = 5  → 11  (0.011 ms)
+N = 7  → 11  (0.006 ms)
+N = 11  → 17  (0.008 ms)
+N = 13  → 17  (0.006 ms)
+N = 17  → 29  (0.015 ms)
+N = 31  → 41  (0.014 ms)
+N = 37  → 41  (0.006 ms)
+N = 47  → 59  (0.017 ms)
+N = 61  → 71  (0.014 ms)
+N = 71  → 101  (0.050 ms)
+N = 89  → 101  (0.018 ms)
+N = 97  → 101  (0.006 ms)
+N = 100003  → 100019  (0.035 ms)
+N = 10000000  → 10000001  (0.005 ms)

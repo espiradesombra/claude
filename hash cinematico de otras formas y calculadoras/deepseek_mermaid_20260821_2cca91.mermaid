@@ -1,0 +1,11 @@
+graph TD
+    A[Ondas WiFi] --> B[CSI 2.4 GHz]
+    A --> C[CSI 5 GHz]
+    B --> D[Fase + Doppler]
+    C --> D
+    D --> E[Distancia + Velocidad]
+    D --> F[Multicamino]
+    E --> G[Parámetros Físicos]
+    F --> G
+    G --> H[Hash Cinemático]
+    H --> I[Hash Final]
