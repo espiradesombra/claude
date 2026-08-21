@@ -91,9 +91,24 @@ python kilometro_sim/sim_recorrido_rota_patadas_impar.py
 
 ---
 
-## 5. Frase de posicionamiento (renovables)
+## 5. Variante: rearme cada 3 ciclos + robar 1/4 de recorrido
 
-> Kilómetro estrella = **mitad lineal que genera**, **mitad rotatoria que rearma distancia**, **rearme impar por flotación y perneo**.  
+**Opinión de diseño (VMA):**
+
+| Idea | Lectura |
+|------|---------|
+| **Pernar cada 3 ciclos** | Cadencia más lenta que “cada impar”: deja acumular 2 ciclos de generación “abiertos” y un 3.º de reset. Buen ritmo de enjambre (menos conmutaciones → menos `E_perno`). Riesgo: stock BAJA crece 2 ticks antes del reset. |
+| **Robar 1/4 de recorrido por patada** para **potencial de flotación** | En la media rotatoria, cada patada adelanta/retiene ~90° de fase o ~1/4 de longitud efectiva, de modo que al soltar lastre el módulo quede en zona donde la boyancia hace más trabajo (subida barata). Es **faseo hidrostático**, no julios gratis: estás eligiendo *cuándo* el neutro actúa. |
+
+Encaja con el gemelo nuevo `ARRIBA Red Renovable/…reset-de-potencial-de-flotación…`: el reset no es lift bruto siempre; es **perneo + geometría** para recuperar potencial de flotación.
+
+**Criterio de éxito:** bajar `E_rob_dist` por patada (objetivo ~1/4 de peaje de una media rotatoria completa) sin perder `W_gen` de la lineal.
+
+---
+
+## 6. Frase de posicionamiento (renovables)
+
+> Kilómetro estrella = **mitad lineal que genera**, **mitad rotatoria que rearma distancia**, **rearme cada 3 (o impar) por flotación y perneo**.  
 > Batería de lastre + convertidor de fase. El hurto gravitatorio “se puede” como **ciclo híbrido bien faseado**, no como pozo infinito.
 
 ---
