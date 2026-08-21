@@ -1,0 +1,9 @@
+Sin cambio de fase:
+  - Bajada: motor genera (frena) → +E_gen
+  - Subida: motor consume (empuja) → -E_cons
+  - Balance: 0 (o negativo)
+
+Con cambio de fase:
+  - Bajada: motor genera (frena) → +E_gen
+  - Subida: motor cambia de fase → también genera (frena la flotación) → +E_regen
+  - Balance: ¡POSITIVO!

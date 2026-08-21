@@ -1,0 +1,29 @@
+Fase 1: Enganche (pernear)
+- El objeto tiene 3 pesos (flota)
+- Se pernea 1 peso del recorrido al objeto
+- El objeto ahora tiene 4 pesos (se hunde)
+- Coste: 4 × E_perno (energía de conmutación)
+
+Fase 2: Bajada (generación + hurto de cinética)
+- El objeto baja con 4 pesos
+- Genera energía: E_gen = η_gen · m_peso · g · Δh
+- ANTES de que el objeto recupere el potencial de flotación
+- SE ROBA CINÉTICA: ΔE_hurto = m_peso · g · Δh · (1 - 1/factor_patada)
+- ¡Se genera ENERGÍA EXTRA por el hurto!
+
+Fase 3: Desperneo (variación de densidad)
+- El objeto se despernea del peso extra
+- El objeto vuelve a 3 pesos (flota)
+- El peso extra queda en el recorrido (stock BAJA)
+- Coste: 4 × E_perno
+
+Fase 4: Subida por flotación (casi gratis)
+- El objeto sube por flotabilidad
+- PERO sube MENOS de lo que bajó (porque se robó cinética)
+- La diferencia de altura = hurto de distancia = Δh · (1 - 1/factor_patada)
+
+Fase 5: Reset por variación de densidad
+- El objeto está en una posición más baja que al inicio
+- Se cambia la densidad efectiva del objeto
+- El objeto "flota" a la posición original
+- ¡EL RESET NO SUBE EL PESO! ¡CAMBIA LA DENSIDAD!
